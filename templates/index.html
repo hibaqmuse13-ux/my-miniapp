@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="so">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>USDTPilot Portal</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <title>USDTPilot Pro</title>
+    <script src="https://telegram.org/js/telegram-web-app.js">
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -14,166 +14,903 @@
             --accent-color: #0088cc;
             --success-color: #2ea043;
             --danger-color: #da3633;
+            --warning-color: #d29922;
             --text-main: #f0f6fc;
             --text-sub: #8b949e;
             --border-color: #30363d;
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg-color); color: var(--text-main); padding-bottom: 75px; }
-        .container { padding: 16px; }
-
-        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
-        .user-info { display: flex; align-items: center; gap: 10px; }
-        .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--accent-color); display: flex; align-items: center; justify-content: center; font-weight: bold; }
-
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        body {
+            background: var(--bg-color);
+            color: var(--text-main);
+            padding-bottom: 75px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-color), #0055aa);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+        }
+        .user-details {
+            display: flex;
+            flex-direction: column;
+        }
+        .user-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .user-id {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+        .badge {
+            font-size: 10px;
+            background: rgba(46, 160, 67, 0.2);
+            color: var(--success-color);
+            padding: 4px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(46, 160, 67, 0.3);
+        }
+        .badge-new {
+            background: var(--warning-color);
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 700;
+        }
         .hero-card {
-            background: linear-gradient(135deg, #1f293d 0%, #111827 100%);
+            background: linear-gradient(135deg, #1a2332 0%, #0d1520 100%);
             border: 1px solid var(--border-color);
             border-radius: 16px;
-            padding: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 136, 204, 0.05) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .balance-label {
+            font-size: 13px;
+            color: var(--text-sub);
+            letter-spacing: 1px;
+        }
+        .main-balance {
+            font-size: 38px;
+            font-weight: 800;
+            color: #fff;
+            margin: 8px 0 4px;
+            letter-spacing: -0.5px;
+        }
+        .balance-usd {
+            font-size: 16px;
+            color: var(--text-sub);
+            font-weight: 400;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .stat-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 10px 6px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-label {
+            font-size: 9px;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .stat-value {
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        .stat-value.green {
+            color: var(--success-color);
+        }
+        .stat-value.blue {
+            color: var(--accent-color);
+        }
+        .stat-value.gold {
+            color: var(--warning-color);
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 18px;
             margin-bottom: 16px;
         }
-
-        .main-balance { font-size: 32px; font-weight: 800; color: #fff; margin: 6px 0; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
-        .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-        .card h3 { font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 12px; color: var(--text-sub); margin-bottom: 6px; }
-
-        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: #0d1117; color: #fff; font-size: 14px; }
-
-        .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; background: var(--accent-color); color: #fff; font-weight: 600; font-size: 14px; cursor: pointer; }
-        .btn-success { background: var(--success-color); }
-
-        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .plan-card { border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; background: rgba(255,255,255,0.02); text-align: center; }
-
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: var(--card-bg); border-top: 1px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-sub); font-size: 11px; cursor: pointer; gap: 4px; }
-        .nav-item.active { color: var(--accent-color); }
-
-        /* Ledger Row */
-        .ledger-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-size: 13px; }
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-title i {
+            color: var(--accent-color);
+        }
+        .form-group {
+            margin-bottom: 14px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: #0d1117;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.2s;
+            outline: none;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.15);
+        }
+        input[readonly] {
+            color: var(--success-color);
+            font-weight: 600;
+            background: rgba(46, 160, 67, 0.05);
+            border-color: rgba(46, 160, 67, 0.2);
+        }
+        textarea {
+            resize: vertical;
+            font-family: inherit;
+        }
+        .btn {
+            width: 100%;
+            padding: 13px;
+            border-radius: 10px;
+            border: none;
+            background: var(--accent-color);
+            color: #fff;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .btn:active {
+            transform: scale(0.97);
+        }
+        .btn-success {
+            background: var(--success-color);
+        }
+        .btn-danger {
+            background: var(--danger-color);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+            border-radius: 6px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .plans-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+        .plan-card {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 14px 10px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.2s;
+        }
+        .plan-card:active {
+            transform: scale(0.95);
+        }
+        .plan-card .amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+        .plan-card .return {
+            font-size: 11px;
+            color: var(--success-color);
+            margin: 4px 0 8px;
+        }
+        .ledger-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .ledger-row:last-child {
+            border-bottom: none;
+        }
+        .ledger-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .ledger-type {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .ledger-date {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+        .ledger-amount {
+            font-weight: 700;
+            font-size: 15px;
+        }
+        .ledger-status {
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 10px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .status-success {
+            background: rgba(46, 160, 67, 0.15);
+            color: var(--success-color);
+        }
+        .status-active {
+            background: rgba(0, 136, 204, 0.15);
+            color: var(--accent-color);
+        }
+        .status-pending {
+            background: rgba(255, 193, 7, 0.15);
+            color: #ffc107;
+        }
+        .referral-box {
+            background: rgba(46, 160, 67, 0.05);
+            border: 1px dashed var(--success-color);
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+        }
+        .referral-box .code {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+            letter-spacing: 2px;
+            margin: 8px 0;
+        }
+        .support-ticket {
+            background: rgba(255, 193, 7, 0.05);
+            border-left: 3px solid var(--warning-color);
+            padding: 10px;
+            margin-bottom: 8px;
+            border-radius: 4px;
+        }
+        .ticket-status {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+        .status-open {
+            background: rgba(255, 193, 7, 0.2);
+            color: var(--warning-color);
+        }
+        .status-closed {
+            background: rgba(46, 160, 67, 0.2);
+            color: var(--success-color);
+        }
+        .notification-badge {
+            position: relative;
+            cursor: pointer;
+        }
+        .notification-dot {
+            position: absolute;
+            top: -4px;
+            right: -8px;
+            width: 10px;
+            height: 10px;
+            background: var(--danger-color);
+            border-radius: 50%;
+            border: 2px solid var(--card-bg);
+        }
+        .calculator-result {
+            background: rgba(0, 136, 204, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 12px;
+        }
+        .calc-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 13px;
+        }
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 14px;
+            z-index: 2000;
+            display: none;
+            max-width: 90%;
+            text-align: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+        .toast.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        .toast.success {
+            border-color: var(--success-color);
+        }
+        .toast.error {
+            border-color: var(--danger-color);
+        }
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 68px;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+            max-width: 480px;
+            margin: 0 auto;
+            overflow-x: auto;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-sub);
+            font-size: 9px;
+            cursor: pointer;
+            gap: 2px;
+            padding: 4px 8px;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            position: relative;
+            min-width: 44px;
+        }
+        .nav-item i {
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+        .nav-item.active {
+            color: var(--accent-color);
+        }
+        .nav-item.active i {
+            transform: translateY(-2px);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-color);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+        @media (max-width: 420px) {
+            .plans-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .main-balance {
+                font-size: 30px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .bottom-nav {
+                height: 60px;
+            }
+            .nav-item {
+                font-size: 8px;
+                padding: 2px 4px;
+                min-width: 36px;
+            }
+            .nav-item i {
+                font-size: 16px;
+            }
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-color);
+        }
+        .checkbox-group label {
+            margin: 0;
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+        .text-muted {
+            color: var(--text-sub);
+        }
+        .text-center {
+            text-align: center;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .welcome-msg {
+            background: rgba(0, 136, 204, 0.1);
+            border: 1px solid rgba(0, 136, 204, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 16px;
+            text-align: center;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
 
     <div class="container">
         <!-- Header -->
         <div class="header">
             <div class="user-info">
                 <div class="avatar" id="avatar-initial">U</div>
-                <div>
-                    <div style="font-weight: bold; font-size: 14px;" id="username-display">User</div>
-                    <div style="font-size: 11px; color: var(--text-sub);" id="userid-display">ID: ---</div>
+                <div class="user-details">
+                    <div class="user-name" id="username-display">Istifade</div>
+                    <div class="user-id" id="userid-display">ID: ---</div>
                 </div>
             </div>
-            <span style="font-size: 11px; background: rgba(46,160,67,0.2); color: var(--success-color); padding: 4px 8px; border-radius: 12px;">Verified 🟢</span>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <span class="badge notification-badge" onclick="switchTab('notifications')">
+                    <i class="fas fa-bell"></i>
+                    <span id="notif-dot" class="notification-dot" style="display:none;"></span>
+                </span>
+                <span class="badge"><i class="fas fa-check-circle"></i> La Xaqiijiyay</span>
+            </div>
+        </div>
+
+        <!-- Welcome Message -->
+        <div class="welcome-msg" id="welcome-msg">
+            <i class="fas fa-hand-wave"></i> Soo dhawow!
         </div>
 
         <!-- Hero Balance -->
         <div class="hero-card">
-            <div style="font-size: 13px; color: var(--text-sub);">TOTAL PORTFOLIO BALANCE</div>
-            <div class="main-balance" id="balance">$0.00 USDT</div>
-            <div class="stats-grid">
-                <div><span>Active Investments</span><div id="active-deposit" style="color: var(--success-color); font-weight:600;">$0.00</div></div>
-                <div><span>Hourly Yield</span><div style="color: var(--accent-color); font-weight:600;">+20% / 7 Days</div></div>
+            <div class="balance-label"><i class="fas fa-wallet"></i> Wadarta Hantida</div>
+            <div class="main-balance">
+                $<span id="balance">0.00</span>
+                <span class="balance-usd">USDT</span>
             </div>
-        </div>
-
-        <!-- TAB 1: HOME -->
-        <div id="tab-home" class="tab-content active">
-            <div class="card">
-                <h3><i class="fa-solid fa-rocket"></i> Quick Actions</h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                    <button class="btn" onclick="switchTab('deposit')"><i class="fa-solid fa-wallet"></i> Deposit</button>
-                    <button class="btn btn-success" onclick="switchTab('withdraw')"><i class="fa-solid fa-paper-plane"></i> Withdraw</button>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">Maalgashi</div>
+                    <div class="stat-value green" id="active-deposit">$0.00</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Soo Celin</div>
+                    <div class="stat-value blue">+20%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Taf</div>
+                    <div class="stat-value gold" id="referral-count">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Guno</div>
+                    <div class="stat-value blue" id="bonus-earnings">$0.00</div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 2: DEPOSIT -->
+        <!-- TAB 1: GURIGA -->
+        <div id="tab-home" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-rocket"></i> Ficillo Dhakhso ah</div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn" onclick="switchTab('deposit')">
+                        <i class="fas fa-arrow-down"></i> Kaydi
+                    </button>
+                    <button class="btn btn-success" onclick="switchTab('withdraw')">
+                        <i class="fas fa-arrow-up"></i> Bixi
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-fire"></i> Qorshayaasha</div>
+                </div>
+                <div class="plans-grid" id="quick-plans"></div>
+            </div>
+        </div>
+
+        <!-- TAB 2: KAYDIN -->
         <div id="tab-deposit" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-qrcode"></i> Automated Deposit Verification</h3>
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-qrcode"></i> Kaydi USDT</div>
+                    <span class="badge-new">CUSUB</span>
+                </div>
                 <div class="form-group">
-                    <label>Select Network</label>
+                    <label>Xulo Shabakada</label>
                     <select id="network-select" onchange="updateDepositAddress()">
-                        <option value="TRC20">USDT (TRC20)</option>
-                        <option value="BEP20">USDT (BEP20 / BSC)</option>
-                        <option value="ERC20">USDT (ERC20 / ETH)</option>
-                        <option value="TON">TON (Toncoin)</option>
+                        <option value="TRC20">🌐 USDT (TRC20)</option>
+                        <option value="BEP20">🌐 USDT (BEP20 / BSC)</option>
+                        <option value="ERC20">🌐 USDT (ERC20 / ETH)</option>
+                        <option value="TON">🌐 TON (Toncoin)</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Deposit Address</label>
-                    <input type="text" id="deposit-address-display" value="TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs" readonly style="color: var(--success-color); font-weight:bold;">
+                    <label>Cinwaanka Kaydinta</label>
+                    <input type="text" id="deposit-address-display" readonly 
+                           value="TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs">
+                    <button class="btn btn-outline" style="margin-top:6px;padding:6px;" onclick="copyAddress()">
+                        <i class="fas fa-copy"></i> Nuqul
+                    </button>
                 </div>
                 <div class="form-group">
-                    <label>Deposit Amount (USDT)</label>
-                    <input type="number" id="deposit-amt" placeholder="e.g. 50">
+                    <label>Qadar (USDT) <span class="text-muted" style="font-weight:400;">ugu yar $10</span></label>
+                    <input type="number" id="deposit-amt" placeholder="Tusaale 50" min="10">
                 </div>
                 <div class="form-group">
-                    <label>Transaction TXID / Hash</label>
-                    <input type="text" id="txid-input" placeholder="Paste Blockchain TXID">
+                    <label>TXID / Hash-ka</label>
+                    <input type="text" id="txid-input" placeholder="Dhig TXID-kaaga halkan">
                 </div>
-                <button class="btn" onclick="submitDeposit()">Submit Deposit for Verification</button>
+                <button class="btn" onclick="submitDeposit()">
+                    <i class="fas fa-paper-plane"></i> Soo Dir Xaqiijin
+                </button>
+                <p class="text-muted text-center mt-8" style="font-size:11px;">
+                    <i class="fas fa-info-circle"></i> Xaqiijintu waxay qaadataa 5-30 daqiiqo
+                </p>
             </div>
         </div>
 
-        <!-- TAB 3: INVEST -->
+        <!-- TAB 3: MAALGASHI -->
         <div id="tab-invest" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-gem"></i> Choose Investment Plan</h3>
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-gem"></i> Qorshayaasha Maalgashiga</div>
+                </div>
+                <p style="font-size:13px;color:var(--text-sub);margin-bottom:14px;">
+                    Xulo maalgashigaaga. Hel <strong style="color:var(--success-color);">+20%</strong> soo celin 7 maalmood!
+                </p>
                 <div class="plans-grid" id="plans-container"></div>
             </div>
-        </div>
 
-        <!-- TAB 4: HISTORY / LEDGER -->
-        <div id="tab-history" class="tab-content">
+            <!-- Calculator -->
             <div class="card">
-                <h3><i class="fa-solid fa-clock-rotate-left"></i> Transaction History</h3>
-                <div id="history-list"></div>
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-calculator"></i> Xisaabiye</div>
+                </div>
+                <div class="form-group">
+                    <label>Qadar Maalgashiga</label>
+                    <input type="number" id="calc-amount" placeholder="Dhig qadar" oninput="calculateROI()">
+                </div>
+                <div class="form-group">
+                    <label>Maalmood</label>
+                    <input type="number" id="calc-days" value="7" oninput="calculateROI()">
+                </div>
+                <div class="calculator-result" id="calc-result">
+                    <div class="calc-row"><span>Maalgashiga:</span><span id="calc-invest">$0.00</span></div>
+                    <div class="calc-row"><span>Faaiido:</span><span id="calc-profit" style="color:var(--success-color);">$0.00</span></div>
+                    <div class="calc-row"><span>Wadarta Soo Celin:</span><span id="calc-return" style="color:var(--accent-color);">$0.00</span></div>
+                </div>
             </div>
         </div>
 
-        <!-- TAB 5: WITHDRAW -->
+        <!-- TAB 4: TAARIIKH -->
+        <div id="tab-history" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-clock-rotate-left"></i> Taariikhda Macaamilada</div>
+                    <span style="font-size:12px;color:var(--text-sub);" id="history-count">0</span>
+                </div>
+                <div id="history-list"></div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-chart-simple"></i> Maalgashiga Firfircoon</div>
+                </div>
+                <div id="investment-list"></div>
+            </div>
+        </div>
+
+        <!-- TAB 5: BIXITAAN -->
         <div id="tab-withdraw" class="tab-content">
             <div class="card">
-                <h3><i class="fa-solid fa-money-bill-transfer"></i> Cashout</h3>
-                <div class="form-group"><label>Wallet Address</label><input type="text" placeholder="TRC20 / BEP20 Address"></div>
-                <div class="form-group"><label>Amount (USDT)</label><input type="number" placeholder="Min $10"></div>
-                <button class="btn btn-success" onclick="alert('Withdrawal request submitted!')">Request Payout</button>
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-money-bill-transfer"></i> Bixi Lacag</div>
+                </div>
+                <div class="form-group">
+                    <label>Cinwaanka</label>
+                    <input type="text" id="withdraw-address" placeholder="Cinwaankaaga TRC20 / BEP20 / ERC20">
+                </div>
+                <div class="form-group">
+                    <label>Qadar (USDT) <span class="text-muted" style="font-weight:400;">ugu yar $10</span></label>
+                    <input type="number" id="withdraw-amount" placeholder="Ugu yar $10" min="10">
+                </div>
+                <div class="form-group">
+                    <label>Shabakad</label>
+                    <select id="withdraw-network">
+                        <option value="TRC20">🌐 TRC20</option>
+                        <option value="BEP20">🌐 BEP20 (BSC)</option>
+                        <option value="ERC20">🌐 ERC20 (ETH)</option>
+                    </select>
+                </div>
+                <button class="btn btn-success" onclick="submitWithdraw()">
+                    <i class="fas fa-paper-plane"></i> Soo Dir Codsiga
+                </button>
+                <p class="text-muted text-center mt-8" style="font-size:11px;">
+                    <i class="fas fa-clock"></i> Farsamaynta: 24-48 saacadood
+                </p>
+            </div>
+        </div>
+
+        <!-- TAB 6: TAF -->
+        <div id="tab-referral" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-link"></i> Barnaamijka Tafka</div>
+                    <span class="badge-new">5% GUNO</span>
+                </div>
+                <p style="font-size:13px;color:var(--text-sub);margin-bottom:12px;">
+                    La wadaag xiriirkaaga oo kasbo <strong style="color:var(--success-color);">5%</strong> kayd kasta!
+                </p>
+                <div class="referral-box">
+                    <div style="font-size:12px;color:var(--text-sub);">Koodka Tafkaaga</div>
+                    <div class="code" id="referral-code">------</div>
+                    <button class="btn btn-outline" style="margin-top:8px;padding:8px;" onclick="copyReferral()">
+                        <i class="fas fa-copy"></i> Nuqul Xiriirka
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-users"></i> Tirakoobka Tafka</div>
+                </div>
+                <div id="referral-stats"></div>
+            </div>
+        </div>
+
+        <!-- TAB 7: TAAKO -->
+        <div id="tab-support" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-headset"></i> Xarunta Taakada</div>
+                </div>
+                <div class="form-group">
+                    <label>Mawduuc</label>
+                    <input type="text" id="ticket-subject" placeholder="Cinwaanka arrinta">
+                </div>
+                <div class="form-group">
+                    <label>Fariin</label>
+                    <textarea id="ticket-message" rows="4" placeholder="Sharax arrintaada..."></textarea>
+                </div>
+                <button class="btn" onclick="createTicket()">
+                    <i class="fas fa-paper-plane"></i> Soo Dir Tikidh
+                </button>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-ticket"></i> Tikidhyadayda</div>
+                </div>
+                <div id="ticket-list"></div>
+            </div>
+        </div>
+
+        <!-- TAB 8: OGEYSIIS -->
+        <div id="tab-notifications" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"><i class="fas fa-bell"></i> Ogeysiis</div>
+                    <button class="btn btn-outline" style="padding:4px 12px;width:auto;font-size:11px;" onclick="markAllRead()">
+                        Dhammaan la akhriyay
+                    </button>
+                </div>
+                <div id="notification-list"></div>
             </div>
         </div>
     </div>
 
     <!-- Bottom Navigation -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="switchTab('home')"><i class="fa-solid fa-house"></i><span>Home</span></div>
-        <div class="nav-item" onclick="switchTab('deposit')"><i class="fa-solid fa-wallet"></i><span>Deposit</span></div>
-        <div class="nav-item" onclick="switchTab('invest')"><i class="fa-solid fa-chart-line"></i><span>Invest</span></div>
-        <div class="nav-item" onclick="switchTab('history')"><i class="fa-solid fa-list"></i><span>Ledger</span></div>
-        <div class="nav-item" onclick="switchTab('withdraw')"><i class="fa-solid fa-paper-plane"></i><span>Withdraw</span></div>
+        <button class="nav-item active" onclick="switchTab('home')">
+            <i class="fas fa-house"></i>
+            <span>Guri</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('deposit')">
+            <i class="fas fa-wallet"></i>
+            <span>Kaydi</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('invest')">
+            <i class="fas fa-chart-line"></i>
+            <span>Maalgel</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('history')">
+            <i class="fas fa-list"></i>
+            <span>Taariikh</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('withdraw')">
+            <i class="fas fa-paper-plane"></i>
+            <span>Bixi</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('referral')">
+            <i class="fas fa-link"></i>
+            <span>Taf</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('support')">
+            <i class="fas fa-headset"></i>
+            <span>Taako</span>
+        </button>
     </div>
 
     <script>
+        // ============================================================
+        // BILOW TELEGRAM WEB APP
+        // ============================================================
         let tg = window.Telegram.WebApp;
         tg.expand();
+        tg.enableClosingConfirmation();
 
+        // ============================================================
+        // HEL ISTIFADE ID IYO MAGAC
+        // ============================================================
         let userId = tg.initDataUnsafe?.user?.id || 7076265514;
-        let userName = tg.initDataUnsafe?.user?.first_name || "Ismail Essa";
+        let userName = tg.initDataUnsafe?.user?.first_name || "Istifade";
 
+        // Muuji magaca iyo ID-ga
         document.getElementById('username-display').innerText = userName;
         document.getElementById('userid-display').innerText = `ID: ${userId}`;
         document.getElementById('avatar-initial').innerText = userName.charAt(0).toUpperCase();
+
+        // ============================================================
+        // KONFIGURASYON
+        // ============================================================
+        const API_BASE = window.location.origin;
 
         const networkAddresses = {
             'TRC20': 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs',
@@ -182,96 +919,546 @@
             'TON': 'UQBGo3k-EhMubMv4h3RqHszdcJdqoxttvZnuwDvPHbk8jl6P'
         };
 
-        function updateDepositAddress() {
-            let net = document.getElementById('network-select').value;
-            document.getElementById('deposit-address-display').value = networkAddresses[net];
+        let referralCode = '';
+
+        // ============================================================
+        // OGEYSIIS (TOAST)
+        // ============================================================
+        function showToast(message, type = 'info', duration = 3500) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show ' + type;
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
         }
 
+        // ============================================================
+        // BEDDEL TAB
+        // ============================================================
         function switchTab(tabName) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
-            document.getElementById(`tab-${tabName}`).classList.add('active');
-            
-            const navs = ['home', 'deposit', 'invest', 'history', 'withdraw'];
+            const tab = document.getElementById(`tab-${tabName}`);
+            if (tab) tab.classList.add('active');
+
+            const navs = ['home', 'deposit', 'invest', 'history', 'withdraw', 'referral', 'support', 'notifications'];
             const idx = navs.indexOf(tabName);
-            if(idx !== -1) document.querySelectorAll('.nav-item')[idx].classList.add('active');
+            if (idx !== -1) {
+                const navItems = document.querySelectorAll('.nav-item');
+                if (navItems[idx]) navItems[idx].classList.add('active');
+            }
+
+            if (tabName === 'referral') loadReferralData();
+            if (tabName === 'support') loadTickets();
+            if (tabName === 'notifications') loadNotifications();
         }
 
+        // ============================================================
+        // XAQIIJI ISTIFADE - MARKA UU KU SOO BIRO
+        // ============================================================
+        function verifyUser() {
+            fetch('/api/auth/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    username: userName
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Muuji fariinta soo dhawow
+                        document.getElementById('welcome-msg').innerHTML = `
+                            <i class="fas fa-hand-wave"></i> Soo dhawow ${userName}! 
+                            <span style="font-size:12px;color:var(--text-sub);">
+                                (${new Date().toLocaleDateString('so-SO')})
+                            </span>
+                        `;
+                        console.log('✅ Istifade waa la xaqiijiyay:', userId);
+                        loadAccountData();
+                        loadNotifications();
+                    }
+                })
+                .catch(err => {
+                    console.error('Khalad xaqiijinta:', err);
+                });
+        }
+
+        // ============================================================
+        // KAYDIN (DEPOSIT)
+        // ============================================================
+        function updateDepositAddress() {
+            const net = document.getElementById('network-select').value;
+            document.getElementById('deposit-address-display').value = networkAddresses[net] || networkAddresses['TRC20'];
+        }
+
+        function copyAddress() {
+            const addr = document.getElementById('deposit-address-display').value;
+            navigator.clipboard.writeText(addr).then(() => {
+                showToast('✅ Cinwaankii waa la nuqulay!', 'success');
+            }).catch(() => {
+                showToast('📋 Nuqul gacanta: ' + addr, 'info');
+            });
+        }
+
+        function submitDeposit() {
+            const txid = document.getElementById('txid-input').value.trim();
+            const amount = document.getElementById('deposit-amt').value;
+            const network = document.getElementById('network-select').value;
+
+            if (!txid) return showToast('❌ Fadlan geli TXID-ka', 'error');
+            if (!amount || amount < 10) return showToast('❌ Ugu yar $10 USDT', 'error');
+
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Soo diray...';
+
+            fetch('/api/deposit/request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    username: userName,
+                    network: network,
+                    txid: txid,
+                    amount: parseFloat(amount)
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showToast('✅ ' + data.message, 'success');
+                        document.getElementById('txid-input').value = '';
+                        document.getElementById('deposit-amt').value = '';
+                        loadAccountData();
+                    } else {
+                        showToast('❌ ' + data.message, 'error');
+                    }
+                })
+                .catch(() => showToast('❌ Khalad shabakad', 'error'))
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Soo Dir Xaqiijin';
+                });
+        }
+
+        // ============================================================
+        // MAALGASHI (INVESTMENT)
+        // ============================================================
         function renderInvestmentPlans() {
             const container = document.getElementById('plans-container');
-            container.innerHTML = '';
-            for(let amount = 10; amount <= 100; amount += 10) {
-                container.innerHTML += `
-                    <div class="plan-card">
-                        <h4 style="color:var(--accent-color);">$${amount} USDT</h4>
-                        <div style="font-size:12px; color:var(--success-color); margin: 6px 0;">+20% / 7 Days</div>
-                        <button class="btn" style="padding:6px; font-size:12px;" onclick="investPlan(${amount})">Invest $${amount}</button>
+            const quickContainer = document.getElementById('quick-plans');
+            let html = '';
+            let quickHtml = '';
+
+            const plans = [10, 20, 30, 50, 75, 100, 250, 500, 1000];
+
+            plans.forEach((amount, index) => {
+                const isPopular = amount === 50 || amount === 100;
+                const card = `
+                    <div class="plan-card" style="${isPopular ? 'border-color: var(--accent-color);' : ''}">
+                        ${isPopular ? '<div style="font-size:9px;color:var(--accent-color);font-weight:600;">🔥 CAAN</div>' : ''}
+                        <div class="amount">$${amount}</div>
+                        <div class="return">+20% / 7 Maalmood</div>
+                        <button class="btn-sm" onclick="investPlan(${amount})">
+                            Maalgel $${amount}
+                        </button>
                     </div>
                 `;
-            }
+                html += card;
+                if (index < 4) quickHtml += card;
+            });
+
+            container.innerHTML = html;
+            quickContainer.innerHTML = quickHtml || '<p class="text-muted text-center">Ma jiro qorshe</p>';
         }
 
+        function investPlan(amount) {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = '⏳ Hawl...';
+
+            fetch('/api/invest', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    amount: amount
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showToast('✅ ' + data.message, 'success');
+                        loadAccountData();
+                    } else {
+                        showToast('❌ ' + data.message, 'error');
+                    }
+                })
+                .catch(() => showToast('❌ Khalad shabakad', 'error'))
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.textContent = `Maalgel $${amount}`;
+                });
+        }
+
+        // ============================================================
+        // XISAABIYE (CALCULATOR)
+        // ============================================================
+        function calculateROI() {
+            const amount = parseFloat(document.getElementById('calc-amount').value) || 0;
+            const days = parseInt(document.getElementById('calc-days').value) || 7;
+
+            const dailyRate = 20 / days;
+            const totalReturn = amount * (1 + dailyRate / 100 * days);
+            const profit = totalReturn - amount;
+
+            document.getElementById('calc-invest').textContent = '$' + amount.toFixed(2);
+            document.getElementById('calc-profit').textContent = '$' + profit.toFixed(2);
+            document.getElementById('calc-return').textContent = '$' + totalReturn.toFixed(2);
+        }
+
+        // ============================================================
+        // BIXITAAN (WITHDRAW)
+        // ============================================================
+        function submitWithdraw() {
+            const address = document.getElementById('withdraw-address').value.trim();
+            const amount = document.getElementById('withdraw-amount').value;
+            const network = document.getElementById('withdraw-network').value;
+
+            if (!address) return showToast('❌ Fadlan geli cinwaanka', 'error');
+            if (!amount || amount < 10) return showToast('❌ Ugu yar $10 USDT', 'error');
+
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Hawl...';
+
+            fetch('/api/withdraw/request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    address: address,
+                    amount: parseFloat(amount),
+                    network: network
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showToast('✅ ' + data.message, 'success');
+                        document.getElementById('withdraw-address').value = '';
+                        document.getElementById('withdraw-amount').value = '';
+                        loadAccountData();
+                    } else {
+                        showToast('❌ ' + data.message, 'error');
+                    }
+                })
+                .catch(() => showToast('❌ Khalad shabakad', 'error'))
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Soo Dir Codsiga';
+                });
+        }
+
+        // ============================================================
+        // TAF (REFERRAL)
+        // ============================================================
+        function loadReferralData() {
+            fetch(`/api/referral/stats?user_id=${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const stats = data.tirakoob || { wadarta: 0, dhammaystiray: 0, sugaya: 0, wadarta_guno: 0 };
+
+                    document.getElementById('referral-stats').innerHTML = `
+                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center;">
+                            <div>
+                                <div style="font-size:24px;font-weight:700;color:var(--accent-color);">${stats.wadarta || 0}</div>
+                                <div style="font-size:11px;color:var(--text-sub);">Wadarta Taf</div>
+                            </div>
+                            <div>
+                                <div style="font-size:24px;font-weight:700;color:var(--success-color);">${stats.dhammaystiray || 0}</div>
+                                <div style="font-size:11px;color:var(--text-sub);">Dhammaystiray</div>
+                            </div>
+                            <div>
+                                <div style="font-size:24px;font-weight:700;color:var(--warning-color);">$${(stats.wadarta_guno || 0).toFixed(2)}</div>
+                                <div style="font-size:11px;color:var(--text-sub);">Kasbaday</div>
+                            </div>
+                        </div>
+                        <div style="margin-top:10px;max-height:150px;overflow-y:auto;">
+                            ${data.taf && data.taf.length > 0 ?
+                                data.taf.map(r => `
+                                    <div class="ledger-row" style="padding:8px 0;">
+                                        <span>@${r.magaca_taf || 'Istifade'}</span>
+                                        <span style="color:var(--success-color);">+$${r.bonus.toFixed(2)}</span>
+                                    </div>
+                                `).join('') :
+                                '<p class="text-muted text-center">Wali ma jiro taf</p>'
+                            }
+                        </div>
+                    `;
+                })
+                .catch(() => {});
+        }
+
+        function copyReferral() {
+            const link = `${window.location.origin}?ref=${userId}`;
+            navigator.clipboard.writeText(link).then(() => {
+                showToast('✅ Xiriirka tafka waa la nuqulay!', 'success');
+            }).catch(() => {
+                showToast('📋 Nuqul: ' + link, 'info');
+            });
+        }
+
+        // ============================================================
+        // TAAKO (SUPPORT)
+        // ============================================================
+        function createTicket() {
+            const subject = document.getElementById('ticket-subject').value.trim();
+            const message = document.getElementById('ticket-message').value.trim();
+
+            if (!subject) return showToast('❌ Fadlan geli mawduuc', 'error');
+            if (!message) return showToast('❌ Fadlan geli fariin', 'error');
+
+            const btn = event.target;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> Soo diray...';
+
+            fetch('/api/support/create', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    subject: subject,
+                    message: message
+                })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showToast('✅ Tikidhka waa la abuuray!', 'success');
+                        document.getElementById('ticket-subject').value = '';
+                        document.getElementById('ticket-message').value = '';
+                        loadTickets();
+                    } else {
+                        showToast('❌ ' + data.message, 'error');
+                    }
+                })
+                .catch(() => showToast('❌ Khalad shabakad', 'error'))
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Soo Dir Tikidh';
+                });
+        }
+
+        function loadTickets() {
+            fetch(`/api/support/tickets?user_id=${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const list = document.getElementById('ticket-list');
+                    const tickets = data.tikidhyo || [];
+
+                    if (tickets.length === 0) {
+                        list.innerHTML = '<p class="text-muted text-center">Ma jiro tikidh</p>';
+                        return;
+                    }
+
+                    list.innerHTML = tickets.map(t => `
+                        <div class="support-ticket">
+                            <div style="display:flex;justify-content:space-between;align-items:center;">
+                                <strong>${t.subject}</strong>
+                                <span class="ticket-status ${t.status === 'FURAN' ? 'status-open' : 'status-closed'}">
+                                    ${t.status === 'FURAN' ? 'FURAN' : 'XIRAN'}
+                                </span>
+                            </div>
+                            <div style="font-size:13px;color:var(--text-sub);margin:4px 0;">${t.message.substring(0, 60)}...</div>
+                            <div style="font-size:11px;color:var(--text-sub);">${t.created_at}</div>
+                        </div>
+                    `).join('');
+                })
+                .catch(() => {});
+        }
+
+        // ============================================================
+        // OGEYSIIS (NOTIFICATIONS)
+        // ============================================================
+        function loadNotifications() {
+            fetch(`/api/user/${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const list = document.getElementById('notification-list');
+                    const notifs = data.ogeysiis || [];
+
+                    if (notifs.length === 0) {
+                        list.innerHTML = '<p class="text-muted text-center">Ma jiro ogeysiis</p>';
+                        return;
+                    }
+
+                    list.innerHTML = notifs.map(n => `
+                        <div class="ledger-row" style="${n.is_read ? 'opacity:0.6;' : ''}">
+                            <div>
+                                <div style="font-weight:600;">${n.title}</div>
+                                <div style="font-size:12px;color:var(--text-sub);">${n.message}</div>
+                                <div style="font-size:10px;color:var(--text-sub);">${n.created_at}</div>
+                            </div>
+                            ${!n.is_read ? '<span style="color:var(--accent-color);font-size:10px;">● Cusub</span>' : ''}
+                        </div>
+                    `).join('');
+
+                    const hasUnread = notifs.some(n => !n.is_read);
+                    document.getElementById('notif-dot').style.display = hasUnread ? 'block' : 'none';
+                })
+                .catch(() => {});
+        }
+
+        function markAllRead() {
+            fetch('/api/notifications/mark-read', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: userId })
+            })
+                .then(() => {
+                    showToast('✅ Ogeysiisyadii waa la akhriyay', 'success');
+                    loadNotifications();
+                    document.getElementById('notif-dot').style.display = 'none';
+                })
+                .catch(() => {});
+        }
+
+        // ============================================================
+        // SOO CELI XOGTA ISTIFADE
+        // ============================================================
         function loadAccountData() {
             fetch(`/api/user/${userId}`)
                 .then(res => res.json())
                 .then(data => {
-                    document.getElementById('balance').innerText = `$${data.balance.toFixed(2)} USDT`;
-                    document.getElementById('active-deposit').innerText = `$${data.active_deposit.toFixed(2)} USDT`;
+                    const user = data.user || {};
+                    document.getElementById('balance').innerText = (user.balance || 0).toFixed(2);
+                    document.getElementById('active-deposit').innerText = '$' + (user.active_deposit || 0).toFixed(2);
+                    document.getElementById('referral-count').innerText = data.taf?.wadarta || 0;
+                    document.getElementById('bonus-earnings').innerText = '$' + (data.taf?.dakhli || 0).toFixed(2);
 
-                    let historyHTML = '';
-                    if(data.history.length === 0) {
-                        historyHTML = '<p style="font-size:12px; color:var(--text-sub);">No transactions recorded yet.</p>';
+                    referralCode = user.referral_code || '------';
+                    document.getElementById('referral-code').textContent = referralCode;
+
+                    // Taariikhda
+                    const historyList = document.getElementById('history-list');
+                    const historyCount = document.getElementById('history-count');
+                    const transactions = data.macaamilo || [];
+
+                    if (transactions.length === 0) {
+                        historyList.innerHTML = `
+                            <div style="text-align:center;padding:20px;color:var(--text-sub);">
+                                <i class="fas fa-inbox" style="font-size:32px;display:block;margin-bottom:8px;"></i>
+                                Ma jiro macaamil
+                            </div>
+                        `;
+                        historyCount.textContent = '0';
                     } else {
-                        data.history.forEach(tx => {
-                            historyHTML += `
+                        let html = '';
+                        transactions.slice(0, 20).forEach(tx => {
+                            const isDeposit = tx.type === 'KAYDIN';
+                            const isWithdraw = tx.type === 'BIXITAAN';
+                            const isInvestment = tx.type === 'MAALGASHI';
+
+                            let statusClass = '';
+                            let statusText = '';
+                            if (tx.status === 'DHAMMAYSTIRAY') {
+                                statusClass = 'status-success';
+                                statusText = 'DHAMMAYSTIRAY';
+                            } else if (tx.status === 'FIRFIRCOON') {
+                                statusClass = 'status-active';
+                                statusText = 'FIRFIRCOON';
+                            } else if (tx.status === 'SUGAYA') {
+                                statusClass = 'status-pending';
+                                statusText = 'SUGAYA';
+                            }
+
+                            const amountColor = isDeposit ? 'var(--success-color)' :
+                                isWithdraw ? 'var(--danger-color)' :
+                                'var(--accent-color)';
+
+                            const icon = isDeposit ? 'fa-arrow-down' :
+                                isWithdraw ? 'fa-arrow-up' :
+                                'fa-chart-line';
+
+                            const label = isDeposit ? 'Kaydin' :
+                                isWithdraw ? 'Bixitaan' :
+                                'Maalgashi';
+
+                            html += `
                                 <div class="ledger-row">
-                                    <div><strong>${tx.type}</strong><br><small style="color:var(--text-sub);">${tx.date}</small></div>
-                                    <div style="text-align:right;"><strong>${tx.amount}</strong><br><span style="color:var(--success-color); font-size:11px;">${tx.status}</span></div>
+                                    <div class="ledger-info">
+                                        <div class="ledger-type">
+                                            <i class="fas ${icon}" style="color:${amountColor};margin-right:6px;"></i>
+                                            ${label}
+                                        </div>
+                                        <div class="ledger-date">${tx.date || 'Hada'}</div>
+                                        ${tx.txid ? `<div style="font-size:9px;color:var(--text-sub);">${tx.txid.substring(0,12)}...</div>` : ''}
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <div class="ledger-amount" style="color:${amountColor};">$${Math.abs(tx.amount).toFixed(2)}</div>
+                                        <span class="ledger-status ${statusClass}">${statusText}</span>
+                                    </div>
                                 </div>
                             `;
                         });
+                        historyList.innerHTML = html;
+                        historyCount.textContent = transactions.length;
                     }
-                    document.getElementById('history-list').innerHTML = historyHTML;
+
+                    // Maalgashiga Firfircoon
+                    const invList = document.getElementById('investment-list');
+                    const investments = data.maalgashi || [];
+
+                    if (investments.length === 0) {
+                        invList.innerHTML = '<p class="text-muted text-center">Ma jiro maalgashi firfircoon</p>';
+                    } else {
+                        invList.innerHTML = investments.map(inv => `
+                            <div class="ledger-row">
+                                <div>
+                                    <div style="font-weight:600;">$${inv.amount.toFixed(2)} USDT</div>
+                                    <div style="font-size:11px;color:var(--text-sub);">
+                                        Soo Celin: $${inv.expected_return.toFixed(2)}
+                                    </div>
+                                </div>
+                                <div style="text-align:right;">
+                                    <div style="color:var(--success-color);font-size:13px;">+20%</div>
+                                    <div style="font-size:10px;color:var(--text-sub);">
+                                        ${inv.maturity_date ? 'Dhamaad: ' + inv.maturity_date.substring(0,10) : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                })
+                .catch(err => {
+                    console.error('Khalad soo celinta xogta:', err);
                 });
         }
 
-        function submitDeposit() {
-            let txid = document.getElementById('txid-input').value.trim();
-            let amount = document.getElementById('deposit-amt').value;
-            let network = document.getElementById('network-select').value;
-
-            if(!txid || !amount) return alert('Please enter both TXID and Amount!');
-
-            fetch('/api/deposit/request', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ user_id: userId, username: userName, network: network, txid: txid, amount: amount })
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert(data.message);
-                document.getElementById('txid-input').value = '';
-                document.getElementById('deposit-amt').value = '';
-            });
-        }
-
-        function investPlan(amt) {
-            fetch('/api/invest', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ user_id: userId, amount: amt })
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert(data.message);
-                loadAccountData();
-            });
-        }
-
+        // ============================================================
+        // BILOW
+        // ============================================================
         renderInvestmentPlans();
-        loadAccountData();
-        setInterval(loadAccountData, 5000); // Live balance polling every 5 seconds
+        verifyUser();
+
+        // Cusbooneysii toos ah 15 ilbiriqsi kasta
+        setInterval(() => {
+            loadAccountData();
+        }, 15000);
+
+        updateDepositAddress();
+        calculateROI();
+
+        console.log('🚀 USDTPilot Pro waa bilowday');
+        console.log('👤 Istifade:', userName, 'ID:', userId);
+        console.log('📱 App waa diyaar! Dhammaan functions way shaqeeyaan.');
     </script>
+
 </body>
-</html>
+    </html>
