@@ -3,21 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Mini App</title>
+    <title>USDTPilot Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #151c2c;
+            --accent-color: #00e676;
+            --text-color: #ffffff;
+            --text-sub: #8e9aaf;
+        }
+
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px 20px;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0; padding: 15px;
         }
-        h1 { color: #0088cc; }
+
+        .balance-box {
+            background: linear-gradient(135deg, #1f293d, #111827);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid #2d3748;
+            margin-bottom: 20px;
+        }
+
+        .balance-amount {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: space-around;
+            background: var(--card-bg);
+            padding: 10px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            font-weight: bold;
+            cursor: pointer;
+            padding: 8px 12px;
+        }
+
+        .tab-btn.active {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--accent-color);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border: 1px solid #2d3748;
+        }
+
+        input {
+            width: 90%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #2d3748;
+            background: #0b0f19;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        button.btn-main {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent-color);
+            border: none;
+            border-radius: 8px;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <h1>Kusoo dhawaow Mini App-kaaga!</h1>
-    <p>Mashruucani si guul leh ayuu uga shaqaynayaa Cloud-ka.</p>
+
+    <!-- Header -->
+    <div class="balance-box">
+        <div style="color: var(--text-sub);">Total Balance</div>
+        <div class="balance-amount" id="user-balance">0.00 USDT</div>
+        <div style="font-size: 12px; color: var(--text-sub); margin-top: 5px;">
+            Invested: <span id="user-invested">0.00</span> USDT
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('home')">Home</button>
+        <button class="tab-btn" onclick="switchTab('deposit')">Deposit</button>
+        <button class="tab-btn" onclick="switchTab('plans')">Plans</button>
+    </div>
+
+    <!-- TAB 1: HOME -->
+    <div id="home" class="tab-content active">
+        <div class="card">
+            <h3>🚀 Welcome to USDTPilot</h3>
+            <p style="color: var(--text-sub); font-size: 14px;">
+                Ku soo dhawaaw USDTPilot Platform. Halkan ka samee deposit, dooro investment plan, oo faa'iido maalinle ah hel!
+            </p>
+        </div>
+    </div>
+
+    <!-- TAB 2: DEPOSIT (AUTOMATIC TXID) -->
+    <div id="deposit" class="tab-content">
+        <div class="card">
+            <h3>📥 Automatic USDT Deposit</h3>
+            <p style="font-size: 12px; color: var(--text-sub);">U dir USDT (TRC20) wallet-kan:</p>
+            <p style="background: #0b0f19; padding: 8px; border-radius: 5px; font-size: 11px; word-break: break-all; color: var(--accent-color);">
+                TYourActualTrc20WalletAddressHere123
+            </p>
+            <hr style="border-color: #2d3748;">
+            <label style="font-size: 12px;">Gali Transaction TXID-ga:</label><br><br>
+            <input type="text" id="txid-input" placeholder="Paste TXID Hash here...">
+            <button class="btn-main" onclick="submitDeposit()">Verify TXID</button>
+        </div>
+    </div>
+
+    <!-- TAB 3: INVESTMENT PLANS -->
+    <div id="plans" class="tab-content">
+        <div class="card">
+            <h4>Plan A: Starter Plan</h4>
+            <p style="color: var(--text-sub); font-size: 13px;">Investment: $10 USDT | Daily Profit: 5%</p>
+            <button class="btn-main" onclick="buyPlan(10)">Invest $10</button>
+        </div>
+        <div class="card">
+            <h4>Plan B: VIP Plan</h4>
+            <p style="color: var(--text-sub); font-size: 13px;">Investment: $50 USDT | Daily Profit: 10%</p>
+            <button class="btn-main" onclick="buyPlan(50)">Invest $50</button>
+        </div>
+    </div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+        const userId = tg.initDataUnsafe?.user?.id || 123456; // Default ID if test
+
+        // Load User Data
+        async function loadUser() {
+            let res = await fetch(`/api/user/${userId}`);
+            let data = await res.json();
+            document.getElementById('user-balance').innerText = data.balance.toFixed(2) + " USDT";
+            document.getElementById('user-invested').innerText = data.invested_amount.toFixed(2);
+        }
+
+        // Switch Tabs
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Submit TXID
+        async function submitDeposit() {
+            let txid = document.getElementById('txid-input').value;
+            if(!txid) return tg.showAlert("Fadlan so geli TXID!");
+
+            tg.MainButton.showProgress();
+            let res = await fetch('/api/deposit', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ user_id: userId, txid: txid })
+            });
+            let result = await res.json();
+            tg.MainButton.hideProgress();
+
+            tg.showAlert(result.message);
+            if(result.status === 'success') {
+                document.getElementById('txid-input').value = '';
+                loadUser();
+            }
+        }
+
+        // Buy Investment Plan
+        async function buyPlan(amount) {
+            let res = await fetch('/api/invest', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ user_id: userId, amount: amount })
+            });
+            let result = await res.json();
+            tg.showAlert(result.message);
+            if(result.status === 'success') loadUser();
+        }
+
+        loadUser();
+    </script>
 </body>
 </html>
