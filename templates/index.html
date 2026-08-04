@@ -15,6 +15,7 @@
             --accent-gradient: linear-gradient(135deg, #0088cc 0%, #005588 100%);
             --success-color: #10b981;
             --danger-color: #ef4444;
+            --warning-color: #f59e0b;
             --text-main: #f3f4f6;
             --text-sub: #9ca3af;
         }
@@ -64,10 +65,27 @@
         .plan-card .profit { font-size: 12px; color: var(--success-color); font-weight: 600; margin-bottom: 4px; }
         .plan-card .hourly { font-size: 10px; color: var(--text-sub); margin-bottom: 12px; }
 
+        /* History Items Style */
+        .tx-list { display: flex; flex-direction: column; gap: 10px; }
+        .tx-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); }
+        .tx-left { display: flex; align-items: center; gap: 12px; }
+        .tx-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .tx-icon.deposit { background: rgba(16, 185, 129, 0.15); color: var(--success-color); }
+        .tx-icon.investment { background: rgba(0, 136, 204, 0.15); color: var(--accent-color); }
+        .tx-icon.withdrawal { background: rgba(239, 68, 68, 0.15); color: var(--danger-color); }
+        .tx-title { font-size: 13px; font-weight: 600; }
+        .tx-date { font-size: 10px; color: var(--text-sub); }
+        .tx-right { text-align: right; }
+        .tx-amount { font-size: 14px; font-weight: 700; }
+        .tx-status { font-size: 9px; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; font-weight: 600; display: inline-block; margin-top: 2px; }
+        .status-completed { background: rgba(16, 185, 129, 0.2); color: var(--success-color); }
+        .status-pending { background: rgba(245, 158, 11, 0.2); color: var(--warning-color); }
+        .status-rejected { background: rgba(239, 68, 68, 0.2); color: var(--danger-color); }
+
         /* Bottom Nav */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: rgba(21, 26, 35, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 1000; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-sub); font-size: 11px; cursor: pointer; border: none; background: none; flex: 1; gap: 4px; }
-        .nav-item i { font-size: 18px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-sub); font-size: 10px; cursor: pointer; border: none; background: none; flex: 1; gap: 4px; }
+        .nav-item i { font-size: 17px; }
         .nav-item.active { color: var(--accent-color); font-weight: 600; }
 
         /* Toast Popup Notification */
@@ -110,7 +128,7 @@
             </div>
         </div>
 
-        <!-- TAB 1: HOME (PROFESSIONAL OVERVIEW) -->
+        <!-- TAB 1: HOME -->
         <div id="tab-home" class="tab-content active">
             <div class="quick-actions">
                 <div class="action-btn" onclick="switchTab('deposit')">
@@ -136,7 +154,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: INVEST (ONLY 10$ TO 100$) -->
+        <!-- TAB 2: INVEST -->
         <div id="tab-invest" class="tab-content">
             <div class="card">
                 <div class="card-title"><i class="fas fa-chart-line" style="color:var(--accent-color);"></i> Investment Plans (10$ - 100$)</div>
@@ -188,6 +206,18 @@
                 <button class="btn btn-success" onclick="submitWithdraw()">Submit Withdrawal</button>
             </div>
         </div>
+
+        <!-- TAB 5: HISTORY (NEWLY ADDED) -->
+        <div id="tab-history" class="tab-content">
+            <div class="card">
+                <div class="card-title"><i class="fas fa-history" style="color:var(--warning-color);"></i> Transaction History</div>
+                <p style="font-size:11px;color:var(--text-sub);margin-bottom:14px;">Your recent deposits, investments, and withdrawals:</p>
+                <div class="tx-list" id="tx-container">
+                    <p style="text-align:center;font-size:12px;color:var(--text-sub);padding:20px;">Loading history...</p>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Bottom Navigation Bar -->
@@ -196,6 +226,7 @@
         <button class="nav-item" onclick="switchTab('invest')"><i class="fas fa-chart-pie"></i><span>Invest</span></button>
         <button class="nav-item" onclick="switchTab('deposit')"><i class="fas fa-wallet"></i><span>Deposit</span></button>
         <button class="nav-item" onclick="switchTab('withdraw')"><i class="fas fa-paper-plane"></i><span>Withdraw</span></button>
+        <button class="nav-item" onclick="switchTab('history')"><i class="fas fa-history"></i><span>History</span></button>
     </div>
 
     <script>
@@ -222,12 +253,10 @@
             
             document.getElementById(`tab-${tab}`).classList.add('active');
             
-            // Highlight current tab button
-            const navIndex = {'home': 0, 'invest': 1, 'deposit': 2, 'withdraw': 3};
+            const navIndex = {'home': 0, 'invest': 1, 'deposit': 2, 'withdraw': 3, 'history': 4};
             document.querySelectorAll('.nav-item')[navIndex[tab]].classList.add('active');
         }
 
-        // STRICTLY ONLY 10$ TO 100$ INVESTMENT PLANS
         function renderPlans() {
             const container = document.getElementById('plans-container');
             const plans = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -298,6 +327,7 @@
             });
         }
 
+        // LOAD USER BALANCE AND TRANSACTION HISTORY
         function loadUser() {
             fetch(`/api/user/${userId}`)
             .then(res => res.json())
@@ -305,6 +335,56 @@
                 if (data.user) {
                     document.getElementById('balance').innerText = data.user.balance.toFixed(2);
                     document.getElementById('active-deposit').innerText = data.user.active_deposit.toFixed(2);
+                }
+
+                // Render Transaction History
+                if (data.macaamilo && data.macaamilo.length > 0) {
+                    let txHtml = '';
+                    data.macaamilo.forEach(tx => {
+                        let iconClass = 'deposit';
+                        let iconName = 'fa-arrow-down';
+                        let prefix = '+';
+                        let amountColor = 'var(--success-color)';
+
+                        if (tx.type === 'INVESTMENT') {
+                            iconClass = 'investment';
+                            iconName = 'fa-chart-pie';
+                            prefix = '';
+                            amountColor = '#fff';
+                        } else if (tx.type === 'WITHDRAWAL') {
+                            iconClass = 'withdrawal';
+                            iconName = 'fa-arrow-up';
+                            prefix = '-';
+                            amountColor = 'var(--danger-color)';
+                        }
+
+                        let statusClass = 'status-pending';
+                        if (tx.status === 'COMPLETED') statusClass = 'status-completed';
+                        if (tx.status === 'REJECTED') statusClass = 'status-rejected';
+
+                        const formattedDate = tx.date ? tx.date.split('.')[0] : 'Just now';
+
+                        txHtml += `
+                            <div class="tx-item">
+                                <div class="tx-left">
+                                    <div class="tx-icon ${iconClass}">
+                                        <i class="fas ${iconName}"></i>
+                                    </div>
+                                    <div>
+                                        <div class="tx-title">${tx.type}</div>
+                                        <div class="tx-date">${formattedDate}</div>
+                                    </div>
+                                </div>
+                                <div class="tx-right">
+                                    <div class="tx-amount" style="color:${amountColor};">${prefix}$${Math.abs(tx.amount).toFixed(2)}</div>
+                                    <span class="tx-status ${statusClass}">${tx.status}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    document.getElementById('tx-container').innerHTML = txHtml;
+                } else {
+                    document.getElementById('tx-container').innerHTML = '<p style="text-align:center;font-size:12px;color:var(--text-sub);padding:20px;">No transaction history found.</p>';
                 }
             });
         }
