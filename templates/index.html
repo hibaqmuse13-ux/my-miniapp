@@ -6,204 +6,124 @@
     <title>USDTPilot Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root {
-            --bg-color: #0b0f19;
-            --card-bg: #151c2c;
-            --accent-color: #00e676;
-            --text-color: #ffffff;
-            --text-sub: #8e9aaf;
-        }
-
         body {
-            font-family: Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            margin: 0; padding: 15px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #12151c;
+            color: #ffffff;
+            margin: 0;
+            padding: 16px;
         }
-
-        .balance-box {
-            background: linear-gradient(135deg, #1f293d, #111827);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-            border: 1px solid #2d3748;
-            margin-bottom: 20px;
-        }
-
-        .balance-amount {
-            font-size: 32px;
-            font-weight: bold;
-            color: var(--accent-color);
-        }
-
-        .nav-tabs {
-            display: flex;
-            justify-content: space-around;
-            background: var(--card-bg);
-            padding: 10px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-        }
-
-        .tab-btn {
-            background: none;
-            border: none;
-            color: var(--text-sub);
-            font-weight: bold;
-            cursor: pointer;
-            padding: 8px 12px;
-        }
-
-        .tab-btn.active {
-            color: var(--accent-color);
-            border-bottom: 2px solid var(--accent-color);
-        }
-
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-
         .card {
-            background: var(--card-bg);
-            padding: 15px;
+            background: #1e232d;
             border-radius: 12px;
-            margin-bottom: 12px;
-            border: 1px solid #2d3748;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
-
-        input {
-            width: 90%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #2d3748;
-            background: #0b0f19;
+        .balance-title { color: #8a94a6; font-size: 14px; }
+        .balance-val { font-size: 28px; font-weight: bold; color: #28a745; margin-top: 4px; }
+        .btn {
+            background: #0088cc;
             color: white;
-            margin-bottom: 10px;
-        }
-
-        button.btn-main {
+            border: none;
             width: 100%;
             padding: 12px;
-            background: var(--accent-color);
-            border: none;
             border-radius: 8px;
-            color: black;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            margin-top: 10px;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin-top: 8px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background: #12151c;
+            color: white;
+        }
+        .plan-card {
+            border: 1px solid #28a745;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
-    <div class="balance-box">
-        <div style="color: var(--text-sub);">Total Balance</div>
-        <div class="balance-amount" id="user-balance">0.00 USDT</div>
-        <div style="font-size: 12px; color: var(--text-sub); margin-top: 5px;">
-            Invested: <span id="user-invested">0.00</span> USDT
-        </div>
+    <div class="card">
+        <div class="balance-title">Main Balance</div>
+        <div class="balance-val" id="balance">$0.00 USDT</div>
+        <div class="balance-title" style="margin-top: 8px;">Active Investments</div>
+        <div id="active-deposit" style="font-size: 18px; font-weight: bold;">$0.00 USDT</div>
     </div>
 
-    <!-- Navigation -->
-    <div class="nav-tabs">
-        <button class="tab-btn active" onclick="switchTab('home')">Home</button>
-        <button class="tab-btn" onclick="switchTab('deposit')">Deposit</button>
-        <button class="tab-btn" onclick="switchTab('plans')">Plans</button>
+    <div class="card">
+        <h3>💳 Automated TRC20 Deposit</h3>
+        <p style="font-size: 12px; color: #aaa;">Deposit Address:</p>
+        <code style="color: #28a745; font-size: 11px;">TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs</code>
+        <br><br>
+        <input type="text" id="txid" placeholder="Enter Transaction Hash (TXID)">
+        <button class="btn" onclick="verifyDeposit()">Verify TXID</button>
     </div>
 
-    <!-- TAB 1: HOME -->
-    <div id="home" class="tab-content active">
-        <div class="card">
-            <h3>🚀 Welcome to USDTPilot</h3>
-            <p style="color: var(--text-sub); font-size: 14px;">
-                Ku soo dhawaaw USDTPilot Platform. Halkan ka samee deposit, dooro investment plan, oo faa'iido maalinle ah hel!
-            </p>
-        </div>
-    </div>
-
-    <!-- TAB 2: DEPOSIT (AUTOMATIC TXID) -->
-    <div id="deposit" class="tab-content">
-        <div class="card">
-            <h3>📥 Automatic USDT Deposit</h3>
-            <p style="font-size: 12px; color: var(--text-sub);">U dir USDT (TRC20) wallet-kan:</p>
-            <p style="background: #0b0f19; padding: 8px; border-radius: 5px; font-size: 11px; word-break: break-all; color: var(--accent-color);">
-                TYourActualTrc20WalletAddressHere123
-            </p>
-            <hr style="border-color: #2d3748;">
-            <label style="font-size: 12px;">Gali Transaction TXID-ga:</label><br><br>
-            <input type="text" id="txid-input" placeholder="Paste TXID Hash here...">
-            <button class="btn-main" onclick="submitDeposit()">Verify TXID</button>
-        </div>
-    </div>
-
-    <!-- TAB 3: INVESTMENT PLANS -->
-    <div id="plans" class="tab-content">
-        <div class="card">
-            <h4>Plan A: Starter Plan</h4>
-            <p style="color: var(--text-sub); font-size: 13px;">Investment: $10 USDT | Daily Profit: 5%</p>
-            <button class="btn-main" onclick="buyPlan(10)">Invest $10</button>
-        </div>
-        <div class="card">
-            <h4>Plan B: VIP Plan</h4>
-            <p style="color: var(--text-sub); font-size: 13px;">Investment: $50 USDT | Daily Profit: 10%</p>
-            <button class="btn-main" onclick="buyPlan(50)">Invest $50</button>
+    <div class="card">
+        <h3>💎 7-Day Investment Plan</h3>
+        <div class="plan-card">
+            <h4>Starter Plan (20% Profit / 7 Days)</h4>
+            <p>Payouts: Hourly</p>
+            <button class="btn" onclick="invest(10)">Invest $10 USDT</button>
+            <button class="btn" style="background: #28a745;" onclick="invest(50)">Invest $50 USDT</button>
         </div>
     </div>
 
     <script>
-        const tg = window.Telegram.WebApp;
+        let tg = window.Telegram.WebApp;
         tg.expand();
-        const userId = tg.initDataUnsafe?.user?.id || 123456; // Default ID if test
 
-        // Load User Data
-        async function loadUser() {
-            let res = await fetch(`/api/user/${userId}`);
-            let data = await res.json();
-            document.getElementById('user-balance').innerText = data.balance.toFixed(2) + " USDT";
-            document.getElementById('user-invested').innerText = data.invested_amount.toFixed(2);
+        let userId = tg.initDataUnsafe?.user?.id || 7076265514; // Default fallback
+
+        function loadUserData() {
+            fetch(`/api/user/${userId}`)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('balance').innerText = `$${data.balance.toFixed(2)} USDT`;
+                    document.getElementById('active-deposit').innerText = `$${data.active_deposit.toFixed(2)} USDT`;
+                });
         }
 
-        // Switch Tabs
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
-        }
+        function verifyDeposit() {
+            let txid = document.getElementById('txid').value;
+            if(!txid) return alert('Please enter TXID!');
 
-        // Submit TXID
-        async function submitDeposit() {
-            let txid = document.getElementById('txid-input').value;
-            if(!txid) return tg.showAlert("Fadlan so geli TXID!");
-
-            tg.MainButton.showProgress();
-            let res = await fetch('/api/deposit', {
+            fetch('/api/deposit/verify', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ user_id: userId, txid: txid })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                loadUserData();
             });
-            let result = await res.json();
-            tg.MainButton.hideProgress();
-
-            tg.showAlert(result.message);
-            if(result.status === 'success') {
-                document.getElementById('txid-input').value = '';
-                loadUser();
-            }
         }
 
-        // Buy Investment Plan
-        async function buyPlan(amount) {
-            let res = await fetch('/api/invest', {
+        function invest(amount) {
+            fetch('/api/invest', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({ user_id: userId, amount: amount })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                loadUserData();
             });
-            let result = await res.json();
-            tg.showAlert(result.message);
-            if(result.status === 'success') loadUser();
         }
 
-        loadUser();
+        loadUserData();
     </script>
 </body>
 </html>
