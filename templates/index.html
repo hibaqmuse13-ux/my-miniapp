@@ -1,402 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>USDTPilot Pro</title>
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-color: #0b0e14;
-            --card-bg: #151a23;
-            --card-border: rgba(255, 255, 255, 0.08);
-            --accent-color: #0088cc;
-            --accent-gradient: linear-gradient(135deg, #0088cc 0%, #005588 100%);
-            --success-color: #10b981;
-            --danger-color: #ef4444;
-            --warning-color: #f59e0b;
-            --text-main: #f3f4f6;
-            --text-sub: #9ca3af;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USDTPilot Exchange</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-color); color: var(--text-main); padding-bottom: 80px; }
-        .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-        /* Header */
-        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding: 12px 16px; background: var(--card-bg); border-radius: 14px; border: 1px solid var(--card-border); }
-        .user-info { display: flex; align-items: center; gap: 10px; }
-        .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 16px; }
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-        /* Hero Balance Card */
-        .hero-card { background: linear-gradient(135deg, #1e2638 0%, #0f172a 100%); border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; padding: 22px; margin-bottom: 18px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .hero-title { font-size: 12px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; }
-        .main-balance { font-size: 38px; font-weight: 800; color: #fff; margin: 6px 0; }
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.08); }
-        .stat-box { text-align: center; }
-        .stat-val { font-size: 14px; font-weight: 700; color: var(--success-color); }
-        .stat-lbl { font-size: 10px; color: var(--text-sub); }
+<link rel="stylesheet" href="css/style.css">
 
-        /* Quick Action Buttons */
-        .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .action-btn { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; }
-        .action-btn i { font-size: 16px; color: var(--accent-color); }
-        .action-btn:active { transform: scale(0.97); }
-
-        /* General UI Elements */
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 18px; margin-bottom: 16px; }
-        .card-title { font-size: 15px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--text-main); }
-        
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 11px; color: var(--text-sub); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--card-border); background: #0b0e14; color: #fff; font-size: 14px; outline: none; }
-        input:focus { border-color: var(--accent-color); }
-
-        .btn { width: 100%; padding: 13px; border-radius: 10px; border: none; background: var(--accent-gradient); color: #fff; font-weight: 600; cursor: pointer; font-size: 14px; box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3); }
-        .btn-success { background: linear-gradient(135deg, #10b981 0%, #047857 100%); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
-
-        /* Investment Grid (10 - 100 USDT) */
-        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .plan-card { border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; text-align: center; background: rgba(255, 255, 255, 0.02); position: relative; overflow: hidden; }
-        .plan-card .amount { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 2px; }
-        .plan-card .profit { font-size: 12px; color: var(--success-color); font-weight: 600; margin-bottom: 4px; }
-        .plan-card .hourly { font-size: 10px; color: var(--text-sub); margin-bottom: 12px; }
-
-        /* History Items Style */
-        .tx-list { display: flex; flex-direction: column; gap: 10px; }
-        .tx-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); }
-        .tx-left { display: flex; align-items: center; gap: 12px; }
-        .tx-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-        .tx-icon.deposit { background: rgba(16, 185, 129, 0.15); color: var(--success-color); }
-        .tx-icon.investment { background: rgba(0, 136, 204, 0.15); color: var(--accent-color); }
-        .tx-icon.withdrawal { background: rgba(239, 68, 68, 0.15); color: var(--danger-color); }
-        .tx-title { font-size: 13px; font-weight: 600; }
-        .tx-date { font-size: 10px; color: var(--text-sub); }
-        .tx-right { text-align: right; }
-        .tx-amount { font-size: 14px; font-weight: 700; }
-        .tx-status { font-size: 9px; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; font-weight: 600; display: inline-block; margin-top: 2px; }
-        .status-completed { background: rgba(16, 185, 129, 0.2); color: var(--success-color); }
-        .status-pending { background: rgba(245, 158, 11, 0.2); color: var(--warning-color); }
-        .status-rejected { background: rgba(239, 68, 68, 0.2); color: var(--danger-color); }
-
-        /* Bottom Nav */
-        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: rgba(21, 26, 35, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 1000; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-sub); font-size: 10px; cursor: pointer; border: none; background: none; flex: 1; gap: 4px; }
-        .nav-item i { font-size: 17px; }
-        .nav-item.active { color: var(--accent-color); font-weight: 600; }
-
-        /* Toast Popup Notification */
-        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 14px 20px; border-radius: 12px; font-size: 13px; z-index: 2000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; width: 90%; max-width: 400px; }
-        .toast.show { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, -10px); } to { opacity: 1; transform: translate(-50%, 0); } }
-    </style>
 </head>
+
 <body>
 
-    <div id="toast" class="toast"></div>
+<div class="app">
 
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="user-info">
-                <div class="avatar" id="avatar-letter">U</div>
-                <div>
-                    <strong id="username-display" style="font-size:14px;">User</strong>
-                    <div style="font-size:10px;color:var(--text-sub);" id="userid-display">ID: ---</div>
-                </div>
-            </div>
-            <span style="font-size:10px;background:rgba(16, 185, 129, 0.15);color:var(--success-color);padding:5px 10px;border-radius:20px;border: 1px solid rgba(16, 185, 129, 0.3);"><i class="fas fa-check-circle"></i> Verified</span>
+
+<!-- HEADER -->
+<header>
+    <div class="profile">
+        <div class="avatar">U</div>
+        <div>
+            <h4 id="username">User</h4>
+            <small id="userid">ID:---</small>
         </div>
-
-        <!-- Hero Balance Section -->
-        <div class="hero-card">
-            <div class="hero-title">Available Balance</div>
-            <div class="main-balance">$<span id="balance">0.00</span> <span style="font-size:16px;color:var(--text-sub);font-weight:400;">USDT</span></div>
-            
-            <div class="stats-grid">
-                <div class="stat-box">
-                    <div class="stat-val">$<span id="active-deposit">0.00</span></div>
-                    <div class="stat-lbl">Active Investment</div>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-val" style="color:#3b82f6;">7 Days</div>
-                    <div class="stat-lbl">Duration Term</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- TAB 1: HOME -->
-        <div id="tab-home" class="tab-content active">
-            <div class="quick-actions">
-                <div class="action-btn" onclick="switchTab('deposit')">
-                    <i class="fas fa-arrow-down" style="color:var(--success-color);"></i> Deposit
-                </div>
-                <div class="action-btn" onclick="switchTab('withdraw')">
-                    <i class="fas fa-arrow-up" style="color:var(--danger-color);"></i> Withdraw
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-title"><i class="fas fa-bolt" style="color:#f59e0b;"></i> Quick Investment</div>
-                <p style="font-size:12px;color:var(--text-sub);margin-bottom:14px;line-height:1.4;">
-                    Earn **+20% ROI** in 7 days. Profits are credited **every hour** automatically to your account balance!
-                </p>
-                <button class="btn" onclick="switchTab('invest')"><i class="fas fa-rocket"></i> View Investment Plans</button>
-            </div>
-
-            <div class="card" style="background: linear-gradient(135deg, rgba(0,136,204,0.08) 0%, rgba(0,0,0,0) 100%);">
-                <div class="card-title"><i class="fas fa-headset" style="color:var(--accent-color);"></i> Need Help?</div>
-                <p style="font-size:12px;color:var(--text-sub);margin-bottom:12px;">Contact support if you have questions regarding deposits or payouts.</p>
-                <a href="https://t.me/USDTPilotBot" target="_blank" style="text-decoration:none;"><button class="btn" style="background:#1e293b;border:1px solid var(--card-border);"><i class="fab fa-telegram"></i> Telegram Support</button></a>
-            </div>
-        </div>
-
-        <!-- TAB 2: INVEST -->
-        <div id="tab-invest" class="tab-content">
-            <div class="card">
-                <div class="card-title"><i class="fas fa-chart-line" style="color:var(--accent-color);"></i> Investment Plans (10$ - 100$)</div>
-                <p style="font-size:11px;color:var(--text-sub);margin-bottom:14px;">Choose your plan below to activate instant hourly earning:</p>
-                <div class="plans-grid" id="plans-container"></div>
-            </div>
-        </div>
-
-        <!-- TAB 3: DEPOSIT -->
-        <div id="tab-deposit" class="tab-content">
-            <div class="card">
-                <div class="card-title"><i class="fas fa-qrcode" style="color:var(--success-color);"></i> Deposit USDT</div>
-                <div class="form-group">
-                    <label>Select Network</label>
-                    <select id="deposit-network">
-                        <option value="TRC20">USDT (TRC20)</option>
-                        <option value="BEP20">USDT (BEP20)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Wallet Address</label>
-                    <input type="text" readonly value="TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs" style="font-family:monospace;font-size:12px;">
-                </div>
-                <div class="form-group">
-                    <label>Amount ($)</label>
-                    <input type="number" id="deposit-amount" placeholder="Min $10">
-                </div>
-                <div class="form-group">
-                    <label>Transaction Hash / TXID</label>
-                    <input type="text" id="deposit-txid" placeholder="Paste TXID Here">
-                </div>
-                <button class="btn" onclick="submitDeposit()">Submit Deposit</button>
-            </div>
-        </div>
-
-        <!-- TAB 4: WITHDRAW -->
-        <div id="tab-withdraw" class="tab-content">
-            <div class="card">
-                <div class="card-title"><i class="fas fa-paper-plane" style="color:var(--danger-color);"></i> Withdraw Funds</div>
-                <p style="font-size:11px;color:var(--text-sub);margin-bottom:12px;">Minimum withdrawal is **$10 USDT**. Payouts are processed upon request approval.</p>
-                <div class="form-group">
-                    <label>USDT Wallet Address</label>
-                    <input type="text" id="withdraw-address" placeholder="Enter TRC20/BEP20 address">
-                </div>
-                <div class="form-group">
-                    <label>Amount ($)</label>
-                    <input type="number" id="withdraw-amount" placeholder="Min $10">
-                </div>
-                <button class="btn btn-success" onclick="submitWithdraw()">Submit Withdrawal</button>
-            </div>
-        </div>
-
-        <!-- TAB 5: HISTORY (NEWLY ADDED) -->
-        <div id="tab-history" class="tab-content">
-            <div class="card">
-                <div class="card-title"><i class="fas fa-history" style="color:var(--warning-color);"></i> Transaction History</div>
-                <p style="font-size:11px;color:var(--text-sub);margin-bottom:14px;">Your recent deposits, investments, and withdrawals:</p>
-                <div class="tx-list" id="tx-container">
-                    <p style="text-align:center;font-size:12px;color:var(--text-sub);padding:20px;">Loading history...</p>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- Bottom Navigation Bar -->
-    <div class="bottom-nav">
-        <button class="nav-item active" onclick="switchTab('home')"><i class="fas fa-home"></i><span>Home</span></button>
-        <button class="nav-item" onclick="switchTab('invest')"><i class="fas fa-chart-pie"></i><span>Invest</span></button>
-        <button class="nav-item" onclick="switchTab('deposit')"><i class="fas fa-wallet"></i><span>Deposit</span></button>
-        <button class="nav-item" onclick="switchTab('withdraw')"><i class="fas fa-paper-plane"></i><span>Withdraw</span></button>
-        <button class="nav-item" onclick="switchTab('history')"><i class="fas fa-history"></i><span>History</span></button>
+    <div class="verified">
+        <i class="fa fa-check"></i>
     </div>
+</header>
 
-    <script>
-        let tg = window.Telegram.WebApp;
-        tg.expand();
 
-        let userId = tg.initDataUnsafe?.user?.id || 7076265514;
-        let userName = tg.initDataUnsafe?.user?.first_name || "User";
+<!-- BALANCE CARD -->
 
-        document.getElementById('username-display').innerText = userName;
-        document.getElementById('userid-display').innerText = `ID: ${userId}`;
-        document.getElementById('avatar-letter').innerText = userName.charAt(0).toUpperCase();
+<section class="balance-card">
 
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerHTML = msg;
-            toast.className = 'toast show';
-            setTimeout(() => toast.classList.remove('show'), 3500);
-        }
+<p>Total Balance</p>
 
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
-            
-            document.getElementById(`tab-${tab}`).classList.add('active');
-            
-            const navIndex = {'home': 0, 'invest': 1, 'deposit': 2, 'withdraw': 3, 'history': 4};
-            document.querySelectorAll('.nav-item')[navIndex[tab]].classList.add('active');
-        }
+<h1>
+$<span id="balance">0.00</span>
+</h1>
 
-        function renderPlans() {
-            const container = document.getElementById('plans-container');
-            const plans = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-            let html = '';
+<div class="currency">
+USDT Wallet
+</div>
 
-            plans.forEach(amt => {
-                const totalProfit = (amt * 1.20).toFixed(2);
-                const hourly = ( (amt * 0.20) / 168 ).toFixed(4);
-                html += `
-                    <div class="plan-card">
-                        <div class="amount">$${amt}</div>
-                        <div class="profit">+20% ($${totalProfit})</div>
-                        <div class="hourly">+$${hourly}/hr</div>
-                        <button class="btn" style="padding:8px;font-size:12px;" onclick="invest(${amt})">Invest</button>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
 
-        function invest(amount) {
-            fetch('/api/invest', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ user_id: userId, amount: amount })
-            })
-            .then(res => res.json())
-            .then(data => {
-                showToast(data.message);
-                loadUser();
-            });
-        }
+<div class="stats">
 
-        function submitDeposit() {
-            const amt = document.getElementById('deposit-amount').value;
-            const txid = document.getElementById('deposit-txid').value;
-            const net = document.getElementById('deposit-network').value;
+<div>
+<h3 id="deposit">$0</h3>
+<span>Deposit</span>
+</div>
 
-            fetch('/api/deposit/request', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ user_id: userId, username: userName, amount: amt, txid: txid, network: net })
-            })
-            .then(res => res.json())
-            .then(data => {
-                showToast(data.message);
-                if(data.status === 'success') {
-                    document.getElementById('deposit-amount').value = '';
-                    document.getElementById('deposit-txid').value = '';
-                }
-                loadUser();
-            });
-        }
 
-        function submitWithdraw() {
-            const amt = document.getElementById('withdraw-amount').value;
-            const addr = document.getElementById('withdraw-address').value;
+<div>
+<h3>$0</h3>
+<span>Profit</span>
+</div>
 
-            fetch('/api/withdraw/request', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ user_id: userId, amount: amt, address: addr })
-            })
-            .then(res => res.json())
-            .then(data => {
-                showToast(data.message);
-                loadUser();
-            });
-        }
 
-        // LOAD USER BALANCE AND TRANSACTION HISTORY
-        function loadUser() {
-            fetch(`/api/user/${userId}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.user) {
-                    document.getElementById('balance').innerText = data.user.balance.toFixed(2);
-                    document.getElementById('active-deposit').innerText = data.user.active_deposit.toFixed(2);
-                }
+<div>
+<h3>24h</h3>
+<span>Activity</span>
+</div>
 
-                // Render Transaction History
-                if (data.macaamilo && data.macaamilo.length > 0) {
-                    let txHtml = '';
-                    data.macaamilo.forEach(tx => {
-                        let iconClass = 'deposit';
-                        let iconName = 'fa-arrow-down';
-                        let prefix = '+';
-                        let amountColor = 'var(--success-color)';
+</div>
 
-                        if (tx.type === 'INVESTMENT') {
-                            iconClass = 'investment';
-                            iconName = 'fa-chart-pie';
-                            prefix = '';
-                            amountColor = '#fff';
-                        } else if (tx.type === 'WITHDRAWAL') {
-                            iconClass = 'withdrawal';
-                            iconName = 'fa-arrow-up';
-                            prefix = '-';
-                            amountColor = 'var(--danger-color)';
-                        }
+</section>
 
-                        let statusClass = 'status-pending';
-                        if (tx.status === 'COMPLETED') statusClass = 'status-completed';
-                        if (tx.status === 'REJECTED') statusClass = 'status-rejected';
 
-                        const formattedDate = tx.date ? tx.date.split('.')[0] : 'Just now';
 
-                        txHtml += `
-                            <div class="tx-item">
-                                <div class="tx-left">
-                                    <div class="tx-icon ${iconClass}">
-                                        <i class="fas ${iconName}"></i>
-                                    </div>
-                                    <div>
-                                        <div class="tx-title">${tx.type}</div>
-                                        <div class="tx-date">${formattedDate}</div>
-                                    </div>
-                                </div>
-                                <div class="tx-right">
-                                    <div class="tx-amount" style="color:${amountColor};">${prefix}$${Math.abs(tx.amount).toFixed(2)}</div>
-                                    <span class="tx-status ${statusClass}">${tx.status}</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    document.getElementById('tx-container').innerHTML = txHtml;
-                } else {
-                    document.getElementById('tx-container').innerHTML = '<p style="text-align:center;font-size:12px;color:var(--text-sub);padding:20px;">No transaction history found.</p>';
-                }
-            });
-        }
+<!-- QUICK BUTTONS -->
 
-        fetch('/api/auth/verify', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ user_id: userId, username: userName })
-        }).then(() => loadUser());
+<div class="quick">
 
-        renderPlans();
-        setInterval(loadUser, 4000);
-    </script>
+
+<button onclick="openPage('exchange')">
+<i class="fa fa-repeat"></i>
+Exchange
+</button>
+
+
+<button onclick="openPage('deposit')">
+<i class="fa fa-wallet"></i>
+Deposit
+</button>
+
+
+<button onclick="openPage('withdraw')">
+<i class="fa fa-arrow-up"></i>
+Withdraw
+</button>
+
+
+<button onclick="openPage('history')">
+<i class="fa fa-clock"></i>
+History
+</button>
+
+
+</div>
+
+
+
+
+<!-- CONTENT -->
+
+<section id="home">
+
+
+<div class="card">
+
+<h3>
+<i class="fa fa-bolt"></i>
+Fast Exchange
+</h3>
+
+<p>
+Buy and sell USDT instantly with secure transactions.
+</p>
+
+
+<button class="primary">
+Start Exchange
+</button>
+
+
+</div>
+
+
+
+
+<div class="card">
+
+<h3>
+<i class="fa fa-gift"></i>
+Referral Program
+</h3>
+
+<p>
+Invite friends and earn rewards.
+</p>
+
+
+<button class="secondary">
+Invite Friends
+</button>
+
+
+</div>
+
+
+</section>
+
+
+
+
+
+
+<!-- BOTTOM NAV -->
+
+<nav>
+
+
+<button class="active">
+<i class="fa fa-home"></i>
+Home
+</button>
+
+
+<button>
+<i class="fa fa-chart-line"></i>
+Market
+</button>
+
+
+<button>
+<i class="fa fa-wallet"></i>
+Wallet
+</button>
+
+
+<button>
+<i class="fa fa-user"></i>
+Profile
+</button>
+
+
+</nav>
+
+
+
+</div>
+
+
+
+<script src="js/app.js"></script>
+
 </body>
 </html>
