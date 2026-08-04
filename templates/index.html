@@ -8,1300 +8,315 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
+            --bg-color: #0b0e14;
+            --card-bg: #151a23;
+            --card-border: rgba(255, 255, 255, 0.08);
             --accent-color: #0088cc;
-            --success-color: #2ea043;
-            --danger-color: #da3633;
-            --warning-color: #d29922;
-            --text-main: #f0f6fc;
-            --text-sub: #8b949e;
-            --border-color: #30363d;
+            --accent-gradient: linear-gradient(135deg, #0088cc 0%, #005588 100%);
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --text-main: #f3f4f6;
+            --text-sub: #9ca3af;
         }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        body {
-            background: var(--bg-color);
-            color: var(--text-main);
-            padding-bottom: 75px;
-            min-height: 100vh;
-        }
-        .container {
-            max-width: 480px;
-            margin: 0 auto;
-            padding: 16px;
-        }
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            padding: 12px 16px;
-            background: var(--card-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .avatar {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-color), #0055aa);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-        }
-        .user-details {
-            display: flex;
-            flex-direction: column;
-        }
-        .user-name {
-            font-weight: 600;
-            font-size: 15px;
-        }
-        .user-id {
-            font-size: 11px;
-            color: var(--text-sub);
-        }
-        .badge {
-            font-size: 10px;
-            background: rgba(46, 160, 67, 0.2);
-            color: var(--success-color);
-            padding: 4px 10px;
-            border-radius: 12px;
-            border: 1px solid rgba(46, 160, 67, 0.3);
-        }
-        .badge-new {
-            background: var(--warning-color);
-            color: #fff;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 9px;
-            font-weight: 700;
-        }
-        .hero-card {
-            background: linear-gradient(135deg, #1a2332 0%, #0d1520 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 136, 204, 0.05) 0%, transparent 70%);
-            pointer-events: none;
-        }
-        .balance-label {
-            font-size: 13px;
-            color: var(--text-sub);
-            letter-spacing: 1px;
-        }
-        .main-balance {
-            font-size: 38px;
-            font-weight: 800;
-            color: #fff;
-            margin: 8px 0 4px;
-            letter-spacing: -0.5px;
-        }
-        .balance-usd {
-            font-size: 16px;
-            color: var(--text-sub);
-            font-weight: 400;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 8px;
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-        }
-        .stat-item {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 10px 6px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        .stat-label {
-            font-size: 9px;
-            color: var(--text-sub);
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-        .stat-value {
-            font-size: 16px;
-            font-weight: 700;
-            margin-top: 4px;
-        }
-        .stat-value.green { color: var(--success-color); }
-        .stat-value.blue { color: var(--accent-color); }
-        .stat-value.gold { color: var(--warning-color); }
 
-        .tab-content {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-color); color: var(--text-main); padding-bottom: 80px; }
+        .container { max-width: 480px; margin: 0 auto; padding: 16px; }
+
+        /* Header */
+        .header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding: 12px 16px; background: var(--card-bg); border-radius: 14px; border: 1px solid var(--card-border); }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--accent-gradient); display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff; font-size: 16px; }
+
+        /* Hero Balance Card */
+        .hero-card { background: linear-gradient(135deg, #1e2638 0%, #0f172a 100%); border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; padding: 22px; margin-bottom: 18px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .hero-title { font-size: 12px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.5px; }
+        .main-balance { font-size: 38px; font-weight: 800; color: #fff; margin: 6px 0; }
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.08); }
+        .stat-box { text-align: center; }
+        .stat-val { font-size: 14px; font-weight: 700; color: var(--success-color); }
+        .stat-lbl { font-size: 10px; color: var(--text-sub); }
+
+        /* Quick Action Buttons */
+        .quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .action-btn { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; display: flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 600; font-size: 14px; cursor: pointer; transition: 0.2s; }
+        .action-btn i { font-size: 16px; color: var(--accent-color); }
+        .action-btn:active { transform: scale(0.97); }
+
+        /* General UI Elements */
+        .tab-content { display: none; }
         .tab-content.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 18px;
-            margin-bottom: 16px;
-        }
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 14px;
-        }
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .card-title i { color: var(--accent-color); }
-
+        .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 18px; margin-bottom: 16px; }
+        .card-title { font-size: 15px; font-weight: 600; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--text-main); }
+        
         .form-group { margin-bottom: 14px; }
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--text-sub);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 12px 14px;
-            border-radius: 10px;
-            border: 1px solid var(--border-color);
-            background: #0d1117;
-            color: #fff;
-            font-size: 14px;
-            transition: all 0.2s;
-            outline: none;
-        }
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.15);
-        }
-        input[readonly] {
-            color: var(--success-color);
-            font-weight: 600;
-            background: rgba(46, 160, 67, 0.05);
-            border-color: rgba(46, 160, 67, 0.2);
-        }
-        textarea { resize: vertical; font-family: inherit; }
+        .form-group label { display: block; font-size: 11px; color: var(--text-sub); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        input, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--card-border); background: #0b0e14; color: #fff; font-size: 14px; outline: none; }
+        input:focus { border-color: var(--accent-color); }
 
-        .btn {
-            width: 100%;
-            padding: 13px;
-            border-radius: 10px;
-            border: none;
-            background: var(--accent-color);
-            color: #fff;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-        .btn:active { transform: scale(0.97); }
-        .btn-success { background: var(--success-color); }
-        .btn-danger { background: var(--danger-color); }
-        .btn-outline {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-main);
-        }
-        .btn-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 12px;
-            border-radius: 6px;
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn { width: 100%; padding: 13px; border-radius: 10px; border: none; background: var(--accent-gradient); color: #fff; font-weight: 600; cursor: pointer; font-size: 14px; box-shadow: 0 4px 12px rgba(0, 136, 204, 0.3); }
+        .btn-success { background: linear-gradient(135deg, #10b981 0%, #047857 100%); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
 
-        .plans-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-        }
-        .plan-card {
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 14px 10px;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.02);
-            transition: all 0.2s;
-        }
-        .plan-card:active { transform: scale(0.95); }
-        .plan-card .amount {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--accent-color);
-        }
-        .plan-card .return {
-            font-size: 11px;
-            color: var(--success-color);
-            margin: 4px 0 8px;
-        }
+        /* Investment Grid (10 - 100 USDT) */
+        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .plan-card { border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; text-align: center; background: rgba(255, 255, 255, 0.02); position: relative; overflow: hidden; }
+        .plan-card .amount { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 2px; }
+        .plan-card .profit { font-size: 12px; color: var(--success-color); font-weight: 600; margin-bottom: 4px; }
+        .plan-card .hourly { font-size: 10px; color: var(--text-sub); margin-bottom: 12px; }
 
-        .ledger-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .ledger-row:last-child { border-bottom: none; }
-        .ledger-info { display: flex; flex-direction: column; gap: 2px; }
-        .ledger-type { font-weight: 600; font-size: 14px; }
-        .ledger-date { font-size: 11px; color: var(--text-sub); }
-        .ledger-amount { font-weight: 700; font-size: 15px; }
-        .ledger-status {
-            font-size: 10px;
-            padding: 2px 10px;
-            border-radius: 10px;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-        .status-success { background: rgba(46, 160, 67, 0.15); color: var(--success-color); }
-        .status-active { background: rgba(0, 136, 204, 0.15); color: var(--accent-color); }
-        .status-pending { background: rgba(255, 193, 7, 0.15); color: #ffc107; }
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: rgba(21, 26, 35, 0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 1000; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-sub); font-size: 11px; cursor: pointer; border: none; background: none; flex: 1; gap: 4px; }
+        .nav-item i { font-size: 18px; }
+        .nav-item.active { color: var(--accent-color); font-weight: 600; }
 
-        .referral-box {
-            background: rgba(46, 160, 67, 0.05);
-            border: 1px dashed var(--success-color);
-            border-radius: 10px;
-            padding: 16px;
-            text-align: center;
-        }
-        .referral-box .code {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--accent-color);
-            letter-spacing: 2px;
-            margin: 8px 0;
-        }
-
-        .support-ticket {
-            background: rgba(255, 193, 7, 0.05);
-            border-left: 3px solid var(--warning-color);
-            padding: 10px;
-            margin-bottom: 8px;
-            border-radius: 4px;
-        }
-        .ticket-status {
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-        .status-open { background: rgba(255, 193, 7, 0.2); color: var(--warning-color); }
-        .status-closed { background: rgba(46, 160, 67, 0.2); color: var(--success-color); }
-
-        .notification-badge { position: relative; cursor: pointer; }
-        .notification-dot {
-            position: absolute;
-            top: -4px;
-            right: -8px;
-            width: 10px;
-            height: 10px;
-            background: var(--danger-color);
-            border-radius: 50%;
-            border: 2px solid var(--card-bg);
-        }
-
-        .calculator-result {
-            background: rgba(0, 136, 204, 0.05);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
-            margin-top: 12px;
-        }
-        .calc-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            font-size: 13px;
-        }
-
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            padding: 12px 20px;
-            border-radius: 10px;
-            color: var(--text-main);
-            font-size: 14px;
-            z-index: 2000;
-            display: none;
-            max-width: 90%;
-            text-align: center;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
-        }
-        .toast.show {
-            display: block;
-            animation: slideDown 0.3s ease;
-        }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-            to { opacity: 1; transform: translateX(-50%) translateY(0); }
-        }
-        .toast.success { border-color: var(--success-color); }
-        .toast.error { border-color: var(--danger-color); }
-
-        .spinner {
-            display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 68px;
-            background: var(--card-bg);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1000;
-            max-width: 480px;
-            margin: 0 auto;
-            overflow-x: auto;
-        }
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-sub);
-            font-size: 9px;
-            cursor: pointer;
-            gap: 2px;
-            padding: 4px 8px;
-            transition: all 0.2s;
-            border: none;
-            background: none;
-            position: relative;
-            min-width: 44px;
-        }
-        .nav-item i { font-size: 18px; transition: all 0.2s; }
-        .nav-item.active { color: var(--accent-color); }
-        .nav-item.active i { transform: translateY(-2px); }
-
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: var(--bg-color); }
-        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
-
-        @media (max-width: 420px) {
-            .plans-grid { grid-template-columns: 1fr 1fr; }
-            .main-balance { font-size: 30px; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .bottom-nav { height: 60px; }
-            .nav-item { font-size: 8px; padding: 2px 4px; min-width: 36px; }
-            .nav-item i { font-size: 16px; }
-        }
-
-        .text-muted { color: var(--text-sub); }
-        .text-center { text-align: center; }
-        .mt-8 { margin-top: 8px; }
-        .welcome-msg {
-            background: rgba(0, 136, 204, 0.1);
-            border: 1px solid rgba(0, 136, 204, 0.2);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 16px;
-            text-align: center;
-            color: var(--accent-color);
-            font-weight: 500;
-        }
+        /* Toast Popup Notification */
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 14px 20px; border-radius: 12px; font-size: 13px; z-index: 2000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; width: 90%; max-width: 400px; }
+        .toast.show { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translate(-50%, -10px); } to { opacity: 1; transform: translate(-50%, 0); } }
     </style>
 </head>
 <body>
 
-    <!-- Toast Notification -->
     <div id="toast" class="toast"></div>
 
     <div class="container">
         <!-- Header -->
         <div class="header">
             <div class="user-info">
-                <div class="avatar" id="avatar-initial">U</div>
-                <div class="user-details">
-                    <div class="user-name" id="username-display">User</div>
-                    <div class="user-id" id="userid-display">ID: ---</div>
+                <div class="avatar" id="avatar-letter">U</div>
+                <div>
+                    <strong id="username-display" style="font-size:14px;">User</strong>
+                    <div style="font-size:10px;color:var(--text-sub);" id="userid-display">ID: ---</div>
                 </div>
             </div>
-            <div style="display:flex;gap:8px;align-items:center;">
-                <span class="badge notification-badge" onclick="switchTab('notifications')">
-                    <i class="fas fa-bell"></i>
-                    <span id="notif-dot" class="notification-dot" style="display:none;"></span>
-                </span>
-                <span class="badge"><i class="fas fa-check-circle"></i> Verified</span>
-            </div>
+            <span style="font-size:10px;background:rgba(16, 185, 129, 0.15);color:var(--success-color);padding:5px 10px;border-radius:20px;border: 1px solid rgba(16, 185, 129, 0.3);"><i class="fas fa-check-circle"></i> Verified</span>
         </div>
 
-        <!-- Welcome Message -->
-        <div class="welcome-msg" id="welcome-msg">
-            <i class="fas fa-hand-wave"></i> Welcome!
-        </div>
-
-        <!-- Hero Balance -->
+        <!-- Hero Balance Section -->
         <div class="hero-card">
-            <div class="balance-label"><i class="fas fa-wallet"></i> Total Assets</div>
-            <div class="main-balance">
-                $<span id="balance">0.00</span>
-                <span class="balance-usd">USDT</span>
-            </div>
+            <div class="hero-title">Available Balance</div>
+            <div class="main-balance">$<span id="balance">0.00</span> <span style="font-size:16px;color:var(--text-sub);font-weight:400;">USDT</span></div>
+            
             <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-label">Invested</div>
-                    <div class="stat-value green" id="active-deposit">$0.00</div>
+                <div class="stat-box">
+                    <div class="stat-val">$<span id="active-deposit">0.00</span></div>
+                    <div class="stat-lbl">Active Investment</div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-label">Return</div>
-                    <div class="stat-value blue">+20%</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">Referrals</div>
-                    <div class="stat-value gold" id="referral-count">0</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">Bonus</div>
-                    <div class="stat-value blue" id="bonus-earnings">$0.00</div>
+                <div class="stat-box">
+                    <div class="stat-val" style="color:#3b82f6;">7 Days</div>
+                    <div class="stat-lbl">Duration Term</div>
                 </div>
             </div>
         </div>
 
-        <!-- TAB 1: HOME -->
+        <!-- TAB 1: HOME (PROFESSIONAL OVERVIEW) -->
         <div id="tab-home" class="tab-content active">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-rocket"></i> Quick Actions</div>
+            <div class="quick-actions">
+                <div class="action-btn" onclick="switchTab('deposit')">
+                    <i class="fas fa-arrow-down" style="color:var(--success-color);"></i> Deposit
                 </div>
-                <div class="btn-group">
-                    <button class="btn" onclick="switchTab('deposit')">
-                        <i class="fas fa-arrow-down"></i> Deposit
-                    </button>
-                    <button class="btn btn-success" onclick="switchTab('withdraw')">
-                        <i class="fas fa-arrow-up"></i> Withdraw
-                    </button>
+                <div class="action-btn" onclick="switchTab('withdraw')">
+                    <i class="fas fa-arrow-up" style="color:var(--danger-color);"></i> Withdraw
                 </div>
             </div>
 
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-fire"></i> Plans</div>
-                </div>
-                <div class="plans-grid" id="quick-plans"></div>
-            </div>
-        </div>
-
-        <!-- TAB 2: DEPOSIT -->
-        <div id="tab-deposit" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-qrcode"></i> Deposit USDT</div>
-                    <span class="badge-new">NEW</span>
-                </div>
-                <div class="form-group">
-                    <label>Select Network</label>
-                    <select id="network-select" onchange="updateDepositAddress()">
-                        <option value="TRC20">🌐 USDT (TRC20)</option>
-                        <option value="BEP20">🌐 USDT (BEP20 / BSC)</option>
-                        <option value="ERC20">🌐 USDT (ERC20 / ETH)</option>
-                        <option value="TON">🌐 TON (Toncoin)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Deposit Address</label>
-                    <input type="text" id="deposit-address-display" readonly value="TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs">
-                    <button class="btn btn-outline" style="margin-top:6px;padding:6px;" onclick="copyAddress()">
-                        <i class="fas fa-copy"></i> Copy
-                    </button>
-                </div>
-                <div class="form-group">
-                    <label>Amount (USDT) <span class="text-muted" style="font-weight:400;">min $10</span></label>
-                    <input type="number" id="deposit-amt" placeholder="Example: 50" min="10">
-                </div>
-                <div class="form-group">
-                    <label>TXID / Hash</label>
-                    <input type="text" id="txid-input" placeholder="Paste your TXID here">
-                </div>
-                <button class="btn" onclick="submitDeposit()">
-                    <i class="fas fa-paper-plane"></i> Submit Confirmation
-                </button>
-                <p class="text-muted text-center mt-8" style="font-size:11px;">
-                    <i class="fas fa-info-circle"></i> Verification takes 5-30 minutes
+                <div class="card-title"><i class="fas fa-bolt" style="color:#f59e0b;"></i> Quick Investment</div>
+                <p style="font-size:12px;color:var(--text-sub);margin-bottom:14px;line-height:1.4;">
+                    Earn **+20% ROI** in 7 days. Profits are credited **every hour** automatically to your account balance!
                 </p>
+                <button class="btn" onclick="switchTab('invest')"><i class="fas fa-rocket"></i> View Investment Plans</button>
+            </div>
+
+            <div class="card" style="background: linear-gradient(135deg, rgba(0,136,204,0.08) 0%, rgba(0,0,0,0) 100%);">
+                <div class="card-title"><i class="fas fa-headset" style="color:var(--accent-color);"></i> Need Help?</div>
+                <p style="font-size:12px;color:var(--text-sub);margin-bottom:12px;">Contact support if you have questions regarding deposits or payouts.</p>
+                <a href="https://t.me/USDTPilotBot" target="_blank" style="text-decoration:none;"><button class="btn" style="background:#1e293b;border:1px solid var(--card-border);"><i class="fab fa-telegram"></i> Telegram Support</button></a>
             </div>
         </div>
 
-        <!-- TAB 3: INVEST -->
+        <!-- TAB 2: INVEST (ONLY 10$ TO 100$) -->
         <div id="tab-invest" class="tab-content">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-gem"></i> Investment Plans</div>
-                </div>
-                <p style="font-size:13px;color:var(--text-sub);margin-bottom:14px;">
-                    Choose your plan. Get <strong style="color:var(--success-color);">+20%</strong> return in 7 days!
-                </p>
+                <div class="card-title"><i class="fas fa-chart-line" style="color:var(--accent-color);"></i> Investment Plans (10$ - 100$)</div>
+                <p style="font-size:11px;color:var(--text-sub);margin-bottom:14px;">Choose your plan below to activate instant hourly earning:</p>
                 <div class="plans-grid" id="plans-container"></div>
             </div>
-
-            <!-- Calculator -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-calculator"></i> Profit Calculator</div>
-                </div>
-                <div class="form-group">
-                    <label>Investment Amount</label>
-                    <input type="number" id="calc-amount" placeholder="Enter amount" oninput="calculateROI()">
-                </div>
-                <div class="form-group">
-                    <label>Days</label>
-                    <input type="number" id="calc-days" value="7" oninput="calculateROI()">
-                </div>
-                <div class="calculator-result" id="calc-result">
-                    <div class="calc-row"><span>Investment:</span><span id="calc-invest">$0.00</span></div>
-                    <div class="calc-row"><span>Profit:</span><span id="calc-profit" style="color:var(--success-color);">$0.00</span></div>
-                    <div class="calc-row"><span>Total Return:</span><span id="calc-return" style="color:var(--accent-color);">$0.00</span></div>
-                </div>
-            </div>
         </div>
 
-        <!-- TAB 4: HISTORY -->
-        <div id="tab-history" class="tab-content">
+        <!-- TAB 3: DEPOSIT -->
+        <div id="tab-deposit" class="tab-content">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-clock-rotate-left"></i> Transaction History</div>
-                    <span style="font-size:12px;color:var(--text-sub);" id="history-count">0</span>
-                </div>
-                <div id="history-list"></div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-chart-simple"></i> Active Investments</div>
-                </div>
-                <div id="investment-list"></div>
-            </div>
-        </div>
-
-        <!-- TAB 5: WITHDRAW -->
-        <div id="tab-withdraw" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-money-bill-transfer"></i> Withdraw Funds</div>
+                <div class="card-title"><i class="fas fa-qrcode" style="color:var(--success-color);"></i> Deposit USDT</div>
+                <div class="form-group">
+                    <label>Select Network</label>
+                    <select id="deposit-network">
+                        <option value="TRC20">USDT (TRC20)</option>
+                        <option value="BEP20">USDT (BEP20)</option>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label>Wallet Address</label>
-                    <input type="text" id="withdraw-address" placeholder="Your TRC20 / BEP20 / ERC20 address">
+                    <input type="text" readonly value="TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs" style="font-family:monospace;font-size:12px;">
                 </div>
                 <div class="form-group">
-                    <label>Amount (USDT) <span class="text-muted" style="font-weight:400;">min $10</span></label>
-                    <input type="number" id="withdraw-amount" placeholder="Min $10" min="10">
+                    <label>Amount ($)</label>
+                    <input type="number" id="deposit-amount" placeholder="Min $10">
                 </div>
                 <div class="form-group">
-                    <label>Network</label>
-                    <select id="withdraw-network">
-                        <option value="TRC20">🌐 TRC20</option>
-                        <option value="BEP20">🌐 BEP20 (BSC)</option>
-                        <option value="ERC20">🌐 ERC20 (ETH)</option>
-                    </select>
+                    <label>Transaction Hash / TXID</label>
+                    <input type="text" id="deposit-txid" placeholder="Paste TXID Here">
                 </div>
-                <button class="btn btn-success" onclick="submitWithdraw()">
-                    <i class="fas fa-paper-plane"></i> Submit Request
-                </button>
-                <p class="text-muted text-center mt-8" style="font-size:11px;">
-                    <i class="fas fa-clock"></i> Processing time: 24-48 hours
-                </p>
+                <button class="btn" onclick="submitDeposit()">Submit Deposit</button>
             </div>
         </div>
 
-        <!-- TAB 6: REFERRAL -->
-        <div id="tab-referral" class="tab-content">
+        <!-- TAB 4: WITHDRAW -->
+        <div id="tab-withdraw" class="tab-content">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-link"></i> Referral Program</div>
-                    <span class="badge-new">5% BONUS</span>
-                </div>
-                <p style="font-size:13px;color:var(--text-sub);margin-bottom:12px;">
-                    Share your link and earn <strong style="color:var(--success-color);">5%</strong> on every deposit!
-                </p>
-                <div class="referral-box">
-                    <div style="font-size:12px;color:var(--text-sub);">Your Referral Code</div>
-                    <div class="code" id="referral-code">------</div>
-                    <button class="btn btn-outline" style="margin-top:8px;padding:8px;" onclick="copyReferral()">
-                        <i class="fas fa-copy"></i> Copy Link
-                    </button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-users"></i> Referral Stats</div>
-                </div>
-                <div id="referral-stats"></div>
-            </div>
-        </div>
-
-        <!-- TAB 7: SUPPORT -->
-        <div id="tab-support" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-headset"></i> Support Center</div>
+                <div class="card-title"><i class="fas fa-paper-plane" style="color:var(--danger-color);"></i> Withdraw Funds</div>
+                <p style="font-size:11px;color:var(--text-sub);margin-bottom:12px;">Minimum withdrawal is **$10 USDT**. Payouts are processed upon request approval.</p>
+                <div class="form-group">
+                    <label>USDT Wallet Address</label>
+                    <input type="text" id="withdraw-address" placeholder="Enter TRC20/BEP20 address">
                 </div>
                 <div class="form-group">
-                    <label>Subject</label>
-                    <input type="text" id="ticket-subject" placeholder="Issue topic">
+                    <label>Amount ($)</label>
+                    <input type="number" id="withdraw-amount" placeholder="Min $10">
                 </div>
-                <div class="form-group">
-                    <label>Message</label>
-                    <textarea id="ticket-message" rows="4" placeholder="Describe your issue..."></textarea>
-                </div>
-                <button class="btn" onclick="createTicket()">
-                    <i class="fas fa-paper-plane"></i> Submit Ticket
-                </button>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-ticket"></i> My Tickets</div>
-                </div>
-                <div id="ticket-list"></div>
-            </div>
-        </div>
-
-        <!-- TAB 8: NOTIFICATIONS -->
-        <div id="tab-notifications" class="tab-content">
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title"><i class="fas fa-bell"></i> Notifications</div>
-                    <button class="btn btn-outline" style="padding:4px 12px;width:auto;font-size:11px;" onclick="markAllRead()">
-                        Mark All Read
-                    </button>
-                </div>
-                <div id="notification-list"></div>
+                <button class="btn btn-success" onclick="submitWithdraw()">Submit Withdrawal</button>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Navigation -->
+    <!-- Bottom Navigation Bar -->
     <div class="bottom-nav">
-        <button class="nav-item active" onclick="switchTab('home')">
-            <i class="fas fa-house"></i>
-            <span>Home</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('deposit')">
-            <i class="fas fa-wallet"></i>
-            <span>Deposit</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('invest')">
-            <i class="fas fa-chart-line"></i>
-            <span>Invest</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('history')">
-            <i class="fas fa-list"></i>
-            <span>History</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('withdraw')">
-            <i class="fas fa-paper-plane"></i>
-            <span>Withdraw</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('referral')">
-            <i class="fas fa-link"></i>
-            <span>Referral</span>
-        </button>
-        <button class="nav-item" onclick="switchTab('support')">
-            <i class="fas fa-headset"></i>
-            <span>Support</span>
-        </button>
+        <button class="nav-item active" onclick="switchTab('home')"><i class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item" onclick="switchTab('invest')"><i class="fas fa-chart-pie"></i><span>Invest</span></button>
+        <button class="nav-item" onclick="switchTab('deposit')"><i class="fas fa-wallet"></i><span>Deposit</span></button>
+        <button class="nav-item" onclick="switchTab('withdraw')"><i class="fas fa-paper-plane"></i><span>Withdraw</span></button>
     </div>
 
     <script>
-        // TELEGRAM WEB APP INIT
         let tg = window.Telegram.WebApp;
         tg.expand();
-        tg.enableClosingConfirmation();
 
-        // USER DETAILS
         let userId = tg.initDataUnsafe?.user?.id || 7076265514;
         let userName = tg.initDataUnsafe?.user?.first_name || "User";
 
         document.getElementById('username-display').innerText = userName;
         document.getElementById('userid-display').innerText = `ID: ${userId}`;
-        document.getElementById('avatar-initial').innerText = userName.charAt(0).toUpperCase();
+        document.getElementById('avatar-letter').innerText = userName.charAt(0).toUpperCase();
 
-        const API_BASE = window.location.origin;
-
-        const networkAddresses = {
-            'TRC20': 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs',
-            'BEP20': '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0',
-            'ERC20': '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0',
-            'TON': 'UQBGo3k-EhMubMv4h3RqHszdcJdqoxttvZnuwDvPHbk8jl6P'
-        };
-
-        let referralCode = '';
-
-        // TOAST NOTIFICATION
-        function showToast(message, type = 'info', duration = 3500) {
+        function showToast(msg) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.className = 'toast show ' + type;
-            clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => {
-                toast.classList.remove('show');
-            }, duration);
+            toast.innerHTML = msg;
+            toast.className = 'toast show';
+            setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
-        // TAB SWITCHING
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-
-            const tab = document.getElementById(`tab-${tabName}`);
-            if (tab) tab.classList.add('active');
-
-            const navs = ['home', 'deposit', 'invest', 'history', 'withdraw', 'referral', 'support', 'notifications'];
-            const idx = navs.indexOf(tabName);
-            if (idx !== -1) {
-                const navItems = document.querySelectorAll('.nav-item');
-                if (navItems[idx]) navItems[idx].classList.add('active');
-            }
-
-            if (tabName === 'referral') loadReferralData();
-            if (tabName === 'support') loadTickets();
-            if (tabName === 'notifications') loadNotifications();
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('active'));
+            
+            document.getElementById(`tab-${tab}`).classList.add('active');
+            
+            // Highlight current tab button
+            const navIndex = {'home': 0, 'invest': 1, 'deposit': 2, 'withdraw': 3};
+            document.querySelectorAll('.nav-item')[navIndex[tab]].classList.add('active');
         }
 
-        // VERIFY USER ON LAUNCH
-        function verifyUser() {
-            fetch('/api/auth/verify', {
+        // STRICTLY ONLY 10$ TO 100$ INVESTMENT PLANS
+        function renderPlans() {
+            const container = document.getElementById('plans-container');
+            const plans = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+            let html = '';
+
+            plans.forEach(amt => {
+                const totalProfit = (amt * 1.20).toFixed(2);
+                const hourly = ( (amt * 0.20) / 168 ).toFixed(4);
+                html += `
+                    <div class="plan-card">
+                        <div class="amount">$${amt}</div>
+                        <div class="profit">+20% ($${totalProfit})</div>
+                        <div class="hourly">+$${hourly}/hr</div>
+                        <button class="btn" style="padding:8px;font-size:12px;" onclick="invest(${amt})">Invest</button>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function invest(amount) {
+            fetch('/api/invest', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: userId,
-                    username: userName
-                })
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ user_id: userId, amount: amount })
             })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        document.getElementById('welcome-msg').innerHTML = `
-                            <i class="fas fa-hand-wave"></i> Welcome ${userName}! 
-                            <span style="font-size:12px;color:var(--text-sub);">
-                                (${new Date().toLocaleDateString('en-US')})
-                            </span>
-                        `;
-                        loadAccountData();
-                        loadNotifications();
-                    }
-                })
-                .catch(err => console.error('Verification error:', err));
-        }
-
-        // DEPOSIT LOGIC
-        function updateDepositAddress() {
-            const net = document.getElementById('network-select').value;
-            document.getElementById('deposit-address-display').value = networkAddresses[net] || networkAddresses['TRC20'];
-        }
-
-        function copyAddress() {
-            const addr = document.getElementById('deposit-address-display').value;
-            navigator.clipboard.writeText(addr).then(() => {
-                showToast('✅ Address copied to clipboard!', 'success');
-            }).catch(() => {
-                showToast('📋 Copy manually: ' + addr, 'info');
+            .then(res => res.json())
+            .then(data => {
+                showToast(data.message);
+                loadUser();
             });
         }
 
         function submitDeposit() {
-            const txid = document.getElementById('txid-input').value.trim();
-            const amount = document.getElementById('deposit-amt').value;
-            const network = document.getElementById('network-select').value;
-
-            if (!txid) return showToast('❌ Please enter TXID', 'error');
-            if (!amount || amount < 10) return showToast('❌ Minimum deposit is $10 USDT', 'error');
-
-            const btn = event.target;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> Sending...';
+            const amt = document.getElementById('deposit-amount').value;
+            const txid = document.getElementById('deposit-txid').value;
+            const net = document.getElementById('deposit-network').value;
 
             fetch('/api/deposit/request', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: userId,
-                    username: userName,
-                    network: network,
-                    txid: txid,
-                    amount: parseFloat(amount)
-                })
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ user_id: userId, username: userName, amount: amt, txid: txid, network: net })
             })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        showToast('✅ ' + data.message, 'success');
-                        document.getElementById('txid-input').value = '';
-                        document.getElementById('deposit-amt').value = '';
-                        loadAccountData();
-                    } else {
-                        showToast('❌ ' + data.message, 'error');
-                    }
-                })
-                .catch(() => showToast('❌ Network error', 'error'))
-                .finally(() => {
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Confirmation';
-                });
-        }
-
-        // INVESTMENT LOGIC
-        function renderInvestmentPlans() {
-            const container = document.getElementById('plans-container');
-            const quickContainer = document.getElementById('quick-plans');
-            let html = '';
-            let quickHtml = '';
-
-            const plans = [10, 20, 30, 50, 75, 100, 250, 500, 1000];
-
-            plans.forEach((amount, index) => {
-                const isPopular = amount === 50 || amount === 100;
-                const card = `
-                    <div class="plan-card" style="${isPopular ? 'border-color: var(--accent-color);' : ''}">
-                        ${isPopular ? '<div style="font-size:9px;color:var(--accent-color);font-weight:600;">🔥 POPULAR</div>' : ''}
-                        <div class="amount">$${amount}</div>
-                        <div class="return">+20% / 7 Days</div>
-                        <button class="btn-sm" onclick="investPlan(${amount})">
-                            Invest $${amount}
-                        </button>
-                    </div>
-                `;
-                html += card;
-                if (index < 4) quickHtml += card;
+            .then(res => res.json())
+            .then(data => {
+                showToast(data.message);
+                if(data.status === 'success') {
+                    document.getElementById('deposit-amount').value = '';
+                    document.getElementById('deposit-txid').value = '';
+                }
+                loadUser();
             });
-
-            container.innerHTML = html;
-            quickContainer.innerHTML = quickHtml || '<p class="text-muted text-center">No plans available</p>';
         }
 
-        function investPlan(amount) {
-            const btn = event.target;
-            btn.disabled = true;
-            btn.textContent = '⏳ Processing...';
-
-            fetch('/api/invest', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: userId,
-                    amount: amount
-                })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        showToast('✅ ' + data.message, 'success');
-                        loadAccountData();
-                    } else {
-                        showToast('❌ ' + data.message, 'error');
-                    }
-                })
-                .catch(() => showToast('❌ Network error', 'error'))
-                .finally(() => {
-                    btn.disabled = false;
-                    btn.textContent = `Invest $${amount}`;
-                });
-        }
-
-        // CALCULATOR LOGIC
-        function calculateROI() {
-            const amount = parseFloat(document.getElementById('calc-amount').value) || 0;
-            const days = parseInt(document.getElementById('calc-days').value) || 7;
-
-            const dailyRate = 20 / days;
-            const totalReturn = amount * (1 + dailyRate / 100 * days);
-            const profit = totalReturn - amount;
-
-            document.getElementById('calc-invest').textContent = '$' + amount.toFixed(2);
-            document.getElementById('calc-profit').textContent = '$' + profit.toFixed(2);
-            document.getElementById('calc-return').textContent = '$' + totalReturn.toFixed(2);
-        }
-
-        // WITHDRAWAL LOGIC
         function submitWithdraw() {
-            const address = document.getElementById('withdraw-address').value.trim();
-            const amount = document.getElementById('withdraw-amount').value;
-            const network = document.getElementById('withdraw-network').value;
-
-            if (!address) return showToast('❌ Please enter wallet address', 'error');
-            if (!amount || amount < 10) return showToast('❌ Minimum withdrawal is $10 USDT', 'error');
-
-            const btn = event.target;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> Processing...';
+            const amt = document.getElementById('withdraw-amount').value;
+            const addr = document.getElementById('withdraw-address').value;
 
             fetch('/api/withdraw/request', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: userId,
-                    address: address,
-                    amount: parseFloat(amount),
-                    network: network
-                })
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ user_id: userId, amount: amt, address: addr })
             })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        showToast('✅ ' + data.message, 'success');
-                        document.getElementById('withdraw-address').value = '';
-                        document.getElementById('withdraw-amount').value = '';
-                        loadAccountData();
-                    } else {
-                        showToast('❌ ' + data.message, 'error');
-                    }
-                })
-                .catch(() => showToast('❌ Network error', 'error'))
-                .finally(() => {
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Request';
-                });
-        }
-
-        // REFERRAL DATA
-        function loadReferralData() {
-            fetch(`/api/referral/stats?user_id=${userId}`)
-                .then(res => res.json())
-                .then(data => {
-                    const stats = data.tirakoob || { wadarta: 0, dhammaystiray: 0, sugaya: 0, wadarta_guno: 0 };
-
-                    document.getElementById('referral-stats').innerHTML = `
-                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center;">
-                            <div>
-                                <div style="font-size:24px;font-weight:700;color:var(--accent-color);">${stats.wadarta || 0}</div>
-                                <div style="font-size:11px;color:var(--text-sub);">Total Referrals</div>
-                            </div>
-                            <div>
-                                <div style="font-size:24px;font-weight:700;color:var(--success-color);">${stats.dhammaystiray || 0}</div>
-                                <div style="font-size:11px;color:var(--text-sub);">Active</div>
-                            </div>
-                            <div>
-                                <div style="font-size:24px;font-weight:700;color:var(--warning-color);">$${(stats.wadarta_guno || 0).toFixed(2)}</div>
-                                <div style="font-size:11px;color:var(--text-sub);">Earned</div>
-                            </div>
-                        </div>
-                        <div style="margin-top:10px;max-height:150px;overflow-y:auto;">
-                            ${data.taf && data.taf.length > 0 ?
-                                data.taf.map(r => `
-                                    <div class="ledger-row" style="padding:8px 0;">
-                                        <span>@${r.magaca_taf || 'User'}</span>
-                                        <span style="color:var(--success-color);">+$${r.bonus.toFixed(2)}</span>
-                                    </div>
-                                `).join('') :
-                                '<p class="text-muted text-center">No referrals yet</p>'
-                            }
-                        </div>
-                    `;
-                })
-                .catch(() => {});
-        }
-
-        function copyReferral() {
-            const link = `https://t.me/USDTPilotBot?start=ref_${userId}`;
-            navigator.clipboard.writeText(link).then(() => {
-                showToast('✅ Referral link copied!', 'success');
-            }).catch(() => {
-                showToast('📋 Copy link: ' + link, 'info');
+            .then(res => res.json())
+            .then(data => {
+                showToast(data.message);
+                loadUser();
             });
         }
 
-        // SUPPORT TICKETS
-        function createTicket() {
-            const subject = document.getElementById('ticket-subject').value.trim();
-            const message = document.getElementById('ticket-message').value.trim();
-
-            if (!subject) return showToast('❌ Please enter a subject', 'error');
-            if (!message) return showToast('❌ Please enter a message', 'error');
-
-            const btn = event.target;
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> Submitting...';
-
-            fetch('/api/support/create', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: userId,
-                    subject: subject,
-                    message: message
-                })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        showToast('✅ Ticket created successfully!', 'success');
-                        document.getElementById('ticket-subject').value = '';
-                        document.getElementById('ticket-message').value = '';
-                        loadTickets();
-                    } else {
-                        showToast('❌ ' + data.message, 'error');
-                    }
-                })
-                .catch(() => showToast('❌ Network error', 'error'))
-                .finally(() => {
-                    btn.disabled = false;
-                    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Ticket';
-                });
-        }
-
-        function loadTickets() {
-            fetch(`/api/support/tickets?user_id=${userId}`)
-                .then(res => res.json())
-                .then(data => {
-                    const list = document.getElementById('ticket-list');
-                    const tickets = data.tikidhyo || [];
-
-                    if (tickets.length === 0) {
-                        list.innerHTML = '<p class="text-muted text-center">No support tickets</p>';
-                        return;
-                    }
-
-                    list.innerHTML = tickets.map(t => `
-                        <div class="support-ticket">
-                            <div style="display:flex;justify-content:space-between;align-items:center;">
-                                <strong>${t.subject}</strong>
-                                <span class="ticket-status ${t.status === 'OPEN' ? 'status-open' : 'status-closed'}">
-                                    ${t.status === 'OPEN' ? 'OPEN' : 'CLOSED'}
-                                </span>
-                            </div>
-                            <div style="font-size:13px;color:var(--text-sub);margin:4px 0;">${t.message.substring(0, 60)}...</div>
-                            <div style="font-size:11px;color:var(--text-sub);">${t.created_at}</div>
-                        </div>
-                    `).join('');
-                })
-                .catch(() => {});
-        }
-
-        // NOTIFICATIONS
-        function loadNotifications() {
+        function loadUser() {
             fetch(`/api/user/${userId}`)
-                .then(res => res.json())
-                .then(data => {
-                    const list = document.getElementById('notification-list');
-                    const notifs = data.ogeysiis || [];
-
-                    if (notifs.length === 0) {
-                        list.innerHTML = '<p class="text-muted text-center">No notifications</p>';
-                        return;
-                    }
-
-                    list.innerHTML = notifs.map(n => `
-                        <div class="ledger-row" style="${n.is_read ? 'opacity:0.6;' : ''}">
-                            <div>
-                                <div style="font-weight:600;">${n.title}</div>
-                                <div style="font-size:12px;color:var(--text-sub);">${n.message}</div>
-                                <div style="font-size:10px;color:var(--text-sub);">${n.created_at}</div>
-                            </div>
-                            ${!n.is_read ? '<span style="color:var(--accent-color);font-size:10px;">● New</span>' : ''}
-                        </div>
-                    `).join('');
-
-                    const hasUnread = notifs.some(n => !n.is_read);
-                    document.getElementById('notif-dot').style.display = hasUnread ? 'block' : 'none';
-                })
-                .catch(() => {});
+            .then(res => res.json())
+            .then(data => {
+                if (data.user) {
+                    document.getElementById('balance').innerText = data.user.balance.toFixed(2);
+                    document.getElementById('active-deposit').innerText = data.user.active_deposit.toFixed(2);
+                }
+            });
         }
 
-        function markAllRead() {
-            fetch('/api/notifications/mark-read', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: userId })
-            })
-                .then(() => {
-                    showToast('✅ Notifications marked as read', 'success');
-                    loadNotifications();
-                    document.getElementById('notif-dot').style.display = 'none';
-                })
-                .catch(() => {});
-        }
+        fetch('/api/auth/verify', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ user_id: userId, username: userName })
+        }).then(() => loadUser());
 
-        // LOAD USER ACCOUNT DATA
-        function loadAccountData() {
-            fetch(`/api/user/${userId}`)
-                .then(res => res.json())
-                .then(data => {
-                    const user = data.user || {};
-                    document.getElementById('balance').innerText = (user.balance || 0).toFixed(2);
-                    document.getElementById('active-deposit').innerText = '$' + (user.active_deposit || 0).toFixed(2);
-                    document.getElementById('referral-count').innerText = data.taf?.wadarta || 0;
-                    document.getElementById('bonus-earnings').innerText = '$' + (data.taf?.dakhli || 0).toFixed(2);
-
-                    referralCode = user.referral_code || '------';
-                    document.getElementById('referral-code').textContent = referralCode;
-
-                    // Transactions History
-                    const historyList = document.getElementById('history-list');
-                    const historyCount = document.getElementById('history-count');
-                    const transactions = data.macaamilo || [];
-
-                    if (transactions.length === 0) {
-                        historyList.innerHTML = `
-                            <div style="text-align:center;padding:20px;color:var(--text-sub);">
-                                <i class="fas fa-inbox" style="font-size:32px;display:block;margin-bottom:8px;"></i>
-                                No transactions found
-                            </div>
-                        `;
-                        historyCount.textContent = '0';
-                    } else {
-                        let html = '';
-                        transactions.slice(0, 20).forEach(tx => {
-                            const isDeposit = tx.type === 'DEPOSIT';
-                            const isWithdraw = tx.type === 'WITHDRAWAL';
-                            const isInvestment = tx.type === 'INVESTMENT';
-
-                            let statusClass = '';
-                            let statusText = '';
-                            if (tx.status === 'COMPLETED') {
-                                statusClass = 'status-success';
-                                statusText = 'COMPLETED';
-                            } else if (tx.status === 'ACTIVE') {
-                                statusClass = 'status-active';
-                                statusText = 'ACTIVE';
-                            } else if (tx.status === 'PENDING') {
-                                statusClass = 'status-pending';
-                                statusText = 'PENDING';
-                            }
-
-                            const amountColor = isDeposit ? 'var(--success-color)' :
-                                isWithdraw ? 'var(--danger-color)' :
-                                'var(--accent-color)';
-
-                            const icon = isDeposit ? 'fa-arrow-down' :
-                                isWithdraw ? 'fa-arrow-up' :
-                                'fa-chart-line';
-
-                            const label = isDeposit ? 'Deposit' :
-                                isWithdraw ? 'Withdrawal' :
-                                'Investment';
-
-                            html += `
-                                <div class="ledger-row">
-                                    <div class="ledger-info">
-                                        <div class="ledger-type">
-                                            <i class="fas ${icon}" style="color:${amountColor};margin-right:6px;"></i>
-                                            ${label}
-                                        </div>
-                                        <div class="ledger-date">${tx.date || 'Just now'}</div>
-                                        ${tx.txid ? `<div style="font-size:9px;color:var(--text-sub);">${tx.txid.substring(0,12)}...</div>` : ''}
-                                    </div>
-                                    <div style="text-align:right;">
-                                        <div class="ledger-amount" style="color:${amountColor};">$${Math.abs(tx.amount).toFixed(2)}</div>
-                                        <span class="ledger-status ${statusClass}">${statusText}</span>
-                                    </div>
-                                </div>
-                            `;
-                        });
-                        historyList.innerHTML = html;
-                        historyCount.textContent = transactions.length;
-                    }
-
-                    // Active Investments
-                    const invList = document.getElementById('investment-list');
-                    const investments = data.maalgashi || [];
-
-                    if (investments.length === 0) {
-                        invList.innerHTML = '<p class="text-muted text-center">No active investments</p>';
-                    } else {
-                        invList.innerHTML = investments.map(inv => `
-                            <div class="ledger-row">
-                                <div>
-                                    <div style="font-weight:600;">$${inv.amount.toFixed(2)} USDT</div>
-                                    <div style="font-size:11px;color:var(--text-sub);">
-                                        Return: $${inv.expected_return.toFixed(2)}
-                                    </div>
-                                </div>
-                                <div style="text-align:right;">
-                                    <div style="color:var(--success-color);font-size:13px;">+20%</div>
-                                    <div style="font-size:10px;color:var(--text-sub);">
-                                        ${inv.maturity_date ? 'Matures: ' + inv.maturity_date.substring(0,10) : ''}
-                                    </div>
-                                </div>
-                            </div>
-                        `).join('');
-                    }
-                })
-                .catch(err => console.error('Data loading error:', err));
-        }
-
-        // INITIALIZE
-        renderInvestmentPlans();
-        verifyUser();
-
-        // Auto-refresh every 15 seconds
-        setInterval(() => {
-            loadAccountData();
-        }, 15000);
-
-        updateDepositAddress();
-        calculateROI();
-
-        console.log('🚀 USDTPilot Pro initialized');
-        console.log('👤 User:', userName, 'ID:', userId);
+        renderPlans();
+        setInterval(loadUser, 4000);
     </script>
 </body>
 </html>
