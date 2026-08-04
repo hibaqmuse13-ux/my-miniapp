@@ -15,12 +15,10 @@ app.secret_key = os.getenv("SECRET_KEY", secrets.token_hex(32))
 # ============================================================
 BOT_TOKEN = os.getenv("BOT_TOKEN", "8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0")
 ADMIN_ID = os.getenv("ADMIN_ID", "5738022147")
-REFERRAL_BONUS_RATE = 0.05  # 5%
 TOTAL_PROFIT_RATE = 0.20   # 20% Total Return
 INVESTMENT_DAYS = 7
 TOTAL_HOURS = INVESTMENT_DAYS * 24  # 168 Hours
 
-# Fixed allowed investment plans
 ALLOWED_PLANS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
 # ============================================================
@@ -41,7 +39,6 @@ def init_db():
             balance REAL DEFAULT 0,
             active_deposit REAL DEFAULT 0,
             referral_code TEXT UNIQUE,
-            referred_by TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             last_login TIMESTAMP
         );
@@ -71,24 +68,6 @@ def init_db():
             maturity_date TIMESTAMP
         );
 
-        CREATE TABLE IF NOT EXISTS referrals (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            referrer_id TEXT,
-            referred_id TEXT,
-            bonus REAL,
-            status TEXT DEFAULT 'COMPLETED',
-            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-
-        CREATE TABLE IF NOT EXISTS support_tickets (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id TEXT,
-            subject TEXT,
-            message TEXT,
-            status TEXT DEFAULT 'OPEN',
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        );
-
         CREATE TABLE IF NOT EXISTS notifications (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id TEXT,
@@ -107,7 +86,6 @@ init_db()
 # AUTOMATIC HOURLY PROFIT SCHEDULER
 # ============================================================
 def process_hourly_profits():
-    """Runs every hour: Distributes profit to user balance automatically"""
     db = get_db()
     active_invs = db.execute("SELECT * FROM investments WHERE status = 'ACTIVE'").fetchall()
     
@@ -120,9 +98,7 @@ def process_hourly_profits():
         # Add hourly profit directly to main balance
         db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (hourly_profit, user_id))
         
-        # Update investment record
         if hours_passed >= TOTAL_HOURS:
-            # Plan Completed (Release capital back + finish plan)
             db.execute('''
                 UPDATE investments 
                 SET hours_passed = ?, profit_accumulated = profit_accumulated + ?, status = 'COMPLETED'
@@ -130,8 +106,7 @@ def process_hourly_profits():
             ''', (hours_passed, hourly_profit, inv_id))
             
             db.execute("UPDATE users SET active_deposit = active_deposit - ? WHERE telegram_id = ?", (inv['amount'], user_id))
-            
-            create_notification(user_id, "🎉 Investment Completed", f"Your investment of ${inv['amount']} USDT has fully matured after 7 days!")
+            create_notification(user_id, "🎉 Plan Completed", f"Your investment of ${inv['amount']} USDT has fully matured!")
         else:
             db.execute('''
                 UPDATE investments 
@@ -192,13 +167,13 @@ def verify_user():
     user_id = str(data.get('user_id'))
     username = data.get('username', 'User')
     
-    user = get_user(user_id)
+    get_user(user_id)
     db = get_db()
     db.execute('UPDATE users SET username = ?, last_login = ? WHERE telegram_id = ?', (username, datetime.now(), user_id))
     db.commit()
     db.close()
     
-    return jsonify({"status": "success", "user": user})
+    return jsonify({"status": "success", "user": get_user(user_id)})
 
 @app.route('/api/user/<user_id>', methods=['GET'])
 def get_user_data(user_id):
@@ -207,15 +182,13 @@ def get_user_data(user_id):
     
     transactions = db.execute('SELECT * FROM transactions WHERE user_id = ? ORDER BY date DESC LIMIT 20', (str(user_id),)).fetchall()
     investments = db.execute('SELECT * FROM investments WHERE user_id = ? AND status = \'ACTIVE\'', (str(user_id),)).fetchall()
-    notifications = db.execute('SELECT * FROM notifications WHERE user_id = ? AND is_read = 0 ORDER BY created_at DESC', (str(user_id),)).fetchall()
     
     db.close()
     
     return jsonify({
         "user": user,
         "macaamilo": [dict(t) for t in transactions],
-        "maalgashi": [dict(i) for i in investments],
-        "ogeysiis": [dict(n) for n in notifications]
+        "maalgashi": [dict(i) for i in investments]
     })
 
 @app.route('/api/deposit/request', methods=['POST'])
@@ -228,26 +201,30 @@ def request_deposit():
     amount = float(data.get('amount', 0))
     
     if amount < 10:
-        return jsonify({"status": "error", "message": "Minimum deposit is $10 USDT"})
+        return jsonify({"status": "error", "message": "⚠️ Minimum deposit is $10 USDT"})
     if not txid:
-        return jsonify({"status": "error", "message": "TXID is required"})
+        return jsonify({"status": "error", "message": "⚠️ Please enter a valid TXID / Hash!"})
         
     db = get_db()
-    db.execute('INSERT INTO transactions (user_id, type, amount, status, txid, network, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
-               (user_id, 'DEPOSIT', amount, 'PENDING', txid, network, f'Deposit via {network}'))
+    cursor = db.cursor()
+    cursor.execute('INSERT INTO transactions (user_id, type, amount, status, txid, network, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                   (user_id, 'DEPOSIT', amount, 'PENDING', txid, network, f'Deposit via {network}'))
+    tx_id = cursor.lastrowid
     db.commit()
     db.close()
     
+    # Inline buttons for Admin
     keyboard = {
         "inline_keyboard": [
-            [{"text": "✅ Approve", "callback_data": f"approve_deposit_{user_id}_{amount}"},
-             {"text": "❌ Reject", "callback_data": f"reject_deposit_{user_id}"}]
+            [{"text": "✅ Approve", "callback_data": f"approve_dep_{tx_id}"},
+             {"text": "❌ Reject", "callback_data": f"reject_dep_{tx_id}"}]
         ]
     }
-    admin_msg = f"📥 <b>NEW DEPOSIT</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nAmount: ${amount} USDT\nNetwork: {network}\nTXID: <code>{txid}</code>"
+    admin_msg = f"📥 <b>NEW DEPOSIT REQUEST</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nNetwork: {network}\nTXID: <code>{txid}</code>"
     send_telegram(ADMIN_ID, admin_msg, keyboard)
     
-    return jsonify({"status": "success", "message": "Deposit request sent to Admin!"})
+    # Beautiful English Success Message
+    return jsonify({"status": "success", "message": "✅ Deposit request submitted successfully! Pending approval."})
 
 @app.route('/api/invest', methods=['POST'])
 def invest():
@@ -255,37 +232,30 @@ def invest():
     user_id = str(data.get('user_id'))
     amount = int(data.get('amount', 0))
     
-    # Strict Plan Check
     if amount not in ALLOWED_PLANS:
-        return jsonify({"status": "error", "message": "Invalid Investment Plan! Choose between $10 and $100."})
+        return jsonify({"status": "error", "message": "⚠️ Invalid Investment Plan!"})
     
     user = get_user(user_id)
     if not user or user['balance'] < amount:
-        return jsonify({"status": "error", "message": "Insufficient balance! Please deposit first."})
+        return jsonify({"status": "error", "message": "⚠️ Insufficient balance! Please deposit first."})
     
     total_profit = amount * TOTAL_PROFIT_RATE
     hourly_profit = total_profit / TOTAL_HOURS
     maturity_date = datetime.now() + timedelta(days=INVESTMENT_DAYS)
     
     db = get_db()
-    # Deduct plan amount from balance
     db.execute('UPDATE users SET balance = balance - ?, active_deposit = active_deposit + ? WHERE telegram_id = ?', (amount, amount, user_id))
-    
-    # Register Investment Plan
     db.execute('''
         INSERT INTO investments (user_id, amount, total_profit, hourly_profit, maturity_date)
         VALUES (?, ?, ?, ?, ?)
     ''', (user_id, amount, total_profit, hourly_profit, maturity_date))
-    
-    # Record Transaction
     db.execute('INSERT INTO transactions (user_id, type, amount, status, description) VALUES (?, ?, ?, ?, ?)',
                (user_id, 'INVESTMENT', -amount, 'COMPLETED', f'Invested ${amount} USDT'))
-    
     db.commit()
     db.close()
     
-    create_notification(user_id, "🚀 Investment Started", f"Successfully invested ${amount} USDT. Profit will be added every hour for 7 days!")
-    return jsonify({"status": "success", "message": f"Successfully invested ${amount} USDT!"})
+    create_notification(user_id, "🚀 Investment Started", f"Successfully invested ${amount} USDT!")
+    return jsonify({"status": "success", "message": f"🎉 Successfully invested ${amount} USDT!"})
 
 @app.route('/api/withdraw/request', methods=['POST'])
 def request_withdrawal():
@@ -293,45 +263,39 @@ def request_withdrawal():
     user_id = str(data.get('user_id'))
     address = data.get('address')
     amount = float(data.get('amount', 0))
-    network = data.get('network', 'TRC20')
     
     if amount < 10:
-        return jsonify({"status": "error", "message": "Minimum withdrawal is $10 USDT"})
+        return jsonify({"status": "error", "message": "⚠️ Minimum withdrawal is $10 USDT"})
+    if not address:
+        return jsonify({"status": "error", "message": "⚠️ Please provide a wallet address!"})
     
     db = get_db()
-    # Check 7 days lock requirement
     active_inv = db.execute("SELECT * FROM investments WHERE user_id = ? AND status = 'ACTIVE'", (user_id,)).fetchone()
     
     if active_inv:
         start_time = datetime.strptime(active_inv['start_date'], '%Y-%m-%d %H:%M:%S')
         if datetime.now() < start_time + timedelta(days=INVESTMENT_DAYS):
             db.close()
-            return jsonify({"status": "error", "message": "Withdrawal locked! You must wait 7 days for active investments to finish."})
+            return jsonify({"status": "error", "message": "🔒 Withdrawal locked! Active investment must complete 7 days."})
 
     user = get_user(user_id)
     if not user or user['balance'] < amount:
         db.close()
-        return jsonify({"status": "error", "message": "Insufficient balance!"})
+        return jsonify({"status": "error", "message": "⚠️ Insufficient balance!"})
     
     db.execute('UPDATE users SET balance = balance - ? WHERE telegram_id = ?', (amount, user_id))
-    db.execute('INSERT INTO transactions (user_id, type, amount, status, description, network) VALUES (?, ?, ?, ?, ?, ?)',
-               (user_id, 'WITHDRAWAL', -amount, 'PENDING', f'Withdrawal to {network}', network))
+    db.execute('INSERT INTO transactions (user_id, type, amount, status, description) VALUES (?, ?, ?, ?, ?)',
+               (user_id, 'WITHDRAWAL', -amount, 'PENDING', f'Withdrawal to {address}'))
     db.commit()
     db.close()
     
-    keyboard = {
-        "inline_keyboard": [
-            [{"text": "✅ Approve", "callback_data": f"approve_withdraw_{user_id}_{amount}"},
-             {"text": "❌ Reject", "callback_data": f"reject_withdraw_{user_id}"}]
-        ]
-    }
-    admin_msg = f"📤 <b>NEW WITHDRAWAL</b>\n\nUser ID: <code>{user_id}</code>\nAmount: ${amount} USDT\nNetwork: {network}\nAddress: <code>{address}</code>"
-    send_telegram(ADMIN_ID, admin_msg, keyboard)
+    admin_msg = f"📤 <b>NEW WITHDRAWAL REQUEST</b>\n\nUser ID: <code>{user_id}</code>\nAmount: ${amount} USDT\nAddress: <code>{address}</code>"
+    send_telegram(ADMIN_ID, admin_msg)
     
-    return jsonify({"status": "success", "message": "Withdrawal request submitted to Admin!"})
+    return jsonify({"status": "success", "message": "✅ Withdrawal request submitted successfully!"})
 
 # ============================================================
-# TELEGRAM WEBHOOK (ADMIN APPROVALS)
+# TELEGRAM WEBHOOK (AUTOMATIC BALANCE UPDATE ON APPROVAL)
 # ============================================================
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -342,36 +306,46 @@ def webhook():
         chat_id = query["message"]["chat"]["id"]
         message_id = query["message"]["message_id"]
         
-        if data.startswith("approve_deposit_"):
-            parts = data.split("_")
-            user_id, amount = parts[2], float(parts[3])
+        # Admin Action: Approve Deposit
+        if data.startswith("approve_dep_"):
+            tx_id = data.split("_")[2]
             
             db = get_db()
-            db.execute("UPDATE transactions SET status = 'COMPLETED' WHERE user_id = ? AND type = 'DEPOSIT' AND status = 'PENDING'", (user_id,))
-            db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
+            tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
+            
+            if tx:
+                user_id = tx['user_id']
+                amount = tx['amount']
+                
+                # 1. Update Transaction Status
+                db.execute("UPDATE transactions SET status = 'COMPLETED' WHERE id = ?", (tx_id,))
+                
+                # 2. Add amount AUTOMATICALLY to User Balance
+                db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
+                db.commit()
+                
+                # Notify Admin on Telegram
+                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
+                    "chat_id": chat_id, "message_id": message_id,
+                    "text": f"✅ <b>DEPOSIT APPROVED</b>\nUser: <code>{user_id}</code>\nAmount: +${amount} USDT\nStatus: Balance Updated!", "parse_mode": "HTML"
+                })
+                
+                # Notify User on Telegram
+                send_telegram(user_id, f"🎉 <b>Deposit Approved!</b>\n\nYour deposit of <b>${amount} USDT</b> has been credited to your balance successfully.")
+            
+            db.close()
+            
+        elif data.startswith("reject_dep_"):
+            tx_id = data.split("_")[2]
+            db = get_db()
+            db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
             db.commit()
             db.close()
             
             requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
                 "chat_id": chat_id, "message_id": message_id,
-                "text": f"✅ <b>DEPOSIT APPROVED</b>\nUser: <code>{user_id}</code>\nAmount: +${amount} USDT", "parse_mode": "HTML"
+                "text": f"❌ <b>DEPOSIT REJECTED</b>", "parse_mode": "HTML"
             })
-            send_telegram(user_id, f"🎉 Your deposit of <b>${amount} USDT</b> was approved!")
-            
-        elif data.startswith("approve_withdraw_"):
-            parts = data.split("_")
-            user_id, amount = parts[2], float(parts[3])
-            
-            db = get_db()
-            db.execute("UPDATE transactions SET status = 'COMPLETED' WHERE user_id = ? AND type = 'WITHDRAWAL' AND status = 'PENDING'", (user_id,))
-            db.commit()
-            db.close()
-            
-            requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
-                "chat_id": chat_id, "message_id": message_id,
-                "text": f"✅ <b>WITHDRAWAL APPROVED</b>\nUser: <code>{user_id}</code>\nAmount: -${amount} USDT", "parse_mode": "HTML"
-            })
-            send_telegram(user_id, f"✅ Your withdrawal of <b>${amount} USDT</b> was sent!")
 
     return jsonify({"status": "ok"})
 
