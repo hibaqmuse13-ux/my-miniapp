@@ -7,6 +7,25 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
+    <!-- Firebase App & Firestore CDN -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBZ92SVBx3B47Jgk-00Ynp2AVmmYBhcK9s",
+        authDomain: "usdtpilot.firebaseapp.com",
+        projectId: "usdtpilot",
+        storageBucket: "usdtpilot.firebasestorage.app",
+        messagingSenderId: "454725978818",
+        appId: "1:454725978818:web:fd04d4699807381232495b"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      window.db = db; // Si looga isticmaalo app-ka dhexdiisa
+    </script>
+
     <style>
         :root {
             --bg-dark: #090d16;
@@ -472,6 +491,17 @@
     </div>
 </section>
 
+<!-- Admin Dashboard Page -->
+<section id="admin-panel" class="page">
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; color: #f59e0b;">
+            <i class="fa-solid fa-user-shield"></i> Admin Management Panel
+        </h3>
+        <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 14px;">Manage pending deposit and withdrawal requests below:</p>
+        <div id="admin-pending-container"></div>
+    </div>
+</section>
+
 <!-- Bottom Nav -->
 <nav id="main-nav">
     <button class="nav-btn active" onclick="openPage('invest', this)">
@@ -541,6 +571,7 @@
         startProfitEngine();
         updateDepositAddress();
         updateWithdrawIcon();
+        checkAdminAccess();
     });
 
     function saveState() {
@@ -553,6 +584,17 @@
 
         if (tg?.initDataUnsafe?.user) {
             telegramUser = tg.initDataUnsafe.user;
+        }
+
+        if (tg?.initDataUnsafe?.start_param) {
+            const startParam = tg.initDataUnsafe.start_param;
+            if (startParam.startsWith('ref_')) {
+                const refId = startParam.replace('ref_', '');
+                if (refId !== telegramUser.id.toString() && !userState.referrerId) {
+                    userState.referrerId = refId;
+                    saveState();
+                }
+            }
         }
 
         const fullName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
@@ -593,6 +635,111 @@
         }
 
         openPage('withdraw');
+    }
+
+    function checkAdminAccess() {
+        if (telegramUser.id.toString() === ADMIN_CHAT_ID) {
+            const nav = document.getElementById('main-nav');
+            if (!document.getElementById('admin-nav-btn')) {
+                nav.innerHTML += `
+                    <button id="admin-nav-btn" class="nav-btn" onclick="openPage('admin-panel', this)">
+                        <i class="fa-solid fa-user-shield" style="color: #f59e0b;"></i> Admin
+                    </button>
+                `;
+            }
+            renderAdminPendingRequests();
+        }
+    }
+
+    function renderAdminPendingRequests() {
+        const container = document.getElementById('admin-pending-container');
+        if(!container) return;
+
+        const pendingTxs = userState.transactions.filter(t => t.status === 'pending');
+
+        if (pendingTxs.length === 0) {
+            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0;">No pending requests at the moment.</p>`;
+            return;
+        }
+
+        container.innerHTML = pendingTxs.map(tx => `
+            <div style="background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 13px; font-weight: 700; color: var(--accent-cyan);">${tx.title}</span>
+                    <span style="font-size: 10px; color: var(--text-sub); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">${tx.id}</span>
+                </div>
+                <p style="font-size: 12px; margin-bottom: 4px;"><b>Amount:</b> $${tx.amount.toFixed(2)} USDT</p>
+                <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;"><b>Network:</b> ${tx.network} | <b>Date:</b> ${tx.date}</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button onclick="processTransaction('${tx.id}', 'approve')" style="background: var(--success-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Approve</button>
+                    <button onclick="processTransaction('${tx.id}', 'reject')" style="background: var(--danger-color); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Reject</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function processTransaction(txId, action) {
+        const txIndex = userState.transactions.findIndex(t => t.id === txId);
+        if (txIndex === -1) return;
+
+        const tx = userState.transactions[txIndex];
+
+        if (action === 'approve') {
+            tx.status = 'completed';
+            if (tx.type === 'deposit') {
+                userState.balance += tx.amount;
+                userState.totalDeposited += tx.amount;
+
+                if (!userState.hasDeposited) {
+                    userState.hasDeposited = true;
+                    if (userState.referrerId) {
+                        let refKey = `usdtpilot_userState_${userState.referrerId}`;
+                        let referrerState = JSON.parse(localStorage.getItem(refKey)) || {
+                            balance: 0, referralCount: 0, transactions: []
+                        };
+                        
+                        referrerState.balance += 1.00;
+                        referrerState.referralCount += 1;
+                        referrerState.transactions.unshift({
+                            id: 'REF' + Math.floor(100000 + Math.random() * 900000),
+                            type: 'referral',
+                            title: `Referral Bonus (ID: ${telegramUser.id})`,
+                            amount: 1.00,
+                            status: 'completed',
+                            date: new Date().toLocaleDateString(),
+                            network: 'INTERNAL'
+                        });
+                        localStorage.setItem(refKey, JSON.stringify(referrerState));
+
+                        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                chat_id: ADMIN_CHAT_ID,
+                                text: `🎁 <b>REFERRAL BONUS PAID</b>\nReferrer ID: <code>${userState.referrerId}</code> received <b>$1.00 USDT</b> because User <code>${telegramUser.id}</code> completed their first deposit!`,
+                                parse_mode: 'HTML'
+                            })
+                        });
+                    }
+                }
+            } else if (tx.type === 'withdraw') {
+                userState.totalWithdrawn += tx.amount;
+            }
+            showToast(`Transaction ${txId} APPROVED!`);
+        } else if (action === 'reject') {
+            tx.status = 'rejected';
+            if (tx.type === 'withdraw') {
+                userState.balance += tx.amount;
+            }
+            showToast(`Transaction ${txId} REJECTED!`);
+        }
+
+        saveState();
+        updateUI();
+        renderHistory();
+        updateStats();
+        renderAdminPendingRequests();
     }
 
     function updateDepositAddress() {
@@ -645,7 +792,7 @@
         `).join('');
     }
 
-    async function submitDeposit() {
+    function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
         const net = document.getElementById('deposit-network').value;
@@ -654,6 +801,7 @@
         if(!txid) { showToast("Please paste your TXID Hash!"); return; }
 
         const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
+
         const txObj = {
             id: generatedTxId,
             type: 'deposit',
@@ -661,8 +809,7 @@
             amount: amt,
             status: 'pending',
             date: new Date().toLocaleDateString(),
-            network: net,
-            txid: txid
+            network: net
         };
 
         userState.transactions.unshift(txObj);
@@ -676,32 +823,20 @@
 ━━━━━━━━━━━━━━━━━━
 👤 <b>User:</b> ${uName} (${uHandle})
 🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
+🆔 <b>System TXID:</b> <code>${generatedTxId}</code>
 💵 <b>Amount:</b> $${amt.toFixed(2)} USDT
 🌐 <b>Network:</b> ${net}
 🔑 <b>TXID Hash:</b> <code>${txid}</code>
+📅 <b>Date:</b> ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━━━━
 📌 <i>Status: Pending verification</i>
         `;
 
-        const inlineKeyboard = {
-            inline_keyboard: [
-                [
-                    { text: "✅ Approve", callback_data: `approve_${telegramUser.id}_${amt}` },
-                    { text: "❌ Reject", callback_data: `reject_${telegramUser.id}_${amt}` }
-                ]
-            ]
-        };
-
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                chat_id: ADMIN_CHAT_ID, 
-                text: adminMessage, 
-                parse_mode: 'HTML',
-                reply_markup: inlineKeyboard
-            })
-        }).catch(err => console.log(err));
+            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: adminMessage, parse_mode: 'HTML' })
+        });
 
         document.getElementById('deposit-amount').value = '';
         document.getElementById('deposit-txid').value = '';
@@ -709,10 +844,11 @@
         showToast("Deposit submitted! Status: Pending verification.");
         renderHistory();
         updateStats();
+        renderAdminPendingRequests();
         openPage('history');
     }
 
-    async function submitWithdraw() {
+    function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
         const net = document.getElementById('withdraw-network').value;
@@ -745,9 +881,11 @@
 ━━━━━━━━━━━━━━━━━━
 👤 <b>User:</b> ${uName} (${uHandle})
 🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
+🆔 <b>System TXID:</b> <code>${generatedTxId}</code>
 💵 <b>Amount:</b> $${amt.toFixed(2)} USDT
 🌐 <b>Network:</b> ${net}
 💳 <b>Wallet Address:</b> <code>${addr}</code>
+📅 <b>Date:</b> ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━━━━
 📌 <i>Status: Pending verification</i>
         `;
@@ -756,7 +894,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: adminMessage, parse_mode: 'HTML' })
-        }).catch(err => console.log(err));
+        });
 
         document.getElementById('withdraw-amount').value = '';
         document.getElementById('withdraw-address').value = '';
@@ -764,6 +902,7 @@
         updateUI();
         renderHistory();
         updateStats();
+        renderAdminPendingRequests();
         showToast(`Withdrawal of $${amt} submitted! Status: Pending.`);
         openPage('history');
     }
@@ -959,7 +1098,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: ticketMessage, parse_mode: 'HTML' })
-        }).catch(err => console.log(err));
+        });
 
         document.getElementById('support-subject').value = '';
         document.getElementById('support-msg').value = '';
