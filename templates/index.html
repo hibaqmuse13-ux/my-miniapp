@@ -188,7 +188,7 @@
 <!-- Balance Section -->
 <section class="balance-card">
     <p>Available Balance</p>
-    <h1>$<span id="balance">100.00</span></h1>
+    <h1>$<span id="balance">0.00</span></h1>
     <span class="badge-usdt">
         <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT"> USDT
     </span>
@@ -483,26 +483,19 @@
     const BOT_TOKEN = '8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0';
     const ADMIN_CHAT_ID = '5738022147';
 
-    // State Data Structure
-    let userState = {
-        balance: 100.00,
+    // Default User Data
+    const defaultState = {
+        balance: 0.00,
         totalProfit: 0.00,
         activeInvestment: 0.00,
-        totalDeposited: 100.00,
+        totalDeposited: 0.00,
         totalWithdrawn: 0.00,
         investments: [],
-        transactions: [
-            {
-                id: 'TXN891023',
-                type: 'deposit',
-                title: 'Welcome Bonus Deposit',
-                amount: 100.00,
-                status: 'completed',
-                date: new Date().toLocaleDateString(),
-                network: 'SYSTEM'
-            }
-        ]
+        transactions: []
     };
+
+    // Load saved data from localStorage or set default
+    let userState = JSON.parse(localStorage.getItem('usdtpilot_userState')) || defaultState;
 
     let telegramUser = { id: 5738022147, first_name: "Ismail", last_name: "Essa", username: "ismailessa" };
 
@@ -517,6 +510,7 @@
     };
 
     let activeHistoryFilter = 'all';
+    let lastUpdateId = 0;
 
     window.addEventListener('load', () => {
         setTimeout(() => {
@@ -533,7 +527,14 @@
         startProfitEngine();
         updateDepositAddress();
         updateWithdrawIcon();
+        
+        // Polling automatic check every 3 seconds for Admin Actions
+        setInterval(checkTelegramUpdates, 3000);
     });
+
+    function saveState() {
+        localStorage.setItem('usdtpilot_userState', JSON.stringify(userState));
+    }
 
     function initTelegramUser() {
         const tg = window.Telegram?.WebApp;
@@ -586,6 +587,74 @@
             });
         } catch (error) {
             console.error("Telegram Admin Notification Error:", error);
+        }
+    }
+
+    // AUTOMATIC ADMIN ACTION POLLING (LISTENER)
+    async function checkTelegramUpdates() {
+        try {
+            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`);
+            const data = await res.json();
+
+            if (data.ok && data.result.length > 0) {
+                data.result.forEach(update => {
+                    lastUpdateId = update.update_id;
+
+                    if (update.callback_query) {
+                        const callbackData = update.callback_query.data; // e.g. "approve_deposit_TXN123456_50_5738022147"
+                        const parts = callbackData.split('_');
+
+                        if (parts.length >= 5) {
+                            const action = parts[0];      // approve / reject
+                            const type = parts[1];        // deposit / withdraw
+                            const txId = parts[2];        // TXN123456
+                            const amount = parseFloat(parts[3]);
+                            const uId = parts[4];
+
+                            if (uId == telegramUser.id) {
+                                handleAdminDecision(action, type, txId, amount);
+                            }
+                        }
+                    }
+                });
+            }
+        } catch (e) {
+            console.log("Polling error:", e);
+        }
+    }
+
+    // UPDATE BALANCE & HISTORY BASED ON ADMIN DECISION
+    function handleAdminDecision(action, type, txId, amount) {
+        let tx = userState.transactions.find(t => t.id === txId);
+
+        if (tx && tx.status === 'pending') {
+            if (action === 'approve') {
+                tx.status = 'completed';
+
+                if (type === 'deposit') {
+                    userState.balance += amount;
+                    userState.totalDeposited += amount;
+                    showToast(`🎉 Deposit of $${amount} Approved!`);
+                } else if (type === 'withdraw') {
+                    userState.totalWithdrawn += amount;
+                    showToast(`✅ Withdrawal of $${amount} Approved!`);
+                }
+            } else if (action === 'reject') {
+                tx.status = 'rejected';
+
+                if (type === 'withdraw') {
+                    // Refund balance if withdrawal was rejected
+                    userState.balance += amount;
+                    showToast(`❌ Withdrawal of $${amount} Rejected & Refunded!`);
+                } else {
+                    showToast(`❌ Deposit of $${amount} Rejected!`);
+                }
+            }
+
+            saveState();
+            updateUI();
+            renderHistory();
+            updateStats();
         }
     }
 
@@ -661,6 +730,7 @@
         };
 
         userState.transactions.unshift(txObj);
+        saveState();
 
         // Send Notification with Action Buttons to Admin Telegram
         const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
@@ -715,6 +785,7 @@
         };
 
         userState.transactions.unshift(txObj);
+        saveState();
 
         // Send Notification with Action Buttons to Admin Telegram
         const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
@@ -778,6 +849,7 @@
             network: 'INTERNAL'
         });
 
+        saveState();
         updateUI();
         renderHistory();
         updateStats();
@@ -870,6 +942,7 @@
             if (addedProfit > 0) {
                 userState.balance += addedProfit;
                 userState.totalProfit += addedProfit;
+                saveState();
                 updateUI();
                 updateStats();
             }
