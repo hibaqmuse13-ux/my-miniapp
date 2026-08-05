@@ -125,6 +125,7 @@
         .status-badge { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-top: 3px; }
         .status-completed { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        .status-rejected { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
 
         /* Stats */
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
@@ -305,12 +306,11 @@
     </div>
 </section>
 
-<!-- Real Professional History Page -->
+<!-- History Page -->
 <section id="history" class="page">
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 14px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> Transaction History</h3>
         
-        <!-- Filter Tabs -->
         <div class="history-tabs">
             <button class="tab-btn active" onclick="filterHistory('all', this)">All Activity</button>
             <button class="tab-btn" onclick="filterHistory('deposit', this)">Deposits</button>
@@ -318,7 +318,6 @@
             <button class="tab-btn" onclick="filterHistory('invest', this)">Investments</button>
         </div>
 
-        <!-- Dynamic History Container -->
         <div id="history-container"></div>
     </div>
 </section>
@@ -561,8 +560,19 @@
         }
     }
 
-    async function sendAdminNotification(messageText) {
+    // Dynamic Admin Action Buttons (Approve / Reject)
+    async function sendAdminNotificationWithAction(messageText, actionType, txId, amount, userId) {
         const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+        
+        const inlineKeyboard = {
+            inline_keyboard: [
+                [
+                    { text: "✅ Approve", callback_data: `approve_${actionType}_${txId}_${amount}_${userId}` },
+                    { text: "❌ Reject", callback_data: `reject_${actionType}_${txId}_${amount}_${userId}` }
+                ]
+            ]
+        };
+
         try {
             await fetch(url, {
                 method: 'POST',
@@ -570,7 +580,8 @@
                 body: JSON.stringify({
                     chat_id: ADMIN_CHAT_ID,
                     text: messageText,
-                    parse_mode: 'HTML'
+                    parse_mode: 'HTML',
+                    reply_markup: inlineKeyboard
                 })
             });
         } catch (error) {
@@ -628,7 +639,7 @@
         `).join('');
     }
 
-    // Submit Deposit + Send Telegram Admin Notification
+    // Submit Deposit
     function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
@@ -651,7 +662,7 @@
 
         userState.transactions.unshift(txObj);
 
-        // Send Notification to Admin
+        // Send Notification with Action Buttons to Admin Telegram
         const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
         const uHandle = telegramUser.username ? `@${telegramUser.username}` : '@no_username';
 
@@ -666,9 +677,10 @@
 🔑 <b>TXID Hash:</b> <code>${txid}</code>
 📅 <b>Date:</b> ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━━━━
-⚠️ <i>Verify TXID on blockchain before approving!</i>
+⚠️ <i>Choose Action Below:</i>
         `;
-        sendAdminNotification(adminMessage);
+        
+        sendAdminNotificationWithAction(adminMessage, 'deposit', generatedTxId, amt, telegramUser.id);
 
         document.getElementById('deposit-amount').value = '';
         document.getElementById('deposit-txid').value = '';
@@ -679,7 +691,7 @@
         openPage('history');
     }
 
-    // Submit Withdraw + Send Telegram Admin Notification
+    // Submit Withdraw
     function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
@@ -704,7 +716,7 @@
 
         userState.transactions.unshift(txObj);
 
-        // Send Notification to Admin
+        // Send Notification with Action Buttons to Admin Telegram
         const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
         const uHandle = telegramUser.username ? `@${telegramUser.username}` : '@no_username';
 
@@ -719,9 +731,10 @@
 💳 <b>Wallet Address:</b> <code>${addr}</code>
 📅 <b>Date:</b> ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━━━━
-🚀 <i>Send $${amt.toFixed(2)} USDT to user's wallet address!</i>
+🚀 <i>Choose Action Below:</i>
         `;
-        sendAdminNotification(adminMessage);
+
+        sendAdminNotificationWithAction(adminMessage, 'withdraw', generatedTxId, amt, telegramUser.id);
 
         document.getElementById('withdraw-amount').value = '';
         document.getElementById('withdraw-address').value = '';
@@ -797,7 +810,7 @@
             let iconClass = tx.type === 'deposit' ? 'fa-arrow-down deposit' : (tx.type === 'withdraw' ? 'fa-arrow-up withdraw' : 'fa-chart-line invest');
             let sign = tx.type === 'deposit' ? '+' : (tx.type === 'withdraw' ? '-' : '');
             let color = tx.type === 'deposit' ? '#10b981' : (tx.type === 'withdraw' ? '#ef4444' : 'var(--accent-cyan)');
-            let statusDisplay = tx.status === 'completed' ? 'completed' : 'pending';
+            let statusDisplay = tx.status === 'completed' ? 'completed' : (tx.status === 'rejected' ? 'rejected' : 'pending');
             
             return `
                 <div class="tx-card">
@@ -907,7 +920,12 @@
 💬 <b>Message:</b> ${msg}
 ━━━━━━━━━━━━━━━━━━
         `;
-        sendAdminNotification(ticketMessage);
+        
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: ticketMessage, parse_mode: 'HTML' })
+        });
 
         document.getElementById('support-subject').value = '';
         document.getElementById('support-msg').value = '';
