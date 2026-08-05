@@ -625,7 +625,7 @@
         } else if (action === 'reject') {
             tx.status = 'rejected';
             if (tx.type === 'withdraw') {
-                userState.balance += tx.amount;
+                userState.balance += tx.amount; // Balance refund if withdrawal rejected
             }
             showToast(`Transaction ${txId} REJECTED!`);
         }
