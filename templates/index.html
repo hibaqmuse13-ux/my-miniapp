@@ -455,8 +455,19 @@
     </div>
 </section>
 
+<!-- Admin Dashboard Page (Only visible if User ID matches ADMIN_CHAT_ID) -->
+<section id="admin-panel" class="page">
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; color: #f59e0b;">
+            <i class="fa-solid fa-user-shield"></i> Admin Management Panel
+        </h3>
+        <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 14px;">Manage pending deposit and withdrawal requests below:</p>
+        <div id="admin-pending-container"></div>
+    </div>
+</section>
+
 <!-- Bottom Nav -->
-<nav>
+<nav id="main-nav">
     <button class="nav-btn active" onclick="openPage('invest', this)">
         <i class="fa-solid fa-house"></i> Home
     </button>
@@ -524,6 +535,7 @@
         startProfitEngine();
         updateDepositAddress();
         updateWithdrawIcon();
+        checkAdminAccess();
     });
 
     function saveState() {
@@ -553,6 +565,79 @@
             document.getElementById('header-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
         }
+    }
+
+    /* ADMIN VERIFICATION & DASHBOARD ENGINE */
+    function checkAdminAccess() {
+        if (telegramUser.id.toString() === ADMIN_CHAT_ID) {
+            const nav = document.getElementById('main-nav');
+            if (!document.getElementById('admin-nav-btn')) {
+                nav.innerHTML += `
+                    <button id="admin-nav-btn" class="nav-btn" onclick="openPage('admin-panel', this)">
+                        <i class="fa-solid fa-user-shield" style="color: #f59e0b;"></i> Admin
+                    </button>
+                `;
+            }
+            renderAdminPendingRequests();
+        }
+    }
+
+    function renderAdminPendingRequests() {
+        const container = document.getElementById('admin-pending-container');
+        if(!container) return;
+
+        const pendingTxs = userState.transactions.filter(t => t.status === 'pending');
+
+        if (pendingTxs.length === 0) {
+            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0;">No pending requests at the moment.</p>`;
+            return;
+        }
+
+        container.innerHTML = pendingTxs.map(tx => `
+            <div style="background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 13px; font-weight: 700; color: var(--accent-cyan);">${tx.title}</span>
+                    <span style="font-size: 10px; color: var(--text-sub); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">${tx.id}</span>
+                </div>
+                <p style="font-size: 12px; margin-bottom: 4px;"><b>Amount:</b> $${tx.amount.toFixed(2)} USDT</p>
+                <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;"><b>Network:</b> ${tx.network} | <b>Date:</b> ${tx.date}</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <button onclick="processTransaction('${tx.id}', 'approve')" style="background: var(--success-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Approve</button>
+                    <button onclick="processTransaction('${tx.id}', 'reject')" style="background: var(--danger-color); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Reject</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function processTransaction(txId, action) {
+        const txIndex = userState.transactions.findIndex(t => t.id === txId);
+        if (txIndex === -1) return;
+
+        const tx = userState.transactions[txIndex];
+
+        if (action === 'approve') {
+            tx.status = 'completed';
+            if (tx.type === 'deposit') {
+                userState.balance += tx.amount;
+                userState.totalDeposited += tx.amount;
+            } else if (tx.type === 'withdraw') {
+                userState.totalWithdrawn += tx.amount;
+            }
+            showToast(`Transaction ${txId} APPROVED!`);
+        } else if (action === 'reject') {
+            tx.status = 'rejected';
+            if (tx.type === 'withdraw') {
+                userState.balance += tx.amount; // Balance refund if withdrawal rejected
+            }
+            showToast(`Transaction ${txId} REJECTED!`);
+        }
+
+        saveState();
+        updateUI();
+        renderHistory();
+        updateStats();
+        renderAdminPendingRequests();
     }
 
     function updateDepositAddress() {
@@ -605,7 +690,7 @@
         `).join('');
     }
 
-    // Submit Deposit (Direct Message - No Buttons Frozen)
+    // Submit Deposit
     function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
@@ -662,10 +747,11 @@
         showToast("Deposit submitted! Status: Pending verification.");
         renderHistory();
         updateStats();
+        renderAdminPendingRequests();
         openPage('history');
     }
 
-    // Submit Withdraw (Direct Message - No Buttons Frozen)
+    // Submit Withdraw
     function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
@@ -724,6 +810,7 @@
         updateUI();
         renderHistory();
         updateStats();
+        renderAdminPendingRequests();
         showToast(`Withdrawal of $${amt} submitted! Status: Pending.`);
         openPage('history');
     }
