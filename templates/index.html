@@ -43,7 +43,7 @@
         .profile small { font-size: 11px; color: var(--text-sub); }
         .verified { font-size: 10px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 5px; }
 
-        /* Dashboard Balance Card */
+        /* Balance Card */
         .balance-card { background: linear-gradient(145deg, rgba(16, 24, 40, 0.9) 0%, rgba(10, 15, 28, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; padding: 24px 20px; text-align: center; box-shadow: 0 12px 30px rgba(0,0,0,0.4); margin-bottom: 20px; position: relative; overflow: hidden; }
         .balance-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, transparent 60%); pointer-events: none; }
         .balance-card p { font-size: 12px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
@@ -63,7 +63,7 @@
         .quick button i { font-size: 16px; color: var(--accent-cyan); }
         .quick button:active { transform: scale(0.96); opacity: 0.9; }
 
-        /* Pages & Cards UI */
+        /* Pages & Dynamic Views */
         .page { display: none; }
         .page.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
@@ -72,38 +72,32 @@
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
 
-        /* Plans Grid Container */
+        /* Plans Grid */
         .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        
         .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 16px; text-align: center; position: relative; backdrop-filter: blur(10px); transition: transform 0.2s; }
         .plan-card:active { transform: scale(0.98); }
         .plan-card.vip-card { border-color: rgba(245, 158, 11, 0.3); background: linear-gradient(145deg, rgba(30, 25, 15, 0.8) 0%, rgba(21, 28, 44, 0.8) 100%); }
-        
         .plan-badge { position: absolute; top: 10px; right: 10px; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; }
         .badge-std { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
         .badge-vip { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-
         .plan-title { font-size: 22px; font-weight: 800; margin: 8px 0 4px 0; }
         .plan-rate { font-size: 13px; font-weight: 700; color: #10b981; margin-bottom: 10px; }
         .plan-info { font-size: 11px; color: var(--text-sub); display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; text-align: left; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px; }
-        
         .plan-btn { width: 100%; padding: 10px; border-radius: 10px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; color: #fff; }
         .btn-std { background: var(--primary-gradient); box-shadow: 0 4px 10px rgba(0, 210, 255, 0.2); }
         .btn-vip { background: var(--vip-gradient); box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2); }
 
-        /* Forms & Custom Inputs */
+        /* Forms */
         label { display: block; font-size: 11px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
         select, input, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 14px; outline: none; margin-bottom: 14px; transition: border-color 0.2s; }
         select:focus, input:focus, textarea:focus { border-color: var(--accent-cyan); }
         
-        /* Custom Network Display Card (Deposit & Withdraw) */
         .network-preview-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
         .net-left { display: flex; align-items: center; gap: 12px; }
         .net-left img { width: 36px; height: 36px; border-radius: 50%; box-shadow: 0 0 10px rgba(0,210,255,0.2); }
         .net-info h4 { font-size: 14px; font-weight: 700; color: #fff; }
         .net-info p { font-size: 11px; color: var(--accent-cyan); font-weight: 600; margin-top: 2px; }
 
-        /* Wallet Box Display */
         .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
         .wallet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
         .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 5px; }
@@ -113,7 +107,7 @@
         button.primary { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--primary-gradient); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3); transition: transform 0.2s; }
         button.success { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--success-gradient); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); transition: transform 0.2s; }
 
-        /* History Filter Tabs & Cards */
+        /* History Elements */
         .history-tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
         .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-sub); padding: 8px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
         .tab-btn.active { background: var(--primary-gradient); color: #fff; border-color: transparent; }
@@ -132,7 +126,7 @@
         .status-completed { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
 
-        /* Statistics Styling */
+        /* Stats */
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
         .stat-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; text-align: center; }
         .stat-box i { font-size: 18px; color: var(--accent-cyan); margin-bottom: 6px; }
@@ -143,17 +137,15 @@
         .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-top: 10px; }
         .progress-bar-fill { height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s ease; }
 
-        /* Chart Visualizer */
-        .chart-visual { height: 120px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding-top: 20px; border-bottom: 1px border var(--card-border); }
-        .chart-bar { flex: 1; background: rgba(0, 210, 255, 0.2); border-radius: 6px 6px 0 0; position: relative; transition: height 0.5s; }
+        .chart-visual { height: 120px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding-top: 20px; border-bottom: 1px solid var(--card-border); }
+        .chart-bar { flex: 1; background: rgba(0, 210, 255, 0.2); border-radius: 6px 6px 0 0; transition: height 0.5s; }
         .chart-bar.active { background: var(--primary-gradient); }
 
-        /* Support Page Cards */
-        .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: #fff; transition: background 0.2s; }
-        .support-card:active { background: rgba(30, 41, 59, 0.9); }
+        /* Support */
+        .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: #fff; }
         .support-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent-cyan); }
 
-        /* Bottom Navigation Bar */
+        /* Navigation */
         nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 20px 20px 0 0; }
         nav button { background: none; border: none; color: var(--text-sub); font-size: 10px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; flex: 1; transition: color 0.2s; }
         nav button i { font-size: 18px; }
@@ -214,7 +206,7 @@
     </div>
 </section>
 
-<!-- Quick Action Buttons -->
+<!-- Quick Actions -->
 <div class="quick">
     <button onclick="openPage('deposit')">
         <i class="fa-solid fa-wallet"></i> Deposit
@@ -224,7 +216,7 @@
     </button>
 </div>
 
-<!-- Investment Plans Page -->
+<!-- Home / Plans Page -->
 <section id="invest" class="page active">
     <div class="section-header standard">
         <i class="fa-solid fa-bolt"></i> Standard Plans (20% Daily)
@@ -326,19 +318,16 @@
             <button class="tab-btn" onclick="filterHistory('invest', this)">Investments</button>
         </div>
 
-        <!-- Dynamic History List -->
-        <div id="history-container">
-            <!-- Populated via Javascript -->
-        </div>
+        <!-- Dynamic History Container -->
+        <div id="history-container"></div>
     </div>
 </section>
 
-<!-- Professional Analytics & Statistics Page -->
+<!-- Stats Page -->
 <section id="stats-page" class="page">
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-chart-pie" style="color: #f59e0b;"></i> Performance Analytics</h3>
 
-        <!-- Goal Progress Bar -->
         <div class="progress-container">
             <div style="display: flex; justify-content: space-between; font-size: 12px;">
                 <span style="color: var(--text-sub);">Investment Portfolio Goal</span>
@@ -349,7 +338,6 @@
             </div>
         </div>
 
-        <!-- 2x2 Key Stats Grid -->
         <div class="stat-grid">
             <div class="stat-box">
                 <i class="fa-solid fa-wallet"></i>
@@ -373,7 +361,6 @@
             </div>
         </div>
 
-        <!-- Chart Growth Visualizer -->
         <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 12px; font-weight: 700; color: #fff;">Weekly Growth Trend</span>
@@ -399,7 +386,7 @@
                 <i class="fa-solid fa-headset"></i>
             </div>
             <h3 style="font-size: 18px; font-weight: 800;">24/7 Live Support</h3>
-            <p style="font-size: 12px; color: var(--text-sub); margin-top: 4px;">Have questions or need deposit assistance? Contact us!</p>
+            <p style="font-size: 12px; color: var(--text-sub); margin-top: 4px;">Have questions or need assistance? Contact us!</p>
         </div>
 
         <a href="https://t.me/USDTPilotAdmin" target="_blank" class="support-card">
@@ -469,7 +456,7 @@
     </div>
 </section>
 
-<!-- Bottom Navigation Bar -->
+<!-- Bottom Nav -->
 <nav>
     <button class="nav-btn active" onclick="openPage('invest', this)">
         <i class="fa-solid fa-house"></i> Home
@@ -490,11 +477,10 @@
 
 </div>
 
-<!-- Notification Toast -->
 <div id="toast">Message</div>
 
 <script>
-    // State Data
+    // State Data Structure
     let userState = {
         balance: 100.00,
         totalProfit: 0.00,
@@ -518,7 +504,6 @@
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
     const vipAmounts = [150, 200, 350, 400, 450, 500];
 
-    // Dynamic Network Configs
     const cryptoNetworks = {
         'TRC20': { name: 'Tron TRC20', tag: 'Tether USD (TRC20)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', icon: 'https://cryptologos.cc/logos/tron-trx-logo.png' },
         'BEP20': { name: 'BNB Smart Chain', tag: 'Tether USD (BEP20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' },
@@ -528,7 +513,6 @@
 
     let activeHistoryFilter = 'all';
 
-    // Initialize App & Telegram Profile Data
     window.addEventListener('load', () => {
         setTimeout(() => {
             const splash = document.getElementById('splash');
@@ -622,7 +606,7 @@
         `).join('');
     }
 
-    // Submit Deposit
+    // Submit Deposit (Automated Flow: Pending -> Completed)
     function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
@@ -631,7 +615,7 @@
         if(!amt || amt < 10) { showToast("Minimum deposit is $10!"); return; }
         if(!txid) { showToast("Please paste your TXID Hash!"); return; }
 
-        userState.transactions.unshift({
+        const txObj = {
             id: 'TXN' + Math.floor(100000 + Math.random() * 900000),
             type: 'deposit',
             title: `Deposit (${net})`,
@@ -639,18 +623,31 @@
             status: 'pending',
             date: new Date().toLocaleDateString(),
             network: net
-        });
+        };
+
+        userState.transactions.unshift(txObj);
 
         document.getElementById('deposit-amount').value = '';
         document.getElementById('deposit-txid').value = '';
 
-        showToast("Deposit submitted! Pending blockchain confirmation.");
+        showToast("Deposit submitted! Status: Pending verification.");
         renderHistory();
         updateStats();
         openPage('history');
+
+        // Otomaatig u bedel 'completed' 3 ilbiriqsi ka dib
+        setTimeout(() => {
+            txObj.status = 'completed';
+            userState.balance += amt;
+            userState.totalDeposited += amt;
+            updateUI();
+            renderHistory();
+            updateStats();
+            showToast(`Deposit of $${amt} confirmed & credited successfully!`);
+        }, 3000);
     }
 
-    // Submit Withdraw
+    // Submit Withdraw (Automated Flow: Pending -> Completed)
     function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
@@ -661,17 +658,18 @@
         if(userState.balance < amt) { showToast("Insufficient balance!"); return; }
 
         userState.balance -= amt;
-        userState.totalWithdrawn += amt;
 
-        userState.transactions.unshift({
+        const txObj = {
             id: 'TXN' + Math.floor(100000 + Math.random() * 900000),
             type: 'withdraw',
             title: `Withdraw (${net})`,
             amount: amt,
-            status: 'completed',
+            status: 'pending',
             date: new Date().toLocaleDateString(),
             network: net
-        });
+        };
+
+        userState.transactions.unshift(txObj);
 
         document.getElementById('withdraw-amount').value = '';
         document.getElementById('withdraw-address').value = '';
@@ -679,8 +677,17 @@
         updateUI();
         renderHistory();
         updateStats();
-        showToast(`Withdrawal of $${amt} processed successfully!`);
+        showToast(`Withdrawal of $${amt} submitted! Status: Pending.`);
         openPage('history');
+
+        // Otomaatig u bedel 'completed' 3 ilbiriqsi ka dib
+        setTimeout(() => {
+            txObj.status = 'completed';
+            userState.totalWithdrawn += amt;
+            renderHistory();
+            updateStats();
+            showToast(`Withdrawal of $${amt} completed successfully!`);
+        }, 3000);
     }
 
     // Invest Action
@@ -721,7 +728,7 @@
         showToast(`Successfully invested $${amount}!`);
     }
 
-    // Render Transaction History
+    // Filter History
     function filterHistory(type, btn) {
         activeHistoryFilter = type;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -729,6 +736,7 @@
         renderHistory();
     }
 
+    // Render History UI
     function renderHistory() {
         const container = document.getElementById('history-container');
         let filtered = userState.transactions;
@@ -746,6 +754,7 @@
             let iconClass = tx.type === 'deposit' ? 'fa-arrow-down deposit' : (tx.type === 'withdraw' ? 'fa-arrow-up withdraw' : 'fa-chart-line invest');
             let sign = tx.type === 'deposit' ? '+' : (tx.type === 'withdraw' ? '-' : '');
             let color = tx.type === 'deposit' ? '#10b981' : (tx.type === 'withdraw' ? '#ef4444' : 'var(--accent-cyan)');
+            let statusDisplay = tx.status === 'completed' ? 'completed' : 'pending';
             
             return `
                 <div class="tx-card">
@@ -758,14 +767,14 @@
                     </div>
                     <div class="tx-amount">
                         <h5 style="color: ${color};">${sign}$${tx.amount.toFixed(2)}</h5>
-                        <span class="status-badge status-${tx.status}">${tx.status}</span>
+                        <span class="status-badge status-${statusDisplay}">${tx.status}</span>
                     </div>
                 </div>
             `;
         }).join('');
     }
 
-    // Update Statistics Page Data
+    // Update Stats
     function updateStats() {
         document.getElementById('stat-deposits').innerText = `$${userState.totalDeposited.toFixed(2)}`;
         document.getElementById('stat-withdraws').innerText = `$${userState.totalWithdrawn.toFixed(2)}`;
@@ -774,7 +783,6 @@
         const roi = userState.totalDeposited > 0 ? ((userState.totalProfit / userState.totalDeposited) * 100).toFixed(1) : '0.0';
         document.getElementById('stat-roi').innerText = `+${roi}%`;
 
-        // Update Goal Progress (Target $1,000 Portfolio)
         const target = 1000;
         const totalCap = userState.balance + userState.activeInvestment;
         const progress = Math.min((totalCap / target) * 100, 100).toFixed(0);
@@ -783,7 +791,7 @@
         document.getElementById('goal-percent').innerText = `${progress}%`;
     }
 
-    // Profit Engine Timer
+    // Real-time Profit Engine
     function startProfitEngine() {
         setInterval(() => {
             const now = Date.now();
