@@ -7,6 +7,9 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <!-- Firebase App & Firestore CDN -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
@@ -23,7 +26,7 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
-      window.db = db; // Si looga isticmaalo app-ka dhexdiisa
+      window.db = db;
     </script>
 
     <style>
@@ -529,6 +532,11 @@
     const BOT_TOKEN = '8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0';
     const ADMIN_CHAT_ID = '5738022147';
 
+    // SUPABASE CONFIGURATION
+    const SUPABASE_URL = 'https://gbyabfeczskrwahoernn.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_9fpjomKU4oqRlVJ1h...'; // Ku bedel key-gaaga saxda ah ee Supabase
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     const defaultState = {
         balance: 0.00,
         totalProfit: 0.00,
@@ -572,6 +580,7 @@
         updateDepositAddress();
         updateWithdrawIcon();
         checkAdminAccess();
+        fetchSupabaseTransactions();
     });
 
     function saveState() {
@@ -651,11 +660,29 @@
         }
     }
 
-    function renderAdminPendingRequests() {
+    async function fetchSupabaseTransactions() {
+        const { data, error } = await supabaseClient
+            .from('transactions')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (!error && data) {
+            // Map Supabase rows to app transactions if needed
+            renderAdminPendingRequests(data);
+        }
+    }
+
+    async function renderAdminPendingRequests(supaData = null) {
         const container = document.getElementById('admin-pending-container');
         if(!container) return;
 
-        const pendingTxs = userState.transactions.filter(t => t.status === 'pending');
+        let pendingTxs = [];
+        if (supaData) {
+            pendingTxs = supaData.filter(t => t.status === 'pending');
+        } else {
+            const { data } = await supabaseClient.from('transactions').select('*').eq('status', 'pending');
+            pendingTxs = data || [];
+        }
 
         if (pendingTxs.length === 0) {
             container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0;">No pending requests at the moment.</p>`;
@@ -665,81 +692,39 @@
         container.innerHTML = pendingTxs.map(tx => `
             <div style="background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 12px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <span style="font-size: 13px; font-weight: 700; color: var(--accent-cyan);">${tx.title}</span>
-                    <span style="font-size: 10px; color: var(--text-sub); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">${tx.id}</span>
+                    <span style="font-size: 13px; font-weight: 700; color: var(--accent-cyan);">Request #${tx.id}</span>
+                    <span style="font-size: 10px; color: var(--text-sub); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">User: ${tx.user_id}</span>
                 </div>
-                <p style="font-size: 12px; margin-bottom: 4px;"><b>Amount:</b> $${tx.amount.toFixed(2)} USDT</p>
-                <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;"><b>Network:</b> ${tx.network} | <b>Date:</b> ${tx.date}</p>
+                <p style="font-size: 12px; margin-bottom: 4px;"><b>Amount:</b> $${tx.amount} USDT</p>
+                <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;"><b>Status:</b> ${tx.status}</p>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <button onclick="processTransaction('${tx.id}', 'approve')" style="background: var(--success-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Approve</button>
-                    <button onclick="processTransaction('${tx.id}', 'reject')" style="background: var(--danger-color); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Reject</button>
+                    <button onclick="processSupabaseTx(${tx.id}, 'approved', ${tx.amount})" style="background: var(--success-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Approve</button>
+                    <button onclick="processSupabaseTx(${tx.id}, 'rejected', ${tx.amount})" style="background: var(--danger-color); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Reject</button>
                 </div>
             </div>
         `).join('');
     }
 
-    function processTransaction(txId, action) {
-        const txIndex = userState.transactions.findIndex(t => t.id === txId);
-        if (txIndex === -1) return;
+    async function processSupabaseTx(txId, newStatus, amount) {
+        const { error } = await supabaseClient
+            .from('transactions')
+            .update({ status: newStatus })
+            .eq('id', txId);
 
-        const tx = userState.transactions[txIndex];
-
-        if (action === 'approve') {
-            tx.status = 'completed';
-            if (tx.type === 'deposit') {
-                userState.balance += tx.amount;
-                userState.totalDeposited += tx.amount;
-
-                if (!userState.hasDeposited) {
-                    userState.hasDeposited = true;
-                    if (userState.referrerId) {
-                        let refKey = `usdtpilot_userState_${userState.referrerId}`;
-                        let referrerState = JSON.parse(localStorage.getItem(refKey)) || {
-                            balance: 0, referralCount: 0, transactions: []
-                        };
-                        
-                        referrerState.balance += 1.00;
-                        referrerState.referralCount += 1;
-                        referrerState.transactions.unshift({
-                            id: 'REF' + Math.floor(100000 + Math.random() * 900000),
-                            type: 'referral',
-                            title: `Referral Bonus (ID: ${telegramUser.id})`,
-                            amount: 1.00,
-                            status: 'completed',
-                            date: new Date().toLocaleDateString(),
-                            network: 'INTERNAL'
-                        });
-                        localStorage.setItem(refKey, JSON.stringify(referrerState));
-
-                        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                chat_id: ADMIN_CHAT_ID,
-                                text: `🎁 <b>REFERRAL BONUS PAID</b>\nReferrer ID: <code>${userState.referrerId}</code> received <b>$1.00 USDT</b> because User <code>${telegramUser.id}</code> completed their first deposit!`,
-                                parse_mode: 'HTML'
-                            })
-                        });
-                    }
-                }
-            } else if (tx.type === 'withdraw') {
-                userState.totalWithdrawn += tx.amount;
+        if (error) {
+            showToast("Error updating transaction!");
+        } else {
+            showToast(`Transaction ${newStatus}!`);
+            if (newStatus === 'approved') {
+                userState.balance += amount;
+                userState.totalDeposited += amount;
+                saveState();
+                updateUI();
+                updateStats();
             }
-            showToast(`Transaction ${txId} APPROVED!`);
-        } else if (action === 'reject') {
-            tx.status = 'rejected';
-            if (tx.type === 'withdraw') {
-                userState.balance += tx.amount;
-            }
-            showToast(`Transaction ${txId} REJECTED!`);
+            fetchSupabaseTransactions();
         }
-
-        saveState();
-        updateUI();
-        renderHistory();
-        updateStats();
-        renderAdminPendingRequests();
     }
 
     function updateDepositAddress() {
@@ -792,7 +777,7 @@
         `).join('');
     }
 
-    function submitDeposit() {
+    async function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
         const net = document.getElementById('deposit-network').value;
@@ -800,8 +785,17 @@
         if(!amt || amt < 10) { showToast("Minimum deposit is $10!"); return; }
         if(!txid) { showToast("Please paste your TXID Hash!"); return; }
 
-        const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
+        // Insert into Supabase table 'transactions'
+        const { error } = await supabaseClient
+            .from('transactions')
+            .insert([{ user_id: telegramUser.id, amount: amt, status: 'pending' }]);
 
+        if (error) {
+            showToast("Failed to submit deposit to database.");
+            return;
+        }
+
+        const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
         const txObj = {
             id: generatedTxId,
             type: 'deposit',
@@ -823,11 +817,9 @@
 ━━━━━━━━━━━━━━━━━━
 👤 <b>User:</b> ${uName} (${uHandle})
 🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
-🆔 <b>System TXID:</b> <code>${generatedTxId}</code>
 💵 <b>Amount:</b> $${amt.toFixed(2)} USDT
 🌐 <b>Network:</b> ${net}
 🔑 <b>TXID Hash:</b> <code>${txid}</code>
-📅 <b>Date:</b> ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━━━━
 📌 <i>Status: Pending verification</i>
         `;
@@ -844,11 +836,11 @@
         showToast("Deposit submitted! Status: Pending verification.");
         renderHistory();
         updateStats();
-        renderAdminPendingRequests();
+        fetchSupabaseTransactions();
         openPage('history');
     }
 
-    function submitWithdraw() {
+    async function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
         const net = document.getElementById('withdraw-network').value;
@@ -856,6 +848,16 @@
         if(!amt || amt < 10) { showToast("Minimum withdrawal is $10!"); return; }
         if(!addr) { showToast("Please enter destination wallet address!"); return; }
         if(userState.balance < amt) { showToast("Insufficient balance!"); return; }
+
+        // Insert withdrawal into Supabase table 'transactions'
+        const { error } = await supabaseClient
+            .from('transactions')
+            .insert([{ user_id: telegramUser.id, amount: amt, status: 'pending' }]);
+
+        if (error) {
+            showToast("Failed to submit withdrawal to database.");
+            return;
+        }
 
         userState.balance -= amt;
         const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
@@ -881,11 +883,9 @@
 ━━━━━━━━━━━━━━━━━━
 👤 <b>User:</b> ${uName} (${uHandle})
 🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
-🆔 <b>System TXID:</b> <code>${generatedTxId}</code>
 💵 <b>Amount:</b> $${amt.toFixed(2)} USDT
 🌐 <b>Network:</b> ${net}
 💳 <b>Wallet Address:</b> <code>${addr}</code>
-📅 <b>Date:</b> ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━━━━
 📌 <i>Status: Pending verification</i>
         `;
@@ -902,7 +902,7 @@
         updateUI();
         renderHistory();
         updateStats();
-        renderAdminPendingRequests();
+        fetchSupabaseTransactions();
         showToast(`Withdrawal of $${amt} submitted! Status: Pending.`);
         openPage('history');
     }
@@ -1114,4 +1114,4 @@
 </script>
 
 </body>
-                                                                                                                                                           </html>
+</html>
