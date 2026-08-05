@@ -1,44 +1,337 @@
-// Variable-yada Telegram Admin Bot-ka
-const BOT_TOKEN = '7123456789:AAExxxxxxxxxxxxxxxxxxxxxxx'; // Bot Token-kaaga ku qor halkan
-const ADMIN_CHAT_ID = '123456789'; // Chat ID-gaaga ama Group ID-ga Admin-ka
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USDTPilot Investment WebApp</title>
+    <!-- Telegram WebApp SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #22c55e;
+            --danger: #ef4444;
+        }
 
-// Function-ka Fariinta u diraya Telegram Admin
-async function sendAdminNotification(messageText) {
-    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-    try {
-        await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: ADMIN_CHAT_ID,
-                text: messageText,
-                parse_mode: 'HTML'
-            })
-        });
-    } catch (error) {
-        console.error("Error sending to Admin Telegram:", error);
-    }
-}
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-// 1. Submit Deposit (Ku xiran Telegram Admin)
-function submitDeposit() {
-    const amt = parseFloat(document.getElementById('deposit-amount').value);
-    const txid = document.getElementById('deposit-txid').value;
-    const net = document.getElementById('deposit-network').value;
+        .container {
+            padding: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+            flex: 1;
+        }
 
-    if(!amt || amt < 10) { showToast("Minimum deposit is $10!"); return; }
-    if(!txid) { showToast("Please paste your TXID Hash!"); return; }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
 
-    // Xogta Isticmaalaha ee Telegram WebApp
-    const tgUser = window.Telegram.WebApp.initDataUnsafe?.user || {};
-    const uName = tgUser.first_name ? `${tgUser.first_name} ${tgUser.last_name || ''}` : 'User';
-    const uHandle = tgUser.username ? `@${tgUser.username}` : 'No Username';
-    const uId = tgUser.id || 'N/A';
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-    const txIdGenerated = 'TXN' + Math.floor(100000 + Math.random() * 900000);
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #000;
+        }
 
-    // Dhisidda Fariinta Admin-ka loo diro
-    const adminMessage = `
+        .balance-card {
+            background: linear-gradient(135deg, #1e293b, #334155);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .balance-title {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .balance-amount {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--accent-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-deposit { background-color: var(--success); color: #fff; }
+        .btn-withdraw { background-color: var(--danger); color: #fff; }
+        .btn-primary { background-color: var(--accent-color); color: #0f172a; width: 100%; margin-top: 15px; }
+
+        .btn:active { transform: scale(0.97); }
+
+        .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #fff;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .nav-bar {
+            position: sticky;
+            bottom: 0;
+            background-color: var(--card-bg);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .nav-item.active { color: var(--accent-color); }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #334155;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            z-index: 1000;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast" class="toast">Notice message here</div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="user-info">
+                <div class="user-avatar" id="u-avatar">U</div>
+                <div>
+                    <div style="font-weight: bold;" id="u-name">User</div>
+                    <div style="font-size: 12px; color: var(--text-muted);" id="u-handle">@username</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOME PAGE -->
+        <div id="page-home" class="page active">
+            <div class="balance-card">
+                <div class="balance-title">Available Balance</div>
+                <div class="balance-amount" id="balance-display">$0.00 USDT</div>
+                <div class="action-buttons">
+                    <button class="btn btn-deposit" onclick="openPage('deposit')">Deposit</button>
+                    <button class="btn btn-withdraw" onclick="openPage('withdraw')">Withdraw</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- DEPOSIT PAGE -->
+        <div id="page-deposit" class="page">
+            <h2>Deposit USDT</h2>
+            <div class="balance-card">
+                <div class="form-group">
+                    <label>Select Network</label>
+                    <select id="deposit-network" class="form-control">
+                        <option value="TRC20">TRON (TRC20)</option>
+                        <option value="BEP20">BNB Chain (BEP20)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Amount (USDT)</label>
+                    <input type="number" id="deposit-amount" class="form-control" placeholder="Min $10">
+                </div>
+                <div class="form-group">
+                    <label>TXID / Transaction Hash</label>
+                    <input type="text" id="deposit-txid" class="form-control" placeholder="Paste your TXID hash">
+                </div>
+                <button class="btn btn-primary" onclick="submitDeposit()">Submit Deposit Request</button>
+                <button class="btn" style="background:transparent; color:var(--text-muted); width:100%; margin-top:8px;" onclick="openPage('home')">Cancel</button>
+            </div>
+        </div>
+
+        <!-- WITHDRAW PAGE -->
+        <div id="page-withdraw" class="page">
+            <h2>Withdraw USDT</h2>
+            <div class="balance-card">
+                <div class="form-group">
+                    <label>Select Network</label>
+                    <select id="withdraw-network" class="form-control">
+                        <option value="TRC20">TRON (TRC20)</option>
+                        <option value="BEP20">BNB Chain (BEP20)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Withdrawal Amount (USDT)</label>
+                    <input type="number" id="withdraw-amount" class="form-control" placeholder="Min $10">
+                </div>
+                <div class="form-group">
+                    <label>Your Wallet Address</label>
+                    <input type="text" id="withdraw-address" class="form-control" placeholder="Enter your USDT wallet address">
+                </div>
+                <button class="btn btn-primary" onclick="submitWithdraw()">Submit Withdrawal Request</button>
+                <button class="btn" style="background:transparent; color:var(--text-muted); width:100%; margin-top:8px;" onclick="openPage('home')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-bar">
+        <div class="nav-item active" onclick="openPage('home')">Home</div>
+        <div class="nav-item" onclick="openPage('deposit')">Deposit</div>
+        <div class="nav-item" onclick="openPage('withdraw')">Withdraw</div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Initialize Telegram WebApp SDK
+        const tg = window.Telegram?.WebApp;
+        if(tg) { tg.expand(); }
+
+        // Configured Telegram Credentials
+        const BOT_TOKEN = '8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0'; 
+        const ADMIN_CHAT_ID = '5738022147';
+
+        // User Local State
+        let userState = {
+            balance: 0.00
+        };
+
+        // Load Telegram User Profile
+        const tgUser = tg?.initDataUnsafe?.user || {};
+        const uName = tgUser.first_name ? `${tgUser.first_name} ${tgUser.last_name || ''}` : 'User';
+        const uHandle = tgUser.username ? `@${tgUser.username}` : '@no_username';
+        const uId = tgUser.id || 'N/A';
+
+        document.getElementById('u-name').innerText = uName;
+        document.getElementById('u-handle').innerText = uHandle;
+        document.getElementById('u-avatar').innerText = uName.charAt(0).toUpperCase();
+
+        // Helper: Toast Notifications
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+
+        // Navigation
+        function openPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(`page-${pageId}`).classList.add('active');
+        }
+
+        // Send Direct Notification to Telegram Admin
+        async function sendAdminNotification(messageText) {
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: ADMIN_CHAT_ID,
+                        text: messageText,
+                        parse_mode: 'HTML'
+                    })
+                });
+            } catch (error) {
+                console.error("Error sending notification to Telegram Admin:", error);
+            }
+        }
+
+        // 1. Submit Deposit Function
+        function submitDeposit() {
+            const amt = parseFloat(document.getElementById('deposit-amount').value);
+            const txid = document.getElementById('deposit-txid').value;
+            const net = document.getElementById('deposit-network').value;
+
+            if(!amt || amt < 10) { showToast("Minimum deposit is $10!"); return; }
+            if(!txid) { showToast("Please enter your TXID Hash!"); return; }
+
+            const txIdGenerated = 'TXN' + Math.floor(100000 + Math.random() * 900000);
+
+            const adminMessage = `
 📥 <b>NEW DEPOSIT REQUEST</b>
 ━━━━━━━━━━━━━━━━━━
 👤 <b>User:</b> ${uName} (${uHandle})
@@ -49,55 +342,34 @@ function submitDeposit() {
 🔑 <b>TXID Hash:</b> <code>${txid}</code>
 📅 <b>Date:</b> ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━━━━
-⚠️ <i>Mangage this transaction manually in your system.</i>
-    `;
+⚠️ <i>Please verify TXID manually and update user balance.</i>
+            `;
 
-    // U dir Telegram
-    sendAdminNotification(adminMessage);
+            sendAdminNotification(adminMessage);
 
-    // Ku kaydi History-ga WebApp-ka status ah "Pending"
-    const txObj = {
-        id: txIdGenerated,
-        type: 'deposit',
-        title: `Deposit (${net})`,
-        amount: amt,
-        status: 'pending', // Wuxuu ahaanayaa Pending ilaa aad gacanta ku ansixiso
-        date: new Date().toLocaleDateString(),
-        network: net
-    };
+            document.getElementById('deposit-amount').value = '';
+            document.getElementById('deposit-txid').value = '';
 
-    userState.transactions.unshift(txObj);
+            showToast("Deposit request sent to Admin! Pending verification.");
+            openPage('home');
+        }
 
-    document.getElementById('deposit-amount').value = '';
-    document.getElementById('deposit-txid').value = '';
+        // 2. Submit Withdrawal Function
+        function submitWithdraw() {
+            const amt = parseFloat(document.getElementById('withdraw-amount').value);
+            const addr = document.getElementById('withdraw-address').value;
+            const net = document.getElementById('withdraw-network').value;
 
-    showToast("Deposit request sent to Admin! Pending approval.");
-    renderHistory();
-    updateStats();
-    openPage('history');
-}
+            if(!amt || amt < 10) { showToast("Minimum withdrawal is $10!"); return; }
+            if(!addr) { showToast("Please enter your wallet address!"); return; }
+            if(userState.balance < amt) { showToast("Insufficient balance!"); return; }
 
-// 2. Submit Withdraw (Ku xiran Telegram Admin)
-function submitWithdraw() {
-    const amt = parseFloat(document.getElementById('withdraw-amount').value);
-    const addr = document.getElementById('withdraw-address').value;
-    const net = document.getElementById('withdraw-network').value;
+            userState.balance -= amt;
+            document.getElementById('balance-display').innerText = `$${userState.balance.toFixed(2)} USDT`;
 
-    if(!amt || amt < 10) { showToast("Minimum withdrawal is $10!"); return; }
-    if(!addr) { showToast("Please enter destination wallet address!"); return; }
-    if(userState.balance < amt) { showToast("Insufficient balance!"); return; }
+            const txIdGenerated = 'TXN' + Math.floor(100000 + Math.random() * 900000);
 
-    userState.balance -= amt; // Jar balance-ka marka hore
-
-    const tgUser = window.Telegram.WebApp.initDataUnsafe?.user || {};
-    const uName = tgUser.first_name ? `${tgUser.first_name} ${tgUser.last_name || ''}` : 'User';
-    const uHandle = tgUser.username ? `@${tgUser.username}` : 'No Username';
-    const uId = tgUser.id || 'N/A';
-
-    const txIdGenerated = 'TXN' + Math.floor(100000 + Math.random() * 900000);
-
-    // Dhisidda Fariinta Admin Withdrawal Request
-    const adminMessage = `
+            const adminMessage = `
 📤 <b>NEW WITHDRAWAL REQUEST</b>
 ━━━━━━━━━━━━━━━━━━
 👤 <b>User:</b> ${uName} (${uHandle})
@@ -108,30 +380,17 @@ function submitWithdraw() {
 💳 <b>Wallet Address:</b> <code>${addr}</code>
 📅 <b>Date:</b> ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━━━━
-🚀 <i>Send $${amt.toFixed(2)} USDT to the address above and confirm.</i>
-    `;
+🚀 <i>Send $${amt.toFixed(2)} USDT to the wallet address above and confirm.</i>
+            `;
 
-    // U dir Telegram
-    sendAdminNotification(adminMessage);
+            sendAdminNotification(adminMessage);
 
-    const txObj = {
-        id: txIdGenerated,
-        type: 'withdraw',
-        title: `Withdraw (${net})`,
-        amount: amt,
-        status: 'pending',
-        date: new Date().toLocaleDateString(),
-        network: net
-    };
+            document.getElementById('withdraw-amount').value = '';
+            document.getElementById('withdraw-address').value = '';
 
-    userState.transactions.unshift(txObj);
-
-    document.getElementById('withdraw-amount').value = '';
-    document.getElementById('withdraw-address').value = '';
-
-    updateUI();
-    renderHistory();
-    updateStats();
-    showToast(`Withdrawal request of $${amt} sent to Admin!`);
-    openPage('history');
-}
+            showToast(`Withdrawal request of $${amt} sent to Admin!`);
+            openPage('home');
+        }
+    </script>
+</body>
+</html>
