@@ -19,10 +19,10 @@ TOTAL_PROFIT_RATE = 0.20   # 20% Total Return
 INVESTMENT_DAYS = 7
 TOTAL_HOURS = INVESTMENT_DAYS * 24  # 168 Hours
 
-ALLOWED_PLANS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+ALLOWED_PLANS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 350, 400, 450, 500]
 
 # ============================================================
-# SQLITE DATABASE
+# SQLITE DATABASE INITIALIZATION
 # ============================================================
 def get_db():
     db = sqlite3.connect('usdtpilot.db', timeout=10)
@@ -95,7 +95,6 @@ def process_hourly_profits():
         hourly_profit = inv['hourly_profit']
         hours_passed = inv['hours_passed'] + 1
         
-        # Add hourly profit directly to main balance
         db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (hourly_profit, user_id))
         
         if hours_passed >= TOTAL_HOURS:
@@ -137,15 +136,13 @@ def send_telegram(chat_id, text, keyboard=None):
 def get_user(user_id):
     db = get_db()
     user = db.execute('SELECT * FROM users WHERE telegram_id = ?', (str(user_id),)).fetchone()
-    db.close()
     if not user:
         ref_code = secrets.token_hex(4).upper()
-        db = get_db()
         db.execute('INSERT INTO users (telegram_id, username, referral_code, created_at, last_login) VALUES (?, ?, ?, ?, ?)',
                    (str(user_id), 'User', ref_code, datetime.now(), datetime.now()))
         db.commit()
-        db.close()
-        user = get_user(user_id)
+        user = db.execute('SELECT * FROM users WHERE telegram_id = ?', (str(user_id),)).fetchone()
+    db.close()
     return dict(user) if user else None
 
 def create_notification(user_id, title, message):
@@ -155,7 +152,7 @@ def create_notification(user_id, title, message):
     db.close()
 
 # ============================================================
-# API ENDPOINTS
+# WEB & API ROUTES
 # ============================================================
 @app.route('/')
 def home():
@@ -209,21 +206,13 @@ def request_deposit():
     cursor = db.cursor()
     cursor.execute('INSERT INTO transactions (user_id, type, amount, status, txid, network, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
                    (user_id, 'DEPOSIT', amount, 'PENDING', txid, network, f'Deposit via {network}'))
-    tx_id = cursor.lastrowid
     db.commit()
     db.close()
     
-    # Inline buttons for Admin
-    keyboard = {
-        "inline_keyboard": [
-            [{"text": "✅ Approve", "callback_data": f"approve_dep_{tx_id}"},
-             {"text": "❌ Reject", "callback_data": f"reject_dep_{tx_id}"}]
-        ]
-    }
-    admin_msg = f"📥 <b>NEW DEPOSIT REQUEST</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nNetwork: {network}\nTXID: <code>{txid}</code>"
-    send_telegram(ADMIN_ID, admin_msg, keyboard)
+    # Fariinta Admin-ka oo aan lahayn badhamada balse ku tusaysa amarka /approve
+    admin_msg = f"📥 <b>NEW DEPOSIT REQUEST</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nNetwork: {network}\nTXID: <code>{txid}</code>\n\n💡 <i>Si aad u ansixisid, ku jawaab ama qor:</i>\n<code>/approve {user_id} {amount}</code>"
+    send_telegram(ADMIN_ID, admin_msg)
     
-    # Beautiful English Success Message
     return jsonify({"status": "success", "message": "✅ Deposit request submitted successfully! Pending approval."})
 
 @app.route('/api/invest', methods=['POST'])
@@ -295,57 +284,34 @@ def request_withdrawal():
     return jsonify({"status": "success", "message": "✅ Withdrawal request submitted successfully!"})
 
 # ============================================================
-# TELEGRAM WEBHOOK (AUTOMATIC BALANCE UPDATE ON APPROVAL)
+# TELEGRAM WEBHOOK (TEXT COMMAND APPROVAL SYSTEM)
 # ============================================================
 @app.route('/webhook', methods=['POST'])
 def webhook():
     update = request.json
-    if "callback_query" in update:
-        query = update["callback_query"]
-        data = query["data"]
-        chat_id = query["message"]["chat"]["id"]
-        message_id = query["message"]["message_id"]
+    if update and "message" in update:
+        msg = update["message"]
+        chat_id = msg["chat"]["id"]
+        text = msg.get("text", "")
         
-        # Admin Action: Approve Deposit
-        if data.startswith("approve_dep_"):
-            tx_id = data.split("_")[2]
-            
-            db = get_db()
-            tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
-            
-            if tx:
-                user_id = tx['user_id']
-                amount = tx['amount']
+        # Kaliya ha aqoonsado haddii uu Admin-ku soo diro amarka /approve
+        if text.startswith("/approve") and str(chat_id) == str(ADMIN_ID):
+            parts = text.split()
+            if len(parts) >= 3:
+                target_user_id = parts[1]
+                amount = float(parts[2])
                 
-                # 1. Update Transaction Status
-                db.execute("UPDATE transactions SET status = 'COMPLETED' WHERE id = ?", (tx_id,))
-                
-                # 2. Add amount AUTOMATICALLY to User Balance
-                db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
+                db = get_db()
+                # 1. Ku dar lacagta balance-ka user-ka si toos ah
+                db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, target_user_id))
                 db.commit()
+                db.close()
                 
-                # Notify Admin on Telegram
-                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
-                    "chat_id": chat_id, "message_id": message_id,
-                    "text": f"✅ <b>DEPOSIT APPROVED</b>\nUser: <code>{user_id}</code>\nAmount: +${amount} USDT\nStatus: Balance Updated!", "parse_mode": "HTML"
-                })
+                # 2. Xaqiijin u dir Admin-ka
+                send_telegram(ADMIN_ID, f"✅ Si guul leh ayaa loogu shubay <b>${amount} USDT</b> User-ka: <code>{target_user_id}</code>")
                 
-                # Notify User on Telegram
-                send_telegram(user_id, f"🎉 <b>Deposit Approved!</b>\n\nYour deposit of <b>${amount} USDT</b> has been credited to your balance successfully.")
-            
-            db.close()
-            
-        elif data.startswith("reject_dep_"):
-            tx_id = data.split("_")[2]
-            db = get_db()
-            db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
-            db.commit()
-            db.close()
-            
-            requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
-                "chat_id": chat_id, "message_id": message_id,
-                "text": f"❌ <b>DEPOSIT REJECTED</b>", "parse_mode": "HTML"
-            })
+                # 3. Ogeaysii User-ka Telegram-kiisa
+                send_telegram(target_user_id, f"🎉 <b>Deposit Approved!</b>\n\nYour deposit of <b>${amount} USDT</b> has been credited to your balance successfully.")
 
     return jsonify({"status": "ok"})
 
