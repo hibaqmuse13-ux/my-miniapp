@@ -121,6 +121,7 @@
         .tx-icon.deposit { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .tx-icon.withdraw { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
         .tx-icon.invest { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
+        .tx-icon.referral { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
         .tx-details { flex: 1; margin-left: 12px; }
         .tx-details h5 { font-size: 13px; font-weight: 700; color: #fff; }
         .tx-details p { font-size: 10px; color: var(--text-sub); margin-top: 2px; }
@@ -213,8 +214,9 @@
 
 <!-- Rules & Guidelines Banner -->
 <div class="rules-banner">
-    <h4><i class="fa-solid fa-circle-info"></i> Investment & Withdrawal Rules</h4>
+    <h4><i class="fa-solid fa-circle-info"></i> Investment & Referral Rules</h4>
     <p>• <b>Profits:</b> Earn high daily returns (20% to 35%) credited hourly to your balance.</p>
+    <p>• <b>Referral Bonus:</b> Invite friends and instantly earn <b>1.00 USDT</b> when your referral makes their first successful deposit.</p>
     <p>• <b>Withdrawals:</b> Withdrawals are <b>strictly locked</b> and only allowed after your active investment plan fully completes the <b>7-day duration</b>.</p>
 </div>
 
@@ -329,6 +331,7 @@
             <button class="tab-btn" onclick="filterHistory('deposit', this)">Deposits</button>
             <button class="tab-btn" onclick="filterHistory('withdraw', this)">Withdrawals</button>
             <button class="tab-btn" onclick="filterHistory('invest', this)">Investments</button>
+            <button class="tab-btn" onclick="filterHistory('referral', this)">Referrals</button>
         </div>
 
         <div id="history-container"></div>
@@ -362,9 +365,9 @@
                 <p>Total Withdrawn</p>
             </div>
             <div class="stat-box">
-                <i class="fa-solid fa-receipt"></i>
-                <h3 id="stat-count">0</h3>
-                <p>Total Operations</p>
+                <i class="fa-solid fa-users"></i>
+                <h3 id="stat-referrals">0</h3>
+                <p>Referral Count</p>
             </div>
             <div class="stat-box">
                 <i class="fa-solid fa-percent"></i>
@@ -514,6 +517,9 @@
         activeInvestment: 0.00,
         totalDeposited: 0.00,
         totalWithdrawn: 0.00,
+        referralCount: 0,
+        hasDeposited: false,
+        referrerId: null,
         investments: [],
         transactions: []
     };
@@ -562,6 +568,18 @@
             telegramUser = tg.initDataUnsafe.user;
         }
 
+        // Check for start_param referral link parsing (e.g. ?start=ref_5738022147)
+        if (tg?.initDataUnsafe?.start_param) {
+            const startParam = tg.initDataUnsafe.start_param;
+            if (startParam.startsWith('ref_')) {
+                const refId = startParam.replace('ref_', '');
+                if (refId !== telegramUser.id.toString() && !userState.referrerId) {
+                    userState.referrerId = refId;
+                    saveState();
+                }
+            }
+        }
+
         const fullName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
         const usernameStr = telegramUser.username ? `@${telegramUser.username}` : `@user_${telegramUser.id}`;
         const userIdStr = telegramUser.id ? telegramUser.id.toString() : 'N/A';
@@ -581,14 +599,12 @@
 
     /* CONDITIONAL WITHDRAWAL ACCESS CHECKER */
     function checkWithdrawAccess() {
-        // If user has no active investments and no completed deposit history
         if (userState.activeInvestment === 0 && userState.totalDeposited === 0) {
             showToast("Please make a deposit and start an investment plan first!");
             openPage('deposit');
             return;
         }
 
-        // If user has active investments running, check if any plan has completed 7 days
         if (userState.investments.length > 0) {
             let hasCompletedPlan = userState.investments.some(inv => {
                 const elapsedDays = (Date.now() - inv.startTime) / (1000 * 60 * 60 * 24);
@@ -602,7 +618,6 @@
             }
         }
 
-        // If rules passed, open the withdrawal page
         openPage('withdraw');
     }
 
@@ -660,6 +675,42 @@
             if (tx.type === 'deposit') {
                 userState.balance += tx.amount;
                 userState.totalDeposited += tx.amount;
+
+                // AUTOMATIC REFERRAL BONUS TRIGGER (1 USDT)
+                if (!userState.hasDeposited) {
+                    userState.hasDeposited = true;
+                    if (userState.referrerId) {
+                        // Simulate adding 1 USDT bonus to referrer via storage/bot notification
+                        let refKey = `usdtpilot_userState_${userState.referrerId}`;
+                        let referrerState = JSON.parse(localStorage.getItem(refKey)) || {
+                            balance: 0, referralCount: 0, transactions: []
+                        };
+                        
+                        referrerState.balance += 1.00;
+                        referrerState.referralCount += 1;
+                        referrerState.transactions.unshift({
+                            id: 'REF' + Math.floor(100000 + Math.random() * 900000),
+                            type: 'referral',
+                            title: `Referral Bonus (ID: ${telegramUser.id})`,
+                            amount: 1.00,
+                            status: 'completed',
+                            date: new Date().toLocaleDateString(),
+                            network: 'INTERNAL'
+                        });
+                        localStorage.setItem(refKey, JSON.stringify(referrerState));
+
+                        // Notify admin via bot message about referral reward payout
+                        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                chat_id: ADMIN_CHAT_ID,
+                                text: `🎁 <b>REFERRAL BONUS PAID</b>\nReferrer ID: <code>${userState.referrerId}</code> received <b>$1.00 USDT</b> because User <code>${telegramUser.id}</code> completed their first deposit!`,
+                                parse_mode: 'HTML'
+                            })
+                        });
+                    }
+                }
             } else if (tx.type === 'withdraw') {
                 userState.totalWithdrawn += tx.amount;
             }
@@ -908,9 +959,24 @@
         }
 
         container.innerHTML = filtered.map(tx => {
-            let iconClass = tx.type === 'deposit' ? 'fa-arrow-down deposit' : (tx.type === 'withdraw' ? 'fa-arrow-up withdraw' : 'fa-chart-line invest');
-            let sign = tx.type === 'deposit' ? '+' : (tx.type === 'withdraw' ? '-' : '');
-            let color = tx.type === 'deposit' ? '#10b981' : (tx.type === 'withdraw' ? '#ef4444' : 'var(--accent-cyan)');
+            let iconClass = 'fa-chart-line';
+            let sign = '+';
+            let color = '#10b981';
+
+            if (tx.type === 'deposit') {
+                iconClass = 'fa-arrow-down';
+                color = '#10b981';
+            } else if (tx.type === 'withdraw') {
+                iconClass = 'fa-arrow-up';
+                sign = '-';
+                color = '#ef4444';
+            } else if (tx.type === 'referral') {
+                iconClass = 'fa-users';
+                color = '#f59e0b';
+            } else {
+                color = 'var(--accent-cyan)';
+            }
+
             let statusDisplay = tx.status === 'completed' ? 'completed' : (tx.status === 'rejected' ? 'rejected' : 'pending');
             
             return `
@@ -935,7 +1001,7 @@
     function updateStats() {
         document.getElementById('stat-deposits').innerText = `$${userState.totalDeposited.toFixed(2)}`;
         document.getElementById('stat-withdraws').innerText = `$${userState.totalWithdrawn.toFixed(2)}`;
-        document.getElementById('stat-count').innerText = userState.transactions.length;
+        document.getElementById('stat-referrals').innerText = userState.referralCount;
 
         const roi = userState.totalDeposited > 0 ? ((userState.totalProfit / userState.totalDeposited) * 100).toFixed(1) : '0.0';
         document.getElementById('stat-roi').innerText = `+${roi}%`;
