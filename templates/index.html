@@ -92,20 +92,30 @@
 
         /* Forms & Custom Inputs */
         label { display: block; font-size: 11px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
-        select, input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 14px; outline: none; margin-bottom: 14px; transition: border-color 0.2s; }
-        select:focus, input:focus { border-color: var(--accent-cyan); }
+        select, input, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 14px; outline: none; margin-bottom: 14px; transition: border-color 0.2s; }
+        select:focus, input:focus, textarea:focus { border-color: var(--accent-cyan); }
         
+        /* Custom Network Display Card (Deposit & Withdraw) */
+        .network-preview-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .net-left { display: flex; align-items: center; gap: 12px; }
+        .net-left img { width: 36px; height: 36px; border-radius: 50%; box-shadow: 0 0 10px rgba(0,210,255,0.2); }
+        .net-info h4 { font-size: 14px; font-weight: 700; color: #fff; }
+        .net-info p { font-size: 11px; color: var(--accent-cyan); font-weight: 600; margin-top: 2px; }
+
         /* Wallet Box Display */
-        .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; margin-bottom: 14px; }
+        .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
         .wallet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-        .network-badge { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; }
-        .network-badge img { width: 18px; height: 18px; border-radius: 50%; }
-        .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 4px 10px; border-radius: 8px; font-size: 11px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+        .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 5px; }
         .copy-btn:active { transform: scale(0.95); }
-        .address-text { font-family: monospace; font-size: 12px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1); }
+        .address-text { font-family: monospace; font-size: 12px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1); }
 
         button.primary { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--primary-gradient); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3); transition: transform 0.2s; }
         button.success { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--success-gradient); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); transition: transform 0.2s; }
+
+        /* Support Page Cards */
+        .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: #fff; transition: background 0.2s; }
+        .support-card:active { background: rgba(30, 41, 59, 0.9); }
+        .support-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent-cyan); }
 
         /* Bottom Navigation Bar */
         nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 20px 20px 0 0; }
@@ -180,19 +190,15 @@
 
 <!-- Investment Plans Page -->
 <section id="invest" class="page active">
-    
-    <!-- Standard Plans Section -->
     <div class="section-header standard">
         <i class="fa-solid fa-bolt"></i> Standard Plans (20% Daily)
     </div>
     <div id="standard-plans" class="plans-grid"></div>
 
-    <!-- VIP Plans Section -->
     <div class="section-header vip">
         <i class="fa-solid fa-crown"></i> VIP Plans (35% Daily)
     </div>
     <div id="vip-plans" class="plans-grid"></div>
-
 </section>
 
 <!-- Deposit Page -->
@@ -202,20 +208,29 @@
         
         <label>Select Deposit Network</label>
         <select id="deposit-network" onchange="updateDepositAddress()">
-            <option value="TRC20">Tron (USDT-TRC20)</option>
+            <option value="TRC20">TRON Network (USDT-TRC20)</option>
             <option value="BEP20">BNB Smart Chain (USDT-BEP20)</option>
-            <option value="ERC20">Ethereum (USDT-ERC20)</option>
-            <option value="TON">The Open Network (USDT-TON)</option>
+            <option value="ERC20">Ethereum Network (USDT-ERC20)</option>
+            <option value="TON">TON Network (USDT-TON)</option>
         </select>
+
+        <!-- Selected Network Dynamic Preview Banner -->
+        <div class="network-preview-card">
+            <div class="net-left">
+                <img id="deposit-net-icon" src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="Crypto Icon">
+                <div class="net-info">
+                    <h4 id="deposit-net-fullname">Tron TRC20</h4>
+                    <p id="deposit-net-tag">Tether USD (TRC20)</p>
+                </div>
+            </div>
+            <span style="font-size: 10px; background: rgba(16,185,129,0.15); color: #10b981; padding: 4px 8px; border-radius: 6px; font-weight: 700;">Fast Deposit</span>
+        </div>
 
         <!-- Dynamic Wallet Box -->
         <div class="wallet-box">
             <div class="wallet-header">
-                <span class="network-badge" id="deposit-net-badge">
-                    <img id="deposit-net-icon" src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="TRX">
-                    <span id="deposit-net-name">Tron TRC20</span>
-                </span>
-                <button class="copy-btn" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> Copy</button>
+                <span style="font-size: 11px; color: var(--text-sub); text-transform: uppercase;">Official Deposit Wallet</span>
+                <button class="copy-btn" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> Copy Address</button>
             </div>
             <div class="address-text" id="deposit-address-display">TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs</div>
         </div>
@@ -224,7 +239,7 @@
         <input type="number" id="deposit-amount" placeholder="Min $10">
 
         <label>Transaction Hash / TXID</label>
-        <input type="text" id="deposit-txid" placeholder="Paste TXID Here">
+        <input type="text" id="deposit-txid" placeholder="Paste TXID Hash Here">
 
         <button class="primary" onclick="submitDeposit()">Submit Deposit</button>
     </div>
@@ -237,20 +252,28 @@
         
         <label>Select Withdrawal Network</label>
         <select id="withdraw-network" onchange="updateWithdrawIcon()">
-            <option value="TRC20">Tron (USDT-TRC20)</option>
+            <option value="TRC20">TRON Network (USDT-TRC20)</option>
             <option value="BEP20">BNB Smart Chain (USDT-BEP20)</option>
-            <option value="ERC20">Ethereum (USDT-ERC20)</option>
-            <option value="TON">The Open Network (USDT-TON)</option>
+            <option value="ERC20">Ethereum Network (USDT-ERC20)</option>
+            <option value="TON">TON Network (USDT-TON)</option>
         </select>
 
-        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-            <img id="withdraw-net-icon" src="https://cryptologos.cc/logos/tron-trx-logo.png" style="width: 20px; height: 20px;" alt="Net Icon">
-            <span id="withdraw-net-label" style="font-size: 12px; font-weight: 600; color: var(--text-sub);">USDT TRC20 Address</span>
+        <!-- Selected Network Dynamic Withdrawal Banner -->
+        <div class="network-preview-card">
+            <div class="net-left">
+                <img id="withdraw-net-icon" src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="Crypto Icon">
+                <div class="net-info">
+                    <h4 id="withdraw-net-fullname">Tron TRC20</h4>
+                    <p id="withdraw-net-tag">USDT TRC20 Address</p>
+                </div>
+            </div>
+            <span style="font-size: 10px; background: rgba(0,210,255,0.15); color: var(--accent-cyan); padding: 4px 8px; border-radius: 6px; font-weight: 700;">Instant Payout</span>
         </div>
 
-        <input type="text" id="withdraw-address" placeholder="Enter Destination Wallet Address">
+        <label>Destination Address</label>
+        <input type="text" id="withdraw-address" placeholder="Enter Wallet Address">
 
-        <label>Amount</label>
+        <label>Amount USDT</label>
         <input type="number" id="withdraw-amount" placeholder="Min $10">
 
         <button class="success" onclick="submitWithdraw()">Submit Withdrawal</button>
@@ -303,7 +326,6 @@
             </div>
         </div>
 
-        <!-- Referral Link Box -->
         <div style="margin-top: 20px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
             <label style="margin-bottom: 6px;"><i class="fa-solid fa-link"></i> Your Referral Link</label>
             <div style="display: flex; gap: 8px;">
@@ -314,7 +336,45 @@
     </div>
 </section>
 
-<!-- Bottom Navigation -->
+<!-- 24/7 Professional Live Support Page -->
+<section id="support" class="page">
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(0, 210, 255, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; font-size: 26px; color: var(--accent-cyan); border: 1px solid rgba(0, 210, 255, 0.3);">
+                <i class="fa-solid fa-headset"></i>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 800;">24/7 Live Support</h3>
+            <p style="font-size: 12px; color: var(--text-sub); margin-top: 4px;">Have questions or need deposit assistance? Contact us!</p>
+        </div>
+
+        <!-- Direct Admin Telegram Link -->
+        <a href="https://t.me/USDTPilotAdmin" target="_blank" class="support-card">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="support-icon"><i class="fa-brands fa-telegram"></i></div>
+                <div>
+                    <h4 style="font-size: 14px; font-weight: 700;">Telegram Official Support</h4>
+                    <p style="font-size: 11px; color: #10b981;">Online • Fast Response</p>
+                </div>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: var(--text-sub); font-size: 12px;"></i>
+        </a>
+
+        <!-- Live Direct Support Ticket Form -->
+        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
+            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--accent-cyan);"><i class="fa-solid fa-paper-plane"></i> Send Direct Ticket</h4>
+            
+            <label>Subject</label>
+            <input type="text" id="support-subject" placeholder="Deposit / Withdrawal issue">
+
+            <label>Message Detail</label>
+            <textarea id="support-msg" rows="3" placeholder="Describe your issue or txid..." style="resize: none;"></textarea>
+
+            <button class="primary" onclick="sendTicket()"><i class="fa-solid fa-paper-plane"></i> Submit Ticket</button>
+        </div>
+    </div>
+</section>
+
+<!-- Bottom Navigation Bar -->
 <nav>
     <button class="nav-btn active" onclick="openPage('invest', this)">
         <i class="fa-solid fa-house"></i> Home
@@ -325,8 +385,8 @@
     <button class="nav-btn" onclick="openPage('deposit', this)">
         <i class="fa-solid fa-wallet"></i> Wallet
     </button>
-    <button class="nav-btn" onclick="openPage('history', this)">
-        <i class="fa-solid fa-clock"></i> History
+    <button class="nav-btn" onclick="openPage('support', this)">
+        <i class="fa-solid fa-headset"></i> Support
     </button>
     <button class="nav-btn" onclick="openPage('profile', this)">
         <i class="fa-solid fa-user"></i> Profile
@@ -350,11 +410,32 @@
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
     const vipAmounts = [150, 200, 350, 400, 450, 500];
 
+    // Real Network Crypto Data
     const cryptoNetworks = {
-        'TRC20': { name: 'Tron (TRC20)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', icon: 'https://cryptologos.cc/logos/tron-trx-logo.png' },
-        'BEP20': { name: 'BNB Smart Chain (BEP20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' },
-        'ERC20': { name: 'Ethereum (ERC20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' },
-        'TON': { name: 'The Open Network (TON)', address: 'EQA000000000000000000000000000000000000000000000', icon: 'https://cryptologos.cc/logos/toncoin-ton-logo.png' }
+        'TRC20': { 
+            name: 'Tron TRC20', 
+            tag: 'Tether USD (TRC20)',
+            address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', 
+            icon: 'https://cryptologos.cc/logos/tron-trx-logo.png' 
+        },
+        'BEP20': { 
+            name: 'BNB Smart Chain', 
+            tag: 'Tether USD (BEP20)',
+            address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', 
+            icon: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' 
+        },
+        'ERC20': { 
+            name: 'Ethereum ERC20', 
+            tag: 'Tether USD (ERC20)',
+            address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', 
+            icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' 
+        },
+        'TON': { 
+            name: 'TON Network', 
+            tag: 'Tether USD (TON)',
+            address: 'EQA000000000000000000000000000000000000000000000', 
+            icon: 'https://cryptologos.cc/logos/toncoin-ton-logo.png' 
+        }
     };
 
     // Initialize App & Telegram User Data
@@ -369,6 +450,8 @@
         renderPlans();
         updateUI();
         startProfitEngine();
+        updateDepositAddress();
+        updateWithdrawIcon();
     });
 
     // Fetch Real Telegram Profile Data
@@ -413,6 +496,26 @@
         }
     }
 
+    // Dynamic Network Switchers with Real Logos & Full Details
+    function updateDepositAddress() {
+        const netKey = document.getElementById('deposit-network').value;
+        const netData = cryptoNetworks[netKey];
+
+        document.getElementById('deposit-net-icon').src = netData.icon;
+        document.getElementById('deposit-net-fullname').innerText = netData.name;
+        document.getElementById('deposit-net-tag').innerText = netData.tag;
+        document.getElementById('deposit-address-display').innerText = netData.address;
+    }
+
+    function updateWithdrawIcon() {
+        const netKey = document.getElementById('withdraw-network').value;
+        const netData = cryptoNetworks[netKey];
+
+        document.getElementById('withdraw-net-icon').src = netData.icon;
+        document.getElementById('withdraw-net-fullname').innerText = netData.name;
+        document.getElementById('withdraw-net-tag').innerText = netData.tag;
+    }
+
     // Render Investment Plans dynamically
     function renderPlans() {
         const stdContainer = document.getElementById('standard-plans');
@@ -426,7 +529,7 @@
                 <div class="plan-info">
                     <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
                     <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
-                    <span><i class="fa-solid fa-coins"></i> Total Return: $${(amt * 1.4).toFixed(1)}</span>
+                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 1.4).toFixed(1)}</span>
                 </div>
                 <button class="plan-btn btn-std" onclick="invest(${amt}, 0.20)">Invest Now</button>
             </div>
@@ -440,14 +543,14 @@
                 <div class="plan-info">
                     <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
                     <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
-                    <span><i class="fa-solid fa-coins"></i> Total Return: $${(amt * 2.45).toFixed(1)}</span>
+                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 2.45).toFixed(1)}</span>
                 </div>
                 <button class="plan-btn btn-vip" onclick="invest(${amt}, 0.35)">Invest VIP</button>
             </div>
         `).join('');
     }
 
-    // Investment Trigger Function
+    // Investment Logic
     function invest(amount, dailyRate) {
         if (userState.balance < amount) {
             showToast("Insufficient Balance! Please deposit first.");
@@ -475,7 +578,7 @@
         renderHistory();
     }
 
-    // Engine that calculates profit hourly/secondly for smooth UI preview
+    // Profit Engine
     function startProfitEngine() {
         setInterval(() => {
             const now = Date.now();
@@ -492,7 +595,7 @@
                     userState.balance += inv.amount;
                     userState.activeInvestment -= inv.amount;
                     userState.investments.splice(index, 1);
-                    showToast(`Plan for $${inv.amount} completed! Capital unlocked.`);
+                    showToast(`Plan $${inv.amount} completed! Capital unlocked.`);
                 }
             });
 
@@ -504,14 +607,12 @@
         }, 1000);
     }
 
-    // Update Dashboard Data
     function updateUI() {
         document.getElementById('balance').innerText = userState.balance.toFixed(2);
         document.getElementById('profit').innerText = userState.totalProfit.toFixed(2);
         document.getElementById('active').innerText = userState.activeInvestment.toFixed(2);
     }
 
-    // Render Transaction & Investment History
     function renderHistory() {
         const historyContainer = document.getElementById('transactions');
         if (userState.investments.length === 0) {
@@ -533,7 +634,6 @@
         `).join('');
     }
 
-    // Dynamic Navigation Switcher
     function openPage(pageId, btnElement) {
         document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
         document.getElementById(pageId).classList.add('active');
@@ -542,24 +642,6 @@
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
         }
-    }
-
-    // Dynamic Wallet Update
-    function updateDepositAddress() {
-        const netKey = document.getElementById('deposit-network').value;
-        const netData = cryptoNetworks[netKey];
-
-        document.getElementById('deposit-net-icon').src = netData.icon;
-        document.getElementById('deposit-net-name').innerText = netData.name;
-        document.getElementById('deposit-address-display').innerText = netData.address;
-    }
-
-    function updateWithdrawIcon() {
-        const netKey = document.getElementById('withdraw-network').value;
-        const netData = cryptoNetworks[netKey];
-
-        document.getElementById('withdraw-net-icon').src = netData.icon;
-        document.getElementById('withdraw-net-label').innerText = `USDT ${netKey} Address`;
     }
 
     function copyAddress() {
@@ -573,6 +655,20 @@
         refInput.select();
         navigator.clipboard.writeText(refInput.value);
         showToast("Referral Link Copied!");
+    }
+
+    function sendTicket() {
+        const sub = document.getElementById('support-subject').value;
+        const msg = document.getElementById('support-msg').value;
+
+        if(!sub || !msg) {
+            showToast("Please fill in all ticket fields!");
+            return;
+        }
+
+        document.getElementById('support-subject').value = '';
+        document.getElementById('support-msg').value = '';
+        showToast("Support ticket sent! Admin will reply soon.");
     }
 
     function showToast(msg) {
