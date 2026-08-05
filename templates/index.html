@@ -508,7 +508,6 @@
     };
 
     let activeHistoryFilter = 'all';
-    let lastUpdateId = 0;
 
     window.addEventListener('load', () => {
         setTimeout(() => {
@@ -525,9 +524,6 @@
         startProfitEngine();
         updateDepositAddress();
         updateWithdrawIcon();
-        
-        // Dynamic Update Loop Every 2 Seconds
-        setInterval(checkTelegramUpdates, 2000);
     });
 
     function saveState() {
@@ -556,148 +552,6 @@
         if (telegramUser.photo_url) {
             document.getElementById('header-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
-        }
-    }
-
-    // Dynamic Telegram Action Sender (Short Code for Callback Data)
-    async function sendAdminNotificationWithAction(messageText, actionType, txId, amount, userId) {
-        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-        
-        // Compact callback string: 'app|dep|TXN123|10|5738022147'
-        const inlineKeyboard = {
-            inline_keyboard: [
-                [
-                    { text: "✅ Approve", callback_data: `app|${actionType}|${txId}|${amount}|${userId}` },
-                    { text: "❌ Reject", callback_data: `rej|${actionType}|${txId}|${amount}|${userId}` }
-                ]
-            ]
-        };
-
-        try {
-            await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: ADMIN_CHAT_ID,
-                    text: messageText,
-                    parse_mode: 'HTML',
-                    reply_markup: inlineKeyboard
-                })
-            });
-        } catch (error) {
-            console.error("Telegram Admin Notification Error:", error);
-        }
-    }
-
-    // Dynamic Callback Answerer (Fixes frozen Telegram buttons!)
-    async function answerTelegramCallback(callbackQueryId, text) {
-        try {
-            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    callback_query_id: callbackQueryId,
-                    text: text,
-                    show_alert: true
-                })
-            });
-        } catch(e) {
-            console.error("Answer Callback Error:", e);
-        }
-    }
-
-    // Update Telegram Admin Message when Pressed
-    async function updateTelegramAdminMessage(chatId, messageId, originalText, statusText) {
-        try {
-            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/editMessageText`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    message_id: messageId,
-                    text: `${originalText}\n\n<b>STATUS: ${statusText}</b>`,
-                    parse_mode: 'HTML'
-                })
-            });
-        } catch(e) {
-            console.error("Edit Message Error:", e);
-        }
-    }
-
-    // AUTOMATIC TELEGRAM POLLING ENGINE
-    async function checkTelegramUpdates() {
-        try {
-            const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`);
-            const data = await res.json();
-
-            if (data.ok && data.result.length > 0) {
-                for (let update of data.result) {
-                    lastUpdateId = update.update_id;
-
-                    if (update.callback_query) {
-                        const cb = update.callback_query;
-                        const callbackData = cb.data; // e.g. "app|dep|TXN123|10|5738022147"
-                        const parts = callbackData.split('|');
-
-                        if (parts.length >= 5) {
-                            const action = parts[0] === 'app' ? 'approve' : 'reject';
-                            const type = parts[1] === 'dep' ? 'deposit' : 'withdraw';
-                            const txId = parts[2];
-                            const amount = parseFloat(parts[3]);
-                            const uId = parts[4];
-
-                            // Answer Button Click
-                            await answerTelegramCallback(cb.id, `Processing ${action.toUpperCase()} for ${txId}...`);
-
-                            // Update Admin Chat UI
-                            const msg = cb.message;
-                            const statusDisplay = action === 'approve' ? '✅ APPROVED' : '❌ REJECTED';
-                            await updateTelegramAdminMessage(msg.chat.id, msg.message_id, msg.text, statusDisplay);
-
-                            // Handle Client Side State Update
-                            if (uId == telegramUser.id) {
-                                handleAdminDecision(action, type, txId, amount);
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (e) {
-            console.log("Polling error:", e);
-        }
-    }
-
-    // UPDATE BALANCE & HISTORY BASED ON ADMIN DECISION
-    function handleAdminDecision(action, type, txId, amount) {
-        let tx = userState.transactions.find(t => t.id === txId);
-
-        if (tx && tx.status === 'pending') {
-            if (action === 'approve') {
-                tx.status = 'completed';
-
-                if (type === 'deposit') {
-                    userState.balance += amount;
-                    userState.totalDeposited += amount;
-                    showToast(`🎉 Deposit of $${amount} Approved!`);
-                } else if (type === 'withdraw') {
-                    userState.totalWithdrawn += amount;
-                    showToast(`✅ Withdrawal of $${amount} Approved!`);
-                }
-            } else if (action === 'reject') {
-                tx.status = 'rejected';
-
-                if (type === 'withdraw') {
-                    userState.balance += amount;
-                    showToast(`❌ Withdrawal of $${amount} Rejected & Refunded!`);
-                } else {
-                    showToast(`❌ Deposit of $${amount} Rejected!`);
-                }
-            }
-
-            saveState();
-            updateUI();
-            renderHistory();
-            updateStats();
         }
     }
 
@@ -751,7 +605,7 @@
         `).join('');
     }
 
-    // Submit Deposit
+    // Submit Deposit (Direct Message - No Buttons Frozen)
     function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
@@ -789,10 +643,18 @@
 🔑 <b>TXID Hash:</b> <code>${txid}</code>
 📅 <b>Date:</b> ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━━━━
-⚠️ <i>Choose Action Below:</i>
+📌 <i>Status: Pending verification</i>
         `;
-        
-        sendAdminNotificationWithAction(adminMessage, 'dep', generatedTxId, amt, telegramUser.id);
+
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: ADMIN_CHAT_ID,
+                text: adminMessage,
+                parse_mode: 'HTML'
+            })
+        });
 
         document.getElementById('deposit-amount').value = '';
         document.getElementById('deposit-txid').value = '';
@@ -803,7 +665,7 @@
         openPage('history');
     }
 
-    // Submit Withdraw
+    // Submit Withdraw (Direct Message - No Buttons Frozen)
     function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
@@ -843,10 +705,18 @@
 💳 <b>Wallet Address:</b> <code>${addr}</code>
 📅 <b>Date:</b> ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━━━━
-🚀 <i>Choose Action Below:</i>
+📌 <i>Status: Pending verification</i>
         `;
 
-        sendAdminNotificationWithAction(adminMessage, 'wit', generatedTxId, amt, telegramUser.id);
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: ADMIN_CHAT_ID,
+                text: adminMessage,
+                parse_mode: 'HTML'
+            })
+        });
 
         document.getElementById('withdraw-amount').value = '';
         document.getElementById('withdraw-address').value = '';
