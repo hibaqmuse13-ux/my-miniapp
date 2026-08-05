@@ -566,7 +566,6 @@
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
         }
 
-        // ---- NEW USER JOIN NOTIFICATION ENGINE ----
         checkNewUserJoin(fullName, usernameStr, userIdStr);
     }
 
@@ -599,7 +598,6 @@
         }
     }
 
-    /* ADMIN VERIFICATION & DASHBOARD ENGINE */
     function checkAdminAccess() {
         if (telegramUser.id.toString() === ADMIN_CHAT_ID) {
             const nav = document.getElementById('main-nav');
