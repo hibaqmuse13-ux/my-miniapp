@@ -534,7 +534,7 @@
 
     // SUPABASE CONFIGURATION
     const SUPABASE_URL = 'https://gbyabfeczskrwahoernn.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_9fpjomKU4oqRlVJ1h...'; // Ku bedel key-gaaga saxda ah ee Supabase
+    const SUPABASE_ANON_KEY = 'sb_publishable_9fpjomKU4oqRlVJ1h...'; 
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const defaultState = {
@@ -667,7 +667,6 @@
             .order('created_at', { ascending: false });
 
         if (!error && data) {
-            // Map Supabase rows to app transactions if needed
             renderAdminPendingRequests(data);
         }
     }
@@ -785,7 +784,6 @@
         if(!amt || amt < 10) { showToast("Minimum deposit is $10!"); return; }
         if(!txid) { showToast("Please paste your TXID Hash!"); return; }
 
-        // Insert into Supabase table 'transactions'
         const { error } = await supabaseClient
             .from('transactions')
             .insert([{ user_id: telegramUser.id, amount: amt, status: 'pending' }]);
@@ -849,7 +847,6 @@
         if(!addr) { showToast("Please enter destination wallet address!"); return; }
         if(userState.balance < amt) { showToast("Insufficient balance!"); return; }
 
-        // Insert withdrawal into Supabase table 'transactions'
         const { error } = await supabaseClient
             .from('transactions')
             .insert([{ user_id: telegramUser.id, amount: amt, status: 'pending' }]);
