@@ -1,205 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>USDTPilot Exchange</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>USDTPilot Investment</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --card-bg: rgba(21, 28, 44, 0.75);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-cyan: #00d2ff;
+            --accent-blue: #0072ff;
+            --primary-gradient: linear-gradient(135deg, #00d2ff 0%, #0072ff 100%);
+            --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --text-white: #ffffff;
+            --text-sub: #94a3b8;
+            --danger-color: #ef4444;
+        }
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-dark); color: var(--text-white); padding-bottom: 90px; overflow-x: hidden; }
+        .app { max-width: 480px; margin: 0 auto; padding: 16px; }
 
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+        /* Splash Screen */
+        #splash { position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; transition: opacity 0.5s ease, visibility 0.5s; }
+        #splash img { width: 80px; height: 80px; filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4)); }
+        #splash h2 { font-size: 24px; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        #splash p { font-size: 12px; color: var(--text-sub); letter-spacing: 1px; }
+        .loader { width: 32px; height: 32px; border: 3px solid rgba(255, 255, 255, 0.1); border-top-color: var(--accent-cyan); border-radius: 50%; animation: spin 0.8s linear infinite; margin-top: 15px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-<link rel="stylesheet" href="css/style.css">
+        /* Header */
+        header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); margin-bottom: 18px; }
+        .profile { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3); }
+        .profile h3 { font-size: 15px; font-weight: 700; }
+        .profile small { font-size: 11px; color: var(--text-sub); }
+        .verified { font-size: 10px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 5px; }
 
+        /* Dashboard Balance Card */
+        .balance-card { background: linear-gradient(145deg, rgba(16, 24, 40, 0.9) 0%, rgba(10, 15, 28, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; padding: 24px 20px; text-align: center; box-shadow: 0 12px 30px rgba(0,0,0,0.4); margin-bottom: 20px; position: relative; overflow: hidden; }
+        .balance-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, transparent 60%); pointer-events: none; }
+        .balance-card p { font-size: 12px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .balance-card h1 { font-size: 40px; font-weight: 800; letter-spacing: -1px; margin: 4px 0; }
+        .balance-card span.badge-usdt { font-size: 11px; font-weight: 700; color: var(--accent-cyan); background: rgba(0, 210, 255, 0.15); padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px; }
+
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .stats div { text-align: center; }
+        .stats i { font-size: 14px; color: var(--accent-cyan); margin-bottom: 4px; }
+        .stats h4 { font-size: 11px; color: var(--text-sub); font-weight: 500; }
+        .stats b { font-size: 15px; color: #fff; font-weight: 700; display: block; margin-top: 2px; }
+
+        /* Quick Buttons */
+        .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
+        .quick button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; font-size: 14px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s ease; backdrop-filter: blur(10px); }
+        .quick button i { font-size: 16px; color: var(--accent-cyan); }
+        .quick button:active { transform: scale(0.96); opacity: 0.9; }
+
+        /* Pages & Cards UI */
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+        .title { font-size: 16px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--text-white); }
+        .title i { color: var(--accent-cyan); }
+
+        .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; backdrop-filter: blur(10px); margin-bottom: 16px; }
+        .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+
+        /* Forms & Inputs */
+        select, input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 14px; outline: none; margin-bottom: 14px; transition: border-color 0.2s; }
+        select:focus, input:focus { border-color: var(--accent-cyan); }
+        
+        button.primary { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--primary-gradient); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3); transition: transform 0.2s; }
+        button.success { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--success-gradient); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); transition: transform 0.2s; }
+        button.primary:active, button.success:active { transform: scale(0.98); }
+
+        /* History & Profile Details */
+        #transactions p { text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0; }
+        .green { color: #10b981; }
+
+        /* Bottom Navigation Bar */
+        nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 20px 20px 0 0; }
+        nav button { background: none; border: none; color: var(--text-sub); font-size: 10px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; flex: 1; transition: color 0.2s; }
+        nav button i { font-size: 18px; }
+        nav button.active { color: var(--accent-cyan); font-weight: 700; }
+
+        /* Toast Popup */
+        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 500; z-index: 10000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
 </head>
 
 <body>
 
+<!-- Splash Screen -->
+<div id="splash">
+    <img src="https://cdn-icons-png.flaticon.com/512/6001/6001368.png" alt="USDTPilot">
+    <h2>USDTPilot</h2>
+    <p>SECURE INVESTMENT PLATFORM</p>
+    <div class="loader"></div>
+</div>
+
 <div class="app">
 
-
-<!-- HEADER -->
+<!-- Header -->
 <header>
     <div class="profile">
-        <div class="avatar">U</div>
+        <div class="avatar">
+            <i class="fa-solid fa-user"></i>
+        </div>
         <div>
-            <h4 id="username">User</h4>
-            <small id="userid">ID:---</small>
+            <h3 id="username">User</h3>
+            <small id="userid">ID: 000000</small>
         </div>
     </div>
-
     <div class="verified">
-        <i class="fa fa-check"></i>
+        <i class="fa-solid fa-circle-check"></i> Verified
     </div>
 </header>
 
-
-<!-- BALANCE CARD -->
-
+<!-- Balance Section -->
 <section class="balance-card">
+    <p>Available Balance</p>
+    <h1>$<span id="balance">0.00</span></h1>
+    <span class="badge-usdt">USDT</span>
 
-<p>Total Balance</p>
-
-<h1>
-$<span id="balance">0.00</span>
-</h1>
-
-<div class="currency">
-USDT Wallet
-</div>
-
-
-<div class="stats">
-
-<div>
-<h3 id="deposit">$0</h3>
-<span>Deposit</span>
-</div>
-
-
-<div>
-<h3>$0</h3>
-<span>Profit</span>
-</div>
-
-
-<div>
-<h3>24h</h3>
-<span>Activity</span>
-</div>
-
-</div>
-
+    <div class="stats">
+        <div>
+            <i class="fa-solid fa-chart-line"></i>
+            <h4>Total Profit</h4>
+            <b>$<span id="profit">0.00</span></b>
+        </div>
+        <div>
+            <i class="fa-solid fa-lock"></i>
+            <h4>Active Investment</h4>
+            <b>$<span id="active">0.00</span></b>
+        </div>
+    </div>
 </section>
 
-
-
-<!-- QUICK BUTTONS -->
-
+<!-- Quick Action Buttons -->
 <div class="quick">
-
-
-<button onclick="openPage('exchange')">
-<i class="fa fa-repeat"></i>
-Exchange
-</button>
-
-
-<button onclick="openPage('deposit')">
-<i class="fa fa-wallet"></i>
-Deposit
-</button>
-
-
-<button onclick="openPage('withdraw')">
-<i class="fa fa-arrow-up"></i>
-Withdraw
-</button>
-
-
-<button onclick="openPage('history')">
-<i class="fa fa-clock"></i>
-History
-</button>
-
-
+    <button onclick="openPage('deposit')">
+        <i class="fa-solid fa-wallet"></i> Deposit
+    </button>
+    <button onclick="openPage('withdraw')">
+        <i class="fa-solid fa-arrow-up"></i> Withdraw
+    </button>
 </div>
 
-
-
-
-<!-- CONTENT -->
-
-<section id="home">
-
-
-<div class="card">
-
-<h3>
-<i class="fa fa-bolt"></i>
-Fast Exchange
-</h3>
-
-<p>
-Buy and sell USDT instantly with secure transactions.
-</p>
-
-
-<button class="primary">
-Start Exchange
-</button>
-
-
-</div>
-
-
-
-
-<div class="card">
-
-<h3>
-<i class="fa fa-gift"></i>
-Referral Program
-</h3>
-
-<p>
-Invite friends and earn rewards.
-</p>
-
-
-<button class="secondary">
-Invite Friends
-</button>
-
-
-</div>
-
-
+<!-- Investment Plans Page -->
+<section id="invest" class="page active">
+    <div class="title">
+        <i class="fa-solid fa-chart-pie"></i> Investment Plans
+    </div>
+    <div id="plans" class="plans"></div>
 </section>
 
+<!-- Deposit Page -->
+<section id="deposit" class="page">
+    <div class="card">
+        <h3><i class="fa-solid fa-arrow-down" style="color: #10b981;"></i> Deposit USDT</h3>
+        <select>
+            <option>USDT TRC20</option>
+            <option>USDT BEP20</option>
+        </select>
+        <input type="number" placeholder="Amount USDT">
+        <input type="text" placeholder="Transaction ID (TXID)">
+        <button class="primary">Submit Deposit</button>
+    </div>
+</section>
 
+<!-- Withdrawal Page -->
+<section id="withdraw" class="page">
+    <div class="card">
+        <h3><i class="fa-solid fa-paper-plane" style="color: var(--danger-color);"></i> Withdraw USDT</h3>
+        <input type="text" placeholder="Wallet Address">
+        <input type="number" placeholder="Amount">
+        <select>
+            <option>USDT TRC20</option>
+            <option>USDT BEP20</option>
+        </select>
+        <button class="success">Submit Withdrawal</button>
+    </div>
+</section>
 
+<!-- History Page -->
+<section id="history" class="page">
+    <div class="card">
+        <h3><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> Transaction History</h3>
+        <div id="transactions">
+            <p>No transactions yet</p>
+        </div>
+    </div>
+</section>
 
+<!-- Referral Page -->
+<section id="referral" class="page">
+    <div class="card">
+        <h3><i class="fa-solid fa-users" style="color: #f59e0b;"></i> Referral Program</h3>
+        <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 16px;">Invite your friends and earn high commissions directly to your wallet.</p>
+        <button class="primary">Copy Referral Link</button>
+    </div>
+</section>
 
+<!-- Profile Page -->
+<section id="profile" class="page">
+    <div class="card">
+        <h3><i class="fa-solid fa-user" style="color: var(--accent-cyan);"></i> Profile Details</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
+            <p style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
+                <span style="color: var(--text-sub);">Username:</span> <b id="profile-name">User</b>
+            </p>
+            <p style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
+                <span style="color: var(--text-sub);">Telegram ID:</span> <b id="profile-id">000000</b>
+            </p>
+            <p style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-sub);">Account Status:</span> <b class="green"><i class="fa-solid fa-shield"></i> Verified</b>
+            </p>
+        </div>
+    </div>
+</section>
 
-<!-- BOTTOM NAV -->
-
+<!-- Bottom Navigation -->
 <nav>
-
-
-<button class="active">
-<i class="fa fa-home"></i>
-Home
-</button>
-
-
-<button>
-<i class="fa fa-chart-line"></i>
-Market
-</button>
-
-
-<button>
-<i class="fa fa-wallet"></i>
-Wallet
-</button>
-
-
-<button>
-<i class="fa fa-user"></i>
-Profile
-</button>
-
-
+    <button class="nav-btn active" onclick="openPage('invest', this)">
+        <i class="fa-solid fa-house"></i> Home
+    </button>
+    <button class="nav-btn" onclick="openPage('invest', this)">
+        <i class="fa-solid fa-chart-line"></i> Invest
+    </button>
+    <button class="nav-btn" onclick="openPage('deposit', this)">
+        <i class="fa-solid fa-wallet"></i> Wallet
+    </button>
+    <button class="nav-btn" onclick="openPage('history', this)">
+        <i class="fa-solid fa-clock"></i> History
+    </button>
+    <button class="nav-btn" onclick="openPage('profile', this)">
+        <i class="fa-solid fa-user"></i> Profile
+    </button>
 </nav>
 
-
-
 </div>
 
+<!-- Notification Toast -->
+<div id="toast">Message</div>
 
+<script>
+    // Splash screen timer
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const splash = document.getElementById('splash');
+            splash.style.opacity = '0';
+            splash.style.visibility = 'hidden';
+        }, 1200);
+    });
 
-<script src="js/app.js"></script>
+    // Simple Page Switcher
+    function openPage(pageId, btnElement) {
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+
+        if(btnElement) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+    }
+</script>
 
 </body>
 </html>
