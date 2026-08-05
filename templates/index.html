@@ -57,6 +57,10 @@
         .stats h4 { font-size: 11px; color: var(--text-sub); font-weight: 500; }
         .stats b { font-size: 15px; color: #fff; font-weight: 700; display: block; margin-top: 2px; }
 
+        /* Rules Notification Banner */
+        .rules-banner { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 16px; padding: 14px; margin-bottom: 20px; font-size: 12px; color: #fde047; line-height: 1.5; }
+        .rules-banner h4 { font-size: 13px; font-weight: 700; color: #f59e0b; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+
         /* Quick Buttons */
         .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
         .quick button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; font-size: 14px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s ease; backdrop-filter: blur(10px); }
@@ -146,12 +150,6 @@
         .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: #fff; }
         .support-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent-cyan); }
 
-        /* Policy & Rules Container */
-        .policy-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 16px; font-size: 12px; color: var(--text-sub); line-height: 1.6; }
-        .policy-box h4 { color: #fff; font-size: 13px; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-        .policy-box ul { padding-left: 18px; margin-top: 6px; }
-        .policy-box li { margin-bottom: 4px; }
-
         /* Navigation */
         nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 20px 20px 0 0; }
         nav button { background: none; border: none; color: var(--text-sub); font-size: 10px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; flex: 1; transition: color 0.2s; }
@@ -159,7 +157,7 @@
         nav button.active { color: var(--accent-cyan); font-weight: 700; }
 
         /* Toast Popup */
-        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 500; z-index: 10000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; max-width: 90%; }
+        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 500; z-index: 10000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
     </style>
 </head>
 
@@ -213,6 +211,13 @@
     </div>
 </section>
 
+<!-- Rules & Guidelines Banner -->
+<div class="rules-banner">
+    <h4><i class="fa-solid fa-circle-info"></i> Investment & Withdrawal Rules</h4>
+    <p>• <b>Profits:</b> Earn high daily returns (20% to 35%) credited hourly to your balance.</p>
+    <p>• <b>Withdrawals:</b> Withdrawals are <b>strictly locked</b> and only allowed after your active investment plan fully completes the <b>7-day duration</b>.</p>
+</div>
+
 <!-- Quick Actions -->
 <div class="quick">
     <button onclick="openPage('deposit')">
@@ -234,17 +239,6 @@
         <i class="fa-solid fa-crown"></i> VIP Plans (35% Daily)
     </div>
     <div id="vip-plans" class="plans-grid"></div>
-
-    <!-- Daily Profit Benefit Info Box -->
-    <div class="policy-box">
-        <h4><i class="fa-solid fa-circle-info" style="color: var(--accent-cyan);"></i> Faidada Maalin Kasta (Daily Profits)</h4>
-        <p>Maalgashadayaashu waxay helaan faa'iidooyin saacad walba soo kordhaya iyadoo la jaanqaadaysa qorshahaaga:</p>
-        <ul>
-            <li><b>Standard Plans:</b> Waxay bixiyaan 20% faa'iido ah maalin walba muddo 7 maalmood ah.</li>
-            <li><b>VIP Plans:</b> Waxay bixiyaan 35% faa'iido ah maalin walba muddo 7 maalmood ah.</li>
-            <li>Faa'iidada waxaa lagu soo shubaa hantidaada saacad kasta, waxaana la furayaa lacagtaada asaasiga ah marka ay 7-da maalmood dhammaadaan.</li>
-        </ul>
-    </div>
 </section>
 
 <!-- Deposit Page -->
@@ -293,6 +287,10 @@
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-paper-plane" style="color: var(--danger-color);"></i> Withdraw USDT</h3>
         
+        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 12px; margin-bottom: 16px; font-size: 11px; color: #fca5a5;">
+            <i class="fa-solid fa-triangle-exclamation"></i> <b>Notice:</b> Withdrawals are only unlocked and permitted after your active 7-day investment plan is completely finished.
+        </div>
+
         <label>Select Withdrawal Network</label>
         <select id="withdraw-network" onchange="updateWithdrawIcon()">
             <option value="TRC20">TRON Network (USDT-TRC20)</option>
@@ -374,6 +372,21 @@
                 <p>Avg Growth Rate</p>
             </div>
         </div>
+
+        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 12px; font-weight: 700; color: #fff;">Weekly Growth Trend</span>
+                <small style="font-size: 10px; color: #10b981;"><i class="fa-solid fa-arrow-trend-up"></i> +28.4%</small>
+            </div>
+            <div class="chart-visual">
+                <div class="chart-bar" style="height: 30%;"></div>
+                <div class="chart-bar" style="height: 45%;"></div>
+                <div class="chart-bar" style="height: 60%;"></div>
+                <div class="chart-bar" style="height: 50%;"></div>
+                <div class="chart-bar" style="height: 75%;"></div>
+                <div class="chart-bar active" style="height: 90%;"></div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -398,6 +411,18 @@
             </div>
             <i class="fa-solid fa-chevron-right" style="color: var(--text-sub); font-size: 12px;"></i>
         </a>
+
+        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
+            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--accent-cyan);"><i class="fa-solid fa-paper-plane"></i> Send Direct Ticket</h4>
+            
+            <label>Subject</label>
+            <input type="text" id="support-subject" placeholder="Deposit / Withdrawal issue">
+
+            <label>Message Detail</label>
+            <textarea id="support-msg" rows="3" placeholder="Describe your issue or txid..." style="resize: none;"></textarea>
+
+            <button class="primary" onclick="sendTicket()"><i class="fa-solid fa-paper-plane"></i> Submit Ticket</button>
+        </div>
     </div>
 </section>
 
@@ -414,14 +439,26 @@
             </div>
         </div>
 
-        <!-- Privacy Policy & Rules Section inside Profile/Info -->
-        <div class="policy-box" style="margin-bottom: 16px;">
-            <h4><i class="fa-solid fa-shield-halved" style="color: var(--success-color);"></i> Privacy Policy & Rules</h4>
-            <p>1. <b>Security of Data:</b> Xogtaada shakhsiga ah iyo Telegram ID-gaaga waxaa loo ilaaliyaa si sir ah oo ammaan ah.</p>
-            <p style="margin-top: 6px;">2. <b>Lockout Period:</b> Lacagtaada maalgashiga ahi waxay xiran tahay muddo 7 maalmood ah. Lama bixin karo lacagta illaa inta wareeggu ka dhammaanayo.</p>
+        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-id-badge" style="width: 20px; color: var(--accent-cyan);"></i> Telegram ID:</span> 
+                <b id="profile-id">000000</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-globe" style="width: 20px; color: var(--accent-cyan);"></i> Language:</span> 
+                <b id="profile-lang">EN</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-shield-halved" style="width: 20px; color: #10b981;"></i> Security Level:</span> 
+                <b style="color:#10b981;">Telegram Verified</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-calendar-days" style="width: 20px; color: var(--accent-cyan);"></i> Joined Date:</span> 
+                <b id="profile-date">2026</b>
+            </div>
         </div>
 
-        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
+        <div style="margin-top: 20px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
             <label style="margin-bottom: 6px;"><i class="fa-solid fa-link"></i> Your Referral Link</label>
             <div style="display: flex; gap: 8px;">
                 <input type="text" id="ref-link" value="https://t.me/USDTPilotBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 12px; font-family: monospace; background: rgba(0,0,0,0.3);">
@@ -466,9 +503,11 @@
 <div id="toast">Message</div>
 
 <script>
+    // TELEGRAM BOT CONFIGURATION
     const BOT_TOKEN = '8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0';
     const ADMIN_CHAT_ID = '5738022147';
 
+    // Default User Data
     const defaultState = {
         balance: 0.00,
         totalProfit: 0.00,
@@ -531,6 +570,7 @@
         document.getElementById('userid').innerText = `ID: ${userIdStr}`;
         document.getElementById('profile-fullname').innerText = fullName;
         document.getElementById('profile-username').innerText = usernameStr;
+        document.getElementById('profile-id').innerText = userIdStr;
         document.getElementById('ref-link').value = `https://t.me/USDTPilotBot?start=ref_${userIdStr}`;
 
         if (telegramUser.photo_url) {
@@ -539,25 +579,34 @@
         }
     }
 
-    /* WITHDRAW ACCESS RESTRICTION LOGIC */
+    /* CONDITIONAL WITHDRAWAL ACCESS CHECKER */
     function checkWithdrawAccess() {
-        // Check if there are active investments or if 7-day rule applies
-        const hasActiveInvestments = userState.investments && userState.investments.length > 0;
-        
-        if (hasActiveInvestments) {
-            showToast("❌ Lama bixin karo lacagta! Maalgashigaaga waxaa saaran xannibaadda 7-da maalmood ah. Waxaad kala bixi kartaa oo keliya marka uu wareeggu dhammaado.");
+        // If user has no active investments and no completed deposit history
+        if (userState.activeInvestment === 0 && userState.totalDeposited === 0) {
+            showToast("Please make a deposit and start an investment plan first!");
+            openPage('deposit');
             return;
         }
 
-        if (userState.balance <= 0) {
-            showToast("❌ Haraagaagu waa eber. Ma lihid lacag aad kala baxdo.");
-            return;
+        // If user has active investments running, check if any plan has completed 7 days
+        if (userState.investments.length > 0) {
+            let hasCompletedPlan = userState.investments.some(inv => {
+                const elapsedDays = (Date.now() - inv.startTime) / (1000 * 60 * 60 * 24);
+                return elapsedDays >= inv.durationDays;
+            });
+
+            if (!hasCompletedPlan) {
+                showToast("Withdrawals are locked until your 7-day investment plan finishes!");
+                openPage('invest');
+                return;
+            }
         }
 
-        // If rules passed, open withdrawal page
+        // If rules passed, open the withdrawal page
         openPage('withdraw');
     }
 
+    /* ADMIN VERIFICATION & DASHBOARD ENGINE */
     function checkAdminAccess() {
         if (telegramUser.id.toString() === ADMIN_CHAT_ID) {
             const nav = document.getElementById('main-nav');
@@ -680,6 +729,7 @@
         `).join('');
     }
 
+    // Submit Deposit
     function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
@@ -690,7 +740,7 @@
 
         const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
 
-        userState.transactions.unshift({
+        const txObj = {
             id: generatedTxId,
             type: 'deposit',
             title: `Deposit (${net})`,
@@ -698,8 +748,36 @@
             status: 'pending',
             date: new Date().toLocaleDateString(),
             network: net
-        });
+        };
+
+        userState.transactions.unshift(txObj);
         saveState();
+
+        const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
+        const uHandle = telegramUser.username ? `@${telegramUser.username}` : '@no_username';
+
+        const adminMessage = `
+📥 <b>NEW DEPOSIT REQUEST</b>
+━━━━━━━━━━━━━━━━━━
+👤 <b>User:</b> ${uName} (${uHandle})
+🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
+🆔 <b>System TXID:</b> <code>${generatedTxId}</code>
+💵 <b>Amount:</b> $${amt.toFixed(2)} USDT
+🌐 <b>Network:</b> ${net}
+🔑 <b>TXID Hash:</b> <code>${txid}</code>
+📅 <b>Date:</b> ${new Date().toLocaleString()}
+━━━━━━━━━━━━━━━━━━
+📌 <i>Status: Pending verification</i>
+        `;
+
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: adminMessage, parse_mode: 'HTML' })
+        });
+
+        document.getElementById('deposit-amount').value = '';
+        document.getElementById('deposit-txid').value = '';
 
         showToast("Deposit submitted! Status: Pending verification.");
         renderHistory();
@@ -708,6 +786,7 @@
         openPage('history');
     }
 
+    // Submit Withdraw
     function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
@@ -720,7 +799,7 @@
         userState.balance -= amt;
         const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
 
-        userState.transactions.unshift({
+        const txObj = {
             id: generatedTxId,
             type: 'withdraw',
             title: `Withdraw (${net})`,
@@ -728,8 +807,33 @@
             status: 'pending',
             date: new Date().toLocaleDateString(),
             network: net
-        });
+        };
+
+        userState.transactions.unshift(txObj);
         saveState();
+
+        const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
+        const uHandle = telegramUser.username ? `@${telegramUser.username}` : '@no_username';
+
+        const adminMessage = `
+📤 <b>NEW WITHDRAWAL REQUEST</b>
+━━━━━━━━━━━━━━━━━━
+👤 <b>User:</b> ${uName} (${uHandle})
+🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
+🆔 <b>System TXID:</b> <code>${generatedTxId}</code>
+💵 <b>Amount:</b> $${amt.toFixed(2)} USDT
+🌐 <b>Network:</b> ${net}
+💳 <b>Wallet Address:</b> <code>${addr}</code>
+📅 <b>Date:</b> ${new Date().toLocaleString()}
+━━━━━━━━━━━━━━━━━━
+📌 <i>Status: Pending verification</i>
+        `;
+
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: adminMessage, parse_mode: 'HTML' })
+        });
 
         document.getElementById('withdraw-amount').value = '';
         document.getElementById('withdraw-address').value = '';
@@ -742,6 +846,7 @@
         openPage('history');
     }
 
+    // Invest Action
     function invest(amount, dailyRate) {
         if (userState.balance < amount) {
             showToast("Insufficient Balance! Please deposit first.");
@@ -780,6 +885,7 @@
         showToast(`Successfully invested $${amount}!`);
     }
 
+    // Filter History
     function filterHistory(type, btn) {
         activeHistoryFilter = type;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -787,6 +893,7 @@
         renderHistory();
     }
 
+    // Render History UI
     function renderHistory() {
         const container = document.getElementById('history-container');
         let filtered = userState.transactions;
@@ -824,6 +931,7 @@
         }).join('');
     }
 
+    // Update Stats
     function updateStats() {
         document.getElementById('stat-deposits').innerText = `$${userState.totalDeposited.toFixed(2)}`;
         document.getElementById('stat-withdraws').innerText = `$${userState.totalWithdrawn.toFixed(2)}`;
@@ -840,6 +948,7 @@
         document.getElementById('goal-percent').innerText = `${progress}%`;
     }
 
+    // Real-time Profit Engine
     function startProfitEngine() {
         setInterval(() => {
             const now = Date.now();
@@ -855,7 +964,7 @@
                     userState.balance += inv.amount;
                     userState.activeInvestment -= inv.amount;
                     userState.investments.splice(index, 1);
-                    showToast(`Plan $${inv.amount} completed! Capital unlocked.`);
+                    showToast(`Plan $${inv.amount} completed! Capital unlocked for withdrawal.`);
                 }
             });
 
@@ -898,11 +1007,38 @@
         showToast("Referral Link Copied!");
     }
 
+    function sendTicket() {
+        const sub = document.getElementById('support-subject').value;
+        const msg = document.getElementById('support-msg').value;
+
+        if(!sub || !msg) { showToast("Please fill in all ticket fields!"); return; }
+
+        const ticketMessage = `
+🎫 <b>NEW SUPPORT TICKET</b>
+━━━━━━━━━━━━━━━━━━
+👤 <b>User:</b> ${telegramUser.first_name || 'User'} (@${telegramUser.username || 'none'})
+🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
+📌 <b>Subject:</b> ${sub}
+💬 <b>Message:</b> ${msg}
+━━━━━━━━━━━━━━━━━━
+        `;
+        
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: ticketMessage, parse_mode: 'HTML' })
+        });
+
+        document.getElementById('support-subject').value = '';
+        document.getElementById('support-msg').value = '';
+        showToast("Support ticket sent! Admin will reply soon.");
+    }
+
     function showToast(msg) {
         const toast = document.getElementById('toast');
         toast.innerText = msg;
         toast.style.display = 'block';
-        setTimeout(() => { toast.style.display = 'none'; }, 4000);
+        setTimeout(() => { toast.style.display = 'none'; }, 3000);
     }
 </script>
 
