@@ -565,6 +565,38 @@
             document.getElementById('header-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
         }
+
+        // ---- NEW USER JOIN NOTIFICATION ENGINE ----
+        checkNewUserJoin(fullName, usernameStr, userIdStr);
+    }
+
+    function checkNewUserJoin(fullName, usernameStr, userIdStr) {
+        const hasJoinedBefore = localStorage.getItem(`usdtpilot_joined_${userIdStr}`);
+        
+        if (!hasJoinedBefore) {
+            localStorage.setItem(`usdtpilot_joined_${userIdStr}`, 'true');
+
+            const welcomeAdminMsg = `
+🚀 <b>NEW USER JOINED (WEBAPP)</b>
+━━━━━━━━━━━━━━━━━━
+👤 <b>Name:</b> ${fullName}
+🔗 <b>Username:</b> ${usernameStr}
+🆔 <b>Telegram ID:</b> <code>${userIdStr}</code>
+📅 <b>Time:</b> ${new Date().toLocaleString()}
+━━━━━━━━━━━━━━━━━━
+📌 <i>This user has opened the Investment WebApp for the first time.</i>
+            `;
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: ADMIN_CHAT_ID,
+                    text: welcomeAdminMsg,
+                    parse_mode: 'HTML'
+                })
+            });
+        }
     }
 
     /* ADMIN VERIFICATION & DASHBOARD ENGINE */
@@ -628,7 +660,7 @@
         } else if (action === 'reject') {
             tx.status = 'rejected';
             if (tx.type === 'withdraw') {
-                userState.balance += tx.amount; // Balance refund if withdrawal rejected
+                userState.balance += tx.amount;
             }
             showToast(`Transaction ${txId} REJECTED!`);
         }
@@ -690,7 +722,6 @@
         `).join('');
     }
 
-    // Submit Deposit
     function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
@@ -751,7 +782,6 @@
         openPage('history');
     }
 
-    // Submit Withdraw
     function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
@@ -815,7 +845,6 @@
         openPage('history');
     }
 
-    // Invest Action
     function invest(amount, dailyRate) {
         if (userState.balance < amount) {
             showToast("Insufficient Balance! Please deposit first.");
@@ -854,7 +883,6 @@
         showToast(`Successfully invested $${amount}!`);
     }
 
-    // Filter History
     function filterHistory(type, btn) {
         activeHistoryFilter = type;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -862,7 +890,6 @@
         renderHistory();
     }
 
-    // Render History UI
     function renderHistory() {
         const container = document.getElementById('history-container');
         let filtered = userState.transactions;
@@ -900,7 +927,6 @@
         }).join('');
     }
 
-    // Update Stats
     function updateStats() {
         document.getElementById('stat-deposits').innerText = `$${userState.totalDeposited.toFixed(2)}`;
         document.getElementById('stat-withdraws').innerText = `$${userState.totalWithdrawn.toFixed(2)}`;
@@ -917,7 +943,6 @@
         document.getElementById('goal-percent').innerText = `${progress}%`;
     }
 
-    // Real-time Profit Engine
     function startProfitEngine() {
         setInterval(() => {
             const now = Date.now();
