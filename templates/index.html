@@ -15,6 +15,7 @@
             --accent-blue: #0072ff;
             --primary-gradient: linear-gradient(135deg, #00d2ff 0%, #0072ff 100%);
             --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --vip-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
             --text-white: #ffffff;
             --text-sub: #94a3b8;
             --danger-color: #ef4444;
@@ -65,11 +66,28 @@
         .page.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        .title { font-size: 16px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; color: var(--text-white); }
-        .title i { color: var(--accent-cyan); }
+        .section-header { font-size: 15px; font-weight: 800; margin: 20px 0 12px 0; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .section-header.standard { color: var(--accent-cyan); }
+        .section-header.vip { color: #f59e0b; }
 
-        .card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px; backdrop-filter: blur(10px); margin-bottom: 16px; }
-        .card h3 { font-size: 16px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        /* Plans Grid Container */
+        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        
+        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 16px; text-align: center; position: relative; backdrop-filter: blur(10px); transition: transform 0.2s; }
+        .plan-card:active { transform: scale(0.98); }
+        .plan-card.vip-card { border-color: rgba(245, 158, 11, 0.3); background: linear-gradient(145deg, rgba(30, 25, 15, 0.8) 0%, rgba(21, 28, 44, 0.8) 100%); }
+        
+        .plan-badge { position: absolute; top: 10px; right: 10px; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; }
+        .badge-std { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
+        .badge-vip { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+
+        .plan-title { font-size: 22px; font-weight: 800; margin: 8px 0 4px 0; }
+        .plan-rate { font-size: 13px; font-weight: 700; color: #10b981; margin-bottom: 10px; }
+        .plan-info { font-size: 11px; color: var(--text-sub); display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; text-align: left; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px; }
+        
+        .plan-btn { width: 100%; padding: 10px; border-radius: 10px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; color: #fff; }
+        .btn-std { background: var(--primary-gradient); box-shadow: 0 4px 10px rgba(0, 210, 255, 0.2); }
+        .btn-vip { background: var(--vip-gradient); box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2); }
 
         /* Forms & Custom Inputs */
         label { display: block; font-size: 11px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
@@ -87,7 +105,6 @@
 
         button.primary { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--primary-gradient); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3); transition: transform 0.2s; }
         button.success { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--success-gradient); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3); transition: transform 0.2s; }
-        button.primary:active, button.success:active { transform: scale(0.98); }
 
         /* Bottom Navigation Bar */
         nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 20px 20px 0 0; }
@@ -162,16 +179,25 @@
 
 <!-- Investment Plans Page -->
 <section id="invest" class="page active">
-    <div class="title">
-        <i class="fa-solid fa-chart-pie"></i> Investment Plans
+    
+    <!-- Standard Plans Section -->
+    <div class="section-header standard">
+        <i class="fa-solid fa-bolt"></i> Standard Plans (20% Daily)
     </div>
-    <div id="plans" class="plans"></div>
+    <div id="standard-plans" class="plans-grid"></div>
+
+    <!-- VIP Plans Section -->
+    <div class="section-header vip">
+        <i class="fa-solid fa-crown"></i> VIP Plans (35% Daily)
+    </div>
+    <div id="vip-plans" class="plans-grid"></div>
+
 </section>
 
 <!-- Deposit Page -->
 <section id="deposit" class="page">
-    <div class="card">
-        <h3><i class="fa-solid fa-arrow-down" style="color: #10b981;"></i> Deposit USDT</h3>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-arrow-down" style="color: #10b981;"></i> Deposit USDT</h3>
         
         <label>Select Deposit Network</label>
         <select id="deposit-network" onchange="updateDepositAddress()">
@@ -205,8 +231,8 @@
 
 <!-- Withdrawal Page -->
 <section id="withdraw" class="page">
-    <div class="card">
-        <h3><i class="fa-solid fa-paper-plane" style="color: var(--danger-color);"></i> Withdraw USDT</h3>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-paper-plane" style="color: var(--danger-color);"></i> Withdraw USDT</h3>
         
         <label>Select Withdrawal Network</label>
         <select id="withdraw-network" onchange="updateWithdrawIcon()">
@@ -232,27 +258,18 @@
 
 <!-- History Page -->
 <section id="history" class="page">
-    <div class="card">
-        <h3><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> Transaction History</h3>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> Transaction History</h3>
         <div id="transactions">
-            <p>No transactions yet</p>
+            <p style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0;">No active investments yet</p>
         </div>
-    </div>
-</section>
-
-<!-- Referral Page -->
-<section id="referral" class="page">
-    <div class="card">
-        <h3><i class="fa-solid fa-users" style="color: #f59e0b;"></i> Referral Program</h3>
-        <p style="font-size: 13px; color: var(--text-sub); margin-bottom: 16px;">Invite your friends and earn high commissions directly to your wallet.</p>
-        <button class="primary">Copy Referral Link</button>
     </div>
 </section>
 
 <!-- Profile Page -->
 <section id="profile" class="page">
-    <div class="card">
-        <h3><i class="fa-solid fa-user" style="color: var(--accent-cyan);"></i> Profile Details</h3>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-user" style="color: var(--accent-cyan);"></i> Profile Details</h3>
         <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
             <p style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
                 <span style="color: var(--text-sub);">Username:</span> <b id="profile-name">User</b>
@@ -292,40 +309,160 @@
 <div id="toast">Message</div>
 
 <script>
-    // Real Wallet Addresses & Icons Data
-    const cryptoNetworks = {
-        'TRC20': {
-            name: 'Tron (TRC20)',
-            address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs',
-            icon: 'https://cryptologos.cc/logos/tron-trx-logo.png'
-        },
-        'BEP20': {
-            name: 'BNB Smart Chain (BEP20)',
-            address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0',
-            icon: 'https://cryptologos.cc/logos/bnb-bnb-logo.png'
-        },
-        'ERC20': {
-            name: 'Ethereum (ERC20)',
-            address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0',
-            icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png'
-        },
-        'TON': {
-            name: 'The Open Network (TON)',
-            address: 'EQA000000000000000000000000000000000000000000000', // Waa beddeli kartaa TON address-kaaga rasmiga ah
-            icon: 'https://cryptologos.cc/logos/toncoin-ton-logo.png'
-        }
+    // State Data
+    let userState = {
+        balance: 100.00, // Demo starting balance
+        totalProfit: 0.00,
+        activeInvestment: 0.00,
+        investments: []
     };
 
-    // Splash screen timer
+    const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+    const vipAmounts = [150, 200, 350, 400, 450, 500];
+
+    const cryptoNetworks = {
+        'TRC20': { name: 'Tron (TRC20)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', icon: 'https://cryptologos.cc/logos/tron-trx-logo.png' },
+        'BEP20': { name: 'BNB Smart Chain (BEP20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' },
+        'ERC20': { name: 'Ethereum (ERC20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' },
+        'TON': { name: 'The Open Network (TON)', address: 'EQA000000000000000000000000000000000000000000000', icon: 'https://cryptologos.cc/logos/toncoin-ton-logo.png' }
+    };
+
+    // Initialize App
     window.addEventListener('load', () => {
         setTimeout(() => {
             const splash = document.getElementById('splash');
             splash.style.opacity = '0';
             splash.style.visibility = 'hidden';
-        }, 1200);
+        }, 1000);
+
+        renderPlans();
+        updateUI();
+        startProfitEngine();
     });
 
-    // Page Switcher
+    // Render Investment Plans dynamically
+    function renderPlans() {
+        const stdContainer = document.getElementById('standard-plans');
+        const vipContainer = document.getElementById('vip-plans');
+
+        stdContainer.innerHTML = stdAmounts.map(amt => `
+            <div class="plan-card">
+                <span class="plan-badge badge-std">20% / 24h</span>
+                <div class="plan-title">$${amt}</div>
+                <div class="plan-rate">+20% Profit Daily</div>
+                <div class="plan-info">
+                    <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
+                    <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
+                    <span><i class="fa-solid fa-coins"></i> Total Return: $${(amt * 1.4).toFixed(1)}</span>
+                </div>
+                <button class="plan-btn btn-std" onclick="invest(${amt}, 0.20)">Invest Now</button>
+            </div>
+        `).join('');
+
+        vipContainer.innerHTML = vipAmounts.map(amt => `
+            <div class="plan-card vip-card">
+                <span class="plan-badge badge-vip">VIP 35%</span>
+                <div class="plan-title">$${amt}</div>
+                <div class="plan-rate">+35% Profit Daily</div>
+                <div class="plan-info">
+                    <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
+                    <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
+                    <span><i class="fa-solid fa-coins"></i> Total Return: $${(amt * 2.45).toFixed(1)}</span>
+                </div>
+                <button class="plan-btn btn-vip" onclick="invest(${amt}, 0.35)">Invest VIP</button>
+            </div>
+        `).join('');
+    }
+
+    // Investment Trigger Function
+    function invest(amount, dailyRate) {
+        if (userState.balance < amount) {
+            showToast("Insufficient Balance! Please deposit first.");
+            return;
+        }
+
+        userState.balance -= amount;
+        userState.activeInvestment += amount;
+
+        const hourlyRate = (amount * dailyRate) / 24;
+
+        const newInvest = {
+            id: Date.now(),
+            amount: amount,
+            hourlyProfit: hourlyRate,
+            dailyRate: dailyRate,
+            startTime: Date.now(),
+            durationDays: 7,
+            totalEarned: 0
+        };
+
+        userState.investments.push(newInvest);
+        updateUI();
+        showToast(`Successfully invested $${amount}!`);
+        renderHistory();
+    }
+
+    // Engine that calculates profit hourly/secondly for smooth UI preview
+    function startProfitEngine() {
+        setInterval(() => {
+            const now = Date.now();
+            let addedProfit = 0;
+
+            userState.investments.forEach((inv, index) => {
+                const elapsedHours = (now - inv.startTime) / (1000 * 60 * 60);
+                
+                if (elapsedHours < (inv.durationDays * 24)) {
+                    // Calculate increment since last tick (1 second engine tick)
+                    const tickProfit = (inv.hourlyProfit / 3600); 
+                    inv.totalEarned += tickProfit;
+                    addedProfit += tickProfit;
+                } else {
+                    // Investment complete after 7 days (Release Locked Capital)
+                    userState.balance += inv.amount;
+                    userState.activeInvestment -= inv.amount;
+                    userState.investments.splice(index, 1);
+                    showToast(`Plan for $${inv.amount} completed! Capital unlocked.`);
+                }
+            });
+
+            if (addedProfit > 0) {
+                userState.balance += addedProfit;
+                userState.totalProfit += addedProfit;
+                updateUI();
+            }
+        }, 1000);
+    }
+
+    // Update Dashboard Data
+    function updateUI() {
+        document.getElementById('balance').innerText = userState.balance.toFixed(2);
+        document.getElementById('profit').innerText = userState.totalProfit.toFixed(2);
+        document.getElementById('active').innerText = userState.activeInvestment.toFixed(2);
+    }
+
+    // Render Transaction & Investment History
+    function renderHistory() {
+        const historyContainer = document.getElementById('transactions');
+        if (userState.investments.length === 0) {
+            historyContainer.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0;">No active investments yet</p>`;
+            return;
+        }
+
+        historyContainer.innerHTML = userState.investments.map(inv => `
+            <div style="background: rgba(9, 13, 22, 0.6); padding: 12px; border-radius: 12px; margin-bottom: 10px; border: 1px solid var(--card-border); font-size: 13px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                    <b>Invested: $${inv.amount}.00</b>
+                    <span style="color: #10b981; font-weight: 700;">+${(inv.dailyRate * 100)}%/day</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; color: var(--text-sub); font-size: 11px;">
+                    <span>Earned: $${inv.totalEarned.toFixed(4)}</span>
+                    <span>Status: Locked (7 Days)</span>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Dynamic Navigation Switcher
     function openPage(pageId, btnElement) {
         document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
         document.getElementById(pageId).classList.add('active');
@@ -336,7 +473,7 @@
         }
     }
 
-    // Dynamic Deposit Address Update
+    // Dynamic Wallet Update
     function updateDepositAddress() {
         const netKey = document.getElementById('deposit-network').value;
         const netData = cryptoNetworks[netKey];
@@ -346,7 +483,6 @@
         document.getElementById('deposit-address-display').innerText = netData.address;
     }
 
-    // Dynamic Withdraw Network Icon Update
     function updateWithdrawIcon() {
         const netKey = document.getElementById('withdraw-network').value;
         const netData = cryptoNetworks[netKey];
@@ -355,14 +491,12 @@
         document.getElementById('withdraw-net-label').innerText = `USDT ${netKey} Address`;
     }
 
-    // Copy Wallet Address Function
     function copyAddress() {
         const addr = document.getElementById('deposit-address-display').innerText;
         navigator.clipboard.writeText(addr);
         showToast("Wallet Address Copied!");
     }
 
-    // Toast Notification
     function showToast(msg) {
         const toast = document.getElementById('toast');
         toast.innerText = msg;
