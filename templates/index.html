@@ -494,9 +494,7 @@
         transactions: []
     };
 
-    // Load saved data from localStorage or set default
     let userState = JSON.parse(localStorage.getItem('usdtpilot_userState')) || defaultState;
-
     let telegramUser = { id: 5738022147, first_name: "Ismail", last_name: "Essa", username: "ismailessa" };
 
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -528,8 +526,8 @@
         updateDepositAddress();
         updateWithdrawIcon();
         
-        // Polling automatic check every 3 seconds for Admin Actions
-        setInterval(checkTelegramUpdates, 3000);
+        // Dynamic Update Loop Every 2 Seconds
+        setInterval(checkTelegramUpdates, 2000);
     });
 
     function saveState() {
@@ -561,15 +559,16 @@
         }
     }
 
-    // Dynamic Admin Action Buttons (Approve / Reject)
+    // Dynamic Telegram Action Sender (Short Code for Callback Data)
     async function sendAdminNotificationWithAction(messageText, actionType, txId, amount, userId) {
         const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
         
+        // Compact callback string: 'app|dep|TXN123|10|5738022147'
         const inlineKeyboard = {
             inline_keyboard: [
                 [
-                    { text: "✅ Approve", callback_data: `approve_${actionType}_${txId}_${amount}_${userId}` },
-                    { text: "❌ Reject", callback_data: `reject_${actionType}_${txId}_${amount}_${userId}` }
+                    { text: "✅ Approve", callback_data: `app|${actionType}|${txId}|${amount}|${userId}` },
+                    { text: "❌ Reject", callback_data: `rej|${actionType}|${txId}|${amount}|${userId}` }
                 ]
             ]
         };
@@ -590,33 +589,78 @@
         }
     }
 
-    // AUTOMATIC ADMIN ACTION POLLING (LISTENER)
+    // Dynamic Callback Answerer (Fixes frozen Telegram buttons!)
+    async function answerTelegramCallback(callbackQueryId, text) {
+        try {
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    callback_query_id: callbackQueryId,
+                    text: text,
+                    show_alert: true
+                })
+            });
+        } catch(e) {
+            console.error("Answer Callback Error:", e);
+        }
+    }
+
+    // Update Telegram Admin Message when Pressed
+    async function updateTelegramAdminMessage(chatId, messageId, originalText, statusText) {
+        try {
+            await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/editMessageText`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    message_id: messageId,
+                    text: `${originalText}\n\n<b>STATUS: ${statusText}</b>`,
+                    parse_mode: 'HTML'
+                })
+            });
+        } catch(e) {
+            console.error("Edit Message Error:", e);
+        }
+    }
+
+    // AUTOMATIC TELEGRAM POLLING ENGINE
     async function checkTelegramUpdates() {
         try {
             const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`);
             const data = await res.json();
 
             if (data.ok && data.result.length > 0) {
-                data.result.forEach(update => {
+                for (let update of data.result) {
                     lastUpdateId = update.update_id;
 
                     if (update.callback_query) {
-                        const callbackData = update.callback_query.data; // e.g. "approve_deposit_TXN123456_50_5738022147"
-                        const parts = callbackData.split('_');
+                        const cb = update.callback_query;
+                        const callbackData = cb.data; // e.g. "app|dep|TXN123|10|5738022147"
+                        const parts = callbackData.split('|');
 
                         if (parts.length >= 5) {
-                            const action = parts[0];      // approve / reject
-                            const type = parts[1];        // deposit / withdraw
-                            const txId = parts[2];        // TXN123456
+                            const action = parts[0] === 'app' ? 'approve' : 'reject';
+                            const type = parts[1] === 'dep' ? 'deposit' : 'withdraw';
+                            const txId = parts[2];
                             const amount = parseFloat(parts[3]);
                             const uId = parts[4];
 
+                            // Answer Button Click
+                            await answerTelegramCallback(cb.id, `Processing ${action.toUpperCase()} for ${txId}...`);
+
+                            // Update Admin Chat UI
+                            const msg = cb.message;
+                            const statusDisplay = action === 'approve' ? '✅ APPROVED' : '❌ REJECTED';
+                            await updateTelegramAdminMessage(msg.chat.id, msg.message_id, msg.text, statusDisplay);
+
+                            // Handle Client Side State Update
                             if (uId == telegramUser.id) {
                                 handleAdminDecision(action, type, txId, amount);
                             }
                         }
                     }
-                });
+                }
             }
         } catch (e) {
             console.log("Polling error:", e);
@@ -643,7 +687,6 @@
                 tx.status = 'rejected';
 
                 if (type === 'withdraw') {
-                    // Refund balance if withdrawal was rejected
                     userState.balance += amount;
                     showToast(`❌ Withdrawal of $${amount} Rejected & Refunded!`);
                 } else {
@@ -732,7 +775,6 @@
         userState.transactions.unshift(txObj);
         saveState();
 
-        // Send Notification with Action Buttons to Admin Telegram
         const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
         const uHandle = telegramUser.username ? `@${telegramUser.username}` : '@no_username';
 
@@ -750,7 +792,7 @@
 ⚠️ <i>Choose Action Below:</i>
         `;
         
-        sendAdminNotificationWithAction(adminMessage, 'deposit', generatedTxId, amt, telegramUser.id);
+        sendAdminNotificationWithAction(adminMessage, 'dep', generatedTxId, amt, telegramUser.id);
 
         document.getElementById('deposit-amount').value = '';
         document.getElementById('deposit-txid').value = '';
@@ -787,7 +829,6 @@
         userState.transactions.unshift(txObj);
         saveState();
 
-        // Send Notification with Action Buttons to Admin Telegram
         const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
         const uHandle = telegramUser.username ? `@${telegramUser.username}` : '@no_username';
 
@@ -805,7 +846,7 @@
 🚀 <i>Choose Action Below:</i>
         `;
 
-        sendAdminNotificationWithAction(adminMessage, 'withdraw', generatedTxId, amt, telegramUser.id);
+        sendAdminNotificationWithAction(adminMessage, 'wit', generatedTxId, amt, telegramUser.id);
 
         document.getElementById('withdraw-amount').value = '';
         document.getElementById('withdraw-address').value = '';
