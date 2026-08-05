@@ -455,13 +455,16 @@
     </div>
 </section>
 
-<!-- Admin Dashboard Page (Only visible if User ID matches ADMIN_CHAT_ID) -->
+<!-- Admin Dashboard Page -->
 <section id="admin-panel" class="page">
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
-        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; color: #f59e0b;">
-            <i class="fa-solid fa-user-shield"></i> Admin Management Panel
-        </h3>
-        <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 14px;">Manage pending deposit and withdrawal requests below:</p>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="font-size: 16px; font-weight: 700; color: #f59e0b;">
+                <i class="fa-solid fa-user-shield"></i> Admin Management Panel
+            </h3>
+            <button onclick="loadCloudTransactions()" class="copy-btn" style="padding: 6px 10px;"><i class="fa-solid fa-rotate"></i> Refresh</button>
+        </div>
+        <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 14px;">Manage pending deposit and withdrawal requests from all users:</p>
         <div id="admin-pending-container"></div>
     </div>
 </section>
@@ -490,9 +493,13 @@
 <div id="toast">Message</div>
 
 <script>
-    // TELEGRAM BOT CONFIGURATION
+    // TELEGRAM & JSONBIN.IO CONFIGURATION
     const BOT_TOKEN = '8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0';
     const ADMIN_CHAT_ID = '5738022147';
+    
+    // JSONBin.io Config
+    const BIN_ID = '6a730d36f5f4af5e29edd1e0';
+    const API_KEY = '$2a$10$iG41CaLtR15kLDuNs8sQ0ex4EukJqghVicipFtVC2PlUG51Uk//Clv1';
 
     // Default User Data
     const defaultState = {
@@ -507,6 +514,7 @@
 
     let userState = JSON.parse(localStorage.getItem('usdtpilot_userState')) || defaultState;
     let telegramUser = { id: 5738022147, first_name: "Ismail", last_name: "Essa", username: "ismailessa" };
+    let globalCloudTransactions = []; // Maamulka admin-ka
 
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
     const vipAmounts = [150, 200, 350, 400, 450, 500];
@@ -520,7 +528,7 @@
 
     let activeHistoryFilter = 'all';
 
-    window.addEventListener('load', () => {
+    window.addEventListener('load', async () => {
         setTimeout(() => {
             const splash = document.getElementById('splash');
             splash.style.opacity = '0';
@@ -536,6 +544,7 @@
         updateDepositAddress();
         updateWithdrawIcon();
         checkAdminAccess();
+        await loadCloudTransactions();
     });
 
     function saveState() {
@@ -565,37 +574,6 @@
             document.getElementById('header-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
         }
-
-        checkNewUserJoin(fullName, usernameStr, userIdStr);
-    }
-
-    function checkNewUserJoin(fullName, usernameStr, userIdStr) {
-        const hasJoinedBefore = localStorage.getItem(`usdtpilot_joined_${userIdStr}`);
-        
-        if (!hasJoinedBefore) {
-            localStorage.setItem(`usdtpilot_joined_${userIdStr}`, 'true');
-
-            const welcomeAdminMsg = `
-🚀 <b>NEW USER JOINED (WEBAPP)</b>
-━━━━━━━━━━━━━━━━━━
-👤 <b>Name:</b> ${fullName}
-🔗 <b>Username:</b> ${usernameStr}
-🆔 <b>Telegram ID:</b> <code>${userIdStr}</code>
-📅 <b>Time:</b> ${new Date().toLocaleString()}
-━━━━━━━━━━━━━━━━━━
-📌 <i>This user has opened the Investment WebApp for the first time.</i>
-            `;
-
-            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: ADMIN_CHAT_ID,
-                    text: welcomeAdminMsg,
-                    parse_mode: 'HTML'
-                })
-            });
-        }
     }
 
     function checkAdminAccess() {
@@ -608,7 +586,86 @@
                     </button>
                 `;
             }
-            renderAdminPendingRequests();
+        }
+    }
+
+    // JSONBin.io: Soo akhriso xogta dhammaan user-ada ee Cloud-ka ku jirta
+    async function loadCloudTransactions() {
+        try {
+            let res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                headers: { 'X-Master-Key': API_KEY }
+            });
+            let data = await res.json();
+            globalCloudTransactions = data.record || [];
+            
+            if (telegramUser.id.toString() === ADMIN_CHAT_ID) {
+                renderAdminPendingRequests();
+            }
+        } catch (e) {
+            console.error("Error loading cloud transactions:", e);
+        }
+    }
+
+    // JSONBin.io: Ku dar xog cusub Cloud-ka
+    async function saveTransactionToCloud(txObj) {
+        try {
+            let res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                headers: { 'X-Master-Key': API_KEY }
+            });
+            let data = await res.json();
+            let records = data.record || [];
+
+            records.unshift(txObj);
+
+            let updateRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': API_KEY
+                },
+                body: JSON.stringify(records)
+            });
+
+            if (updateRes.ok) {
+                globalCloudTransactions = records;
+                if (telegramUser.id.toString() === ADMIN_CHAT_ID) {
+                    renderAdminPendingRequests();
+                }
+            }
+        } catch (e) {
+            console.error("Error saving to cloud:", e);
+        }
+    }
+
+    // JSONBin.io: Cusbooneysii xogta markuu admin-ku approve/reject dhaho
+    async function updateCloudTransactionStatus(txId, newStatus) {
+        try {
+            let res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                headers: { 'X-Master-Key': API_KEY }
+            });
+            let data = await res.json();
+            let records = data.record || [];
+
+            let target = records.find(t => t.id === txId);
+            if (target) {
+                target.status = newStatus;
+            }
+
+            let updateRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Master-Key': API_KEY
+                },
+                body: JSON.stringify(records)
+            });
+
+            if (updateRes.ok) {
+                globalCloudTransactions = records;
+                renderAdminPendingRequests();
+            }
+        } catch (e) {
+            console.error("Error updating cloud transaction:", e);
         }
     }
 
@@ -616,7 +673,7 @@
         const container = document.getElementById('admin-pending-container');
         if(!container) return;
 
-        const pendingTxs = userState.transactions.filter(t => t.status === 'pending');
+        const pendingTxs = globalCloudTransactions.filter(t => t.status === 'pending');
 
         if (pendingTxs.length === 0) {
             container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0;">No pending requests at the moment.</p>`;
@@ -629,45 +686,21 @@
                     <span style="font-size: 13px; font-weight: 700; color: var(--accent-cyan);">${tx.title}</span>
                     <span style="font-size: 10px; color: var(--text-sub); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">${tx.id}</span>
                 </div>
+                <p style="font-size: 12px; margin-bottom: 4px;"><b>User ID:</b> <code>${tx.userId || 'N/A'}</code> (${tx.userName || 'User'})</p>
                 <p style="font-size: 12px; margin-bottom: 4px;"><b>Amount:</b> $${tx.amount.toFixed(2)} USDT</p>
                 <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;"><b>Network:</b> ${tx.network} | <b>Date:</b> ${tx.date}</p>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <button onclick="processTransaction('${tx.id}', 'approve')" style="background: var(--success-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Approve</button>
-                    <button onclick="processTransaction('${tx.id}', 'reject')" style="background: var(--danger-color); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Reject</button>
+                    <button onclick="processAdminTransaction('${tx.id}', 'completed')" style="background: var(--success-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Approve</button>
+                    <button onclick="processAdminTransaction('${tx.id}', 'rejected')" style="background: var(--danger-color); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Reject</button>
                 </div>
             </div>
         `).join('');
     }
 
-    function processTransaction(txId, action) {
-        const txIndex = userState.transactions.findIndex(t => t.id === txId);
-        if (txIndex === -1) return;
-
-        const tx = userState.transactions[txIndex];
-
-        if (action === 'approve') {
-            tx.status = 'completed';
-            if (tx.type === 'deposit') {
-                userState.balance += tx.amount;
-                userState.totalDeposited += tx.amount;
-            } else if (tx.type === 'withdraw') {
-                userState.totalWithdrawn += tx.amount;
-            }
-            showToast(`Transaction ${txId} APPROVED!`);
-        } else if (action === 'reject') {
-            tx.status = 'rejected';
-            if (tx.type === 'withdraw') {
-                userState.balance += tx.amount;
-            }
-            showToast(`Transaction ${txId} REJECTED!`);
-        }
-
-        saveState();
-        updateUI();
-        renderHistory();
-        updateStats();
-        renderAdminPendingRequests();
+    async function processAdminTransaction(txId, status) {
+        await updateCloudTransactionStatus(txId, status);
+        showToast(`Transaction ${txId} marked as ${status.toUpperCase()}!`);
     }
 
     function updateDepositAddress() {
@@ -720,7 +753,7 @@
         `).join('');
     }
 
-    function submitDeposit() {
+    async function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
         const net = document.getElementById('deposit-network').value;
@@ -729,21 +762,25 @@
         if(!txid) { showToast("Please paste your TXID Hash!"); return; }
 
         const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
+        const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
 
         const txObj = {
             id: generatedTxId,
+            userId: telegramUser.id,
+            userName: uName,
             type: 'deposit',
             title: `Deposit (${net})`,
             amount: amt,
             status: 'pending',
             date: new Date().toLocaleDateString(),
-            network: net
+            network: net,
+            txidHash: txid
         };
 
         userState.transactions.unshift(txObj);
         saveState();
+        await saveTransactionToCloud(txObj);
 
-        const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
         const uHandle = telegramUser.username ? `@${telegramUser.username}` : '@no_username';
 
         const adminMessage = `
@@ -763,11 +800,7 @@
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: ADMIN_CHAT_ID,
-                text: adminMessage,
-                parse_mode: 'HTML'
-            })
+            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: adminMessage, parse_mode: 'HTML' })
         });
 
         document.getElementById('deposit-amount').value = '';
@@ -776,11 +809,10 @@
         showToast("Deposit submitted! Status: Pending verification.");
         renderHistory();
         updateStats();
-        renderAdminPendingRequests();
         openPage('history');
     }
 
-    function submitWithdraw() {
+    async function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
         const net = document.getElementById('withdraw-network').value;
@@ -791,21 +823,25 @@
 
         userState.balance -= amt;
         const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
+        const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
 
         const txObj = {
             id: generatedTxId,
+            userId: telegramUser.id,
+            userName: uName,
             type: 'withdraw',
             title: `Withdraw (${net})`,
             amount: amt,
             status: 'pending',
             date: new Date().toLocaleDateString(),
-            network: net
+            network: net,
+            walletAddress: addr
         };
 
         userState.transactions.unshift(txObj);
         saveState();
+        await saveTransactionToCloud(txObj);
 
-        const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
         const uHandle = telegramUser.username ? `@${telegramUser.username}` : '@no_username';
 
         const adminMessage = `
@@ -825,11 +861,7 @@
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: ADMIN_CHAT_ID,
-                text: adminMessage,
-                parse_mode: 'HTML'
-            })
+            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: adminMessage, parse_mode: 'HTML' })
         });
 
         document.getElementById('withdraw-amount').value = '';
@@ -838,7 +870,6 @@
         updateUI();
         renderHistory();
         updateStats();
-        renderAdminPendingRequests();
         showToast(`Withdrawal of $${amt} submitted! Status: Pending.`);
         openPage('history');
     }
@@ -983,6 +1014,10 @@
         if(btnElement) {
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             btnElement.classList.add('active');
+        }
+        
+        if(pageId === 'admin-panel') {
+            loadCloudTransactions();
         }
     }
 
