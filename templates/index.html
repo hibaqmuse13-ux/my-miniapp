@@ -7,28 +7,6 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
-    <!-- Supabase CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- Firebase App & Firestore CDN -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-      import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyBZ92SVBx3B47Jgk-00Ynp2AVmmYBhcK9s",
-        authDomain: "usdtpilot.firebaseapp.com",
-        projectId: "usdtpilot",
-        storageBucket: "usdtpilot.firebasestorage.app",
-        messagingSenderId: "454725978818",
-        appId: "1:454725978818:web:fd04d4699807381232495b"
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      window.db = db;
-    </script>
-
     <style>
         :root {
             --bg-dark: #090d16;
@@ -494,17 +472,6 @@
     </div>
 </section>
 
-<!-- Admin Dashboard Page -->
-<section id="admin-panel" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
-        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; color: #f59e0b;">
-            <i class="fa-solid fa-user-shield"></i> Admin Management Panel
-        </h3>
-        <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 14px;">Manage pending deposit and withdrawal requests below:</p>
-        <div id="admin-pending-container"></div>
-    </div>
-</section>
-
 <!-- Bottom Nav -->
 <nav id="main-nav">
     <button class="nav-btn active" onclick="openPage('invest', this)">
@@ -531,11 +498,6 @@
 <script>
     const BOT_TOKEN = '8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0';
     const ADMIN_CHAT_ID = '5738022147';
-
-    // SUPABASE CONFIGURATION
-    const SUPABASE_URL = 'https://gbyabfeczskrwahoernn.supabase.co';
-    const SUPABASE_ANON_KEY = 'sb_publishable_9fpjomKU4oqRlVJ1h...'; 
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const defaultState = {
         balance: 0.00,
@@ -579,8 +541,6 @@
         startProfitEngine();
         updateDepositAddress();
         updateWithdrawIcon();
-        checkAdminAccess();
-        fetchSupabaseTransactions();
     });
 
     function saveState() {
@@ -593,17 +553,6 @@
 
         if (tg?.initDataUnsafe?.user) {
             telegramUser = tg.initDataUnsafe.user;
-        }
-
-        if (tg?.initDataUnsafe?.start_param) {
-            const startParam = tg.initDataUnsafe.start_param;
-            if (startParam.startsWith('ref_')) {
-                const refId = startParam.replace('ref_', '');
-                if (refId !== telegramUser.id.toString() && !userState.referrerId) {
-                    userState.referrerId = refId;
-                    saveState();
-                }
-            }
         }
 
         const fullName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
@@ -644,86 +593,6 @@
         }
 
         openPage('withdraw');
-    }
-
-    function checkAdminAccess() {
-        if (telegramUser.id.toString() === ADMIN_CHAT_ID) {
-            const nav = document.getElementById('main-nav');
-            if (!document.getElementById('admin-nav-btn')) {
-                nav.innerHTML += `
-                    <button id="admin-nav-btn" class="nav-btn" onclick="openPage('admin-panel', this)">
-                        <i class="fa-solid fa-user-shield" style="color: #f59e0b;"></i> Admin
-                    </button>
-                `;
-            }
-            renderAdminPendingRequests();
-        }
-    }
-
-    async function fetchSupabaseTransactions() {
-        const { data, error } = await supabaseClient
-            .from('transactions')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (!error && data) {
-            renderAdminPendingRequests(data);
-        }
-    }
-
-    async function renderAdminPendingRequests(supaData = null) {
-        const container = document.getElementById('admin-pending-container');
-        if(!container) return;
-
-        let pendingTxs = [];
-        if (supaData) {
-            pendingTxs = supaData.filter(t => t.status === 'pending');
-        } else {
-            const { data } = await supabaseClient.from('transactions').select('*').eq('status', 'pending');
-            pendingTxs = data || [];
-        }
-
-        if (pendingTxs.length === 0) {
-            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0;">No pending requests at the moment.</p>`;
-            return;
-        }
-
-        container.innerHTML = pendingTxs.map(tx => `
-            <div style="background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 12px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <span style="font-size: 13px; font-weight: 700; color: var(--accent-cyan);">Request #${tx.id}</span>
-                    <span style="font-size: 10px; color: var(--text-sub); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">User: ${tx.user_id}</span>
-                </div>
-                <p style="font-size: 12px; margin-bottom: 4px;"><b>Amount:</b> $${tx.amount} USDT</p>
-                <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;"><b>Status:</b> ${tx.status}</p>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <button onclick="processSupabaseTx(${tx.id}, 'approved', ${tx.amount})" style="background: var(--success-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Approve</button>
-                    <button onclick="processSupabaseTx(${tx.id}, 'rejected', ${tx.amount})" style="background: var(--danger-color); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Reject</button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    async function processSupabaseTx(txId, newStatus, amount) {
-        const { error } = await supabaseClient
-            .from('transactions')
-            .update({ status: newStatus })
-            .eq('id', txId);
-
-        if (error) {
-            showToast("Error updating transaction!");
-        } else {
-            showToast(`Transaction ${newStatus}!`);
-            if (newStatus === 'approved') {
-                userState.balance += amount;
-                userState.totalDeposited += amount;
-                saveState();
-                updateUI();
-                updateStats();
-            }
-            fetchSupabaseTransactions();
-        }
     }
 
     function updateDepositAddress() {
@@ -784,15 +653,6 @@
         if(!amt || amt < 10) { showToast("Minimum deposit is $10!"); return; }
         if(!txid) { showToast("Please paste your TXID Hash!"); return; }
 
-        const { error } = await supabaseClient
-            .from('transactions')
-            .insert([{ user_id: telegramUser.id, amount: amt, status: 'pending' }]);
-
-        if (error) {
-            showToast("Failed to submit deposit to database.");
-            return;
-        }
-
         const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
         const txObj = {
             id: generatedTxId,
@@ -801,7 +661,8 @@
             amount: amt,
             status: 'pending',
             date: new Date().toLocaleDateString(),
-            network: net
+            network: net,
+            txid: txid
         };
 
         userState.transactions.unshift(txObj);
@@ -822,7 +683,6 @@
 📌 <i>Status: Pending verification</i>
         `;
 
-        // Saxita: Ku darista Inline Keyboard si badhannada fariintu u wataan callback_data
         const inlineKeyboard = {
             inline_keyboard: [
                 [
@@ -841,7 +701,7 @@
                 parse_mode: 'HTML',
                 reply_markup: inlineKeyboard
             })
-        });
+        }).catch(err => console.log(err));
 
         document.getElementById('deposit-amount').value = '';
         document.getElementById('deposit-txid').value = '';
@@ -849,7 +709,6 @@
         showToast("Deposit submitted! Status: Pending verification.");
         renderHistory();
         updateStats();
-        fetchSupabaseTransactions();
         openPage('history');
     }
 
@@ -861,15 +720,6 @@
         if(!amt || amt < 10) { showToast("Minimum withdrawal is $10!"); return; }
         if(!addr) { showToast("Please enter destination wallet address!"); return; }
         if(userState.balance < amt) { showToast("Insufficient balance!"); return; }
-
-        const { error } = await supabaseClient
-            .from('transactions')
-            .insert([{ user_id: telegramUser.id, amount: amt, status: 'pending' }]);
-
-        if (error) {
-            showToast("Failed to submit withdrawal to database.");
-            return;
-        }
 
         userState.balance -= amt;
         const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
@@ -902,26 +752,11 @@
 📌 <i>Status: Pending verification</i>
         `;
 
-        // Saxita: Ku darista Inline Keyboard si badhannada fariintu u wataan callback_data
-        const inlineKeyboard = {
-            inline_keyboard: [
-                [
-                    { text: "✅ Approve", callback_data: `approve_w_${telegramUser.id}_${amt}` },
-                    { text: "❌ Reject", callback_data: `reject_w_${telegramUser.id}_${amt}` }
-                ]
-            ]
-        };
-
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                chat_id: ADMIN_CHAT_ID, 
-                text: adminMessage, 
-                parse_mode: 'HTML',
-                reply_markup: inlineKeyboard
-            })
-        });
+            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: adminMessage, parse_mode: 'HTML' })
+        }).catch(err => console.log(err));
 
         document.getElementById('withdraw-amount').value = '';
         document.getElementById('withdraw-address').value = '';
@@ -929,7 +764,6 @@
         updateUI();
         renderHistory();
         updateStats();
-        fetchSupabaseTransactions();
         showToast(`Withdrawal of $${amt} submitted! Status: Pending.`);
         openPage('history');
     }
@@ -1125,7 +959,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: ticketMessage, parse_mode: 'HTML' })
-        });
+        }).catch(err => console.log(err));
 
         document.getElementById('support-subject').value = '';
         document.getElementById('support-msg').value = '';
