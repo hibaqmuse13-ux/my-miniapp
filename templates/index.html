@@ -822,10 +822,25 @@
 📌 <i>Status: Pending verification</i>
         `;
 
+        // Saxita: Ku darista Inline Keyboard si badhannada fariintu u wataan callback_data
+        const inlineKeyboard = {
+            inline_keyboard: [
+                [
+                    { text: "✅ Approve", callback_data: `approve_${telegramUser.id}_${amt}` },
+                    { text: "❌ Reject", callback_data: `reject_${telegramUser.id}_${amt}` }
+                ]
+            ]
+        };
+
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: adminMessage, parse_mode: 'HTML' })
+            body: JSON.stringify({ 
+                chat_id: ADMIN_CHAT_ID, 
+                text: adminMessage, 
+                parse_mode: 'HTML',
+                reply_markup: inlineKeyboard
+            })
         });
 
         document.getElementById('deposit-amount').value = '';
@@ -887,10 +902,25 @@
 📌 <i>Status: Pending verification</i>
         `;
 
+        // Saxita: Ku darista Inline Keyboard si badhannada fariintu u wataan callback_data
+        const inlineKeyboard = {
+            inline_keyboard: [
+                [
+                    { text: "✅ Approve", callback_data: `approve_w_${telegramUser.id}_${amt}` },
+                    { text: "❌ Reject", callback_data: `reject_w_${telegramUser.id}_${amt}` }
+                ]
+            ]
+        };
+
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: adminMessage, parse_mode: 'HTML' })
+            body: JSON.stringify({ 
+                chat_id: ADMIN_CHAT_ID, 
+                text: adminMessage, 
+                parse_mode: 'HTML',
+                reply_markup: inlineKeyboard
+            })
         });
 
         document.getElementById('withdraw-amount').value = '';
