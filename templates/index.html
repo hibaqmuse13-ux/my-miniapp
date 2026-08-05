@@ -12,8 +12,10 @@
 
     <script>
       const SUPABASE_URL = 'https://gbyabfeczskrwahoernn.supabase.co';
-      const SUPABASE_ANON_KEY = 'sb_publishable_9fpjomKU4oqRlvJ1h...'; // Geli furahaaga buuxa halkaan haddii uu dhiman yahay
+      const SUPABASE_ANON_KEY = 'sb_publishable_9fpjomKU4oqRlvJ1h...'; 
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      
+      const BOT_TOKEN = '8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0';
     </script>
 
     <style>
@@ -152,10 +154,6 @@
         .progress-container { background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
         .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-top: 10px; }
         .progress-bar-fill { height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s ease; }
-
-        .chart-visual { height: 120px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding-top: 20px; border-bottom: 1px solid var(--card-border); }
-        .chart-bar { flex: 1; background: rgba(0, 210, 255, 0.2); border-radius: 6px 6px 0 0; transition: height 0.5s; }
-        .chart-bar.active { background: var(--primary-gradient); }
 
         /* Support */
         .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: #fff; }
@@ -458,7 +456,7 @@
 <div id="toast">Message</div>
 
 <script>
-    const ADMIN_CHAT_ID = '5738022147'; // Beddel haddii admin kale jiro
+    const ADMIN_CHAT_ID = '5738022147'; 
 
     const defaultState = {
         balance: 0.00,
@@ -519,7 +517,7 @@
         document.getElementById('userid').innerText = `ID: ${userIdStr}`;
         document.getElementById('profile-fullname').innerText = fullName;
         document.getElementById('profile-username').innerText = usernameStr;
-        document.getElementById('ref-link').value = `https://t.me/USDTPilotBot?start=ref_${userIdStr}`;
+        document.getElementById('ref-link').value = `https://t.me/my_miniapp_v1_bot?start=ref_${userIdStr}`;
 
         if (telegramUser.photo_url) {
             document.getElementById('header-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
@@ -541,7 +539,6 @@
         }
     }
 
-    // SUPABASE INTEGRATION: Submit Deposit
     async function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
@@ -576,7 +573,6 @@
         openPage('history');
     }
 
-    // SUPABASE INTEGRATION: Submit Withdrawal
     async function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
@@ -615,7 +611,6 @@
         openPage('history');
     }
 
-    // SUPABASE INTEGRATION: Load History
     async function loadHistoryFromSupabase() {
         const { data, error } = await supabase
             .from('transactions')
@@ -629,7 +624,6 @@
         }
     }
 
-    // SUPABASE INTEGRATION: Admin View Pending
     async function renderAdminPendingRequests() {
         const container = document.getElementById('admin-pending-container');
         if(!container) return;
