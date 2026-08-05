@@ -6,6 +6,26 @@
     <title>USDTPilot Investment</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <!-- Firebase App & Firestore CDN -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
+      import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBZ92SVBx3B47Jgk-00Ynp2AVmmYBhcK9s",
+        authDomain: "usdtpilot.firebaseapp.com",
+        projectId: "usdtpilot",
+        storageBucket: "usdtpilot.firebasestorage.app",
+        messagingSenderId: "454725978818",
+        appId: "1:454725978818:web:fd04d4699807381232495b"
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      window.db = db; // Si looga isticmaalo app-ka dhexdiisa
+    </script>
+
     <style>
         :root {
             --bg-dark: #090d16;
@@ -506,11 +526,9 @@
 <div id="toast">Message</div>
 
 <script>
-    // TELEGRAM BOT CONFIGURATION
     const BOT_TOKEN = '8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0';
     const ADMIN_CHAT_ID = '5738022147';
 
-    // Default User Data
     const defaultState = {
         balance: 0.00,
         totalProfit: 0.00,
@@ -774,7 +792,6 @@
         `).join('');
     }
 
-    // Submit Deposit (Sends Telegram Message to Admin)
     function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
@@ -831,7 +848,6 @@
         openPage('history');
     }
 
-    // Submit Withdraw (Sends Telegram Message to Admin)
     function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
