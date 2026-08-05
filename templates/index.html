@@ -36,7 +36,8 @@
         /* Header */
         header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); margin-bottom: 18px; }
         .profile { display: flex; align-items: center; gap: 12px; }
-        .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3); }
+        .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3); overflow: hidden; }
+        .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .profile h3 { font-size: 15px; font-weight: 700; }
         .profile small { font-size: 11px; color: var(--text-sub); }
         .verified { font-size: 10px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 5px; }
@@ -132,7 +133,7 @@
 <!-- Header -->
 <header>
     <div class="profile">
-        <div class="avatar">
+        <div class="avatar" id="header-avatar">
             <i class="fa-solid fa-user"></i>
         </div>
         <div>
@@ -266,20 +267,49 @@
     </div>
 </section>
 
-<!-- Profile Page -->
+<!-- Professional Profile Page -->
 <section id="profile" class="page">
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
-        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-user" style="color: var(--accent-cyan);"></i> Profile Details</h3>
-        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
-            <p style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
-                <span style="color: var(--text-sub);">Username:</span> <b id="profile-name">User</b>
-            </p>
-            <p style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
-                <span style="color: var(--text-sub);">Telegram ID:</span> <b id="profile-id">000000</b>
-            </p>
-            <p style="display: flex; justify-content: space-between;">
-                <span style="color: var(--text-sub);">Account Status:</span> <b style="color:#10b981;"><i class="fa-solid fa-shield"></i> Verified</b>
-            </p>
+        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; border-bottom: 1px solid var(--card-border); padding-bottom: 16px;">
+            <div id="profile-page-avatar" style="width: 55px; height: 55px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 22px; color: #fff; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <div>
+                <h3 id="profile-fullname" style="font-size: 18px; font-weight: 800;">Loading...</h3>
+                <small id="profile-username" style="color: var(--accent-cyan); font-weight: 600;">@username</small>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-id-badge" style="width: 20px; color: var(--accent-cyan);"></i> Telegram ID:</span> 
+                <b id="profile-id">000000</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-globe" style="width: 20px; color: var(--accent-cyan);"></i> Language:</span> 
+                <b id="profile-lang">EN</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-shield-halved" style="width: 20px; color: #10b981;"></i> Security Level:</span> 
+                <b style="color:#10b981;">Telegram Verified</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-user-shield" style="width: 20px; color: #f59e0b;"></i> Account Tier:</span> 
+                <b style="color: #f59e0b;">Standard Investor</b>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-calendar-days" style="width: 20px; color: var(--accent-cyan);"></i> Joined Date:</span> 
+                <b id="profile-date">2026</b>
+            </div>
+        </div>
+
+        <!-- Referral Link Box -->
+        <div style="margin-top: 20px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
+            <label style="margin-bottom: 6px;"><i class="fa-solid fa-link"></i> Your Referral Link</label>
+            <div style="display: flex; gap: 8px;">
+                <input type="text" id="ref-link" value="https://t.me/USDTPilotBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 12px; font-family: monospace; background: rgba(0,0,0,0.3);">
+                <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 14px; border-radius: 10px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
+            </div>
         </div>
     </div>
 </section>
@@ -311,7 +341,7 @@
 <script>
     // State Data
     let userState = {
-        balance: 100.00, // Demo starting balance
+        balance: 100.00,
         totalProfit: 0.00,
         activeInvestment: 0.00,
         investments: []
@@ -327,7 +357,7 @@
         'TON': { name: 'The Open Network (TON)', address: 'EQA000000000000000000000000000000000000000000000', icon: 'https://cryptologos.cc/logos/toncoin-ton-logo.png' }
     };
 
-    // Initialize App
+    // Initialize App & Telegram User Data
     window.addEventListener('load', () => {
         setTimeout(() => {
             const splash = document.getElementById('splash');
@@ -335,10 +365,53 @@
             splash.style.visibility = 'hidden';
         }, 1000);
 
+        initTelegramUser();
         renderPlans();
         updateUI();
         startProfitEngine();
     });
+
+    // Fetch Real Telegram Profile Data
+    function initTelegramUser() {
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+
+        let userData = {
+            id: 84920194,
+            first_name: "Ismail",
+            last_name: "Essa",
+            username: "ismailessa",
+            language_code: "en"
+        };
+
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            userData = tg.initDataUnsafe.user;
+        }
+
+        const fullName = `${userData.first_name || ''} ${userData.last_name || ''}`.trim() || "User";
+        const usernameStr = userData.username ? `@${userData.username}` : `@user_${userData.id}`;
+        const userIdStr = userData.id.toString();
+        const langStr = (userData.language_code || 'en').toUpperCase();
+        const currentDate = new Date().toLocaleDateString();
+
+        // Update Header
+        document.getElementById('username').innerText = userData.first_name || "User";
+        document.getElementById('userid').innerText = `ID: ${userIdStr}`;
+
+        // Update Professional Profile Page Section
+        document.getElementById('profile-fullname').innerText = fullName;
+        document.getElementById('profile-username').innerText = usernameStr;
+        document.getElementById('profile-id').innerText = userIdStr;
+        document.getElementById('profile-lang').innerText = langStr;
+        document.getElementById('profile-date').innerText = currentDate;
+        document.getElementById('ref-link').value = `https://t.me/USDTPilotBot?start=ref_${userIdStr}`;
+
+        // If user has photo_url in Telegram
+        if (userData.photo_url) {
+            document.getElementById('header-avatar').innerHTML = `<img src="${userData.photo_url}" alt="Avatar">`;
+            document.getElementById('profile-page-avatar').innerHTML = `<img src="${userData.photo_url}" alt="Avatar">`;
+        }
+    }
 
     // Render Investment Plans dynamically
     function renderPlans() {
@@ -412,12 +485,10 @@
                 const elapsedHours = (now - inv.startTime) / (1000 * 60 * 60);
                 
                 if (elapsedHours < (inv.durationDays * 24)) {
-                    // Calculate increment since last tick (1 second engine tick)
                     const tickProfit = (inv.hourlyProfit / 3600); 
                     inv.totalEarned += tickProfit;
                     addedProfit += tickProfit;
                 } else {
-                    // Investment complete after 7 days (Release Locked Capital)
                     userState.balance += inv.amount;
                     userState.activeInvestment -= inv.amount;
                     userState.investments.splice(index, 1);
@@ -495,6 +566,13 @@
         const addr = document.getElementById('deposit-address-display').innerText;
         navigator.clipboard.writeText(addr);
         showToast("Wallet Address Copied!");
+    }
+
+    function copyRefLink() {
+        const refInput = document.getElementById('ref-link');
+        refInput.select();
+        navigator.clipboard.writeText(refInput.value);
+        showToast("Referral Link Copied!");
     }
 
     function showToast(msg) {
