@@ -429,6 +429,17 @@
 
             <button class="primary" onclick="sendTicket()"><i class="fa-solid fa-paper-plane"></i> Submit Ticket</button>
         </div>
+
+        <!-- QAYBTA CUSUB: Fariimaha Support-ka iyo Jawaabaha Admin-ka -->
+        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
+            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--accent-cyan);">
+                <i class="fa-solid fa-comments"></i> Your Support Tickets & Replies
+            </h4>
+            
+            <div id="support-tickets-container">
+                <p style="text-align: center; color: var(--text-sub); font-size: 12px; padding: 15px 0;">Loading your tickets...</p>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -562,6 +573,7 @@
             const data = await res.json();
             if(data.status === 'success') {
                 fetchUserData(userIdStr);
+                loadSupportTickets(userIdStr);
             }
         } catch(e) {
             console.error("Auth sync error:", e);
@@ -852,9 +864,46 @@
             if(result.status === 'success') {
                 document.getElementById('support-subject').value = '';
                 document.getElementById('support-msg').value = '';
+                loadSupportTickets(userId);
             }
         } catch(e) {
             showToast("Connection error!");
+        }
+    }
+
+    // Function-ka soo jiidaya fariimaha Support-ka iyo jawaabaha
+    async function loadSupportTickets(userId) {
+        try {
+            const res = await fetch(`/api/support/tickets/${userId}`);
+            const data = await res.json();
+            const container = document.getElementById('support-tickets-container');
+            
+            if (!data.tickets || data.tickets.length === 0) {
+                container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 12px; padding: 15px 0;">No support tickets found.</p>`;
+                return;
+            }
+
+            container.innerHTML = data.tickets.map(ticket => `
+                <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <b style="font-size: 13px; color: #fff;">${ticket.subject}</b>
+                        <span style="font-size: 9px; padding: 2px 6px; border-radius: 4px; background: ${ticket.status === 'Resolved' ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)'}; color: ${ticket.status === 'Resolved' ? '#10b981' : '#f59e0b'};">
+                            ${ticket.status}
+                        </span>
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 8px;"><b>You:</b> ${ticket.message}</p>
+                    
+                    ${ticket.admin_reply ? `
+                        <div style="background: rgba(0, 210, 255, 0.08); border-left: 2px solid var(--accent-cyan); padding: 8px; border-radius: 4px; margin-top: 6px;">
+                            <p style="font-size: 11px; color: var(--accent-cyan);"><b>Admin Reply:</b> ${ticket.admin_reply}</p>
+                        </div>
+                    ` : `
+                        <p style="font-size: 10px; color: var(--text-sub); font-style: italic; margin-top: 4px;">⏳ Awaiting admin response...</p>
+                    `}
+                </div>
+            `).join('');
+        } catch (e) {
+            console.error("Error loading tickets:", e);
         }
     }
 
