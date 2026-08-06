@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>USDTPilot Investment</title>
+    <title>MIniapp_v1_bot Investment</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
@@ -152,6 +152,13 @@
         .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: #fff; }
         .support-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent-cyan); }
 
+        /* Admin Dashboard Styles */
+        .admin-table-box { width: 100%; overflow-x: auto; margin-top: 10px; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 11px; text-align: left; }
+        .admin-table th, .admin-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
+        .admin-table th { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); font-weight: 700; }
+        .admin-table tr:hover { background: rgba(255,255,255,0.02); }
+
         /* Navigation */
         nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 20px 20px 0 0; }
         nav button { background: none; border: none; color: var(--text-sub); font-size: 10px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; flex: 1; transition: color 0.2s; }
@@ -167,8 +174,8 @@
 
 <!-- Splash Screen -->
 <div id="splash">
-    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDTPilot">
-    <h2>USDTPilot</h2>
+    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="MIniapp_v1_bot">
+    <h2>MIniapp_v1_bot</h2>
     <p>SECURE INVESTMENT PLATFORM</p>
     <div class="loader"></div>
 </div>
@@ -379,7 +386,7 @@
             </div>
         </div>
 
-        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
+        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 12px; font-weight: 700; color: #fff;">Weekly Growth Trend</span>
                 <small style="font-size: 10px; color: #10b981;"><i class="fa-solid fa-arrow-trend-up"></i> +28.4%</small>
@@ -393,6 +400,50 @@
                 <div class="chart-bar active" style="height: 90%;"></div>
             </div>
         </div>
+
+        <!-- ADMIN PANEL INTEGRATION (Waa la qariyay oo adiga kaliya kuu muuqan doonta) -->
+        <div id="admin-dashboard-container" style="display: none; background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
+            <h4 style="font-size: 14px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 10px;">
+                <i class="fa-solid fa-shield-halved"></i> Admin Analytics Dashboard
+            </h4>
+            
+            <div style="font-size: 12px; color: var(--text-sub); margin-bottom: 8px; font-weight: 600;">👥 Registered Users</div>
+            <div class="admin-table-box">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Telegram ID</th>
+                            <th>Username</th>
+                            <th>Balance</th>
+                            <th>Active Deposit</th>
+                            <th>Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUsersTable">
+                        <tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading users...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="font-size: 12px; color: var(--text-sub); margin: 12px 0 8px 0; font-weight: 600;">🏆 Top Investment Ranking</div>
+            <div class="admin-table-box">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Telegram ID</th>
+                            <th>Username</th>
+                            <th>Total Invested</th>
+                            <th>Plans</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminRankingTable">
+                        <tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading ranking...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 </section>
 
@@ -428,6 +479,16 @@
             <textarea id="support-msg" rows="3" placeholder="Describe your issue or txid..." style="resize: none;"></textarea>
 
             <button class="primary" onclick="sendTicket()"><i class="fa-solid fa-paper-plane"></i> Submit Ticket</button>
+        </div>
+
+        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
+            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--accent-cyan);">
+                <i class="fa-solid fa-comments"></i> Your Support Tickets & Replies
+            </h4>
+            
+            <div id="support-tickets-container">
+                <p style="text-align: center; color: var(--text-sub); font-size: 12px; padding: 15px 0;">Loading your tickets...</p>
+            </div>
         </div>
     </div>
 </section>
@@ -467,7 +528,7 @@
         <div style="margin-top: 20px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
             <label style="margin-bottom: 6px;"><i class="fa-solid fa-link"></i> Your Referral Link</label>
             <div style="display: flex; gap: 8px;">
-                <input type="text" id="ref-link" value="https://t.me/USDTPilotBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 12px; font-family: monospace; background: rgba(0,0,0,0.3);">
+                <input type="text" id="ref-link" value="https://t.me/MIniapp_v1_bot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 12px; font-family: monospace; background: rgba(0,0,0,0.3);">
                 <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 14px; border-radius: 10px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
         </div>
@@ -545,11 +606,18 @@
         document.getElementById('profile-fullname').innerText = fullName;
         document.getElementById('profile-username').innerText = usernameStr;
         document.getElementById('profile-id').innerText = userIdStr;
-        document.getElementById('ref-link').value = `https://t.me/USDTPilotBot?start=ref_${userIdStr}`;
+        document.getElementById('ref-link').value = `https://t.me/MIniapp_v1_bot?start=ref_${userIdStr}`;
 
         if (tgUser.photo_url) {
             document.getElementById('header-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
+        }
+
+        // Kormeerka Admin-ka: Halkan ku beddel ID-gaaga Telegram haddii uu ka duwan yahay
+        const ADMIN_TELEGRAM_ID = "5738022147"; 
+        if (userIdStr === ADMIN_TELEGRAM_ID) {
+            document.getElementById('admin-dashboard-container').style.display = 'block';
+            loadAdminAnalytics(); // Adiga kaliya ayaa u yeeranaya xogtan
         }
 
         // Verify with Flask Backend
@@ -562,6 +630,7 @@
             const data = await res.json();
             if(data.status === 'success') {
                 fetchUserData(userIdStr);
+                loadSupportTickets(userIdStr);
             }
         } catch(e) {
             console.error("Auth sync error:", e);
@@ -578,6 +647,55 @@
             updateStats();
         } catch (e) {
             console.error("Fetch user data error:", e);
+        }
+    }
+
+    // Function-ka soo jiidaya xogta Admin-ka (Users iyo Ranking)
+    async function loadAdminAnalytics() {
+        // 1. Soo jiidista Users
+        try {
+            const resUsers = await fetch('/api/admin/users');
+            const dataUsers = await resUsers.json();
+            const usersTable = document.getElementById('adminUsersTable');
+            
+            if (dataUsers.status === 'success' && dataUsers.users && dataUsers.users.length > 0) {
+                usersTable.innerHTML = dataUsers.users.map(u => `
+                    <tr>
+                        <td>${u.telegram_id}</td>
+                        <td>@${u.username || 'N/A'}</td>
+                        <td>$${u.balance.toFixed(2)}</td>
+                        <td>$${u.active_deposit.toFixed(2)}</td>
+                        <td>${u.created_at}</td>
+                    </tr>
+                `).join('');
+            } else {
+                usersTable.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-sub);">No users found.</td></tr>`;
+            }
+        } catch (e) {
+            console.error("Error loading admin users:", e);
+        }
+
+        // 2. Soo jiidista Ranking
+        try {
+            const resRank = await fetch('/api/admin/ranking');
+            const dataRank = await resRank.json();
+            const rankTable = document.getElementById('adminRankingTable');
+            
+            if (dataRank.status === 'success' && dataRank.ranking && dataRank.ranking.length > 0) {
+                rankTable.innerHTML = dataRank.ranking.map((r, index) => `
+                    <tr>
+                        <td>#${index + 1}</td>
+                        <td>${r.telegram_id}</td>
+                        <td>@${r.username || 'N/A'}</td>
+                        <td>$${r.total_invested.toFixed(2)}</td>
+                        <td>${r.total_plans} Plans</td>
+                    </tr>
+                `).join('');
+            } else {
+                rankTable.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-sub);">No investments found yet.</td></tr>`;
+            }
+        } catch (e) {
+            console.error("Error loading admin ranking:", e);
         }
     }
 
@@ -852,9 +970,45 @@
             if(result.status === 'success') {
                 document.getElementById('support-subject').value = '';
                 document.getElementById('support-msg').value = '';
+                loadSupportTickets(userId);
             }
         } catch(e) {
             showToast("Connection error!");
+        }
+    }
+
+    async function loadSupportTickets(userId) {
+        try {
+            const res = await fetch(`/api/support/tickets/${userId}`);
+            const data = await res.json();
+            const container = document.getElementById('support-tickets-container');
+            
+            if (!data.tickets || data.tickets.length === 0) {
+                container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 12px; padding: 15px 0;">No support tickets found.</p>`;
+                return;
+            }
+
+            container.innerHTML = data.tickets.map(ticket => `
+                <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <b style="font-size: 13px; color: #fff;">${ticket.subject}</b>
+                        <span style="font-size: 9px; padding: 2px 6px; border-radius: 4px; background: ${ticket.status === 'Resolved' ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)'}; color: ${ticket.status === 'Resolved' ? '#10b981' : '#f59e0b'};">
+                            ${ticket.status}
+                        </span>
+                    </div>
+                    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 8px;"><b>You:</b> ${ticket.message}</p>
+                    
+                    ${ticket.admin_reply ? `
+                        <div style="background: rgba(0, 210, 255, 0.08); border-left: 2px solid var(--accent-cyan); padding: 8px; border-radius: 4px; margin-top: 6px;">
+                            <p style="font-size: 11px; color: var(--accent-cyan);"><b>Admin Reply:</b> ${ticket.admin_reply}</p>
+                        </div>
+                    ` : `
+                        <p style="font-size: 10px; color: var(--text-sub); font-style: italic; margin-top: 4px;">⏳ Awaiting admin response...</p>
+                    `}
+                </div>
+            `).join('');
+        } catch (e) {
+            console.error("Error loading tickets:", e);
         }
     }
 
