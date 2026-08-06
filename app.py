@@ -326,25 +326,30 @@ def request_withdrawal():
     return jsonify({"status": "success", "message": "✅ Withdrawal request submitted successfully!"})
 
 # ============================================================
-# SUPPORT TICKET ENDPOINT (NEW)
+# SUPPORT TICKET ENDPOINT (FIXED & UPDATED)
 # ============================================================
 @app.route('/api/support/send', methods=['POST'])
 def send_support():
-    data = request.json
-    user_id = str(data.get('user_id'))
+    data = request.json or request.form
+    user_id = str(data.get('user_id', 'Unknown'))
     username = data.get('username', 'User')
-    message = data.get('message', '')
+    
+    # Hubinta magacyada kala duwan ee uu Front-end-ku soo diri karo (Subject & Message)
+    subject = data.get('subject') or data.get('subject_field') or 'General Inquiry'
+    message = data.get('message') or data.get('message_detail') or data.get('text') or ''
     
     if not message.strip():
         return jsonify({"status": "error", "message": "⚠️ Please enter your message!"})
         
+    full_ticket_text = f"[{subject}] {message}"
+    
     db = get_db()
-    db.execute('INSERT INTO support_tickets (user_id, username, message) VALUES (?, ?, ?)', (user_id, username, message))
+    db.execute('INSERT INTO support_tickets (user_id, username, message) VALUES (?, ?, ?)', (user_id, username, full_ticket_text))
     db.commit()
     db.close()
     
-    # Send message to Admin on Telegram
-    admin_msg = f"🛠️ <b>NEW SUPPORT TICKET</b>\n\nUser: {username}\nID: <code>{user_id}</code>\n\nMessage:\n<i>{message}</i>"
+    # Fariinta si toos ah ugu dhacaysa Admin Telegram
+    admin_msg = f"🛠️ <b>NEW SUPPORT TICKET</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nSubject: <b>{subject}</b>\n\nMessage:\n<i>{message}</i>"
     send_telegram(ADMIN_ID, admin_msg)
     
     return jsonify({"status": "success", "message": "✅ Support message sent successfully! Admin will contact you soon."})
