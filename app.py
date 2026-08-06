@@ -21,9 +21,6 @@ TOTAL_HOURS = INVESTMENT_DAYS * 24  # 168 Hours
 
 ALLOWED_PLANS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
-# Memory storage for tracking admin replies
-admin_waiting_reply = {}
-
 # ============================================================
 # SQLITE DATABASE
 # ============================================================
@@ -84,10 +81,8 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id TEXT,
             username TEXT,
-            subject TEXT,
             message TEXT,
             status TEXT DEFAULT 'PENDING',
-            admin_reply TEXT,
             date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     ''')
@@ -143,10 +138,9 @@ def send_telegram(chat_id, text, keyboard=None):
     if keyboard:
         payload["reply_markup"] = keyboard
     try:
-        response = requests.post(url, json=payload, timeout=5)
-        return response.json()
+        requests.post(url, json=payload, timeout=5)
     except:
-        return None
+        pass
 
 def get_user(user_id):
     db = get_db()
@@ -332,7 +326,7 @@ def request_withdrawal():
     return jsonify({"status": "success", "message": "✅ Withdrawal request submitted successfully!"})
 
 # ============================================================
-# SUPPORT TICKET ENDPOINTS & INLINE REPLY SYSTEM
+# SUPPORT TICKET ENDPOINT (FIXED & UPDATED)
 # ============================================================
 @app.route('/api/support/send', methods=['POST'])
 def send_support():
@@ -340,116 +334,47 @@ def send_support():
     user_id = str(data.get('user_id', 'Unknown'))
     username = data.get('username', 'User')
     
+    # Hubinta magacyada kala duwan ee uu Front-end-ku soo diri karo (Subject & Message)
     subject = data.get('subject') or data.get('subject_field') or 'General Inquiry'
     message = data.get('message') or data.get('message_detail') or data.get('text') or ''
     
     if not message.strip():
         return jsonify({"status": "error", "message": "⚠️ Please enter your message!"})
         
+    full_ticket_text = f"[{subject}] {message}"
+    
     db = get_db()
-    db.execute('INSERT INTO support_tickets (user_id, username, subject, message, status) VALUES (?, ?, ?, ?, ?)', 
-               (user_id, username, subject, message, 'PENDING'))
+    db.execute('INSERT INTO support_tickets (user_id, username, message) VALUES (?, ?, ?)', (user_id, username, full_ticket_text))
     db.commit()
     db.close()
     
-    keyboard = {
-        "inline_keyboard": [
-            [{"text": "💬 Reply to Ticket", "callback_data": f"reply_ticket_{user_id}"}]
-        ]
-    }
-    
-    admin_msg = f"🛠️ <b>NEW SUPPORT TICKET</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nSubject: <b>{subject}</b>\nStatus: PENDING\n\nMessage:\n<i>{message}</i>"
-    send_telegram(ADMIN_ID, admin_msg, keyboard)
+    # Fariinta si toos ah ugu dhacaysa Admin Telegram
+    admin_msg = f"🛠️ <b>NEW SUPPORT TICKET</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nSubject: <b>{subject}</b>\n\nMessage:\n<i>{message}</i>"
+    send_telegram(ADMIN_ID, admin_msg)
     
     return jsonify({"status": "success", "message": "✅ Support message sent successfully! Admin will contact you soon."})
 
-@app.route('/api/support/tickets/<user_id>', methods=['GET'])
-def get_user_tickets(user_id):
-    db = get_db()
-    db.row_factory = sqlite3.Row
-    cursor = db.cursor()
-    cursor.execute('SELECT id, subject, message, status, admin_reply, date FROM support_tickets WHERE user_id = ? ORDER BY id DESC', (str(user_id),))
-    rows = cursor.fetchall()
-    tickets = [dict(row) for row in rows]
-    db.close()
-    
-    return jsonify({"status": "success", "tickets": tickets})
-
 # ============================================================
-# ADMIN & TRACKING ENDPOINTS (Added for Users & Rankings)
-# ============================================================
-@app.route('/api/admin/users', methods=['GET'])
-def admin_get_users():
-    db = get_db()
-    users = db.execute('SELECT telegram_id, username, balance, active_deposit, referral_code, created_at, last_login FROM users ORDER BY created_at DESC').fetchall()
-    db.close()
-    return jsonify({"status": "success", "users": [dict(u) for u in users]})
-
-@app.route('/api/admin/ranking', methods=['GET'])
-def admin_investment_ranking():
-    db = get_db()
-    ranking = db.execute('''
-        SELECT u.telegram_id, u.username, SUM(i.amount) as total_invested, COUNT(i.id) as total_plans
-        FROM investments i 
-        JOIN users u ON i.user_id = u.telegram_id 
-        GROUP BY i.user_id 
-        ORDER BY total_invested DESC
-    ''').fetchall()
-    db.close()
-    return jsonify({"status": "success", "ranking": [dict(r) for r in ranking]})
-
-# ============================================================
-# TELEGRAM WEBHOOK (AUTOMATIC BALANCE UPDATE & TICKET REPLY)
+# TELEGRAM WEBHOOK (AUTOMATIC BALANCE UPDATE ON APPROVAL)
 # ============================================================
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    global admin_waiting_reply
     update = request.json
-    
-    if update and "message" in update:
-        msg = update["message"]
-        chat_id = str(msg["chat"]["id"])
-        
-        if chat_id == str(ADMIN_ID) and chat_id in admin_waiting_reply:
-            user_id = admin_waiting_reply[chat_id]
-            reply_text = msg.get("text", "")
-            
-            del admin_waiting_reply[chat_id]
-            
-            db = get_db()
-            ticket = db.execute("SELECT * FROM support_tickets WHERE user_id = ? AND status = 'PENDING' ORDER BY id DESC LIMIT 1", (user_id,)).fetchone()
-            
-            if ticket:
-                ticket_id = ticket['id']
-                db.execute("UPDATE support_tickets SET status = 'COMPLETED', admin_reply = ? WHERE id = ?", (reply_text, ticket_id))
-                db.commit()
-            db.close()
-            
-            send_telegram(user_id, f"✅ <b>Support Ticket Resolved!</b>\n\n📩 <b>Admin Reply:</b>\n{reply_text}")
-            send_telegram(ADMIN_ID, f"✅ Reply successfully sent to user ID <code>{user_id}</code>, ticket status updated to <b>COMPLETED</b>.")
-            
-            return jsonify({"status": "ok"})
-
     if update and "callback_query" in update:
         query = update["callback_query"]
         query_id = query["id"]
         data = query["data"]
-        chat_id = str(query["message"]["chat"]["id"])
+        chat_id = query["message"]["chat"]["id"]
         message_id = query["message"]["message_id"]
         
+        # Stop loading spinner on the button
         requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": query_id})
         
         has_photo = "photo" in query["message"]
         edit_method = "editMessageCaption" if has_photo else "editMessageText"
         content_key = "caption" if has_photo else "text"
 
-        if data.startswith("reply_ticket_"):
-            user_id = data.split("_")[2]
-            admin_waiting_reply[chat_id] = user_id
-            
-            send_telegram(chat_id, f"✍️ Please type your reply message to this user (ID: <code>{user_id}</code>):")
-            return jsonify({"status": "ok"})
-
+        # Admin Action: Approve Deposit
         if data.startswith("approve_dep_"):
             tx_id = data.split("_")[2]
             db = get_db()
@@ -476,25 +401,18 @@ def webhook():
         elif data.startswith("reject_dep_"):
             tx_id = data.split("_")[2]
             db = get_db()
-            tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
-            
-            if tx:
-                user_id = tx['user_id']
-                amount = tx['amount']
-                
-                db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
-                db.commit()
-                
-                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
-                    "chat_id": chat_id, "message_id": message_id,
-                    content_key: f"❌ <b>DEPOSIT REJECTED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
-                    "parse_mode": "HTML",
-                    "reply_markup": {"inline_keyboard": []}
-                })
-                
-                send_telegram(user_id, f"❌ <b>Deposit Rejected</b>\n\nUnfortunately, your deposit request of <b>${amount} USDT</b> was rejected.\nPlease check your TXID or screenshot, or contact Support if you have any issues.")
+            db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
+            db.commit()
             db.close()
+            
+            requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
+                "chat_id": chat_id, "message_id": message_id,
+                content_key: f"❌ <b>DEPOSIT REJECTED</b>",
+                "parse_mode": "HTML",
+                "reply_markup": {"inline_keyboard": []}
+            })
 
+        # Admin Action: Approve Withdrawal
         elif data.startswith("approve_with_"):
             tx_id = data.split("_")[2]
             db = get_db()
@@ -516,6 +434,7 @@ def webhook():
                 send_telegram(user_id, f"🎉 <b>Withdrawal Approved!</b>\n\nYour withdrawal of <b>${amount} USDT</b> has been successfully processed.")
             db.close()
 
+        # Admin Action: Reject Withdrawal (Refund balance back to user)
         elif data.startswith("reject_with_"):
             tx_id = data.split("_")[2]
             db = get_db()
