@@ -1,5 +1,4 @@
 Flask
-pymongo
-gunicorn
-APScheduler
 requests
+APScheduler
+gunicorn
