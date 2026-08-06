@@ -152,6 +152,13 @@
         .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: #fff; }
         .support-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent-cyan); }
 
+        /* Admin Dashboard Styles */
+        .admin-table-box { width: 100%; overflow-x: auto; margin-top: 10px; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 11px; text-align: left; }
+        .admin-table th, .admin-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
+        .admin-table th { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); font-weight: 700; }
+        .admin-table tr:hover { background: rgba(255,255,255,0.02); }
+
         /* Navigation */
         nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 20px 20px 0 0; }
         nav button { background: none; border: none; color: var(--text-sub); font-size: 10px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; flex: 1; transition: color 0.2s; }
@@ -379,7 +386,7 @@
             </div>
         </div>
 
-        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
+        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 12px; font-weight: 700; color: #fff;">Weekly Growth Trend</span>
                 <small style="font-size: 10px; color: #10b981;"><i class="fa-solid fa-arrow-trend-up"></i> +28.4%</small>
@@ -393,6 +400,50 @@
                 <div class="chart-bar active" style="height: 90%;"></div>
             </div>
         </div>
+
+        <!-- QAYBTA CUSUB: Admin Panel Integration (Users & Rankings) -->
+        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
+            <h4 style="font-size: 14px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 10px;">
+                <i class="fa-solid fa-shield-halved"></i> Admin Analytics Dashboard
+            </h4>
+            
+            <div style="font-size: 12px; color: var(--text-sub); margin-bottom: 8px; font-weight: 600;">👥 Registered Users</div>
+            <div class="admin-table-box">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Telegram ID</th>
+                            <th>Username</th>
+                            <th>Balance</th>
+                            <th>Active Deposit</th>
+                            <th>Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminUsersTable">
+                        <tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading users...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="font-size: 12px; color: var(--text-sub); margin: 12px 0 8px 0; font-weight: 600;">🏆 Top Investment Ranking</div>
+            <div class="admin-table-box">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Telegram ID</th>
+                            <th>Username</th>
+                            <th>Total Invested</th>
+                            <th>Plans</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminRankingTable">
+                        <tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading ranking...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 </section>
 
@@ -430,7 +481,6 @@
             <button class="primary" onclick="sendTicket()"><i class="fa-solid fa-paper-plane"></i> Submit Ticket</button>
         </div>
 
-        <!-- QAYBTA CUSUB: Fariimaha Support-ka iyo Jawaabaha Admin-ka -->
         <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
             <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--accent-cyan);">
                 <i class="fa-solid fa-comments"></i> Your Support Tickets & Replies
@@ -538,6 +588,7 @@
         renderPlans();
         updateDepositAddress();
         updateWithdrawIcon();
+        loadAdminAnalytics(); // Soo jiidista xogta Admin-ka markii boggu furmo
     });
 
     async function initTelegramUser() {
@@ -590,6 +641,55 @@
             updateStats();
         } catch (e) {
             console.error("Fetch user data error:", e);
+        }
+    }
+
+    // Function-ka soo jiidaya xogta Admin-ka (Users iyo Ranking) ee API Endpoints-ka
+    async function loadAdminAnalytics() {
+        // 1. Soo jiidista Users
+        try {
+            const resUsers = await fetch('/api/admin/users');
+            const dataUsers = await resUsers.json();
+            const usersTable = document.getElementById('adminUsersTable');
+            
+            if (dataUsers.status === 'success' && dataUsers.users && dataUsers.users.length > 0) {
+                usersTable.innerHTML = dataUsers.users.map(u => `
+                    <tr>
+                        <td>${u.telegram_id}</td>
+                        <td>@${u.username || 'N/A'}</td>
+                        <td>$${u.balance.toFixed(2)}</td>
+                        <td>$${u.active_deposit.toFixed(2)}</td>
+                        <td>${u.created_at}</td>
+                    </tr>
+                `).join('');
+            } else {
+                usersTable.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-sub);">No users found.</td></tr>`;
+            }
+        } catch (e) {
+            console.error("Error loading admin users:", e);
+        }
+
+        // 2. Soo jiidista Ranking
+        try {
+            const resRank = await fetch('/api/admin/ranking');
+            const dataRank = await resRank.json();
+            const rankTable = document.getElementById('adminRankingTable');
+            
+            if (dataRank.status === 'success' && dataRank.ranking && dataRank.ranking.length > 0) {
+                rankTable.innerHTML = dataRank.ranking.map((r, index) => `
+                    <tr>
+                        <td>#${index + 1}</td>
+                        <td>${r.telegram_id}</td>
+                        <td>@${r.username || 'N/A'}</td>
+                        <td>$${r.total_invested.toFixed(2)}</td>
+                        <td>${r.total_plans} Plans</td>
+                    </tr>
+                `).join('');
+            } else {
+                rankTable.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-sub);">No investments found yet.</td></tr>`;
+            }
+        } catch (e) {
+            console.error("Error loading admin ranking:", e);
         }
     }
 
@@ -675,6 +775,7 @@
                 document.getElementById('deposit-txid').value = '';
                 document.getElementById('deposit-screenshot').value = '';
                 fetchUserData(userId);
+                loadAdminAnalytics();
                 openPage('history');
             }
         } catch(e) {
@@ -706,6 +807,7 @@
                 document.getElementById('withdraw-amount').value = '';
                 document.getElementById('withdraw-address').value = '';
                 fetchUserData(userId);
+                loadAdminAnalytics();
                 openPage('history');
             }
         } catch(e) {
@@ -728,6 +830,7 @@
             showToast(result.message);
             if(result.status === 'success') {
                 fetchUserData(userId);
+                loadAdminAnalytics();
             }
         } catch(e) {
             showToast("Connection error!");
@@ -871,7 +974,6 @@
         }
     }
 
-    // Function-ka soo jiidaya fariimaha Support-ka iyo jawaabaha
     async function loadSupportTickets(userId) {
         try {
             const res = await fetch(`/api/support/tickets/${userId}`);
