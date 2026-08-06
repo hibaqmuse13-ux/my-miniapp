@@ -137,15 +137,15 @@ def send_telegram(chat_id, text, keyboard=None):
 def get_user(user_id):
     db = get_db()
     user = db.execute('SELECT * FROM users WHERE telegram_id = ?', (str(user_id),)).fetchone()
-    db.close()
+    
     if not user:
         ref_code = secrets.token_hex(4).upper()
-        db = get_db()
         db.execute('INSERT INTO users (telegram_id, username, referral_code, created_at, last_login) VALUES (?, ?, ?, ?, ?)',
                    (str(user_id), 'User', ref_code, datetime.now(), datetime.now()))
         db.commit()
-        db.close()
-        user = get_user(user_id)
+        user = db.execute('SELECT * FROM users WHERE telegram_id = ?', (str(user_id),)).fetchone()
+        
+    db.close()
     return dict(user) if user else None
 
 def create_notification(user_id, title, message):
@@ -181,7 +181,7 @@ def get_user_data(user_id):
     db = get_db()
     
     transactions = db.execute('SELECT * FROM transactions WHERE user_id = ? ORDER BY date DESC LIMIT 20', (str(user_id),)).fetchall()
-    investments = db.execute('SELECT * FROM investments WHERE user_id = ? AND status = \'ACTIVE\'', (str(user_id),)).fetchall()
+    investments = db.execute("SELECT * FROM investments WHERE user_id = ? AND status = 'ACTIVE'", (str(user_id),)).fetchall()
     
     db.close()
     
@@ -223,7 +223,6 @@ def request_deposit():
     admin_msg = f"📥 <b>NEW DEPOSIT REQUEST</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nNetwork: {network}\nTXID: <code>{txid}</code>"
     send_telegram(ADMIN_ID, admin_msg, keyboard)
     
-    # Beautiful English Success Message
     return jsonify({"status": "success", "message": "✅ Deposit request submitted successfully! Pending approval."})
 
 @app.route('/api/invest', methods=['POST'])
@@ -300,7 +299,7 @@ def request_withdrawal():
 @app.route('/webhook', methods=['POST'])
 def webhook():
     update = request.json
-    if "callback_query" in update:
+    if update and "callback_query" in update:
         query = update["callback_query"]
         data = query["data"]
         chat_id = query["message"]["chat"]["id"]
