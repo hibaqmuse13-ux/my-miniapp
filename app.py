@@ -492,7 +492,7 @@ def webhook():
                     "reply_markup": {"inline_keyboard": []}
                 })
                 
-                send_telegram(user_id, f"❌ <b>Deposit Rejected</b>\n\nNasiib xumo, codsigaagii ahaa ee deposit-ka oo ahaa <b>${amount} USDT</b> waa la diiday.\nFadlan hubi TXID-ga ama screenshot-ka aad soo rartay, ama la xiriir Support-ka haddii aad qabto dhibaato.")
+                send_telegram(user_id, f"❌ <b>Deposit Rejected</b>\n\nUnfortunately, your deposit request of <b>${amount} USDT</b> was rejected.\nPlease check your TXID or screenshot, or contact Support if you have any issues.")
             db.close()
 
         elif data.startswith("approve_with_"):
