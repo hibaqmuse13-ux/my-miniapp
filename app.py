@@ -376,6 +376,29 @@ def get_user_tickets(user_id):
     return jsonify({"status": "success", "tickets": tickets})
 
 # ============================================================
+# ADMIN & TRACKING ENDPOINTS (Added for Users & Rankings)
+# ============================================================
+@app.route('/api/admin/users', methods=['GET'])
+def admin_get_users():
+    db = get_db()
+    users = db.execute('SELECT telegram_id, username, balance, active_deposit, referral_code, created_at, last_login FROM users ORDER BY created_at DESC').fetchall()
+    db.close()
+    return jsonify({"status": "success", "users": [dict(u) for u in users]})
+
+@app.route('/api/admin/ranking', methods=['GET'])
+def admin_investment_ranking():
+    db = get_db()
+    ranking = db.execute('''
+        SELECT u.telegram_id, u.username, SUM(i.amount) as total_invested, COUNT(i.id) as total_plans
+        FROM investments i 
+        JOIN users u ON i.user_id = u.telegram_id 
+        GROUP BY i.user_id 
+        ORDER BY total_invested DESC
+    ''').fetchall()
+    db.close()
+    return jsonify({"status": "success", "ranking": [dict(r) for r in ranking]})
+
+# ============================================================
 # TELEGRAM WEBHOOK (AUTOMATIC BALANCE UPDATE & TICKET REPLY)
 # ============================================================
 @app.route('/webhook', methods=['POST'])
