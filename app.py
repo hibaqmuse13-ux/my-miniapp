@@ -283,13 +283,22 @@ def request_withdrawal():
         return jsonify({"status": "error", "message": "⚠️ Insufficient balance!"})
     
     db.execute('UPDATE users SET balance = balance - ? WHERE telegram_id = ?', (amount, user_id))
-    db.execute('INSERT INTO transactions (user_id, type, amount, status, description) VALUES (?, ?, ?, ?, ?)',
+    cursor = db.cursor()
+    cursor.execute('INSERT INTO transactions (user_id, type, amount, status, description) VALUES (?, ?, ?, ?, ?)',
                (user_id, 'WITHDRAWAL', -amount, 'PENDING', f'Withdrawal to {address}'))
+    tx_id = cursor.lastrowid
     db.commit()
     db.close()
     
-    admin_msg = f"📤 <b>NEW WITHDRAWAL REQUEST</b>\n\nUser ID: <code>{user_id}</code>\nAmount: ${amount} USDT\nAddress: <code>{address}</code>"
-    send_telegram(ADMIN_ID, admin_msg)
+    # Inline buttons for Admin (Approve / Reject Withdrawal)
+    keyboard = {
+        "inline_keyboard": [
+            [{"text": "✅ Approve", "callback_data": f"approve_with_{tx_id}"},
+             {"text": "❌ Reject", "callback_data": f"reject_with_{tx_id}"}]
+        ]
+    }
+    admin_msg = f"📤 <b>NEW WITHDRAWAL REQUEST</b>\n\nUser ID: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nAddress: <code>{address}</code>"
+    send_telegram(ADMIN_ID, admin_msg, keyboard)
     
     return jsonify({"status": "success", "message": "✅ Withdrawal request submitted successfully!"})
 
@@ -345,6 +354,47 @@ def webhook():
                 "chat_id": chat_id, "message_id": message_id,
                 "text": f"❌ <b>DEPOSIT REJECTED</b>", "parse_mode": "HTML"
             })
+
+        # Admin Action: Approve Withdrawal
+        elif data.startswith("approve_with_"):
+            tx_id = data.split("_")[2]
+            db = get_db()
+            tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
+            
+            if tx:
+                user_id = tx['user_id']
+                amount = tx['amount']
+                
+                db.execute("UPDATE transactions SET status = 'COMPLETED' WHERE id = ?", (tx_id,))
+                db.commit()
+                
+                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
+                    "chat_id": chat_id, "message_id": message_id,
+                    "text": f"✅ <b>WITHDRAWAL APPROVED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT", "parse_mode": "HTML"
+                })
+                send_telegram(user_id, f"🎉 <b>Withdrawal Approved!</b>\n\nYour withdrawal of <b>${amount} USDT</b> has been successfully processed.")
+            db.close()
+
+        # Admin Action: Reject Withdrawal (Refund balance back to user)
+        elif data.startswith("reject_with_"):
+            tx_id = data.split("_")[2]
+            db = get_db()
+            tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
+            
+            if tx:
+                user_id = tx['user_id']
+                amount = tx['amount']
+                
+                db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
+                db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
+                db.commit()
+                
+                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageText", json={
+                    "chat_id": chat_id, "message_id": message_id,
+                    "text": f"❌ <b>WITHDRAWAL REJECTED</b> (Balance refunded)", "parse_mode": "HTML"
+                })
+                send_telegram(user_id, f"⚠️ <b>Withdrawal Rejected</b>\n\nYour withdrawal request of ${amount} USDT was rejected. The amount has been refunded to your balance.")
+            db.close()
 
     return jsonify({"status": "ok"})
 
