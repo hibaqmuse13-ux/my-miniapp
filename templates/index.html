@@ -827,15 +827,35 @@
         showToast("Referral Link Copied!");
     }
 
-    function sendTicket() {
+    async function sendTicket() {
         const sub = document.getElementById('support-subject').value;
         const msg = document.getElementById('support-msg').value;
 
         if(!sub || !msg) { showToast("Please fill in all ticket fields!"); return; }
 
-        document.getElementById('support-subject').value = '';
-        document.getElementById('support-msg').value = '';
-        showToast("Support ticket sent! Admin will reply soon.");
+        const userId = currentUser ? currentUser.id.toString() : "5738022147";
+        const username = currentUser ? (currentUser.username || currentUser.first_name || "User") : "User";
+
+        try {
+            const res = await fetch('/api/support/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    username: username,
+                    subject: sub,
+                    message: msg
+                })
+            });
+            const result = await res.json();
+            showToast(result.message);
+            if(result.status === 'success') {
+                document.getElementById('support-subject').value = '';
+                document.getElementById('support-msg').value = '';
+            }
+        } catch(e) {
+            showToast("Connection error!");
+        }
     }
 
     function showToast(msg) {
