@@ -220,6 +220,13 @@ def request_deposit():
         return jsonify({"status": "error", "message": "⚠️ Please enter TXID or upload a screenshot!"})
         
     db = get_db()
+    
+    # HUBIN: Hubi haddii uu jiro Deposit kale oo 'PENDING' ah
+    existing_pending_dep = db.execute("SELECT * FROM transactions WHERE user_id = ? AND type = 'DEPOSIT' AND status = 'PENDING'", (user_id,)).fetchone()
+    if existing_pending_dep:
+        db.close()
+        return jsonify({"status": "error", "message": "⚠️ Waxaad horey u dirtay dalab Deposit ah oo sugaya (Pending), fadlan sug inta laga xalinayo!"})
+
     cursor = db.cursor()
     cursor.execute('INSERT INTO transactions (user_id, type, amount, status, txid, network, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
                    (user_id, 'DEPOSIT', amount, 'PENDING', txid if txid else 'SCREENSHOT_UPLOADED', network, f'Deposit via {network}'))
@@ -299,6 +306,13 @@ def request_withdrawal():
         return jsonify({"status": "error", "message": "⚠️ Please provide a wallet address!"})
     
     db = get_db()
+    
+    # HUBIN: Hubi haddii uu jiro Withdrawal kale oo 'PENDING' ah
+    existing_pending_with = db.execute("SELECT * FROM transactions WHERE user_id = ? AND type = 'WITHDRAWAL' AND status = 'PENDING'", (user_id,)).fetchone()
+    if existing_pending_with:
+        db.close()
+        return jsonify({"status": "error", "message": "⚠️ Waxaad horey u dirtay dalab Withdrawal ah oo sugaya (Pending), fadlan sug inta laga xalinayo!"})
+
     active_inv = db.execute("SELECT * FROM investments WHERE user_id = ? AND status = 'ACTIVE'", (user_id,)).fetchone()
     
     if active_inv:
@@ -347,6 +361,13 @@ def send_support():
         return jsonify({"status": "error", "message": "⚠️ Please enter your message!"})
         
     db = get_db()
+    
+    # HUBIN: Hubi haddii uu jiro Support Ticket kale oo 'PENDING' ah
+    existing_pending_ticket = db.execute("SELECT * FROM support_tickets WHERE user_id = ? AND status = 'PENDING'", (user_id,)).fetchone()
+    if existing_pending_ticket:
+        db.close()
+        return jsonify({"status": "error", "message": "⚠️ Waxaad horey u dirtay fariin Support ah oo sugaysa (Pending), fadlan sug inta admin-ku uu kuugu jawaabayo!"})
+
     db.execute('INSERT INTO support_tickets (user_id, username, subject, message, status) VALUES (?, ?, ?, ?, ?)', 
                (user_id, username, subject, message, 'PENDING'))
     db.commit()
