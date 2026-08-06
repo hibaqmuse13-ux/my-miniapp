@@ -193,22 +193,22 @@ def get_user_data(user_id):
 
 @app.route('/api/deposit/request', methods=['POST'])
 def request_deposit():
-    data = request.json
-    user_id = str(data.get('user_id'))
-    username = data.get('username', 'User')
-    network = data.get('network', 'TRC20')
-    txid = data.get('txid')
-    amount = float(data.get('amount', 0))
+    user_id = request.form.get('user_id')
+    username = request.form.get('username', 'User')
+    network = request.form.get('network', 'TRC20')
+    txid = request.form.get('txid', '')
+    amount = float(request.form.get('amount', 0))
+    screenshot = request.files.get('screenshot')
     
     if amount < 10:
         return jsonify({"status": "error", "message": "⚠️ Minimum deposit is $10 USDT"})
-    if not txid:
-        return jsonify({"status": "error", "message": "⚠️ Please enter a valid TXID / Hash!"})
+    if not txid and not screenshot:
+        return jsonify({"status": "error", "message": "⚠️ Please enter TXID or upload a screenshot!"})
         
     db = get_db()
     cursor = db.cursor()
     cursor.execute('INSERT INTO transactions (user_id, type, amount, status, txid, network, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                   (user_id, 'DEPOSIT', amount, 'PENDING', txid, network, f'Deposit via {network}'))
+                   (user_id, 'DEPOSIT', amount, 'PENDING', txid if txid else 'SCREENSHOT_UPLOADED', network, f'Deposit via {network}'))
     tx_id = cursor.lastrowid
     db.commit()
     db.close()
@@ -220,8 +220,23 @@ def request_deposit():
              {"text": "❌ Reject", "callback_data": f"reject_dep_{tx_id}"}]
         ]
     }
-    admin_msg = f"📥 <b>NEW DEPOSIT REQUEST</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nNetwork: {network}\nTXID: <code>{txid}</code>"
-    send_telegram(ADMIN_ID, admin_msg, keyboard)
+    admin_msg = f"📥 <b>NEW DEPOSIT REQUEST</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nNetwork: {network}\nTXID: <code>{txid if txid else 'N/A (See Screenshot)'}</code>"
+    
+    if screenshot:
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendPhoto"
+        files = {'photo': (screenshot.filename, screenshot.read(), screenshot.content_type)}
+        payload = {
+            "chat_id": ADMIN_ID,
+            "caption": admin_msg,
+            "parse_mode": "HTML",
+            "reply_markup": json.dumps(keyboard)
+        }
+        try:
+            requests.post(url, data=payload, files=files, timeout=10)
+        except:
+            send_telegram(ADMIN_ID, admin_msg, keyboard)
+    else:
+        send_telegram(ADMIN_ID, admin_msg, keyboard)
     
     return jsonify({"status": "success", "message": "✅ Deposit request submitted successfully! Pending approval."})
 
@@ -383,7 +398,7 @@ def webhook():
             
             if tx:
                 user_id = tx['user_id']
-                amount = abs(float(tx['amount'])) # Isticmaalka abs() wuxuu xaqiijinayaa in lacagtu mar walba togan tahay (Positive)
+                amount = abs(float(tx['amount']))
                 
                 db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
                 db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
