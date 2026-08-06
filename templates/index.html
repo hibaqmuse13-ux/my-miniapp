@@ -401,8 +401,8 @@
             </div>
         </div>
 
-        <!-- QAYBTA CUSUB: Admin Panel Integration (Users & Rankings) -->
-        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
+        <!-- ADMIN PANEL INTEGRATION (Waa la qariyay oo adiga kaliya kuu muuqan doonta) -->
+        <div id="admin-dashboard-container" style="display: none; background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
             <h4 style="font-size: 14px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 10px;">
                 <i class="fa-solid fa-shield-halved"></i> Admin Analytics Dashboard
             </h4>
@@ -588,7 +588,6 @@
         renderPlans();
         updateDepositAddress();
         updateWithdrawIcon();
-        loadAdminAnalytics(); // Soo jiidista xogta Admin-ka markii boggu furmo
     });
 
     async function initTelegramUser() {
@@ -612,6 +611,13 @@
         if (tgUser.photo_url) {
             document.getElementById('header-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
+        }
+
+        // Kormeerka Admin-ka: Halkan ku beddel ID-gaaga Telegram haddii uu ka duwan yahay
+        const ADMIN_TELEGRAM_ID = "5738022147"; 
+        if (userIdStr === ADMIN_TELEGRAM_ID) {
+            document.getElementById('admin-dashboard-container').style.display = 'block';
+            loadAdminAnalytics(); // Adiga kaliya ayaa u yeeranaya xogtan
         }
 
         // Verify with Flask Backend
@@ -644,7 +650,7 @@
         }
     }
 
-    // Function-ka soo jiidaya xogta Admin-ka (Users iyo Ranking) ee API Endpoints-ka
+    // Function-ka soo jiidaya xogta Admin-ka (Users iyo Ranking)
     async function loadAdminAnalytics() {
         // 1. Soo jiidista Users
         try {
@@ -775,7 +781,6 @@
                 document.getElementById('deposit-txid').value = '';
                 document.getElementById('deposit-screenshot').value = '';
                 fetchUserData(userId);
-                loadAdminAnalytics();
                 openPage('history');
             }
         } catch(e) {
@@ -807,7 +812,6 @@
                 document.getElementById('withdraw-amount').value = '';
                 document.getElementById('withdraw-address').value = '';
                 fetchUserData(userId);
-                loadAdminAnalytics();
                 openPage('history');
             }
         } catch(e) {
@@ -830,7 +834,6 @@
             showToast(result.message);
             if(result.status === 'success') {
                 fetchUserData(userId);
-                loadAdminAnalytics();
             }
         } catch(e) {
             showToast("Connection error!");
