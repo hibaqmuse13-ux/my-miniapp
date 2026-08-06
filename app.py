@@ -76,6 +76,15 @@ def init_db():
             is_read BOOLEAN DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+
+        CREATE TABLE IF NOT EXISTS support_tickets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id TEXT,
+            username TEXT,
+            message TEXT,
+            status TEXT DEFAULT 'PENDING',
+            date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
     ''')
     db.commit()
     db.close()
@@ -317,6 +326,30 @@ def request_withdrawal():
     return jsonify({"status": "success", "message": "✅ Withdrawal request submitted successfully!"})
 
 # ============================================================
+# SUPPORT TICKET ENDPOINT (NEW)
+# ============================================================
+@app.route('/api/support/send', methods=['POST'])
+def send_support():
+    data = request.json
+    user_id = str(data.get('user_id'))
+    username = data.get('username', 'User')
+    message = data.get('message', '')
+    
+    if not message.strip():
+        return jsonify({"status": "error", "message": "⚠️ Please enter your message!"})
+        
+    db = get_db()
+    db.execute('INSERT INTO support_tickets (user_id, username, message) VALUES (?, ?, ?)', (user_id, username, message))
+    db.commit()
+    db.close()
+    
+    # Send message to Admin on Telegram
+    admin_msg = f"🛠️ <b>NEW SUPPORT TICKET</b>\n\nUser: {username}\nID: <code>{user_id}</code>\n\nMessage:\n<i>{message}</i>"
+    send_telegram(ADMIN_ID, admin_msg)
+    
+    return jsonify({"status": "success", "message": "✅ Support message sent successfully! Admin will contact you soon."})
+
+# ============================================================
 # TELEGRAM WEBHOOK (AUTOMATIC BALANCE UPDATE ON APPROVAL)
 # ============================================================
 @app.route('/webhook', methods=['POST'])
@@ -332,7 +365,6 @@ def webhook():
         # Stop loading spinner on the button
         requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": query_id})
         
-        # Check if the message has a photo (caption) or text
         has_photo = "photo" in query["message"]
         edit_method = "editMessageCaption" if has_photo else "editMessageText"
         content_key = "caption" if has_photo else "text"
@@ -351,7 +383,6 @@ def webhook():
                 db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
                 db.commit()
                 
-                # Edit message to remove buttons and show confirmed status
                 requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
                     "chat_id": chat_id, "message_id": message_id,
                     content_key: f"✅ <b>DEPOSIT APPROVED & CONFIRMED</b>\nUser: <code>{user_id}</code>\nAmount: +${amount} USDT\nStatus: Balance Updated!",
@@ -371,7 +402,7 @@ def webhook():
             
             requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
                 "chat_id": chat_id, "message_id": message_id,
-                "text" if not has_photo else "caption": f"❌ <b>DEPOSIT REJECTED</b>",
+                content_key: f"❌ <b>DEPOSIT REJECTED</b>",
                 "parse_mode": "HTML",
                 "reply_markup": {"inline_keyboard": []}
             })
