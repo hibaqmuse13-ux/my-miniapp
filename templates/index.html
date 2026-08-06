@@ -7,25 +7,6 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
-    <!-- Firebase App & Firestore CDN -->
-    <script type="module">
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
-      import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyBZ92SVBx3B47Jgk-00Ynp2AVmmYBhcK9s",
-        authDomain: "usdtpilot.firebaseapp.com",
-        projectId: "usdtpilot",
-        storageBucket: "usdtpilot.firebasestorage.app",
-        messagingSenderId: "454725978818",
-        appId: "1:454725978818:web:fd04d4699807381232495b"
-      };
-
-      const app = initializeApp(firebaseConfig);
-      const db = getFirestore(app);
-      window.db = db; // Si looga isticmaalo app-ka dhexdiisa
-    </script>
-
     <style>
         :root {
             --bg-dark: #090d16;
@@ -138,9 +119,9 @@
 
         .tx-card { background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
         .tx-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
-        .tx-icon.deposit { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-        .tx-icon.withdraw { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-        .tx-icon.invest { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
+        .tx-icon.DEPOSIT { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .tx-icon.WITHDRAWAL { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        .tx-icon.INVESTMENT { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
         .tx-icon.referral { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
         .tx-details { flex: 1; margin-left: 12px; }
         .tx-details h5 { font-size: 13px; font-weight: 700; color: #fff; }
@@ -245,7 +226,7 @@
     <button onclick="openPage('deposit')">
         <i class="fa-solid fa-wallet"></i> Deposit
     </button>
-    <button onclick="checkWithdrawAccess()">
+    <button onclick="openPage('withdraw')">
         <i class="fa-solid fa-arrow-up"></i> Withdraw
     </button>
 </div>
@@ -347,11 +328,10 @@
         <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 14px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> Transaction History</h3>
         
         <div class="history-tabs">
-            <button class="tab-btn active" onclick="filterHistory('all', this)">All Activity</button>
-            <button class="tab-btn" onclick="filterHistory('deposit', this)">Deposits</button>
-            <button class="tab-btn" onclick="filterHistory('withdraw', this)">Withdrawals</button>
-            <button class="tab-btn" onclick="filterHistory('invest', this)">Investments</button>
-            <button class="tab-btn" onclick="filterHistory('referral', this)">Referrals</button>
+            <button class="tab-btn active" onclick="filterHistory('ALL', this)">All Activity</button>
+            <button class="tab-btn" onclick="filterHistory('DEPOSIT', this)">Deposits</button>
+            <button class="tab-btn" onclick="filterHistory('WITHDRAWAL', this)">Withdrawals</button>
+            <button class="tab-btn" onclick="filterHistory('INVESTMENT', this)">Investments</button>
         </div>
 
         <div id="history-container"></div>
@@ -469,7 +449,7 @@
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
                 <span style="color: var(--text-sub);"><i class="fa-solid fa-globe" style="width: 20px; color: var(--accent-cyan);"></i> Language:</span> 
-                <b id="profile-lang">EN</b>
+                <b>EN</b>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
                 <span style="color: var(--text-sub);"><i class="fa-solid fa-shield-halved" style="width: 20px; color: #10b981;"></i> Security Level:</span> 
@@ -477,7 +457,7 @@
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="color: var(--text-sub);"><i class="fa-solid fa-calendar-days" style="width: 20px; color: var(--accent-cyan);"></i> Joined Date:</span> 
-                <b id="profile-date">2026</b>
+                <b>2026</b>
             </div>
         </div>
 
@@ -488,17 +468,6 @@
                 <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 14px; border-radius: 10px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- Admin Dashboard Page -->
-<section id="admin-panel" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
-        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px; color: #f59e0b;">
-            <i class="fa-solid fa-user-shield"></i> Admin Management Panel
-        </h3>
-        <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 14px;">Manage pending deposit and withdrawal requests below:</p>
-        <div id="admin-pending-container"></div>
     </div>
 </section>
 
@@ -526,24 +495,12 @@
 <div id="toast">Message</div>
 
 <script>
-    const BOT_TOKEN = '8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0';
-    const ADMIN_CHAT_ID = '5738022147';
-
-    const defaultState = {
-        balance: 0.00,
-        totalProfit: 0.00,
-        activeInvestment: 0.00,
-        totalDeposited: 0.00,
-        totalWithdrawn: 0.00,
-        referralCount: 0,
-        hasDeposited: false,
-        referrerId: null,
-        investments: [],
-        transactions: []
+    let currentUser = null;
+    let userData = {
+        user: { balance: 0, active_deposit: 0 },
+        macaamilo: [],
+        maalgashi: []
     };
-
-    let userState = JSON.parse(localStorage.getItem('usdtpilot_userState')) || defaultState;
-    let telegramUser = { id: 5738022147, first_name: "Ismail", last_name: "Essa", username: "ismailessa" };
 
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
     const vipAmounts = [150, 200, 350, 400, 450, 500];
@@ -554,192 +511,71 @@
         'ERC20': { name: 'Ethereum ERC20', tag: 'Tether USD (ERC20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' }
     };
 
-    let activeHistoryFilter = 'all';
+    let activeHistoryFilter = 'ALL';
 
     window.addEventListener('load', () => {
         setTimeout(() => {
             const splash = document.getElementById('splash');
             splash.style.opacity = '0';
             splash.style.visibility = 'hidden';
-        }, 1000);
+        }, 800);
 
         initTelegramUser();
         renderPlans();
-        updateUI();
-        renderHistory();
-        updateStats();
-        startProfitEngine();
         updateDepositAddress();
         updateWithdrawIcon();
-        checkAdminAccess();
     });
 
-    function saveState() {
-        localStorage.setItem('usdtpilot_userState', JSON.stringify(userState));
-    }
-
-    function initTelegramUser() {
+    async function initTelegramUser() {
         const tg = window.Telegram?.WebApp;
         if (tg) { tg.ready(); }
 
-        if (tg?.initDataUnsafe?.user) {
-            telegramUser = tg.initDataUnsafe.user;
-        }
+        const tgUser = tg?.initDataUnsafe?.user || { id: 5738022147, first_name: "Ismail", username: "ismailessa" };
+        currentUser = tgUser;
 
-        if (tg?.initDataUnsafe?.start_param) {
-            const startParam = tg.initDataUnsafe.start_param;
-            if (startParam.startsWith('ref_')) {
-                const refId = startParam.replace('ref_', '');
-                if (refId !== telegramUser.id.toString() && !userState.referrerId) {
-                    userState.referrerId = refId;
-                    saveState();
-                }
-            }
-        }
+        const fullName = `${tgUser.first_name || ''} ${tgUser.last_name || ''}`.trim() || "User";
+        const usernameStr = tgUser.username ? `@${tgUser.username}` : `@user_${tgUser.id}`;
+        const userIdStr = tgUser.id ? tgUser.id.toString() : '5738022147';
 
-        const fullName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
-        const usernameStr = telegramUser.username ? `@${telegramUser.username}` : `@user_${telegramUser.id}`;
-        const userIdStr = telegramUser.id ? telegramUser.id.toString() : 'N/A';
-
-        document.getElementById('username').innerText = telegramUser.first_name || "User";
+        document.getElementById('username').innerText = tgUser.first_name || "User";
         document.getElementById('userid').innerText = `ID: ${userIdStr}`;
         document.getElementById('profile-fullname').innerText = fullName;
         document.getElementById('profile-username').innerText = usernameStr;
         document.getElementById('profile-id').innerText = userIdStr;
         document.getElementById('ref-link').value = `https://t.me/USDTPilotBot?start=ref_${userIdStr}`;
 
-        if (telegramUser.photo_url) {
-            document.getElementById('header-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
-            document.getElementById('profile-page-avatar').innerHTML = `<img src="${telegramUser.photo_url}" alt="Avatar">`;
-        }
-    }
-
-    function checkWithdrawAccess() {
-        if (userState.activeInvestment === 0 && userState.totalDeposited === 0) {
-            showToast("Please make a deposit and start an investment plan first!");
-            openPage('deposit');
-            return;
+        if (tgUser.photo_url) {
+            document.getElementById('header-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
+            document.getElementById('profile-page-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
         }
 
-        if (userState.investments.length > 0) {
-            let hasCompletedPlan = userState.investments.some(inv => {
-                const elapsedDays = (Date.now() - inv.startTime) / (1000 * 60 * 60 * 24);
-                return elapsedDays >= inv.durationDays;
+        // Verify with Flask Backend
+        try {
+            const res = await fetch('/api/auth/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: userIdStr, username: tgUser.username || fullName })
             });
-
-            if (!hasCompletedPlan) {
-                showToast("Withdrawals are locked until your 7-day investment plan finishes!");
-                openPage('invest');
-                return;
+            const data = await res.json();
+            if(data.status === 'success') {
+                fetchUserData(userIdStr);
             }
-        }
-
-        openPage('withdraw');
-    }
-
-    function checkAdminAccess() {
-        if (telegramUser.id.toString() === ADMIN_CHAT_ID) {
-            const nav = document.getElementById('main-nav');
-            if (!document.getElementById('admin-nav-btn')) {
-                nav.innerHTML += `
-                    <button id="admin-nav-btn" class="nav-btn" onclick="openPage('admin-panel', this)">
-                        <i class="fa-solid fa-user-shield" style="color: #f59e0b;"></i> Admin
-                    </button>
-                `;
-            }
-            renderAdminPendingRequests();
+        } catch(e) {
+            console.error("Auth sync error:", e);
         }
     }
 
-    function renderAdminPendingRequests() {
-        const container = document.getElementById('admin-pending-container');
-        if(!container) return;
-
-        const pendingTxs = userState.transactions.filter(t => t.status === 'pending');
-
-        if (pendingTxs.length === 0) {
-            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 20px 0;">No pending requests at the moment.</p>`;
-            return;
+    async function fetchUserData(userId) {
+        try {
+            const res = await fetch(`/api/user/${userId}`);
+            const data = await res.json();
+            userData = data;
+            updateUI();
+            renderHistory();
+            updateStats();
+        } catch (e) {
+            console.error("Fetch user data error:", e);
         }
-
-        container.innerHTML = pendingTxs.map(tx => `
-            <div style="background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 12px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                    <span style="font-size: 13px; font-weight: 700; color: var(--accent-cyan);">${tx.title}</span>
-                    <span style="font-size: 10px; color: var(--text-sub); background: rgba(255,255,255,0.05); padding: 2px 6px; border-radius: 4px;">${tx.id}</span>
-                </div>
-                <p style="font-size: 12px; margin-bottom: 4px;"><b>Amount:</b> $${tx.amount.toFixed(2)} USDT</p>
-                <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;"><b>Network:</b> ${tx.network} | <b>Date:</b> ${tx.date}</p>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <button onclick="processTransaction('${tx.id}', 'approve')" style="background: var(--success-gradient); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Approve</button>
-                    <button onclick="processTransaction('${tx.id}', 'reject')" style="background: var(--danger-color); color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer;">Reject</button>
-                </div>
-            </div>
-        `).join('');
-    }
-
-    function processTransaction(txId, action) {
-        const txIndex = userState.transactions.findIndex(t => t.id === txId);
-        if (txIndex === -1) return;
-
-        const tx = userState.transactions[txIndex];
-
-        if (action === 'approve') {
-            tx.status = 'completed';
-            if (tx.type === 'deposit') {
-                userState.balance += tx.amount;
-                userState.totalDeposited += tx.amount;
-
-                if (!userState.hasDeposited) {
-                    userState.hasDeposited = true;
-                    if (userState.referrerId) {
-                        let refKey = `usdtpilot_userState_${userState.referrerId}`;
-                        let referrerState = JSON.parse(localStorage.getItem(refKey)) || {
-                            balance: 0, referralCount: 0, transactions: []
-                        };
-                        
-                        referrerState.balance += 1.00;
-                        referrerState.referralCount += 1;
-                        referrerState.transactions.unshift({
-                            id: 'REF' + Math.floor(100000 + Math.random() * 900000),
-                            type: 'referral',
-                            title: `Referral Bonus (ID: ${telegramUser.id})`,
-                            amount: 1.00,
-                            status: 'completed',
-                            date: new Date().toLocaleDateString(),
-                            network: 'INTERNAL'
-                        });
-                        localStorage.setItem(refKey, JSON.stringify(referrerState));
-
-                        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                chat_id: ADMIN_CHAT_ID,
-                                text: `🎁 <b>REFERRAL BONUS PAID</b>\nReferrer ID: <code>${userState.referrerId}</code> received <b>$1.00 USDT</b> because User <code>${telegramUser.id}</code> completed their first deposit!`,
-                                parse_mode: 'HTML'
-                            })
-                        });
-                    }
-                }
-            } else if (tx.type === 'withdraw') {
-                userState.totalWithdrawn += tx.amount;
-            }
-            showToast(`Transaction ${txId} APPROVED!`);
-        } else if (action === 'reject') {
-            tx.status = 'rejected';
-            if (tx.type === 'withdraw') {
-                userState.balance += tx.amount;
-            }
-            showToast(`Transaction ${txId} REJECTED!`);
-        }
-
-        saveState();
-        updateUI();
-        renderHistory();
-        updateStats();
-        renderAdminPendingRequests();
     }
 
     function updateDepositAddress() {
@@ -773,7 +609,7 @@
                     <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
                     <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 1.4).toFixed(1)}</span>
                 </div>
-                <button class="plan-btn btn-std" onclick="invest(${amt}, 0.20)">Invest Now</button>
+                <button class="plan-btn btn-std" onclick="investPlan(${amt})">Invest Now</button>
             </div>
         `).join('');
 
@@ -787,177 +623,110 @@
                     <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
                     <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 2.45).toFixed(1)}</span>
                 </div>
-                <button class="plan-btn btn-vip" onclick="invest(${amt}, 0.35)">Invest VIP</button>
+                <button class="plan-btn btn-vip" onclick="investPlan(${amt})">Invest VIP</button>
             </div>
         `).join('');
     }
 
-    function submitDeposit() {
+    async function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
         const net = document.getElementById('deposit-network').value;
+        const userId = currentUser ? currentUser.id.toString() : "5738022147";
 
-        if(!amt || amt < 10) { showToast("Minimum deposit is $10!"); return; }
-        if(!txid) { showToast("Please paste your TXID Hash!"); return; }
+        if(!amt || amt < 10) { showToast("⚠️ Minimum deposit is $10 USDT"); return; }
+        if(!txid) { showToast("⚠️ Please enter a valid TXID / Hash!"); return; }
 
-        const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
-
-        const txObj = {
-            id: generatedTxId,
-            type: 'deposit',
-            title: `Deposit (${net})`,
-            amount: amt,
-            status: 'pending',
-            date: new Date().toLocaleDateString(),
-            network: net
-        };
-
-        userState.transactions.unshift(txObj);
-        saveState();
-
-        const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
-        const uHandle = telegramUser.username ? `@${telegramUser.username}` : '@no_username';
-
-        const adminMessage = `
-📥 <b>NEW DEPOSIT REQUEST</b>
-━━━━━━━━━━━━━━━━━━
-👤 <b>User:</b> ${uName} (${uHandle})
-🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
-🆔 <b>System TXID:</b> <code>${generatedTxId}</code>
-💵 <b>Amount:</b> $${amt.toFixed(2)} USDT
-🌐 <b>Network:</b> ${net}
-🔑 <b>TXID Hash:</b> <code>${txid}</code>
-📅 <b>Date:</b> ${new Date().toLocaleString()}
-━━━━━━━━━━━━━━━━━━
-📌 <i>Status: Pending verification</i>
-        `;
-
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: adminMessage, parse_mode: 'HTML' })
-        });
-
-        document.getElementById('deposit-amount').value = '';
-        document.getElementById('deposit-txid').value = '';
-
-        showToast("Deposit submitted! Status: Pending verification.");
-        renderHistory();
-        updateStats();
-        renderAdminPendingRequests();
-        openPage('history');
+        try {
+            const res = await fetch('/api/deposit/request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    username: currentUser?.username || "User",
+                    network: net,
+                    txid: txid,
+                    amount: amt
+                })
+            });
+            const result = await res.json();
+            showToast(result.message);
+            if(result.status === 'success') {
+                document.getElementById('deposit-amount').value = '';
+                document.getElementById('deposit-txid').value = '';
+                fetchUserData(userId);
+                openPage('history');
+            }
+        } catch(e) {
+            showToast("Connection error!");
+        }
     }
 
-    function submitWithdraw() {
+    async function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
         const addr = document.getElementById('withdraw-address').value;
-        const net = document.getElementById('withdraw-network').value;
+        const userId = currentUser ? currentUser.id.toString() : "5738022147";
 
-        if(!amt || amt < 10) { showToast("Minimum withdrawal is $10!"); return; }
-        if(!addr) { showToast("Please enter destination wallet address!"); return; }
-        if(userState.balance < amt) { showToast("Insufficient balance!"); return; }
+        if(!amt || amt < 10) { showToast("⚠️ Minimum withdrawal is $10 USDT"); return; }
+        if(!addr) { showToast("⚠️ Please provide a wallet address!"); return; }
 
-        userState.balance -= amt;
-        const generatedTxId = 'TXN' + Math.floor(100000 + Math.random() * 900000);
-
-        const txObj = {
-            id: generatedTxId,
-            type: 'withdraw',
-            title: `Withdraw (${net})`,
-            amount: amt,
-            status: 'pending',
-            date: new Date().toLocaleDateString(),
-            network: net
-        };
-
-        userState.transactions.unshift(txObj);
-        saveState();
-
-        const uName = `${telegramUser.first_name || ''} ${telegramUser.last_name || ''}`.trim() || "User";
-        const uHandle = telegramUser.username ? `@${telegramUser.username}` : '@no_username';
-
-        const adminMessage = `
-📤 <b>NEW WITHDRAWAL REQUEST</b>
-━━━━━━━━━━━━━━━━━━
-👤 <b>User:</b> ${uName} (${uHandle})
-🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
-🆔 <b>System TXID:</b> <code>${generatedTxId}</code>
-💵 <b>Amount:</b> $${amt.toFixed(2)} USDT
-🌐 <b>Network:</b> ${net}
-💳 <b>Wallet Address:</b> <code>${addr}</code>
-📅 <b>Date:</b> ${new Date().toLocaleString()}
-━━━━━━━━━━━━━━━━━━
-📌 <i>Status: Pending verification</i>
-        `;
-
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: adminMessage, parse_mode: 'HTML' })
-        });
-
-        document.getElementById('withdraw-amount').value = '';
-        document.getElementById('withdraw-address').value = '';
-
-        updateUI();
-        renderHistory();
-        updateStats();
-        renderAdminPendingRequests();
-        showToast(`Withdrawal of $${amt} submitted! Status: Pending.`);
-        openPage('history');
+        try {
+            const res = await fetch('/api/withdraw/request', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    address: addr,
+                    amount: amt
+                })
+            });
+            const result = await res.json();
+            showToast(result.message);
+            if(result.status === 'success') {
+                document.getElementById('withdraw-amount').value = '';
+                document.getElementById('withdraw-address').value = '';
+                fetchUserData(userId);
+                openPage('history');
+            }
+        } catch(e) {
+            showToast("Connection error!");
+        }
     }
 
-    function invest(amount, dailyRate) {
-        if (userState.balance < amount) {
-            showToast("Insufficient Balance! Please deposit first.");
-            return;
+    async function investPlan(amount) {
+        const userId = currentUser ? currentUser.id.toString() : "5738022147";
+        try {
+            const res = await fetch('/api/invest', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userId,
+                    amount: amount
+                })
+            });
+            const result = await res.json();
+            showToast(result.message);
+            if(result.status === 'success') {
+                fetchUserData(userId);
+            }
+        } catch(e) {
+            showToast("Connection error!");
         }
-
-        userState.balance -= amount;
-        userState.activeInvestment += amount;
-
-        const hourlyRate = (amount * dailyRate) / 24;
-
-        userState.investments.push({
-            id: Date.now(),
-            amount: amount,
-            hourlyProfit: hourlyRate,
-            dailyRate: dailyRate,
-            startTime: Date.now(),
-            durationDays: 7,
-            totalEarned: 0
-        });
-
-        userState.transactions.unshift({
-            id: 'TXN' + Math.floor(100000 + Math.random() * 900000),
-            type: 'invest',
-            title: `Investment Plan (${dailyRate * 100}%)`,
-            amount: amount,
-            status: 'completed',
-            date: new Date().toLocaleDateString(),
-            network: 'INTERNAL'
-        });
-
-        saveState();
-        updateUI();
-        renderHistory();
-        updateStats();
-        showToast(`Successfully invested $${amount}!`);
     }
 
     function filterHistory(type, btn) {
         activeHistoryFilter = type;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
+        if(btn) btn.classList.add('active');
         renderHistory();
     }
 
     function renderHistory() {
         const container = document.getElementById('history-container');
-        let filtered = userState.transactions;
+        let filtered = userData.macaamilo || [];
 
-        if(activeHistoryFilter !== 'all') {
-            filtered = userState.transactions.filter(t => t.type === activeHistoryFilter);
+        if(activeHistoryFilter !== 'ALL') {
+            filtered = filtered.filter(t => t.type === activeHistoryFilter);
         }
 
         if(filtered.length === 0) {
@@ -970,34 +739,33 @@
             let sign = '+';
             let color = '#10b981';
 
-            if (tx.type === 'deposit') {
+            if (tx.type === 'DEPOSIT') {
                 iconClass = 'fa-arrow-down';
                 color = '#10b981';
-            } else if (tx.type === 'withdraw') {
+            } else if (tx.type === 'WITHDRAWAL') {
                 iconClass = 'fa-arrow-up';
                 sign = '-';
                 color = '#ef4444';
-            } else if (tx.type === 'referral') {
-                iconClass = 'fa-users';
-                color = '#f59e0b';
-            } else {
+            } else if (tx.type === 'INVESTMENT') {
+                iconClass = 'fa-lock';
+                sign = '-';
                 color = 'var(--accent-cyan)';
             }
 
-            let statusDisplay = tx.status === 'completed' ? 'completed' : (tx.status === 'rejected' ? 'rejected' : 'pending');
-            
+            let statusLower = (tx.status || 'PENDING').toLowerCase();
+
             return `
                 <div class="tx-card">
                     <div class="tx-icon ${tx.type}">
                         <i class="fa-solid ${iconClass}"></i>
                     </div>
                     <div class="tx-details">
-                        <h5>${tx.title}</h5>
-                        <p>${tx.date} • ${tx.id}</p>
+                        <h5>${tx.description || tx.type}</h5>
+                        <p>${tx.date} • ID: ${tx.id}</p>
                     </div>
                     <div class="tx-amount">
-                        <h5 style="color: ${color};">${sign}$${tx.amount.toFixed(2)}</h5>
-                        <span class="status-badge status-${statusDisplay}">${tx.status}</span>
+                        <h5 style="color: ${color};">${sign}$${Math.abs(tx.amount).toFixed(2)}</h5>
+                        <span class="status-badge status-${statusLower}">${tx.status}</span>
                     </div>
                 </div>
             `;
@@ -1005,54 +773,27 @@
     }
 
     function updateStats() {
-        document.getElementById('stat-deposits').innerText = `$${userState.totalDeposited.toFixed(2)}`;
-        document.getElementById('stat-withdraws').innerText = `$${userState.totalWithdrawn.toFixed(2)}`;
-        document.getElementById('stat-referrals').innerText = userState.referralCount;
+        const deposits = userData.macaamilo ? userData.macaamilo.filter(t => t.type === 'DEPOSIT' && t.status === 'COMPLETED').reduce((acc, curr) => acc + curr.amount, 0) : 0;
+        const withdraws = userData.macaamilo ? userData.macaamilo.filter(t => t.type === 'WITHDRAWAL' && t.status === 'COMPLETED').reduce((acc, curr) => acc + Math.abs(curr.amount), 0) : 0;
 
-        const roi = userState.totalDeposited > 0 ? ((userState.totalProfit / userState.totalDeposited) * 100).toFixed(1) : '0.0';
-        document.getElementById('stat-roi').innerText = `+${roi}%`;
+        document.getElementById('stat-deposits').innerText = `$${deposits.toFixed(2)}`;
+        document.getElementById('stat-withdraws').innerText = `$${withdraws.toFixed(2)}`;
+        document.getElementById('stat-referrals').innerText = '0';
+        document.getElementById('stat-roi').innerText = '+20.0%';
 
         const target = 1000;
-        const totalCap = userState.balance + userState.activeInvestment;
+        const totalCap = (userData.user?.balance || 0) + (userData.user?.active_deposit || 0);
         const progress = Math.min((totalCap / target) * 100, 100).toFixed(0);
 
         document.getElementById('goal-bar').style.width = `${progress}%`;
         document.getElementById('goal-percent').innerText = `${progress}%`;
     }
 
-    function startProfitEngine() {
-        setInterval(() => {
-            const now = Date.now();
-            let addedProfit = 0;
-
-            userState.investments.forEach((inv, index) => {
-                const elapsedHours = (now - inv.startTime) / (1000 * 60 * 60);
-                if (elapsedHours < (inv.durationDays * 24)) {
-                    const tickProfit = (inv.hourlyProfit / 3600); 
-                    inv.totalEarned += tickProfit;
-                    addedProfit += tickProfit;
-                } else {
-                    userState.balance += inv.amount;
-                    userState.activeInvestment -= inv.amount;
-                    userState.investments.splice(index, 1);
-                    showToast(`Plan $${inv.amount} completed! Capital unlocked for withdrawal.`);
-                }
-            });
-
-            if (addedProfit > 0) {
-                userState.balance += addedProfit;
-                userState.totalProfit += addedProfit;
-                saveState();
-                updateUI();
-                updateStats();
-            }
-        }, 1000);
-    }
-
     function updateUI() {
-        document.getElementById('balance').innerText = userState.balance.toFixed(2);
-        document.getElementById('profit').innerText = userState.totalProfit.toFixed(2);
-        document.getElementById('active').innerText = userState.activeInvestment.toFixed(2);
+        if(!userData.user) return;
+        document.getElementById('balance').innerText = (userData.user.balance || 0).toFixed(2);
+        document.getElementById('active').innerText = (userData.user.active_deposit || 0).toFixed(2);
+        document.getElementById('profit').innerText = "0.00"; // Managed by hourly scheduler on server
     }
 
     function openPage(pageId, btnElement) {
@@ -1084,22 +825,6 @@
 
         if(!sub || !msg) { showToast("Please fill in all ticket fields!"); return; }
 
-        const ticketMessage = `
-🎫 <b>NEW SUPPORT TICKET</b>
-━━━━━━━━━━━━━━━━━━
-👤 <b>User:</b> ${telegramUser.first_name || 'User'} (@${telegramUser.username || 'none'})
-🆔 <b>User ID:</b> <code>${telegramUser.id}</code>
-📌 <b>Subject:</b> ${sub}
-💬 <b>Message:</b> ${msg}
-━━━━━━━━━━━━━━━━━━
-        `;
-        
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: ticketMessage, parse_mode: 'HTML' })
-        });
-
         document.getElementById('support-subject').value = '';
         document.getElementById('support-msg').value = '';
         showToast("Support ticket sent! Admin will reply soon.");
@@ -1114,4 +839,4 @@
 </script>
 
 </body>
-                    </html>
+</html>
