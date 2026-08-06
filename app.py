@@ -476,16 +476,24 @@ def webhook():
         elif data.startswith("reject_dep_"):
             tx_id = data.split("_")[2]
             db = get_db()
-            db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
-            db.commit()
-            db.close()
+            tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
             
-            requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
-                "chat_id": chat_id, "message_id": message_id,
-                content_key: f"❌ <b>DEPOSIT REJECTED</b>",
-                "parse_mode": "HTML",
-                "reply_markup": {"inline_keyboard": []}
-            })
+            if tx:
+                user_id = tx['user_id']
+                amount = tx['amount']
+                
+                db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
+                db.commit()
+                
+                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
+                    "chat_id": chat_id, "message_id": message_id,
+                    content_key: f"❌ <b>DEPOSIT REJECTED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
+                    "parse_mode": "HTML",
+                    "reply_markup": {"inline_keyboard": []}
+                })
+                
+                send_telegram(user_id, f"❌ <b>Deposit Rejected</b>\n\nNasiib xumo, codsigaagii ahaa ee deposit-ka oo ahaa <b>${amount} USDT</b> waa la diiday.\nFadlan hubi TXID-ga ama screenshot-ka aad soo rartay, ama la xiriir Support-ka haddii aad qabto dhibaato.")
+            db.close()
 
         elif data.startswith("approve_with_"):
             tx_id = data.split("_")[2]
