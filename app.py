@@ -21,7 +21,7 @@ TOTAL_HOURS = INVESTMENT_DAYS * 24  # 168 Hours
 
 ALLOWED_PLANS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
-# Memory storage si loogu hayo qofka uu Admin-ku hadda jawaabta u qorayo
+# Memory storage for tracking admin replies
 admin_waiting_reply = {}
 
 # ============================================================
@@ -352,7 +352,6 @@ def send_support():
     db.commit()
     db.close()
     
-    # Ku dar Reply Inline Button fariinta Admin-ka soo gaaraysa
     keyboard = {
         "inline_keyboard": [
             [{"text": "💬 Reply to Ticket", "callback_data": f"reply_ticket_{user_id}"}]
@@ -369,7 +368,6 @@ def get_user_tickets(user_id):
     db = get_db()
     db.row_factory = sqlite3.Row
     cursor = db.cursor()
-    # Waxaan soo akhrineynaa admin_reply sidoo kale si app-ka u soo bandhigo
     cursor.execute('SELECT id, subject, message, status, admin_reply, date FROM support_tickets WHERE user_id = ? ORDER BY id DESC', (str(user_id),))
     rows = cursor.fetchall()
     tickets = [dict(row) for row in rows]
@@ -389,16 +387,13 @@ def webhook():
         msg = update["message"]
         chat_id = str(msg["chat"]["id"])
         
-        # Haddii uu Admin-ku soo qoray jawaabtii kadib markuu gujiyay Reply Button-ka
         if chat_id == str(ADMIN_ID) and chat_id in admin_waiting_reply:
             user_id = admin_waiting_reply[chat_id]
             reply_text = msg.get("text", "")
             
-            # Ka saar liiska sugitaanka
             del admin_waiting_reply[chat_id]
             
             db = get_db()
-            # Ka beddel PENDING oo ka dhig COMPLETED kuna dar admin_reply
             ticket = db.execute("SELECT * FROM support_tickets WHERE user_id = ? AND status = 'PENDING' ORDER BY id DESC LIMIT 1", (user_id,)).fetchone()
             
             if ticket:
@@ -407,9 +402,8 @@ def webhook():
                 db.commit()
             db.close()
             
-            # Fariin Telegram ah oo u socto user-ka oo ah "Cabashadii waa la xaliyay"
-            send_telegram(user_id, f"✅ <b>Cabashadii waa la xaliyay!</b>\n\n📩 <b>Jawaabta Maamulka:</b>\n{reply_text}")
-            send_telegram(ADMIN_ID, f"✅ Jawaabti waa loo diray user-ka ID-giisu yahay <code>{user_id}</code>, status-kiina wuxuu noqday <b>COMPLETED</b>.")
+            send_telegram(user_id, f"✅ <b>Support Ticket Resolved!</b>\n\n📩 <b>Admin Reply:</b>\n{reply_text}")
+            send_telegram(ADMIN_ID, f"✅ Reply successfully sent to user ID <code>{user_id}</code>, ticket status updated to <b>COMPLETED</b>.")
             
             return jsonify({"status": "ok"})
 
@@ -426,12 +420,11 @@ def webhook():
         edit_method = "editMessageCaption" if has_photo else "editMessageText"
         content_key = "caption" if has_photo else "text"
 
-        # Qabashada Button-ka Reply-ga Ticket-ka
         if data.startswith("reply_ticket_"):
             user_id = data.split("_")[2]
             admin_waiting_reply[chat_id] = user_id
             
-            send_telegram(chat_id, f"✍️ Fadlan hadda soo qor fariinta/jawaabta aad u direyso user-kan (ID: <code>{user_id}</code>):")
+            send_telegram(chat_id, f"✍️ Please type your reply message to this user (ID: <code>{user_id}</code>):")
             return jsonify({"status": "ok"})
 
         if data.startswith("approve_dep_"):
