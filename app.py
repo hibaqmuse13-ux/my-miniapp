@@ -220,6 +220,12 @@ def request_deposit():
         return jsonify({"status": "error", "message": "⚠️ Please enter TXID or upload a screenshot!"})
         
     db = get_db()
+    # Anti-spam check for pending deposit
+    pending_dep = db.execute("SELECT * FROM transactions WHERE user_id = ? AND type = 'DEPOSIT' AND status = 'PENDING'", (str(user_id),)).fetchone()
+    if pending_dep:
+        db.close()
+        return jsonify({"status": "error", "message": "⚠️ Please wait for your pending deposit request to be processed before submitting a new one."})
+
     cursor = db.cursor()
     cursor.execute('INSERT INTO transactions (user_id, type, amount, status, txid, network, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
                    (user_id, 'DEPOSIT', amount, 'PENDING', txid if txid else 'SCREENSHOT_UPLOADED', network, f'Deposit via {network}'))
@@ -299,6 +305,13 @@ def request_withdrawal():
         return jsonify({"status": "error", "message": "⚠️ Please provide a wallet address!"})
     
     db = get_db()
+    
+    # Anti-spam check for pending withdrawal
+    pending_with = db.execute("SELECT * FROM transactions WHERE user_id = ? AND type = 'WITHDRAWAL' AND status = 'PENDING'", (user_id,)).fetchone()
+    if pending_with:
+        db.close()
+        return jsonify({"status": "error", "message": "⚠️ Please wait for your pending withdrawal request to be processed before submitting a new one."})
+
     active_inv = db.execute("SELECT * FROM investments WHERE user_id = ? AND status = 'ACTIVE'", (user_id,)).fetchone()
     
     if active_inv:
@@ -347,6 +360,13 @@ def send_support():
         return jsonify({"status": "error", "message": "⚠️ Please enter your message!"})
         
     db = get_db()
+    
+    # Anti-spam check for pending support ticket
+    pending_ticket = db.execute("SELECT * FROM support_tickets WHERE user_id = ? AND status = 'PENDING'", (user_id,)).fetchone()
+    if pending_ticket:
+        db.close()
+        return jsonify({"status": "error", "message": "⚠️ You already have a pending support ticket. Please wait for a reply before submitting a new one."})
+
     db.execute('INSERT INTO support_tickets (user_id, username, subject, message, status) VALUES (?, ?, ?, ?, ?)', 
                (user_id, username, subject, message, 'PENDING'))
     db.commit()
