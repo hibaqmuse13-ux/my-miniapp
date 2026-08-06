@@ -81,6 +81,7 @@ def init_db():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id TEXT,
             username TEXT,
+            subject TEXT,
             message TEXT,
             status TEXT DEFAULT 'PENDING',
             date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -326,7 +327,7 @@ def request_withdrawal():
     return jsonify({"status": "success", "message": "✅ Withdrawal request submitted successfully!"})
 
 # ============================================================
-# SUPPORT TICKET ENDPOINT (FIXED & UPDATED)
+# SUPPORT TICKET ENDPOINTS (UPDATED WITH STATUS TRACKING)
 # ============================================================
 @app.route('/api/support/send', methods=['POST'])
 def send_support():
@@ -334,25 +335,34 @@ def send_support():
     user_id = str(data.get('user_id', 'Unknown'))
     username = data.get('username', 'User')
     
-    # Hubinta magacyada kala duwan ee uu Front-end-ku soo diri karo (Subject & Message)
     subject = data.get('subject') or data.get('subject_field') or 'General Inquiry'
     message = data.get('message') or data.get('message_detail') or data.get('text') or ''
     
     if not message.strip():
         return jsonify({"status": "error", "message": "⚠️ Please enter your message!"})
         
-    full_ticket_text = f"[{subject}] {message}"
-    
     db = get_db()
-    db.execute('INSERT INTO support_tickets (user_id, username, message) VALUES (?, ?, ?)', (user_id, username, full_ticket_text))
+    db.execute('INSERT INTO support_tickets (user_id, username, subject, message, status) VALUES (?, ?, ?, ?, ?)', 
+               (user_id, username, subject, message, 'PENDING'))
     db.commit()
     db.close()
     
-    # Fariinta si toos ah ugu dhacaysa Admin Telegram
-    admin_msg = f"🛠️ <b>NEW SUPPORT TICKET</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nSubject: <b>{subject}</b>\n\nMessage:\n<i>{message}</i>"
+    admin_msg = f"🛠️ <b>NEW SUPPORT TICKET</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nSubject: <b>{subject}</b>\nStatus: PENDING\n\nMessage:\n<i>{message}</i>"
     send_telegram(ADMIN_ID, admin_msg)
     
     return jsonify({"status": "success", "message": "✅ Support message sent successfully! Admin will contact you soon."})
+
+@app.route('/api/support/tickets/<user_id>', methods=['GET'])
+def get_user_tickets(user_id):
+    db = get_db()
+    db.row_factory = sqlite3.Row
+    cursor = db.cursor()
+    cursor.execute('SELECT id, subject, message, status, date FROM support_tickets WHERE user_id = ? ORDER BY id DESC', (str(user_id),))
+    rows = cursor.fetchall()
+    tickets = [dict(row) for row in rows]
+    db.close()
+    
+    return jsonify({"status": "success", "tickets": tickets})
 
 # ============================================================
 # TELEGRAM WEBHOOK (AUTOMATIC BALANCE UPDATE ON APPROVAL)
@@ -367,14 +377,12 @@ def webhook():
         chat_id = query["message"]["chat"]["id"]
         message_id = query["message"]["message_id"]
         
-        # Stop loading spinner on the button
         requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": query_id})
         
         has_photo = "photo" in query["message"]
         edit_method = "editMessageCaption" if has_photo else "editMessageText"
         content_key = "caption" if has_photo else "text"
 
-        # Admin Action: Approve Deposit
         if data.startswith("approve_dep_"):
             tx_id = data.split("_")[2]
             db = get_db()
@@ -412,7 +420,6 @@ def webhook():
                 "reply_markup": {"inline_keyboard": []}
             })
 
-        # Admin Action: Approve Withdrawal
         elif data.startswith("approve_with_"):
             tx_id = data.split("_")[2]
             db = get_db()
@@ -434,7 +441,6 @@ def webhook():
                 send_telegram(user_id, f"🎉 <b>Withdrawal Approved!</b>\n\nYour withdrawal of <b>${amount} USDT</b> has been successfully processed.")
             db.close()
 
-        # Admin Action: Reject Withdrawal (Refund balance back to user)
         elif data.startswith("reject_with_"):
             tx_id = data.split("_")[2]
             db = get_db()
