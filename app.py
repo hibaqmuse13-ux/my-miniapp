@@ -299,8 +299,8 @@ def request_withdrawal():
     
     db.execute('UPDATE users SET balance = balance - ? WHERE telegram_id = ?', (amount, user_id))
     cursor = db.cursor()
-    cursor.execute('INSERT INTO transactions (user_id, type, amount, status, description) VALUES (?, ?, ?, ?, ?)',
-               (user_id, 'WITHDRAWAL', -amount, 'PENDING', f'Withdrawal to {address}'))
+    cursor.execute('INSERT INTO transactions (user_id, type, amount, status, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
+               (user_id, 'WITHDRAWAL', -amount, 'PENDING', 'N/A', 'TRC20', f'Withdrawal to {address}'))
     tx_id = cursor.lastrowid
     db.commit()
     db.close()
@@ -378,7 +378,7 @@ def webhook():
             
             if tx:
                 user_id = tx['user_id']
-                amount = tx['amount']
+                amount = abs(float(tx['amount']))
                 
                 db.execute("UPDATE transactions SET status = 'COMPLETED' WHERE id = ?", (tx_id,))
                 db.commit()
