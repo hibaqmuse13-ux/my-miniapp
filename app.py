@@ -383,7 +383,7 @@ def webhook():
             
             if tx:
                 user_id = tx['user_id']
-                amount = tx['amount']
+                amount = abs(float(tx['amount'])) # Isticmaalka abs() wuxuu xaqiijinayaa in lacagtu mar walba togan tahay (Positive)
                 
                 db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
                 db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
