@@ -230,7 +230,7 @@
         .page { display: none; }
         .page.active { display: block; }
 
-        /* Professional Enhanced Section Headers (Yellow line requests) */
+        /* Professional Enhanced Section Headers */
         .section-header { 
             font-size: 14px; 
             font-weight: 900; 
@@ -248,7 +248,7 @@
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
 
-        /* Plans Grid - Uniform Box Size Matching Standard and VIP */
+        /* Plans Grid */
         .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
         .plan-card { 
             background: var(--card-bg); 
@@ -279,7 +279,6 @@
         .btn-std { background: var(--primary-gradient); }
         .btn-vip { background: var(--vip-gradient); }
 
-        /* Compact Professional Bottom Invest Box Styles */
         .lower-invest-box {
             background: rgba(15, 23, 42, 0.9);
             border: 1px solid var(--card-border);
@@ -343,7 +342,7 @@
         nav button i { font-size: 15px; }
         nav button.active { color: var(--accent-cyan); font-weight: 700; }
 
-        /* PROFESSIONAL NOTIFICATION TOAST */
+        /* TOAST */
         #toast { 
             position: fixed; 
             top: 20px; 
@@ -366,7 +365,7 @@
             text-align: left;
         }
 
-        /* LIVE CHAT WIDGET STYLES */
+        /* LIVE CHAT WIDGET */
         .chat-widget-btn {
             position: fixed;
             bottom: 85px;
@@ -530,7 +529,6 @@
 
 <!-- Home / Plans Page -->
 <section id="invest" class="page active">
-    <!-- Active Investments Header (Yellow Highlighted Title) -->
     <div class="section-header standard" style="margin-top: 2px;">
         <i class="fa-solid fa-chart-line"></i> Active Investments & Live Profit
     </div>
@@ -540,19 +538,16 @@
         </div>
     </div>
 
-    <!-- Standard Plans Header (Yellow Highlighted Title) -->
     <div class="section-header standard">
         <i class="fa-solid fa-bolt"></i> Standard Plans ($10 - $100 | 25% Daily)
     </div>
     <div id="standard-plans" class="plans-grid"></div>
 
-    <!-- VIP Plans Header (Yellow Highlighted Title) -->
     <div class="section-header vip">
         <i class="fa-solid fa-crown"></i> VIP Plans ($150 - $1500 | 35% Daily)
     </div>
     <div id="vip-plans" class="plans-grid"></div>
 
-    <!-- Invest / Invest VIP Bottom Small Professional Box -->
     <div class="lower-invest-box">
         <h4 style="font-size: 12px; font-weight: 800; color: var(--accent-cyan); margin-bottom: 4px;">
             <i class="fa-solid fa-shield-halved"></i> Secure Investment Vault
@@ -728,20 +723,46 @@
     </div>
 </section>
 
-<!-- Profile Page -->
+<!-- Profile Page (Redesigned Professional Section) -->
 <section id="profile" class="page">
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 12px;">
-            <div id="profile-page-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; overflow: hidden;">
-                <i class="fa-solid fa-user"></i>
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 12px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div id="profile-page-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; overflow: hidden;">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div>
+                    <h3 id="profile-fullname" style="font-size: 16px; font-weight: 800;">Loading...</h3>
+                    <div style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">
+                        <span id="profile-username" style="color: var(--accent-cyan); font-weight: 600; font-size: 12px;">@username</span>
+                        <span style="font-size: 10px; color: var(--text-sub);" id="profile-id-tag">ID: 000000</span>
+                    </div>
+                </div>
             </div>
-            <div>
-                <h3 id="profile-fullname" style="font-size: 16px; font-weight: 800;">Loading...</h3>
-                <small id="profile-username" style="color: var(--accent-cyan); font-weight: 600;">@username</small>
+            <div style="text-align: right;">
+                <div style="font-size: 22px;" title="Somaliland">🇸🇱</div>
+                <span style="font-size: 9px; color: #10b981; font-weight: 700; background: rgba(16,185,129,0.12); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 2px;">Verified</span>
             </div>
         </div>
 
-        <div style="margin-top: 16px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;">
+        <!-- Additional Professional Information Grid -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;">
+            <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px;">
+                <span style="font-size: 9.5px; color: var(--text-sub); display: block; text-transform: uppercase;">Account Status</span>
+                <b style="font-size: 12px; color: #10b981; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                    <i class="fa-solid fa-shield-halved"></i> Active & Secure
+                </b>
+            </div>
+            <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px;">
+                <span style="font-size: 9.5px; color: var(--text-sub); display: block; text-transform: uppercase;">Membership Level</span>
+                <b style="font-size: 12px; color: #f59e0b; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
+                    <i class="fa-solid fa-crown"></i> Investor Tier
+                </b>
+            </div>
+        </div>
+
+        <!-- Referral Link Section Intact -->
+        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;">
             <label style="margin-bottom: 5px;"><i class="fa-solid fa-link"></i> Your Referral Link ($3.50 Bonus per Deposit)</label>
             <div style="display: flex; gap: 6px;">
                 <input type="text" id="ref-link" value="https://t.me/CoreXBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 11px; font-family: monospace; background: rgba(0,0,0,0.3);">
@@ -900,6 +921,7 @@
         document.getElementById('userid').innerText = `ID: ${userIdStr}`;
         document.getElementById('profile-fullname').innerText = fullName;
         document.getElementById('profile-username').innerText = usernameStr;
+        document.getElementById('profile-id-tag').innerText = `ID: ${userIdStr}`;
         document.getElementById('ref-link').value = `https://t.me/CoreXBot?start=ref_${userIdStr}`;
 
         if (tgUser.photo_url) {
@@ -956,7 +978,6 @@
         const stdContainer = document.getElementById('standard-plans');
         const vipContainer = document.getElementById('vip-plans');
 
-        // Standard: 25% daily, 2 weeks (14 days) -> Total return = amt * (1 + 0.25 * 14) = amt * 4.5
         stdContainer.innerHTML = stdAmounts.map(amt => `
             <div class="plan-card tap-anim" onclick="playSound(); investPlan(${amt}, false)">
                 <span class="plan-badge badge-std">25% / 24h</span>
@@ -971,7 +992,6 @@
             </div>
         `).join('');
 
-        // VIP: 35% daily, 2 weeks (14 days) -> Total return = amt * (1 + 0.35 * 14) = amt * 5.9
         vipContainer.innerHTML = vipAmounts.map(amt => `
             <div class="plan-card vip-card tap-anim" onclick="playSound(); investPlan(${amt}, true)">
                 <span class="plan-badge badge-vip">VIP 35%</span>
@@ -997,7 +1017,7 @@
         container.innerHTML = activeInvestmentsList.map((inv) => {
             let now = new Date().getTime();
             let elapsedSeconds = Math.floor((now - inv.startTime) / 1000);
-            let totalDurationSeconds = 14 * 24 * 60 * 60; // 2 weeks
+            let totalDurationSeconds = 14 * 24 * 60 * 60;
             let timeLeft = (inv.startTime + (totalDurationSeconds * 1000)) - now;
             if (timeLeft < 0) timeLeft = 0;
 
