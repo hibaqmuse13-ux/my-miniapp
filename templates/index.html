@@ -25,7 +25,7 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg-dark); color: var(--text-white); padding-bottom: 90px; overflow-x: hidden; }
-        .app { max-width: 480px; margin: 0 auto; padding: 16px; }
+        .app { max-width: 480px; margin: 0 auto; padding: 12px; }
 
         /* Splash Screen */
         #splash { position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; transition: opacity 0.5s ease, visibility 0.5s; }
@@ -36,13 +36,13 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Header */
-        header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); margin-bottom: 12px; }
-        .profile { display: flex; align-items: center; gap: 12px; }
-        .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3); overflow: hidden; }
+        header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--card-bg); border-radius: 14px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); margin-bottom: 8px; }
+        .profile { display: flex; align-items: center; gap: 10px; }
+        .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3); overflow: hidden; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .profile h3 { font-size: 15px; font-weight: 700; }
-        .profile small { font-size: 11px; color: var(--text-sub); }
-        .verified { font-size: 10px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 5px; }
+        .profile h3 { font-size: 14px; font-weight: 700; }
+        .profile small { font-size: 10.5px; color: var(--text-sub); }
+        .verified { font-size: 9.5px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 5px 10px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 4px; }
 
         /* Market Ticker Styles */
         .market-ticker-container {
@@ -50,10 +50,10 @@
             overflow: hidden;
             white-space: nowrap;
             background: var(--card-bg);
-            padding: 8px 0;
-            border-radius: 12px;
+            padding: 6px 0;
+            border-radius: 10px;
             box-sizing: border-box;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             border: 1px solid rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
         }
@@ -66,9 +66,9 @@
 
         .market-ticker-track span {
             display: inline-block;
-            padding: 0 20px;
+            padding: 0 16px;
             color: var(--text-white);
-            font-size: 12px;
+            font-size: 11px;
         }
 
         @keyframes scrollRightToLeft {
@@ -76,13 +76,13 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* LIVE MARKET PRICES SECTION (Compact & Professional Size Fix) */
+        /* LIVE MARKET PRICES SECTION (Ultra-Compact Size Fix) */
         .market-section {
             background: rgba(15, 22, 36, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 14px;
-            padding: 8px 10px;
-            margin-bottom: 12px;
+            border-radius: 12px;
+            padding: 6px 8px;
+            margin-bottom: 8px;
             backdrop-filter: blur(10px);
         }
 
@@ -90,8 +90,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
-            font-size: 11px;
+            margin-bottom: 4px;
+            font-size: 10px;
             font-weight: 700;
             color: var(--text-sub);
             letter-spacing: 0.5px;
@@ -101,19 +101,19 @@
         .market-header .live-badge {
             background-color: rgba(14, 203, 129, 0.12);
             color: #0ecb81;
-            padding: 1px 6px;
-            border-radius: 4px;
-            font-size: 9px;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 8.5px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
             border: 1px solid rgba(14, 203, 129, 0.2);
         }
 
         .market-header .live-badge::before {
             content: '';
-            width: 4px;
-            height: 4px;
+            width: 3.5px;
+            height: 3.5px;
             background-color: #0ecb81;
             border-radius: 50%;
             display: inline-block;
@@ -123,14 +123,14 @@
         .crypto-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 6px;
+            gap: 4px;
         }
 
         .crypto-item {
             background: rgba(21, 28, 44, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            padding: 5px 8px;
+            border-radius: 6px;
+            padding: 3px 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -138,11 +138,11 @@
         }
 
         .crypto-info { display: flex; flex-direction: column; }
-        .crypto-symbol { font-weight: 700; font-size: 11px; color: #ffffff; }
-        .crypto-name { font-size: 8.5px; color: var(--text-sub); }
+        .crypto-symbol { font-weight: 700; font-size: 10px; color: #ffffff; }
+        .crypto-name { font-size: 7.5px; color: var(--text-sub); }
         .crypto-price-box { text-align: right; }
-        .crypto-price { font-size: 11px; font-weight: 600; color: #ffffff; }
-        .crypto-change { font-size: 8.5px; font-weight: 600; }
+        .crypto-price { font-size: 10px; font-weight: 600; color: #ffffff; }
+        .crypto-change { font-size: 7.5px; font-weight: 600; }
         .crypto-change.up { color: #0ecb81; }
         .crypto-change.down { color: #f6465d; }
 
@@ -156,11 +156,11 @@
         .balance-card { 
             background: linear-gradient(135deg, rgba(13, 20, 35, 0.95) 0%, rgba(7, 11, 20, 0.98) 100%); 
             border: 1px solid rgba(0, 210, 255, 0.2); 
-            border-radius: 20px; 
-            padding: 20px 16px; 
+            border-radius: 16px; 
+            padding: 16px 14px; 
             text-align: center; 
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1); 
-            margin-bottom: 12px; 
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1); 
+            margin-bottom: 8px; 
             position: relative; 
             overflow: hidden; 
         }
@@ -174,161 +174,161 @@
             background: radial-gradient(circle, rgba(0, 210, 255, 0.05) 0%, transparent 60%);
             pointer-events: none;
         }
-        .balance-card p { font-size: 10px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 2px; font-weight: 700; }
-        .balance-card h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.5px; margin: 4px 0; background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .balance-card span.badge-usdt { font-size: 10.5px; font-weight: 700; color: var(--accent-cyan); background: rgba(0, 210, 255, 0.12); padding: 3px 10px; border-radius: 6px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px; border: 1px solid rgba(0, 210, 255, 0.25); }
-        .badge-usdt img { width: 13px; height: 13px; }
+        .balance-card p { font-size: 9.5px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 2px; font-weight: 700; }
+        .balance-card h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; margin: 3px 0; background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .balance-card span.badge-usdt { font-size: 10px; font-weight: 700; color: var(--accent-cyan); background: rgba(0, 210, 255, 0.12); padding: 2px 8px; border-radius: 5px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid rgba(0, 210, 255, 0.25); }
+        .badge-usdt img { width: 12px; height: 12px; }
 
-        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.06); }
         .stats div { text-align: center; }
-        .stats i { font-size: 12px; color: var(--accent-cyan); margin-bottom: 3px; }
-        .stats h4 { font-size: 10px; color: var(--text-sub); font-weight: 500; text-transform: uppercase; }
-        .stats b { font-size: 13px; color: #fff; font-weight: 700; display: block; margin-top: 2px; }
+        .stats i { font-size: 11px; color: var(--accent-cyan); margin-bottom: 2px; }
+        .stats h4 { font-size: 9.5px; color: var(--text-sub); font-weight: 500; text-transform: uppercase; }
+        .stats b { font-size: 12px; color: #fff; font-weight: 700; display: block; margin-top: 1px; }
 
-        /* Pending Referral Balance Card */
+        /* Professional Gold Pending Referral Balance Card (Compact & Luxurious) */
         .pending-balance-card { 
-            background: linear-gradient(145deg, rgba(16, 24, 40, 0.9) 0%, rgba(10, 15, 28, 0.95) 100%); 
-            border: 1px solid rgba(245, 158, 11, 0.25); 
-            border-radius: 16px; 
-            padding: 14px 16px; 
+            background: linear-gradient(135deg, rgba(42, 34, 14, 0.92) 0%, rgba(20, 16, 6, 0.96) 100%); 
+            border: 1px solid rgba(245, 158, 11, 0.45); 
+            border-radius: 12px; 
+            padding: 10px 12px; 
             display: flex; 
             align-items: center; 
-            gap: 14px; 
-            margin-bottom: 12px; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3); 
+            gap: 10px; 
+            margin-bottom: 8px; 
+            box-shadow: 0 6px 16px rgba(0,0,0,0.35), inset 0 1px 1px rgba(255, 215, 0, 0.15); 
         }
         .pending-balance-card .card-icon { 
-            width: 40px; height: 40px; border-radius: 10px; 
-            background: rgba(245, 158, 11, 0.15); 
+            width: 34px; height: 34px; border-radius: 8px; 
+            background: rgba(245, 158, 11, 0.18); 
             display: flex; align-items: center; justify-content: center; 
-            font-size: 16px; color: #f59e0b; 
-            border: 1px solid rgba(245, 158, 11, 0.3); flex-shrink: 0; 
+            font-size: 14px; color: #fbbf24; 
+            border: 1px solid rgba(245, 158, 11, 0.4); flex-shrink: 0; 
         }
         .pending-balance-card .card-info { flex: 1; }
-        .pending-balance-card .card-info h3 { font-size: 10.5px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; font-weight: 600; }
-        .pending-balance-card .balance-amount { font-size: 22px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; }
-        .pending-balance-card .card-subtitle { font-size: 9.5px; color: #f59e0b; font-weight: 600; display: inline-block; margin-top: 2px; }
+        .pending-balance-card .card-info h3 { font-size: 9.5px; color: #fde68a; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 1px; font-weight: 700; }
+        .pending-balance-card .balance-amount { font-size: 18px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .pending-balance-card .card-subtitle { font-size: 8.5px; color: #fbbf24; font-weight: 600; display: inline-block; margin-top: 1px; }
 
         /* Rules Banner */
         .rules-banner { 
             background: linear-gradient(135deg, rgba(30, 25, 15, 0.6) 0%, rgba(20, 16, 10, 0.8) 100%); 
             border: 1px solid rgba(245, 158, 11, 0.25); 
-            border-radius: 14px; padding: 14px; margin-bottom: 16px; 
-            font-size: 11px; color: #cbd5e1; line-height: 1.5; 
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; 
+            font-size: 10.5px; color: #cbd5e1; line-height: 1.4; 
+            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
         }
-        .rules-banner h4 { font-size: 12px; font-weight: 700; color: #fbbf24; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-        .rules-banner p { margin-bottom: 4px; }
+        .rules-banner h4 { font-size: 11px; font-weight: 700; color: #fbbf24; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+        .rules-banner p { margin-bottom: 3px; }
         .rules-banner p:last-child { margin-bottom: 0; }
         .rules-banner b { color: #fef08a; font-weight: 600; }
 
         /* Quick Buttons */
-        .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-        .quick button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; font-size: 13px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; backdrop-filter: blur(10px); }
+        .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .quick button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; font-size: 12px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; backdrop-filter: blur(10px); }
 
         /* Pages */
         .page { display: none; }
         .page.active { display: block; }
 
-        .section-header { font-size: 13px; font-weight: 800; margin: 16px 0 10px 0; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .section-header { font-size: 12px; font-weight: 800; margin: 12px 0 8px 0; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
 
         /* Plans Grid */
-        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
-        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; text-align: center; position: relative; backdrop-filter: blur(10px); }
+        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; text-align: center; position: relative; backdrop-filter: blur(10px); }
         .plan-card.vip-card { border-color: rgba(245, 158, 11, 0.3); background: linear-gradient(145deg, rgba(30, 25, 15, 0.8) 0%, rgba(21, 28, 44, 0.8) 100%); }
-        .plan-badge { position: absolute; top: 8px; right: 8px; font-size: 8.5px; font-weight: 800; padding: 2px 5px; border-radius: 4px; text-transform: uppercase; }
+        .plan-badge { position: absolute; top: 6px; right: 6px; font-size: 8px; font-weight: 800; padding: 2px 4px; border-radius: 3px; text-transform: uppercase; }
         .badge-std { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
         .badge-vip { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-        .plan-title { font-size: 20px; font-weight: 800; margin: 6px 0 2px 0; }
-        .plan-rate { font-size: 12px; font-weight: 700; color: #10b981; margin-bottom: 8px; }
-        .plan-info { font-size: 10px; color: var(--text-sub); display: flex; flex-direction: column; gap: 3px; margin-bottom: 10px; text-align: left; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 6px; }
-        .plan-btn { width: 100%; padding: 8px; border-radius: 8px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; color: #fff; }
+        .plan-title { font-size: 18px; font-weight: 800; margin: 4px 0 2px 0; }
+        .plan-rate { font-size: 11px; font-weight: 700; color: #10b981; margin-bottom: 6px; }
+        .plan-info { font-size: 9.5px; color: var(--text-sub); display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; text-align: left; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 5px; }
+        .plan-btn { width: 100%; padding: 7px; border-radius: 6px; border: none; font-size: 10.5px; font-weight: 700; cursor: pointer; color: #fff; }
         .btn-std { background: var(--primary-gradient); }
         .btn-vip { background: var(--vip-gradient); }
 
         /* Forms */
-        label { display: block; font-size: 10.5px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 4px; font-weight: 600; }
-        select, input, textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 13px; outline: none; margin-bottom: 12px; }
+        label { display: block; font-size: 10px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 3px; font-weight: 600; }
+        select, input, textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 12px; outline: none; margin-bottom: 10px; }
         
-        .network-preview-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-        .net-left { display: flex; align-items: center; gap: 10px; }
-        .net-left img { width: 32px; height: 32px; border-radius: 50%; }
-        .net-info h4 { font-size: 13px; font-weight: 700; color: #fff; }
-        .net-info p { font-size: 10.5px; color: var(--accent-cyan); font-weight: 600; margin-top: 1px; }
+        .network-preview-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        .net-left { display: flex; align-items: center; gap: 8px; }
+        .net-left img { width: 28px; height: 28px; border-radius: 50%; }
+        .net-info h4 { font-size: 12px; font-weight: 700; color: #fff; }
+        .net-info p { font-size: 9.5px; color: var(--accent-cyan); font-weight: 600; margin-top: 1px; }
 
-        .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; }
-        .wallet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
-        .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 5px 10px; border-radius: 6px; font-size: 10.5px; cursor: pointer; font-weight: 600; }
-        .address-text { font-family: monospace; font-size: 11.5px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 6px; }
+        .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 10px; }
+        .wallet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
+        .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 4px 8px; border-radius: 5px; font-size: 10px; cursor: pointer; font-weight: 600; }
+        .address-text { font-family: monospace; font-size: 11px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 6px; border-radius: 5px; }
 
-        button.primary { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--primary-gradient); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; }
-        button.success { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--success-gradient); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; }
+        button.primary { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--primary-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
+        button.success { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--success-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
 
         /* History Elements */
-        .history-tabs { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
-        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-sub); padding: 6px 12px; border-radius: 16px; font-size: 10.5px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+        .history-tabs { display: flex; gap: 5px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 3px; }
+        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-sub); padding: 5px 10px; border-radius: 14px; font-size: 10px; font-weight: 600; cursor: pointer; white-space: nowrap; }
         .tab-btn.active { background: var(--primary-gradient); color: #fff; border-color: transparent; }
 
-        .tx-card { background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
-        .tx-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .tx-card { background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
+        .tx-icon { width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
         .tx-icon.DEPOSIT { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .tx-icon.WITHDRAWAL { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
         .tx-icon.INVESTMENT { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
-        .tx-details { flex: 1; margin-left: 10px; }
-        .tx-details h5 { font-size: 12px; font-weight: 700; color: #fff; }
-        .tx-details p { font-size: 9.5px; color: var(--text-sub); margin-top: 1px; }
+        .tx-details { flex: 1; margin-left: 8px; }
+        .tx-details h5 { font-size: 11px; font-weight: 700; color: #fff; }
+        .tx-details p { font-size: 9px; color: var(--text-sub); margin-top: 1px; }
         .tx-amount { text-align: right; }
-        .tx-amount h5 { font-size: 13px; font-weight: 800; }
-        .status-badge { font-size: 8.5px; font-weight: 700; padding: 2px 5px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-top: 2px; }
+        .tx-amount h5 { font-size: 12px; font-weight: 800; }
+        .status-badge { font-size: 8px; font-weight: 700; padding: 2px 4px; border-radius: 3px; text-transform: uppercase; display: inline-block; margin-top: 2px; }
         .status-completed { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
 
         /* Stats & Tables */
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
-        .stat-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; text-align: center; }
-        .stat-box i { font-size: 16px; color: var(--accent-cyan); margin-bottom: 4px; }
-        .stat-box h3 { font-size: 16px; font-weight: 800; color: #fff; margin: 2px 0; }
-        .stat-box p { font-size: 10px; color: var(--text-sub); }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .stat-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; text-align: center; }
+        .stat-box i { font-size: 14px; color: var(--accent-cyan); margin-bottom: 3px; }
+        .stat-box h3 { font-size: 15px; font-weight: 800; color: #fff; margin: 2px 0; }
+        .stat-box p { font-size: 9.5px; color: var(--text-sub); }
 
-        .progress-container { background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
-        .progress-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 8px; overflow: hidden; margin-top: 8px; }
+        .progress-container { background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+        .progress-bar-bg { width: 100%; height: 5px; background: rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden; margin-top: 6px; }
         .progress-bar-fill { height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s ease; }
 
-        .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; text-decoration: none; color: #fff; }
-        .support-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--accent-cyan); }
+        .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px; text-decoration: none; color: #fff; }
+        .support-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--accent-cyan); }
 
         /* Admin Dashboard */
-        .admin-table-box { width: 100%; overflow-x: auto; margin-top: 8px; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 10.5px; text-align: left; }
-        .admin-table th, .admin-table td { padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
+        .admin-table-box { width: 100%; overflow-x: auto; margin-top: 6px; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 10px; text-align: left; }
+        .admin-table th, .admin-table td { padding: 5px 7px; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
         .admin-table th { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); font-weight: 700; }
 
         /* Navigation */
-        nav { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 16px 16px 0 0; }
-        nav button { background: none; border: none; color: var(--text-sub); font-size: 9.5px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; flex: 1; }
-        nav button i { font-size: 16px; }
+        nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 14px 14px 0 0; }
+        nav button { background: none; border: none; color: var(--text-sub); font-size: 9px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; flex: 1; }
+        nav button i { font-size: 15px; }
         nav button.active { color: var(--accent-cyan); font-weight: 700; }
 
-        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 10px 16px; border-radius: 10px; font-size: 12px; z-index: 10000; display: none; }
+        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 8px 14px; border-radius: 8px; font-size: 11px; z-index: 10000; display: none; }
 
         /* PROFESSIONAL COREXBOT LIVE CHAT WIDGET STYLES */
         .chat-widget-btn {
             position: fixed;
-            bottom: 100px;
-            right: 16px;
+            bottom: 85px;
+            right: 14px;
             background: var(--primary-gradient);
             color: #fff;
-            width: 42px;
-            height: 42px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
-            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.4);
+            box-shadow: 0 5px 16px rgba(0, 210, 255, 0.4);
             z-index: 10000;
             border: 2px solid rgba(255, 255, 255, 0.2);
             transition: transform 0.2s ease, opacity 0.5s ease;
@@ -347,13 +347,13 @@
 
         .chat-window {
             position: fixed;
-            bottom: 155px;
-            right: 16px;
-            width: 300px;
-            height: 400px;
+            bottom: 135px;
+            right: 14px;
+            width: 280px;
+            height: 360px;
             background: #111827;
-            border-radius: 14px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
             display: flex;
             flex-direction: column;
             z-index: 10000;
@@ -367,41 +367,41 @@
         .chat-header {
             background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
             color: #fff;
-            padding: 12px;
+            padding: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 11px;
             border-bottom: 1px solid var(--card-border);
         }
-        .chat-header .bot-title-info { display: flex; align-items: center; gap: 6px; }
-        .chat-header .online-dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px #10b981; }
+        .chat-header .bot-title-info { display: flex; align-items: center; gap: 5px; }
+        .chat-header .online-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 5px #10b981; }
 
         .chat-header button {
             background: none;
             border: none;
             color: var(--text-sub);
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
         }
 
         .chat-body {
             flex: 1;
-            padding: 10px;
+            padding: 8px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
             background: rgba(9, 13, 22, 0.95);
         }
 
         .bot-message, .user-message {
-            padding: 8px 12px;
-            border-radius: 10px;
-            font-size: 12px;
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-size: 11px;
             max-width: 85%;
-            line-height: 1.4;
+            line-height: 1.35;
         }
 
         .bot-message {
@@ -421,19 +421,19 @@
 
         .chat-footer {
             display: flex;
-            padding: 10px;
+            padding: 8px;
             background: #111827;
             border-top: 1px solid var(--card-border);
         }
 
         .chat-footer input {
             flex: 1;
-            padding: 8px 10px;
+            padding: 7px 9px;
             border: 1px solid var(--card-border);
-            border-radius: 6px;
+            border-radius: 5px;
             outline: none;
             margin-bottom: 0;
-            font-size: 11.5px;
+            font-size: 11px;
             background: rgba(0,0,0,0.3);
             color: #fff;
         }
@@ -441,13 +441,13 @@
         .chat-footer button {
             background: var(--primary-gradient);
             border: none;
-            padding: 8px 14px;
-            margin-left: 6px;
-            border-radius: 6px;
+            padding: 7px 12px;
+            margin-left: 5px;
+            border-radius: 5px;
             cursor: pointer;
             font-weight: bold;
             color: #fff;
-            font-size: 11.5px;
+            font-size: 11px;
         }
     </style>
 </head>
@@ -494,7 +494,7 @@
     </div>
 </div>
 
-<!-- LIVE MARKET PRICES SECTION (Optimized size & layout) -->
+<!-- LIVE MARKET PRICES SECTION (Compact & Size-Limited) -->
 <div class="market-section">
     <div class="market-header">
         <span>Market Trends</span>
@@ -559,7 +559,7 @@
     </div>
 </section>
 
-<!-- Pending Referral Balance Card -->
+<!-- Pending Referral Balance Card (Gold Professional & Compact) -->
 <div class="pending-balance-card">
     <div class="card-icon"><i class="fa-solid fa-hourglass-half"></i></div>
     <div class="card-info">
@@ -589,11 +589,11 @@
 
 <!-- Home / Plans Page -->
 <section id="invest" class="page active">
-    <div class="section-header standard" style="margin-top: 5px;">
+    <div class="section-header standard" style="margin-top: 2px;">
         <i class="fa-solid fa-chart-line"></i> Active Investments & Live Profit
     </div>
     <div id="live-investments-container">
-        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; text-align: center; color: var(--text-sub); font-size: 13px;">
+        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px; text-align: center; color: var(--text-sub); font-size: 12px;">
             No active investments found. Invest in a plan to start earning live profits!
         </div>
     </div>
@@ -611,8 +611,8 @@
 
 <!-- Deposit Page -->
 <section id="deposit" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
-        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-arrow-down" style="color: #10b981;"></i> Deposit USDT</h3>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
+        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-arrow-down" style="color: #10b981;"></i> Deposit USDT</h3>
         
         <label>Select Deposit Network</label>
         <select id="deposit-network" onchange="updateDepositAddress()">
@@ -629,12 +629,12 @@
                     <p id="deposit-net-tag">Tether USD (TRC20)</p>
                 </div>
             </div>
-            <span style="font-size: 10px; background: rgba(16,185,129,0.15); color: #10b981; padding: 4px 8px; border-radius: 6px; font-weight: 700;">Fast Deposit</span>
+            <span style="font-size: 9.5px; background: rgba(16,185,129,0.15); color: #10b981; padding: 3px 6px; border-radius: 5px; font-weight: 700;">Fast Deposit</span>
         </div>
 
         <div class="wallet-box">
             <div class="wallet-header">
-                <span style="font-size: 11px; color: var(--text-sub); text-transform: uppercase;">Official Deposit Wallet</span>
+                <span style="font-size: 10px; color: var(--text-sub); text-transform: uppercase;">Official Deposit Wallet</span>
                 <button class="copy-btn" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> Copy Address</button>
             </div>
             <div class="address-text" id="deposit-address-display">TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs</div>
@@ -647,7 +647,7 @@
         <input type="text" id="deposit-txid" placeholder="Paste TXID Hash Here">
 
         <label>Or Upload Payment Screenshot</label>
-        <input type="file" id="deposit-screenshot" accept="image/*" style="width: 100%; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); padding: 10px; border-radius: 12px; color: #fff; font-size: 13px; margin-bottom: 14px;">
+        <input type="file" id="deposit-screenshot" accept="image/*" style="width: 100%; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); padding: 8px; border-radius: 10px; color: #fff; font-size: 12px; margin-bottom: 12px;">
 
         <button class="primary" onclick="playSound(); submitDeposit()">Submit Deposit</button>
     </div>
@@ -655,10 +655,10 @@
 
 <!-- Withdrawal Page -->
 <section id="withdraw" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
-        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-paper-plane" style="color: var(--danger-color);"></i> Withdraw USDT</h3>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
+        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-paper-plane" style="color: var(--danger-color);"></i> Withdraw USDT</h3>
         
-        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px; padding: 12px; margin-bottom: 16px; font-size: 11px; color: #fca5a5;">
+        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 10px; padding: 10px; margin-bottom: 12px; font-size: 10.5px; color: #fca5a5;">
             <i class="fa-solid fa-triangle-exclamation"></i> <b>Notice:</b> Withdrawals are only unlocked and permitted after your active 7-day investment plan is completely finished.
         </div>
 
@@ -677,7 +677,7 @@
                     <p id="withdraw-net-tag">USDT TRC20 Address</p>
                 </div>
             </div>
-            <span style="font-size: 10px; background: rgba(0,210,255,0.15); color: var(--accent-cyan); padding: 4px 8px; border-radius: 6px; font-weight: 700;">Instant Payout</span>
+            <span style="font-size: 9.5px; background: rgba(0,210,255,0.15); color: var(--accent-cyan); padding: 3px 6px; border-radius: 5px; font-weight: 700;">Instant Payout</span>
         </div>
 
         <label>Destination Address</label>
@@ -692,8 +692,8 @@
 
 <!-- History Page -->
 <section id="history" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
-        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 14px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> Transaction History</h3>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
+        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> Transaction History</h3>
         
         <div class="history-tabs">
             <button class="tab-btn active" onclick="filterHistory('ALL', this)">All Activity</button>
@@ -708,11 +708,11 @@
 
 <!-- Stats Page -->
 <section id="stats-page" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
-        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 16px;"><i class="fa-solid fa-chart-pie" style="color: #f59e0b;"></i> Performance Analytics</h3>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
+        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-chart-pie" style="color: #f59e0b;"></i> Performance Analytics</h3>
 
         <div class="progress-container">
-            <div style="display: flex; justify-content: space-between; font-size: 12px;">
+            <div style="display: flex; justify-content: space-between; font-size: 11px;">
                 <span style="color: var(--text-sub);">Investment Portfolio Goal</span>
                 <b id="goal-percent" style="color: var(--accent-cyan);">0%</b>
             </div>
@@ -729,11 +729,11 @@
         </div>
 
         <!-- ADMIN DASHBOARD INTEGRATION -->
-        <div id="admin-dashboard-container" style="display: none; background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
-            <h4 style="font-size: 14px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 10px;">
+        <div id="admin-dashboard-container" style="display: none; background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
+            <h4 style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 8px;">
                 <i class="fa-solid fa-shield-halved"></i> Admin Analytics Dashboard
             </h4>
-            <div style="font-size: 12px; color: var(--text-sub); margin-bottom: 8px; font-weight: 600;">👥 Registered Users</div>
+            <div style="font-size: 11px; color: var(--text-sub); margin-bottom: 6px; font-weight: 600;">👥 Registered Users</div>
             <div class="admin-table-box">
                 <table class="admin-table">
                     <thead>
@@ -743,7 +743,7 @@
                 </table>
             </div>
 
-            <div style="font-size: 12px; color: var(--text-sub); margin: 12px 0 8px 0; font-weight: 600;">🏆 Top Investment Ranking</div>
+            <div style="font-size: 11px; color: var(--text-sub); margin: 10px 0 6px 0; font-weight: 600;">🏆 Top Investment Ranking</div>
             <div class="admin-table-box">
                 <table class="admin-table">
                     <thead>
@@ -759,28 +759,28 @@
 
 <!-- Support Page -->
 <section id="support" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
-        <div style="text-align: center; margin-bottom: 20px;">
-            <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(0, 210, 255, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; font-size: 26px; color: var(--accent-cyan); border: 1px solid rgba(0, 210, 255, 0.3);">
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
+        <div style="text-align: center; margin-bottom: 16px;">
+            <div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(0, 210, 255, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; font-size: 22px; color: var(--accent-cyan); border: 1px solid rgba(0, 210, 255, 0.3);">
                 <i class="fa-solid fa-headset"></i>
             </div>
-            <h3 style="font-size: 18px; font-weight: 800;">24/7 Live Support</h3>
-            <p style="font-size: 12px; color: var(--text-sub); margin-top: 4px;">Have questions or need assistance? Contact us!</p>
+            <h3 style="font-size: 16px; font-weight: 800;">24/7 Live Support</h3>
+            <p style="font-size: 11px; color: var(--text-sub); margin-top: 3px;">Have questions or need assistance? Contact us!</p>
         </div>
 
         <a href="https://t.me/USDTPilotAdmin" target="_blank" class="support-card">
-            <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
                 <div class="support-icon"><i class="fa-brands fa-telegram"></i></div>
                 <div>
-                    <h4 style="font-size: 14px; font-weight: 700;">Telegram Official Support</h4>
-                    <p style="font-size: 11px; color: #10b981;">Online • Fast Response</p>
+                    <h4 style="font-size: 13px; font-weight: 700;">Telegram Official Support</h4>
+                    <p style="font-size: 10px; color: #10b981;">Online • Fast Response</p>
                 </div>
             </div>
-            <i class="fa-solid fa-chevron-right" style="color: var(--text-sub); font-size: 12px;"></i>
+            <i class="fa-solid fa-chevron-right" style="color: var(--text-sub); font-size: 11px;"></i>
         </a>
 
-        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
-            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--accent-cyan);"><i class="fa-solid fa-paper-plane"></i> Send Direct Ticket</h4>
+        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
+            <h4 style="font-size: 12px; font-weight: 700; margin-bottom: 10px; color: var(--accent-cyan);"><i class="fa-solid fa-paper-plane"></i> Send Direct Ticket</h4>
             <label>Subject</label>
             <input type="text" id="support-subject" placeholder="Deposit / Withdrawal issue">
             <label>Message Detail</label>
@@ -788,12 +788,12 @@
             <button class="primary" onclick="playSound(); sendTicket()"><i class="fa-solid fa-paper-plane"></i> Submit Ticket</button>
         </div>
 
-        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
-            <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--accent-cyan);">
+        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
+            <h4 style="font-size: 12px; font-weight: 700; margin-bottom: 10px; color: var(--accent-cyan);">
                 <i class="fa-solid fa-comments"></i> Your Support Tickets & Replies
             </h4>
             <div id="support-tickets-container">
-                <p style="text-align: center; color: var(--text-sub); font-size: 12px; padding: 15px 0;">Loading your tickets...</p>
+                <p style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 12px 0;">Loading your tickets...</p>
             </div>
         </div>
     </div>
@@ -801,37 +801,37 @@
 
 <!-- Profile Page -->
 <section id="profile" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 20px; padding: 20px;">
-        <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; border-bottom: 1px solid var(--card-border); padding-bottom: 16px;">
-            <div id="profile-page-avatar" style="width: 55px; height: 55px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 22px; color: #fff; overflow: hidden; box-shadow: 0 4px 15px rgba(0, 210, 255, 0.3);">
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 12px;">
+            <div id="profile-page-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3);">
                 <i class="fa-solid fa-user"></i>
             </div>
             <div>
-                <h3 id="profile-fullname" style="font-size: 18px; font-weight: 800;">Loading...</h3>
+                <h3 id="profile-fullname" style="font-size: 16px; font-weight: 800;">Loading...</h3>
                 <small id="profile-username" style="color: var(--accent-cyan); font-weight: 600;">@username</small>
             </div>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
-                <span style="color: var(--text-sub);"><i class="fa-solid fa-id-badge" style="width: 20px; color: var(--accent-cyan);"></i> Telegram ID:</span> 
+        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-id-badge" style="width: 18px; color: var(--accent-cyan);"></i> Telegram ID:</span> 
                 <b id="profile-id">000000</b>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
-                <span style="color: var(--text-sub);"><i class="fa-solid fa-globe" style="width: 20px; color: var(--accent-cyan);"></i> Language:</span> 
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-globe" style="width: 18px; color: var(--accent-cyan);"></i> Language:</span> 
                 <b>EN</b>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
-                <span style="color: var(--text-sub);"><i class="fa-solid fa-shield-halved" style="width: 20px; color: #10b981;"></i> Security Level:</span> 
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-shield-halved" style="width: 18px; color: #10b981;"></i> Security Level:</span> 
                 <b style="color:#10b981;">Telegram Verified</b>
             </div>
         </div>
 
-        <div style="margin-top: 20px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
-            <label style="margin-bottom: 6px;"><i class="fa-solid fa-link"></i> Your Referral Link</label>
-            <div style="display: flex; gap: 8px;">
-                <input type="text" id="ref-link" value="https://t.me/CoreXBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 12px; font-family: monospace; background: rgba(0,0,0,0.3);">
-                <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 14px; border-radius: 10px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
+        <div style="margin-top: 16px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;">
+            <label style="margin-bottom: 5px;"><i class="fa-solid fa-link"></i> Your Referral Link</label>
+            <div style="display: flex; gap: 6px;">
+                <input type="text" id="ref-link" value="https://t.me/CoreXBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 11px; font-family: monospace; background: rgba(0,0,0,0.3);">
+                <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 12px; border-radius: 8px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
         </div>
     </div>
@@ -1114,23 +1114,23 @@
             toastEl = document.createElement('div');
             toastEl.id = 'live-toast-popup';
             toastEl.style.cssText = `
-                position: fixed; bottom: 75px; left: 16px; background: rgba(15, 23, 42, 0.95);
-                color: #fff; border: 1px solid var(--card-border); padding: 8px 12px; border-radius: 10px;
-                font-size: 11px; font-weight: 500; z-index: 9998; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-                display: flex; align-items: center; gap: 8px; backdrop-filter: blur(10px);
+                position: fixed; bottom: 70px; left: 14px; background: rgba(15, 23, 42, 0.95);
+                color: #fff; border: 1px solid var(--card-border); padding: 7px 10px; border-radius: 8px;
+                font-size: 10.5px; font-weight: 500; z-index: 9998; box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+                display: flex; align-items: center; gap: 7px; backdrop-filter: blur(10px);
                 transition: opacity 0.4s ease, transform 0.4s ease; opacity: 0; transform: translateY(10px);
             `;
             document.body.appendChild(toastEl);
         }
 
         let iconHTML = type === 'img' ? 
-            `<div style="width: 26px; height: 26px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid ${color}40; flex-shrink: 0;"><img src="${iconSrc}" style="width: 15px; height: 15px; object-fit: contain;"></div>` :
-            `<div style="width: 26px; height: 26px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; color: ${color}; font-size: 11px; flex-shrink: 0;"><i class="fa-solid ${faIcon}"></i></div>`;
+            `<div style="width: 24px; height: 24px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid ${color}40; flex-shrink: 0;"><img src="${iconSrc}" style="width: 14px; height: 14px; object-fit: contain;"></div>` :
+            `<div style="width: 24px; height: 24px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; color: ${color}; font-size: 10px; flex-shrink: 0;"><i class="fa-solid ${faIcon}"></i></div>`;
 
         toastEl.innerHTML = `
             ${iconHTML}
             <div>
-                <span style="font-size: 8.5px; color: var(--text-sub); display: block; text-transform: uppercase;">Live Notification</span>
+                <span style="font-size: 8px; color: var(--text-sub); display: block; text-transform: uppercase;">Live Notification</span>
                 <span>${message}</span>
             </div>
         `;
@@ -1220,7 +1220,7 @@
     function updateLiveProfits() {
         const container = document.getElementById('live-investments-container');
         if (!activeInvestmentsList || activeInvestmentsList.length === 0) {
-            container.innerHTML = `<div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; text-align: center; color: var(--text-sub); font-size: 12px;">No active investments found. Invest in a plan to start earning live profits!</div>`;
+            container.innerHTML = `<div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; text-align: center; color: var(--text-sub); font-size: 11.5px;">No active investments found. Invest in a plan to start earning live profits!</div>`;
             return;
         }
 
@@ -1244,14 +1244,14 @@
             let progressPercent = Math.min((elapsedSeconds / totalDurationSeconds) * 100, 100).toFixed(1);
 
             return `
-                <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 14px; padding: 14px; margin-bottom: 12px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <span style="font-size: 11px; font-weight: 700; color: var(--accent-cyan);"><i class="fa-solid fa-shield-halved"></i> Plan: $${inv.amount}</span>
-                        <span style="font-size: 9.5px; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 2px 6px; border-radius: 6px; font-weight: 700;">Running (${inv.dailyRate}% Daily)</span>
+                <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 12px; padding: 12px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <span style="font-size: 10.5px; font-weight: 700; color: var(--accent-cyan);"><i class="fa-solid fa-shield-halved"></i> Plan: $${inv.amount}</span>
+                        <span style="font-size: 9px; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 2px 5px; border-radius: 5px; font-weight: 700;">Running (${inv.dailyRate}% Daily)</span>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; background: rgba(0,0,0,0.25); padding: 8px; border-radius: 8px;">
-                        <div><span style="font-size: 9.5px; color: var(--text-sub); display: block;">LIVE PROFIT</span><b style="font-size: 14px; color: #10b981;">$${currentProfit.toFixed(4)}</b></div>
-                        <div><span style="font-size: 9.5px; color: var(--text-sub); display: block;">TIME LEFT</span><b style="font-size: 11px; color: #f59e0b; font-family: monospace;">${days}d ${hours}h ${minutes}m ${seconds}s</b></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; background: rgba(0,0,0,0.25); padding: 6px; border-radius: 6px;">
+                        <div><span style="font-size: 9px; color: var(--text-sub); display: block;">LIVE PROFIT</span><b style="font-size: 13px; color: #10b981;">$${currentProfit.toFixed(4)}</b></div>
+                        <div><span style="font-size: 9px; color: var(--text-sub); display: block;">TIME LEFT</span><b style="font-size: 10.5px; color: #f59e0b; font-family: monospace;">${days}d ${hours}h ${minutes}m ${seconds}s</b></div>
                     </div>
                     <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progressPercent}%;"></div></div>
                 </div>
@@ -1350,7 +1350,7 @@
         if(activeHistoryFilter !== 'ALL') filtered = filtered.filter(t => t.type === activeHistoryFilter);
 
         if(filtered.length === 0) {
-            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 12px; padding: 25px 0;">No transactions found</p>`;
+            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11.5px; padding: 20px 0;">No transactions found</p>`;
             return;
         }
 
@@ -1439,18 +1439,18 @@
             const data = await res.json();
             const container = document.getElementById('support-tickets-container');
             if (!data.tickets || data.tickets.length === 0) {
-                container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11.5px; padding: 12px 0;">No support tickets found.</p>`;
+                container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 10px 0;">No support tickets found.</p>`;
                 return;
             }
 
             container.innerHTML = data.tickets.map(ticket => `
-                <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 8px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-                        <b style="font-size: 12px; color: #fff;">${ticket.subject}</b>
-                        <span style="font-size: 8.5px; padding: 2px 5px; border-radius: 4px; background: ${ticket.status === 'Resolved' ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)'}; color: ${ticket.status === 'Resolved' ? '#10b981' : '#f59e0b'};">${ticket.status}</span>
+                <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 8px; padding: 8px; margin-bottom: 6px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+                        <b style="font-size: 11.5px; color: #fff;">${ticket.subject}</b>
+                        <span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: ${ticket.status === 'Resolved' ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)'}; color: ${ticket.status === 'Resolved' ? '#10b981' : '#f59e0b'};">${ticket.status}</span>
                     </div>
-                    <p style="font-size: 10.5px; color: var(--text-sub); margin-bottom: 6px;"><b>You:</b> ${ticket.message}</p>
-                    ${ticket.admin_reply ? `<div style="background: rgba(0, 210, 255, 0.08); border-left: 2px solid var(--accent-cyan); padding: 6px; border-radius: 4px;"><p style="font-size: 10.5px; color: var(--accent-cyan);"><b>Admin Reply:</b> ${ticket.admin_reply}</p></div>` : `<p style="font-size: 9.5px; color: var(--text-sub); font-style: italic;">⏳ Awaiting admin response...</p>`}
+                    <p style="font-size: 10px; color: var(--text-sub); margin-bottom: 5px;"><b>You:</b> ${ticket.message}</p>
+                    ${ticket.admin_reply ? `<div style="background: rgba(0, 210, 255, 0.08); border-left: 2px solid var(--accent-cyan); padding: 5px; border-radius: 3px;"><p style="font-size: 10px; color: var(--accent-cyan);"><b>Admin Reply:</b> ${ticket.admin_reply}</p></div>` : `<p style="font-size: 9px; color: var(--text-sub); font-style: italic;">⏳ Awaiting admin response...</p>`}
                 </div>
             `).join('');
         } catch (e) {}
