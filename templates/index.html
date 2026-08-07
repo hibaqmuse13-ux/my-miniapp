@@ -226,17 +226,42 @@
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
 
-        /* Plans Grid */
-        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; text-align: center; position: relative; backdrop-filter: blur(10px); }
-        .plan-card.vip-card { border-color: rgba(245, 158, 11, 0.3); background: linear-gradient(145deg, rgba(30, 25, 15, 0.8) 0%, rgba(21, 28, 44, 0.8) 100%); }
-        .plan-badge { position: absolute; top: 6px; right: 6px; font-size: 8px; font-weight: 800; padding: 2px 4px; border-radius: 3px; text-transform: uppercase; }
+        /* Plans Grid & Cards (Standardized Size & Click Animations) */
+        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+        .plan-card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--card-border); 
+            border-radius: 14px; 
+            padding: 12px; 
+            text-align: center; 
+            position: relative; 
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 195px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+            cursor: pointer;
+        }
+        .plan-card:active {
+            transform: scale(0.96);
+        }
+        .plan-card.vip-card { 
+            border-color: rgba(245, 158, 11, 0.3); 
+            background: linear-gradient(145deg, rgba(30, 25, 15, 0.8) 0%, rgba(21, 28, 44, 0.8) 100%); 
+        }
+        .plan-badge { position: absolute; top: 6px; right: 6px; font-size: 8.5px; font-weight: 800; padding: 2px 5px; border-radius: 4px; text-transform: uppercase; }
         .badge-std { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
         .badge-vip { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-        .plan-title { font-size: 18px; font-weight: 800; margin: 4px 0 2px 0; }
-        .plan-rate { font-size: 11px; font-weight: 700; color: #10b981; margin-bottom: 6px; }
-        .plan-info { font-size: 9.5px; color: var(--text-sub); display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; text-align: left; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 5px; }
-        .plan-btn { width: 100%; padding: 7px; border-radius: 6px; border: none; font-size: 10.5px; font-weight: 700; cursor: pointer; color: #fff; }
+        
+        /* Large & Clear Texts inside Box */
+        .plan-title { font-size: 20px; font-weight: 800; margin: 6px 0 2px 0; color: #ffffff; letter-spacing: 0.5px; }
+        .plan-rate { font-size: 12px; font-weight: 700; color: #10b981; margin-bottom: 6px; }
+        .plan-info { font-size: 10.5px; color: #e2e8f0; display: flex; flex-direction: column; gap: 3px; margin-bottom: 8px; text-align: left; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 6px; font-weight: 600; }
+        
+        /* Small, Normal & Professional Button */
+        .plan-btn { width: 100%; padding: 6px 8px; border-radius: 6px; border: none; font-size: 10px; font-weight: 700; cursor: pointer; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: opacity 0.2s; }
+        .plan-btn:hover { opacity: 0.9; }
         .btn-std { background: var(--primary-gradient); }
         .btn-vip { background: var(--vip-gradient); }
 
@@ -507,7 +532,7 @@
     </div>
 </div>
 
-<!-- LIVE MARKET PRICES SECTION (4 items exactly as requested) -->
+<!-- LIVE MARKET PRICES SECTION -->
 <div class="market-section">
     <div class="market-header">
         <span>Market Trends</span>
@@ -571,9 +596,9 @@
 <!-- Rules & Guidelines Banner -->
 <div class="rules-banner">
     <h4><i class="fa-solid fa-circle-info"></i> Investment & Referral Rules</h4>
-    <p>• <b>Profits:</b> Standard plans ($10 - $100) earn 20% daily. VIP plans ($150 - $500) earn 35% daily credited hourly.</p>
+    <p>• <b>Profits:</b> Standard plans ($5 - $100) earn 25% daily. VIP plans ($150 - $2000) earn 35% daily credited hourly.</p>
     <p>• <b>Referral Bonus:</b> Invite friends and instantly earn <b>2.00 USDT</b> when your referral makes their first successful deposit.</p>
-    <p>• <b>Withdrawals:</b> Withdrawals are <b>strictly locked</b> and only allowed after your active investment plan fully completes the <b>7-day duration</b>.</p>
+    <p>• <b>Withdrawals:</b> Withdrawals are <b>strictly locked</b> and only allowed after your active investment plan fully completes the <b>2-week duration</b>.</p>
 </div>
 
 <!-- Quick Actions -->
@@ -598,12 +623,12 @@
     </div>
 
     <div class="section-header standard">
-        <i class="fa-solid fa-bolt"></i> Standard Plans ($10 - $100 | 20% Daily)
+        <i class="fa-solid fa-bolt"></i> Standard Plans ($5 - $100 | 25% Daily)
     </div>
     <div id="standard-plans" class="plans-grid"></div>
 
     <div class="section-header vip">
-        <i class="fa-solid fa-crown"></i> VIP Plans ($150 - $500 | 35% Daily)
+        <i class="fa-solid fa-crown"></i> VIP Plans ($150 - $2000 | 35% Daily)
     </div>
     <div id="vip-plans" class="plans-grid"></div>
 </section>
@@ -640,7 +665,7 @@
         </div>
 
         <label>Amount USDT</label>
-        <input type="number" id="deposit-amount" placeholder="Min $10">
+        <input type="number" id="deposit-amount" placeholder="Min $5">
 
         <label>Transaction Hash / TXID</label>
         <input type="text" id="deposit-txid" placeholder="Paste TXID Hash Here">
@@ -658,7 +683,7 @@
         <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-paper-plane" style="color: var(--danger-color);"></i> Withdraw USDT</h3>
         
         <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 10px; padding: 10px; margin-bottom: 12px; font-size: 10.5px; color: #fca5a5;">
-            <i class="fa-solid fa-triangle-exclamation"></i> <b>Notice:</b> Withdrawals are only unlocked and permitted after your active 7-day investment plan is completely finished.
+            <i class="fa-solid fa-triangle-exclamation"></i> <b>Notice:</b> Withdrawals are only unlocked and permitted after your active 2-week investment plan is completely finished.
         </div>
 
         <label>Select Withdrawal Network</label>
@@ -683,7 +708,7 @@
         <input type="text" id="withdraw-address" placeholder="Enter Wallet Address">
 
         <label>Amount USDT</label>
-        <input type="number" id="withdraw-amount" placeholder="Min $10">
+        <input type="number" id="withdraw-amount" placeholder="Min $5">
 
         <button class="success" onclick="playSound(); submitWithdraw()">Submit Withdrawal</button>
     </div>
@@ -881,8 +906,9 @@
 
     let activeInvestmentsList = [];
 
-    const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-    const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500];
+    // Updated amounts: Standard includes $5. VIP includes $1000, $1500, $2000.
+    const stdAmounts = [5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+    const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500, 1000, 1500, 2000];
 
     const cryptoNetworks = {
         'TRC20': { name: 'Tron TRC20', tag: 'Tether USD (TRC20)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', icon: 'https://cryptologos.cc/logos/tron-trx-logo.png' },
@@ -1010,13 +1036,13 @@
         if (text.includes('deposit') || text.includes('fund') || text.includes('add money') || text.includes('pay')) {
             return "To make a deposit in CoreXBot: Click on the 'Deposit' button on the home screen, select your preferred network (TRC20, BEP20, or ERC20), copy the official wallet address, and send USDT. Once sent, paste your TXID hash or upload your payment receipt for automatic or fast crediting!";
         } else if (text.includes('withdraw') || text.includes('payout') || text.includes('take out')) {
-            return "To withdraw funds from CoreXBot: Go to the Withdrawal section, select your network, enter your external wallet address and amount. Please note that withdrawals are strictly permitted after your 7-day active investment plan is fully completed.";
+            return "To withdraw funds from CoreXBot: Go to the Withdrawal section, select your network, enter your external wallet address and amount. Please note that withdrawals are strictly permitted after your 2-week active investment plan is fully completed.";
         } else if (text.includes('invest') || text.includes('start')) {
-            return "How to start investing in CoreXBot: First, make a deposit of at least $10 USDT via the Deposit tab. Then, pick a Standard plan ($10–$100) or VIP plan ($150–$500) from the Home screen to activate your hourly profits.";
+            return "How to start investing in CoreXBot: First, make a deposit of at least $5 USDT via the Deposit tab. Then, pick a Standard plan ($5–$100) or VIP plan ($150–$2000) from the Home screen to activate your hourly profits.";
         } else if (text.includes('minimum') || text.includes('maximum') || text.includes('profit') || text.includes('earn')) {
-            return "CoreXBot Limits & Profits: The minimum investment is $10 USDT and the maximum is $500 USDT. Standard plans yield 20% daily, and VIP plans yield 35% daily, credited hourly to your live balance!";
+            return "CoreXBot Limits & Profits: The minimum investment is $5 USDT and the maximum is $2000 USDT. Standard plans yield 25% daily, and VIP plans yield 35% daily, credited hourly to your live balance!";
         } else if (text.includes('day') || text.includes('duration') || text.includes('period')) {
-            return "Investment Duration: All investment plans in CoreXBot run for a fixed duration of exactly 7 days (168 hours), compounding and yielding returns every single hour.";
+            return "Investment Duration: All investment plans in CoreXBot run for a fixed duration of exactly 2 weeks (14 days / 336 hours), compounding and yielding returns every single hour.";
         } else if (text.includes('referral') || text.includes('invite') || text.includes('bonus')) {
             return "CoreXBot Referral Program: Share your unique invite link found in your Profile. You will instantly earn a 2.00 USDT bonus when your invited friend completes their first verified deposit.";
         } else if (text.includes('hello') || text.includes('hi') || text.includes('hey')) {
@@ -1082,7 +1108,7 @@
 
     function initRealAndFakeToasts() {
         const uniqueNames = ["@Crypto", "@AliAhmed", "@MohamedSaeed", "@Farah99", "@Liban", "@Samantar", "@Nasteexo", "@KhadarAdmin", "@HindaWeb", "@Guled"];
-        const standardFakeAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+        const standardFakeAmounts = [5, 10, 20, 50, 100, 500, 1000];
         const netKeys = ['TRC20', 'BEP20', 'ERC20'];
 
         const actionTypes = [
@@ -1187,20 +1213,22 @@
         const stdContainer = document.getElementById('standard-plans');
         const vipContainer = document.getElementById('vip-plans');
 
+        // Standard: 25% daily, duration 2 weeks (14 days). Total return = Amount + (Amount * 0.25 * 14) = Amount * 4.5
         stdContainer.innerHTML = stdAmounts.map(amt => `
             <div class="plan-card">
-                <span class="plan-badge badge-std">20% / 24h</span>
+                <span class="plan-badge badge-std">25% / 24H</span>
                 <div class="plan-title">$${amt}</div>
-                <div class="plan-rate">+20% Profit Daily</div>
+                <div class="plan-rate">+25% Profit Daily</div>
                 <div class="plan-info">
                     <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
-                    <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
-                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 1.4).toFixed(1)}</span>
+                    <span><i class="fa-solid fa-lock"></i> Duration: 2 Weeks</span>
+                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 4.5).toFixed(1)}</span>
                 </div>
                 <button class="plan-btn btn-std" onclick="playSound(); investPlan(${amt}, false)">Invest Now</button>
             </div>
         `).join('');
 
+        // VIP: 35% daily, duration 2 weeks (14 days). Total return = Amount + (Amount * 0.35 * 14) = Amount * 5.9
         vipContainer.innerHTML = vipAmounts.map(amt => `
             <div class="plan-card vip-card">
                 <span class="plan-badge badge-vip">VIP 35%</span>
@@ -1208,8 +1236,8 @@
                 <div class="plan-rate">+35% Profit Daily</div>
                 <div class="plan-info">
                     <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
-                    <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
-                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 2.45).toFixed(1)}</span>
+                    <span><i class="fa-solid fa-lock"></i> Duration: 2 Weeks</span>
+                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 5.9).toFixed(1)}</span>
                 </div>
                 <button class="plan-btn btn-vip" onclick="playSound(); investPlan(${amt}, true)">Invest VIP</button>
             </div>
@@ -1226,7 +1254,7 @@
         container.innerHTML = activeInvestmentsList.map((inv) => {
             let now = new Date().getTime();
             let elapsedSeconds = Math.floor((now - inv.startTime) / 1000);
-            let totalDurationSeconds = 7 * 24 * 60 * 60;
+            let totalDurationSeconds = 14 * 24 * 60 * 60; // 2 weeks = 14 days
             let timeLeft = (inv.startTime + (totalDurationSeconds * 1000)) - now;
             if (timeLeft < 0) timeLeft = 0;
 
@@ -1237,7 +1265,7 @@
 
             let profitPerSecond = (inv.amount * (inv.dailyRate / 100)) / 86400;
             let currentProfit = elapsedSeconds * profitPerSecond;
-            let maxProfit = inv.amount * (inv.dailyRate / 100) * 7;
+            let maxProfit = inv.amount * (inv.dailyRate / 100) * 14;
             if (currentProfit > maxProfit) currentProfit = maxProfit;
 
             let progressPercent = Math.min((elapsedSeconds / totalDurationSeconds) * 100, 100).toFixed(1);
@@ -1265,7 +1293,7 @@
         const screenshotFile = document.getElementById('deposit-screenshot').files[0];
         const userId = currentUser ? currentUser.id.toString() : "5738022147";
 
-        if(!amt || amt < 10) { showToast("⚠️ Minimum deposit is $10 USDT"); return; }
+        if(!amt || amt < 5) { showToast("⚠️ Minimum deposit is $5 USDT"); return; }
         if(!txid && !screenshotFile) { showToast("⚠️ Please enter TXID or upload a screenshot!"); return; }
 
         const formData = new FormData();
@@ -1294,7 +1322,7 @@
         const addr = document.getElementById('withdraw-address').value;
         const userId = currentUser ? currentUser.id.toString() : "5738022147";
 
-        if(!amt || amt < 10) { showToast("⚠️ Minimum withdrawal is $10 USDT"); return; }
+        if(!amt || amt < 5) { showToast("⚠️ Minimum withdrawal is $5 USDT"); return; }
         if(!addr) { showToast("⚠️ Please provide a wallet address!"); return; }
 
         try {
@@ -1327,7 +1355,7 @@
             if(result.status === 'success') {
                 activeInvestmentsList.push({
                     amount: amount,
-                    dailyRate: isVip ? 35 : 20,
+                    dailyRate: isVip ? 35 : 25,
                     startTime: new Date().getTime()
                 });
                 updateLiveProfits();
@@ -1373,7 +1401,7 @@
         document.getElementById('stat-deposits').innerText = `$${deposits.toFixed(2)}`;
         document.getElementById('stat-withdraws').innerText = `$${withdraws.toFixed(2)}`;
         document.getElementById('stat-referrals').innerText = '0';
-        document.getElementById('stat-roi').innerText = '+20.0%';
+        document.getElementById('stat-roi').innerText = '+25.0%';
 
         const progress = Math.min((((userData.user?.balance || 0) + (userData.user?.active_deposit || 0)) / 1000) * 100, 100).toFixed(0);
         document.getElementById('goal-bar').style.width = `${progress}%`;
