@@ -36,7 +36,7 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Header */
-        header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); margin-bottom: 18px; }
+        header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); margin-bottom: 16px; }
         .profile { display: flex; align-items: center; gap: 12px; }
         .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3); overflow: hidden; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -44,40 +44,44 @@
         .profile small { font-size: 11px; color: var(--text-sub); }
         .verified { font-size: 10px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 5px; }
 
-        /* LIVE MARKET PRICES SECTION */
+        /* LIVE MARKET PRICES SECTION - Refined compact professional cards */
         .market-section {
-            background-color: #151922;
-            border: 1px solid #222734;
+            background: rgba(15, 22, 36, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
+            padding: 12px 14px;
+            margin-bottom: 16px;
+            backdrop-filter: blur(10px);
         }
 
         .market-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #848e9c;
+            margin-bottom: 10px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-sub);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         .market-header .live-badge {
-            background-color: rgba(14, 203, 129, 0.15);
+            background-color: rgba(14, 203, 129, 0.12);
             color: #0ecb81;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 11px;
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-size: 10px;
             display: flex;
             align-items: center;
             gap: 4px;
+            border: 1px solid rgba(14, 203, 129, 0.2);
         }
 
         .market-header .live-badge::before {
             content: '';
-            width: 6px;
-            height: 6px;
+            width: 5px;
+            height: 5px;
             background-color: #0ecb81;
             border-radius: 50%;
             display: inline-block;
@@ -87,16 +91,23 @@
         .crypto-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
+            gap: 8px;
         }
 
         .crypto-item {
-            background-color: #1e2329;
+            background: rgba(21, 28, 44, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             border-radius: 10px;
-            padding: 10px 12px;
+            padding: 8px 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: background 0.2s;
+        }
+
+        .crypto-item:hover {
+            background: rgba(21, 28, 44, 0.9);
+            border-color: rgba(0, 210, 255, 0.15);
         }
 
         .crypto-info {
@@ -106,13 +117,13 @@
 
         .crypto-symbol {
             font-weight: 700;
-            font-size: 13px;
+            font-size: 12px;
             color: #ffffff;
         }
 
         .crypto-name {
-            font-size: 10px;
-            color: #848e9c;
+            font-size: 9px;
+            color: var(--text-sub);
         }
 
         .crypto-price-box {
@@ -120,14 +131,14 @@
         }
 
         .crypto-price {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #ffffff;
         }
 
         .crypto-change {
-            font-size: 10px;
-            font-weight: 500;
+            font-size: 9px;
+            font-weight: 600;
         }
 
         .crypto-change.up {
@@ -145,26 +156,55 @@
         }
 
         /* Balance Card */
-        .balance-card { background: linear-gradient(145deg, rgba(16, 24, 40, 0.9) 0%, rgba(10, 15, 28, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; padding: 24px 20px; text-align: center; box-shadow: 0 12px 30px rgba(0,0,0,0.4); margin-bottom: 20px; position: relative; overflow: hidden; }
+        .balance-card { background: linear-gradient(145deg, rgba(16, 24, 40, 0.9) 0%, rgba(10, 15, 28, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; padding: 24px 20px; text-align: center; box-shadow: 0 12px 30px rgba(0,0,0,0.4); margin-bottom: 16px; position: relative; overflow: hidden; }
         .balance-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, transparent 60%); pointer-events: none; }
-        .balance-card p { font-size: 12px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-        .balance-card h1 { font-size: 40px; font-weight: 800; letter-spacing: -1px; margin: 4px 0; }
-        .balance-card span.badge-usdt { font-size: 11px; font-weight: 700; color: var(--accent-cyan); background: rgba(0, 210, 255, 0.15); padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px; }
+        .balance-card p { font-size: 11px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; }
+        .balance-card h1 { font-size: 38px; font-weight: 800; letter-spacing: -1px; margin: 4px 0; }
+        .balance-card span.badge-usdt { font-size: 11px; font-weight: 700; color: var(--accent-cyan); background: rgba(0, 210, 255, 0.15); padding: 3px 10px; border-radius: 6px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px; border: 1px solid rgba(0, 210, 255, 0.25); }
         .badge-usdt img { width: 14px; height: 14px; }
 
-        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
         .stats div { text-align: center; }
-        .stats i { font-size: 14px; color: var(--accent-cyan); margin-bottom: 4px; }
+        .stats i { font-size: 13px; color: var(--accent-cyan); margin-bottom: 4px; }
         .stats h4 { font-size: 11px; color: var(--text-sub); font-weight: 500; }
-        .stats b { font-size: 15px; color: #fff; font-weight: 700; display: block; margin-top: 2px; }
+        .stats b { font-size: 14px; color: #fff; font-weight: 700; display: block; margin-top: 2px; }
 
-        /* Rules Notification Banner */
-        .rules-banner { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 16px; padding: 14px; margin-bottom: 20px; font-size: 12px; color: #fde047; line-height: 1.5; }
-        .rules-banner h4 { font-size: 13px; font-weight: 700; color: #f59e0b; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        /* Rules Notification Banner - Professional styling */
+        .rules-banner { 
+            background: linear-gradient(135deg, rgba(30, 25, 15, 0.6) 0%, rgba(20, 16, 10, 0.8) 100%); 
+            border: 1px solid rgba(245, 158, 11, 0.25); 
+            border-radius: 16px; 
+            padding: 16px; 
+            margin-bottom: 20px; 
+            font-size: 11.5px; 
+            color: #cbd5e1; 
+            line-height: 1.6; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        .rules-banner h4 { 
+            font-size: 13px; 
+            font-weight: 700; 
+            color: #fbbf24; 
+            margin-bottom: 8px; 
+            display: flex; 
+            align-items: center; 
+            gap: 7px; 
+            letter-spacing: 0.3px;
+        }
+        .rules-banner p {
+            margin-bottom: 6px;
+        }
+        .rules-banner p:last-child {
+            margin-bottom: 0;
+        }
+        .rules-banner b {
+            color: #fef08a;
+            font-weight: 600;
+        }
 
         /* Quick Buttons */
-        .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 22px; }
-        .quick button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; font-size: 14px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s ease; backdrop-filter: blur(10px); }
+        .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+        .quick button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; font-size: 14px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s ease; backdrop-filter: blur(10px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
         .quick button i { font-size: 16px; color: var(--accent-cyan); }
         .quick button:active { transform: scale(0.96); opacity: 0.9; }
 
@@ -173,13 +213,13 @@
         .page.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-        .section-header { font-size: 15px; font-weight: 800; margin: 20px 0 12px 0; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .section-header { font-size: 14px; font-weight: 800; margin: 20px 0 12px 0; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
 
         /* Plans Grid */
         .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 16px; text-align: center; position: relative; backdrop-filter: blur(10px); transition: transform 0.2s; }
+        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 16px; text-align: center; position: relative; backdrop-filter: blur(10px); transition: transform 0.2s; box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
         .plan-card:active { transform: scale(0.98); }
         .plan-card.vip-card { border-color: rgba(245, 158, 11, 0.3); background: linear-gradient(145deg, rgba(30, 25, 15, 0.8) 0%, rgba(21, 28, 44, 0.8) 100%); }
         .plan-badge { position: absolute; top: 10px; right: 10px; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; }
@@ -193,7 +233,7 @@
         .btn-vip { background: var(--vip-gradient); box-shadow: 0 4px 10px rgba(245, 158, 11, 0.2); }
 
         /* Forms */
-        label { display: block; font-size: 11px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; }
+        label { display: block; font-size: 11px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 0.5px; font-weight: 600; }
         select, input, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 14px; outline: none; margin-bottom: 14px; transition: border-color 0.2s; }
         select:focus, input:focus, textarea:focus { border-color: var(--accent-cyan); }
         
@@ -298,10 +338,10 @@
     </div>
 </header>
 
-<!-- LIVE MARKET PRICES SECTION -->
+<!-- LIVE MARKET PRICES SECTION (Compacted & Professionally Styled) -->
 <div class="market-section">
     <div class="market-header">
-        <span>Market Trends (Top 8)</span>
+        <span>Market Trends</span>
         <span class="live-badge">LIVE</span>
     </div>
     
@@ -426,7 +466,7 @@
     </div>
 </section>
 
-<!-- Rules & Guidelines Banner -->
+<!-- Rules & Guidelines Banner (Clean, Professional Typography) -->
 <div class="rules-banner">
     <h4><i class="fa-solid fa-circle-info"></i> Investment & Referral Rules</h4>
     <p>• <b>Profits:</b> Standard plans ($10 - $100) earn 20% daily. VIP plans ($150 - $500) earn 35% daily credited hourly.</p>
@@ -784,9 +824,7 @@
 
     let activeInvestmentsList = [];
 
-    // Standard Plans: 10 ila 100
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-    // VIP Plans: 150 ila 500
     const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500];
 
     const cryptoNetworks = {
