@@ -19,7 +19,8 @@ TOTAL_PROFIT_RATE = 0.20   # 20% Total Return
 INVESTMENT_DAYS = 7
 TOTAL_HOURS = INVESTMENT_DAYS * 24  # 168 Hours
 
-ALLOWED_PLANS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+# Added VIP Plan amounts here (Standard + VIP plans)
+ALLOWED_PLANS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500]
 
 # Memory storage for tracking admin replies
 admin_waiting_reply = {}
