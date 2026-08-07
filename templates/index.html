@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MIniapp_v1_bot Investment</title>
+    <title>CoreXBot - Secure Investment Platform</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
@@ -276,10 +276,6 @@
         .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-top: 10px; }
         .progress-bar-fill { height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s ease; }
 
-        .chart-visual { height: 120px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding-top: 20px; border-bottom: 1px solid var(--card-border); }
-        .chart-bar { flex: 1; background: rgba(0, 210, 255, 0.2); border-radius: 6px 6px 0 0; }
-        .chart-bar.active { background: var(--primary-gradient); }
-
         .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: #fff; }
         .support-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent-cyan); }
 
@@ -297,117 +293,131 @@
 
         #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 12px 20px; border-radius: 12px; font-size: 13px; z-index: 10000; display: none; }
 
-        /* LIVE CHAT WIDGET STYLES */
+        /* PROFESSIONAL COREXBOT LIVE CHAT WIDGET STYLES */
         .chat-widget-btn {
             position: fixed;
             bottom: 85px;
             right: 20px;
-            background: #00ffcc;
-            color: #111;
-            width: 50px;
-            height: 50px;
+            background: var(--primary-gradient);
+            color: #fff;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.4);
             z-index: 10000;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s ease;
         }
+        .chat-widget-btn:hover { transform: scale(1.05); }
 
         .chat-window {
             position: fixed;
-            bottom: 145px;
+            bottom: 155px;
             right: 20px;
-            width: 300px;
-            height: 400px;
-            background: #1e1e2f;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+            width: 320px;
+            height: 440px;
+            background: #111827;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             display: flex;
             flex-direction: column;
             z-index: 10000;
             overflow: hidden;
             font-family: sans-serif;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(0, 210, 255, 0.25);
         }
 
         .chat-window.hidden { display: none; }
 
         .chat-header {
-            background: #2a2a40;
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
             color: #fff;
-            padding: 12px;
+            padding: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
             font-size: 13px;
+            border-bottom: 1px solid var(--card-border);
         }
+        .chat-header .bot-title-info { display: flex; align-items: center; gap: 8px; }
+        .chat-header .online-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #10b981; }
 
         .chat-header button {
             background: none;
             border: none;
-            color: #fff;
-            font-size: 18px;
+            color: var(--text-sub);
+            font-size: 20px;
             cursor: pointer;
         }
 
         .chat-body {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
+            background: rgba(9, 13, 22, 0.95);
         }
 
         .bot-message, .user-message {
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            max-width: 80%;
-            line-height: 1.4;
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 12.5px;
+            max-width: 85%;
+            line-height: 1.45;
         }
 
         .bot-message {
-            background: #2a2a40;
-            color: #fff;
+            background: #1f2937;
+            color: #f3f4f6;
             align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .user-message {
-            background: #00ffcc;
-            color: #111;
+            background: var(--primary-gradient);
+            color: #fff;
             align-self: flex-end;
+            border-bottom-right-radius: 2px;
         }
 
         .chat-footer {
             display: flex;
-            padding: 10px;
-            background: #2a2a40;
+            padding: 12px;
+            background: #111827;
+            border-top: 1px solid var(--card-border);
         }
 
         .chat-footer input {
             flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
+            padding: 10px 12px;
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
             outline: none;
             margin-bottom: 0;
             font-size: 12px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
         }
 
         .chat-footer button {
-            background: #00ffcc;
+            background: var(--primary-gradient);
             border: none;
-            padding: 8px 12px;
-            margin-left: 5px;
-            border-radius: 4px;
+            padding: 10px 16px;
+            margin-left: 8px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            color: #111;
+            color: #fff;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -416,8 +426,8 @@
 
 <!-- Splash Screen -->
 <div id="splash">
-    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="MIniapp_v1_bot">
-    <h2>MIniapp_v1_bot</h2>
+    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="CoreXBot">
+    <h2>CoreXBot</h2>
     <p>SECURE INVESTMENT PLATFORM</p>
     <div class="loader"></div>
 </div>
@@ -539,10 +549,10 @@
 
 <!-- Quick Actions -->
 <div class="quick">
-    <button onclick="openPage('deposit')">
+    <button onclick="playSound(); openPage('deposit')">
         <i class="fa-solid fa-wallet"></i> Deposit
     </button>
-    <button onclick="openPage('withdraw')">
+    <button onclick="playSound(); openPage('withdraw')">
         <i class="fa-solid fa-arrow-up"></i> Withdraw
     </button>
 </div>
@@ -609,7 +619,7 @@
         <label>Or Upload Payment Screenshot</label>
         <input type="file" id="deposit-screenshot" accept="image/*" style="width: 100%; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); padding: 10px; border-radius: 12px; color: #fff; font-size: 13px; margin-bottom: 14px;">
 
-        <button class="primary" onclick="submitDeposit()">Submit Deposit</button>
+        <button class="primary" onclick="playSound(); submitDeposit()">Submit Deposit</button>
     </div>
 </section>
 
@@ -646,7 +656,7 @@
         <label>Amount USDT</label>
         <input type="number" id="withdraw-amount" placeholder="Min $10">
 
-        <button class="success" onclick="submitWithdraw()">Submit Withdrawal</button>
+        <button class="success" onclick="playSound(); submitWithdraw()">Submit Withdrawal</button>
     </div>
 </section>
 
@@ -745,7 +755,7 @@
             <input type="text" id="support-subject" placeholder="Deposit / Withdrawal issue">
             <label>Message Detail</label>
             <textarea id="support-msg" rows="3" placeholder="Describe your issue or txid..." style="resize: none;"></textarea>
-            <button class="primary" onclick="sendTicket()"><i class="fa-solid fa-paper-plane"></i> Submit Ticket</button>
+            <button class="primary" onclick="playSound(); sendTicket()"><i class="fa-solid fa-paper-plane"></i> Submit Ticket</button>
         </div>
 
         <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
@@ -790,7 +800,7 @@
         <div style="margin-top: 20px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
             <label style="margin-bottom: 6px;"><i class="fa-solid fa-link"></i> Your Referral Link</label>
             <div style="display: flex; gap: 8px;">
-                <input type="text" id="ref-link" value="https://t.me/MIniapp_v1_bot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 12px; font-family: monospace; background: rgba(0,0,0,0.3);">
+                <input type="text" id="ref-link" value="https://t.me/CoreXBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 12px; font-family: monospace; background: rgba(0,0,0,0.3);">
                 <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 14px; border-radius: 10px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
         </div>
@@ -799,29 +809,34 @@
 
 <!-- Bottom Nav -->
 <nav id="main-nav">
-    <button class="nav-btn active" onclick="openPage('invest', this)"><i class="fa-solid fa-house"></i> Home</button>
-    <button class="nav-btn" onclick="openPage('history', this)"><i class="fa-solid fa-receipt"></i> History</button>
-    <button class="nav-btn" onclick="openPage('stats-page', this)"><i class="fa-solid fa-chart-pie"></i> Stats</button>
-    <button class="nav-btn" onclick="openPage('support', this)"><i class="fa-solid fa-headset"></i> Support</button>
-    <button class="nav-btn" onclick="openPage('profile', this)"><i class="fa-solid fa-user"></i> Profile</button>
+    <button class="nav-btn active" onclick="playSound(); openPage('invest', this)"><i class="fa-solid fa-house"></i> Home</button>
+    <button class="nav-btn" onclick="playSound(); openPage('history', this)"><i class="fa-solid fa-receipt"></i> History</button>
+    <button class="nav-btn" onclick="playSound(); openPage('stats-page', this)"><i class="fa-solid fa-chart-pie"></i> Stats</button>
+    <button class="nav-btn" onclick="playSound(); openPage('support', this)"><i class="fa-solid fa-headset"></i> Support</button>
+    <button class="nav-btn" onclick="playSound(); openPage('profile', this)"><i class="fa-solid fa-user"></i> Profile</button>
 </nav>
 
 </div>
 
-<!-- LIVE CHAT WIDGET HTML -->
-<div id="chat-widget-btn" class="chat-widget-btn">💬</div>
+<!-- BEAUTIFIED LIVE CHAT WIDGET HTML (CoreXBot Assistant) -->
+<div id="chat-widget-btn" class="chat-widget-btn" title="CoreXBot Assistant">
+    <i class="fa-solid fa-robot"></i>
+</div>
 
 <div id="chat-window" class="chat-window hidden">
     <div class="chat-header">
-        <span>Support 24/7 (Online)</span>
+        <div class="bot-title-info">
+            <span class="online-dot"></span>
+            <span>CoreXBot Assistant</span>
+        </div>
         <button id="close-chat">&times;</button>
     </div>
     <div id="chat-body" class="chat-body">
-        <div class="bot-message">Asc! Sidee baan ku caawinnaa maanta? Nagala soo xiriir dhib kasta oo ku haysta maalgashiga (mining/investment) ama withdrawal-ka.</div>
+        <div class="bot-message">Hello! Welcome to CoreXBot Assistant. How can I assist you with your investments, withdrawals, or account details today?</div>
     </div>
     <div class="chat-footer">
-        <input type="text" id="chat-input" placeholder="Qor fariintaada...">
-        <button id="send-btn">Dir</button>
+        <input type="text" id="chat-input" placeholder="Type your message here...">
+        <button id="send-btn">Send</button>
     </div>
 </div>
 
@@ -865,7 +880,26 @@
         initLiveChatWidget();
     });
 
-    // LIVE CHAT BOT FUNCTIONALITY
+    // AUDIO FEEDBACK SYSTEM (Web Audio API)
+    function playSound() {
+        try {
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5 note
+            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+            oscillator.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            oscillator.start();
+            oscillator.stop(audioCtx.currentTime + 0.15);
+        } catch(e) {
+            // Audio context not allowed or supported without user interaction
+        }
+    }
+
+    // PROFESSIONAL ENGLISH LIVE CHAT ASSISTANT
     function initLiveChatWidget() {
         const chatBtn = document.getElementById('chat-widget-btn');
         const chatWindow = document.getElementById('chat-window');
@@ -875,6 +909,7 @@
         const chatBody = document.getElementById('chat-body');
 
         chatBtn.addEventListener('click', () => {
+            playSound();
             chatWindow.classList.toggle('hidden');
         });
 
@@ -891,6 +926,7 @@
             const text = chatInput.value.trim();
             if (!text) return;
 
+            playSound();
             const userMsg = document.createElement('div');
             userMsg.className = 'user-message';
             userMsg.textContent = text;
@@ -901,45 +937,40 @@
             setTimeout(() => {
                 const botMsg = document.createElement('div');
                 botMsg.className = 'bot-message';
-                botMsg.textContent = getBotResponse(text);
+                botMsg.textContent = getCoreXBotResponse(text);
                 chatBody.appendChild(botMsg);
                 chatBody.scrollTop = chatBody.scrollHeight;
-            }, 1000);
+                playSound();
+            }, 800);
         }
     }
 
-    function getBotResponse(userText) {
+    function getCoreXBotResponse(userText) {
         const text = userText.toLowerCase();
         
-        if (text.includes('minimum') || text.includes('deposit') || text.includes('start with')) {
-            return "The minimum amount required to start your mining investment is $10 USDT.";
+        if (text.includes('withdraw') || text.includes('payout') || text.includes('take out')) {
+            return "How to withdraw money: Navigate to the Withdrawal page, select your payout network (TRC20, BEP20, or ERC20), enter your destination wallet address and the amount. Note that withdrawals are processed automatically once your 7-day investment duration is completed.";
         } 
-        else if (text.includes('maximum') || text.includes('limit') || text.includes('invest')) {
-            return "You can invest up to a maximum of $500 USDT in our mining plans.";
+        else if (text.includes('invest') || text.includes('start') || text.includes('begin')) {
+            return "How to start investing: First, make a deposit of at least $10 USDT via the Deposit tab. Once funded, select a Standard plan ($10–$100) or VIP plan ($150–$500) from the Home dashboard to activate your automated daily earnings immediately.";
         }
-        else if (text.includes('profit') || text.includes('plan') || text.includes('return')) {
-            return "We offer high-yield mining plans with daily returns ranging from 20% to 35%, depending on your chosen investment package.";
+        else if (text.includes('minimum') || text.includes('maximum') || text.includes('profit') || text.includes('earn') || text.includes('much')) {
+            return "Limits and Profits: The minimum investment is $10 USDT and the maximum is $500 USDT. Standard plans earn 20% daily, while VIP plans earn 35% daily. Profits are credited hourly to your account balance!";
         }
-        else if (text.includes('withdraw') || text.includes('payout') || text.includes('balance')) {
-            return "Withdrawals are processed automatically. The minimum withdrawal amount is $10 USDT, and payouts usually arrive within 24 hours.";
-        } 
-        else if (text.includes('mining') || text.includes('start') || text.includes('how')) {
-            return "To start mining, select your investment plan ($10 - $500), confirm the transaction, and your mining session will begin immediately with returns of 20% to 35%.";
-        } 
-        else if (text.includes('password') || text.includes('login') || text.includes('account')) {
-            return "Since your account is linked directly through Telegram, you don't need a traditional password. Just open the app via our official Telegram bot to access your wallet safely.";
+        else if (text.includes('day') || text.includes('duration') || text.includes('period') || text.includes('long')) {
+            return "Investment Duration: Each active investment plan runs for a fixed period of 7 days, accumulating profits every single hour until completion.";
         }
-        else if (text.includes('fee') || text.includes('gas') || text.includes('charge')) {
-            return "There are no hidden fees for starting a mining session. Small network fees may only apply during high-demand withdrawals.";
+        else if (text.includes('method') || text.includes('part') || text.includes('network') || text.includes('address')) {
+            return "Withdrawal & Deposit Methods: CoreXBot fully supports TRON (TRC20), BNB Smart Chain (BEP20), and Ethereum (ERC20) networks for secure, lightning-fast USDT transactions.";
         }
-        else if (text.includes('speed') || text.includes('hashrate') || text.includes('boost')) {
-            return "You can increase your mining speed and power by upgrading your account level or inviting more active friends through your referral link.";
+        else if (text.includes('account') || text.includes('balance') || text.includes('profile')) {
+            return "Account Information: Your account is fully secured through your Telegram profile ID. You can track your available balance, active mining deposits, total profits, and referral commissions directly from your dashboard.";
         }
-        else if (text.includes('safe') || text.includes('secure') || text.includes('legit')) {
-            return "Our platform uses advanced encryption and secure token verification to ensure all user balances and wallet data remain fully protected.";
+        else if (text.includes('referral') || text.includes('invite') || text.includes('bonus')) {
+            return "Referral Program: Share your unique invite link from your Profile page. You will earn an instant 2.00 USDT bonus when your invited friend makes their first successful deposit.";
         }
         else {
-            return "Thanks for reaching out! Our 24/7 support team is here to assist you. For specific account issues, please send your details to our official Telegram bot.";
+            return "CoreXBot Support: I am here to help you maximize your returns! You can ask me about investment plans, deposit instructions, withdrawal rules, profit calculations, or account management.";
         }
     }
 
@@ -959,7 +990,7 @@
         document.getElementById('profile-fullname').innerText = fullName;
         document.getElementById('profile-username').innerText = usernameStr;
         document.getElementById('profile-id').innerText = userIdStr;
-        document.getElementById('ref-link').value = `https://t.me/MIniapp_v1_bot?start=ref_${userIdStr}`;
+        document.getElementById('ref-link').value = `https://t.me/CoreXBot?start=ref_${userIdStr}`;
 
         if (tgUser.photo_url) {
             document.getElementById('header-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
@@ -1108,7 +1139,7 @@
                     <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
                     <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 1.4).toFixed(1)}</span>
                 </div>
-                <button class="plan-btn btn-std" onclick="investPlan(${amt}, false)">Invest Now</button>
+                <button class="plan-btn btn-std" onclick="playSound(); investPlan(${amt}, false)">Invest Now</button>
             </div>
         `).join('');
 
@@ -1122,7 +1153,7 @@
                     <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
                     <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 2.45).toFixed(1)}</span>
                 </div>
-                <button class="plan-btn btn-vip" onclick="investPlan(${amt}, true)">Invest VIP</button>
+                <button class="plan-btn btn-vip" onclick="playSound(); investPlan(${amt}, true)">Invest VIP</button>
             </div>
         `).join('');
     }
