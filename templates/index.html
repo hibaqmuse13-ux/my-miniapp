@@ -240,6 +240,16 @@
 
 <!-- Home / Plans Page -->
 <section id="invest" class="page active">
+    <!-- Active Investments & Live Profit Section -->
+    <div class="section-header standard" style="margin-top: 5px;">
+        <i class="fa-solid fa-chart-line"></i> Active Investments & Live Profit
+    </div>
+    <div id="live-investments-container">
+        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; text-align: center; color: var(--text-sub); font-size: 13px;">
+            No active investments found. Invest in a plan to start earning live profits!
+        </div>
+    </div>
+
     <div class="section-header standard">
         <i class="fa-solid fa-bolt"></i> Standard Plans (20% Daily)
     </div>
@@ -401,7 +411,7 @@
             </div>
         </div>
 
-        <!-- ADMIN PANEL INTEGRATION (Waa la qariyay oo adiga kaliya kuu muuqan doonta) -->
+        <!-- ADMIN PANEL INTEGRATION -->
         <div id="admin-dashboard-container" style="display: none; background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
             <h4 style="font-size: 14px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 10px;">
                 <i class="fa-solid fa-shield-halved"></i> Admin Analytics Dashboard
@@ -566,6 +576,9 @@
         maalgashi: []
     };
 
+    // Active Investments List for Live Ticker and Countdown Timer
+    let activeInvestmentsList = [];
+
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
     const vipAmounts = [150, 200, 350, 400, 450, 500];
 
@@ -588,6 +601,9 @@
         renderPlans();
         updateDepositAddress();
         updateWithdrawIcon();
+        
+        // Start Live Profit Counter & Countdown Timer interval
+        setInterval(updateLiveProfits, 1000);
     });
 
     async function initTelegramUser() {
@@ -613,14 +629,12 @@
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
         }
 
-        // Kormeerka Admin-ka: Halkan ku beddel ID-gaaga Telegram haddii uu ka duwan yahay
         const ADMIN_TELEGRAM_ID = "5738022147"; 
         if (userIdStr === ADMIN_TELEGRAM_ID) {
             document.getElementById('admin-dashboard-container').style.display = 'block';
-            loadAdminAnalytics(); // Adiga kaliya ayaa u yeeranaya xogtan
+            loadAdminAnalytics();
         }
 
-        // Verify with Flask Backend
         try {
             const res = await fetch('/api/auth/verify', {
                 method: 'POST',
@@ -650,9 +664,7 @@
         }
     }
 
-    // Function-ka soo jiidaya xogta Admin-ka (Users iyo Ranking)
     async function loadAdminAnalytics() {
-        // 1. Soo jiidista Users
         try {
             const resUsers = await fetch('/api/admin/users');
             const dataUsers = await resUsers.json();
@@ -675,7 +687,6 @@
             console.error("Error loading admin users:", e);
         }
 
-        // 2. Soo jiidista Ranking
         try {
             const resRank = await fetch('/api/admin/ranking');
             const dataRank = await resRank.json();
@@ -730,7 +741,7 @@
                     <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
                     <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 1.4).toFixed(1)}</span>
                 </div>
-                <button class="plan-btn btn-std" onclick="investPlan(${amt})">Invest Now</button>
+                <button class="plan-btn btn-std" onclick="investPlan(${amt}, false)">Invest Now</button>
             </div>
         `).join('');
 
@@ -744,9 +755,71 @@
                     <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
                     <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 2.45).toFixed(1)}</span>
                 </div>
-                <button class="plan-btn btn-vip" onclick="investPlan(${amt})">Invest VIP</button>
+                <button class="plan-btn btn-vip" onclick="investPlan(${amt}, true)">Invest VIP</button>
             </div>
         `).join('');
+    }
+
+    // Live Profit & Countdown Timer Render Function
+    function updateLiveProfits() {
+        const container = document.getElementById('live-investments-container');
+        
+        if (!activeInvestmentsList || activeInvestmentsList.length === 0) {
+            container.innerHTML = `
+                <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; text-align: center; color: var(--text-sub); font-size: 13px;">
+                    No active investments found. Invest in a plan to start earning live profits!
+                </div>
+            `;
+            return;
+        }
+
+        container.innerHTML = activeInvestmentsList.map((inv) => {
+            let now = new Date().getTime();
+            let elapsedSeconds = Math.floor((now - inv.startTime) / 1000);
+            let totalDurationSeconds = 7 * 24 * 60 * 60; // 7 Days Duration
+            let timeLeft = (inv.startTime + (totalDurationSeconds * 1000)) - now;
+
+            if (timeLeft < 0) timeLeft = 0;
+
+            let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            // Live profit calculated per second
+            let profitPerSecond = (inv.amount * (inv.dailyRate / 100)) / 86400;
+            let currentProfit = elapsedSeconds * profitPerSecond;
+            let maxProfit = inv.amount * (inv.dailyRate / 100) * 7;
+            if (currentProfit > maxProfit) {
+                currentProfit = maxProfit;
+            }
+
+            let progressPercent = Math.min((elapsedSeconds / totalDurationSeconds) * 100, 100).toFixed(1);
+
+            return `
+                <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 16px; padding: 16px; margin-bottom: 14px; position: relative; overflow: hidden;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <span style="font-size: 12px; font-weight: 700; color: var(--accent-cyan);"><i class="fa-solid fa-shield-halved"></i> Plan: $${inv.amount}</span>
+                        <span style="font-size: 10px; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 3px 8px; border-radius: 6px; font-weight: 700;">Running (${inv.dailyRate}% Daily)</span>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; background: rgba(0,0,0,0.25); padding: 10px; border-radius: 10px;">
+                        <div>
+                            <span style="font-size: 10px; color: var(--text-sub); display: block;">LIVE PROFIT</span>
+                            <b style="font-size: 15px; color: #10b981;">$${currentProfit.toFixed(4)}</b>
+                        </div>
+                        <div>
+                            <span style="font-size: 10px; color: var(--text-sub); display: block;">TIME LEFT</span>
+                            <b style="font-size: 12px; color: #f59e0b; font-family: monospace;">${days}d ${hours}h ${minutes}m ${seconds}s</b>
+                        </div>
+                    </div>
+
+                    <div class="progress-bar-bg" style="margin-top: 6px;">
+                        <div class="progress-bar-fill" style="width: ${progressPercent}%;"></div>
+                    </div>
+                </div>
+            `;
+        }).join('');
     }
 
     async function submitDeposit() {
@@ -819,7 +892,7 @@
         }
     }
 
-    async function investPlan(amount) {
+    async function investPlan(amount, isVip = false) {
         const userId = currentUser ? currentUser.id.toString() : "5738022147";
         try {
             const res = await fetch('/api/invest', {
@@ -833,6 +906,14 @@
             const result = await res.json();
             showToast(result.message);
             if(result.status === 'success') {
+                // Add active investment locally to start the live counter and countdown timer instantly
+                const dailyRate = isVip ? 35 : 20;
+                activeInvestmentsList.push({
+                    amount: amount,
+                    dailyRate: dailyRate,
+                    startTime: new Date().getTime()
+                });
+                updateLiveProfits();
                 fetchUserData(userId);
             }
         } catch(e) {
@@ -1021,4 +1102,4 @@
 </script>
 
 </body>
-        </html>
+</html>
