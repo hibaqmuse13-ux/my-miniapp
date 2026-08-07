@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Miniapp_v1_bot Investment</title>
+    <title>MIniapp_v1_bot Investment</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     
@@ -175,8 +175,8 @@
 
 <!-- Splash Screen -->
 <div id="splash">
-    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="Miniapp_v1_bot">
-    <h2>Miniapp_v1_bot</h2>
+    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="MIniapp_v1_bot">
+    <h2>MIniapp_v1_bot</h2>
     <p>SECURE INVESTMENT PLATFORM</p>
     <div class="loader"></div>
 </div>
@@ -241,7 +241,7 @@
 
 <!-- Home / Plans Page -->
 <section id="invest" class="page active">
-    <!-- Interactive Profit Calculator -->
+    <!-- NEW SECTION ADDED: Interactive Profit Calculator (English) -->
     <div class="section-header calculator">
         <i class="fa-solid fa-calculator"></i> Profit Calculator
     </div>
@@ -266,6 +266,7 @@
             </div>
         </div>
     </div>
+    <!-- END OF NEW SECTION -->
 
     <div class="section-header standard">
         <i class="fa-solid fa-bolt"></i> Standard Plans (20% Daily)
@@ -555,7 +556,7 @@
         <div style="margin-top: 20px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
             <label style="margin-bottom: 6px;"><i class="fa-solid fa-link"></i> Your Referral Link</label>
             <div style="display: flex; gap: 8px;">
-                <input type="text" id="ref-link" value="https://t.me/Miniapp_v1_bot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 12px; font-family: monospace; background: rgba(0,0,0,0.3);">
+                <input type="text" id="ref-link" value="https://t.me/MIniapp_v1_bot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 12px; font-family: monospace; background: rgba(0,0,0,0.3);">
                 <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 14px; border-radius: 10px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
         </div>
@@ -589,8 +590,8 @@
     let currentUser = null;
     let userData = {
         user: { balance: 0, active_deposit: 0 },
-        transactions: [],
-        investments: []
+        macaamilo: [],
+        maalgashi: []
     };
 
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -615,9 +616,10 @@
         renderPlans();
         updateDepositAddress();
         updateWithdrawIcon();
-        calculateProfit();
+        calculateProfit(); // Initialize calculator
     });
 
+    // Calculator function for the new section
     function calculateProfit() {
         const dailyRate = parseFloat(document.getElementById('calc-plan-type').value);
         const amount = parseFloat(document.getElementById('calc-amount').value) || 0;
@@ -646,7 +648,7 @@
         document.getElementById('profile-fullname').innerText = fullName;
         document.getElementById('profile-username').innerText = usernameStr;
         document.getElementById('profile-id').innerText = userIdStr;
-        document.getElementById('ref-link').value = `https://t.me/Miniapp_v1_bot?start=ref_${userIdStr}`;
+        document.getElementById('ref-link').value = `https://t.me/MIniapp_v1_bot?start=ref_${userIdStr}`;
 
         if (tgUser.photo_url) {
             document.getElementById('header-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
@@ -679,11 +681,7 @@
         try {
             const res = await fetch(`/api/user/${userId}`);
             const data = await res.json();
-            userData = {
-                user: data.user || { balance: 0, active_deposit: 0 },
-                transactions: data.macaamilo || data.transactions || [],
-                investments: data.maalgashi || data.investments || []
-            };
+            userData = data;
             updateUI();
             renderHistory();
             updateStats();
@@ -888,7 +886,7 @@
 
     function renderHistory() {
         const container = document.getElementById('history-container');
-        let filtered = userData.transactions || [];
+        let filtered = userData.macaamilo || [];
 
         if(activeHistoryFilter !== 'ALL') {
             filtered = filtered.filter(t => t.type === activeHistoryFilter);
@@ -938,8 +936,8 @@
     }
 
     function updateStats() {
-        const deposits = userData.transactions ? userData.transactions.filter(t => t.type === 'DEPOSIT' && t.status === 'COMPLETED').reduce((acc, curr) => acc + curr.amount, 0) : 0;
-        const withdraws = userData.transactions ? userData.transactions.filter(t => t.type === 'WITHDRAWAL' && t.status === 'COMPLETED').reduce((acc, curr) => acc + Math.abs(curr.amount), 0) : 0;
+        const deposits = userData.macaamilo ? userData.macaamilo.filter(t => t.type === 'DEPOSIT' && t.status === 'COMPLETED').reduce((acc, curr) => acc + curr.amount, 0) : 0;
+        const withdraws = userData.macaamilo ? userData.macaamilo.filter(t => t.type === 'WITHDRAWAL' && t.status === 'COMPLETED').reduce((acc, curr) => acc + Math.abs(curr.amount), 0) : 0;
 
         document.getElementById('stat-deposits').innerText = `$${deposits.toFixed(2)}`;
         document.getElementById('stat-withdraws').innerText = `$${withdraws.toFixed(2)}`;
