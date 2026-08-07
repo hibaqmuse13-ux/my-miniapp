@@ -342,7 +342,7 @@
         nav button i { font-size: 15px; }
         nav button.active { color: var(--accent-cyan); font-weight: 700; }
 
-        /* TOAST */
+        /* Toast */
         #toast { 
             position: fixed; 
             top: 20px; 
@@ -723,45 +723,33 @@
     </div>
 </section>
 
-<!-- Profile Page (Redesigned Professional Section) -->
+<!-- Profile Page (Updated Professional Stacked Layout) -->
 <section id="profile" class="page">
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 12px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-                <div id="profile-page-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; overflow: hidden;">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-                <div>
-                    <h3 id="profile-fullname" style="font-size: 16px; font-weight: 800;">Loading...</h3>
-                    <div style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">
-                        <span id="profile-username" style="color: var(--accent-cyan); font-weight: 600; font-size: 12px;">@username</span>
-                        <span style="font-size: 10px; color: var(--text-sub);" id="profile-id-tag">ID: 000000</span>
-                    </div>
-                </div>
+        <div style="text-align: center; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 16px;">
+            <div id="profile-page-avatar" style="width: 64px; height: 64px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; overflow: hidden; margin: 0 auto 10px auto; box-shadow: 0 4px 15px rgba(0,210,255,0.3);">
+                <i class="fa-solid fa-user"></i>
             </div>
-            <div style="text-align: right;">
-                <div style="font-size: 22px;" title="Somaliland">🇸🇱</div>
-                <span style="font-size: 9px; color: #10b981; font-weight: 700; background: rgba(16,185,129,0.12); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-top: 2px;">Verified</span>
+            <h3 id="profile-fullname" style="font-size: 16px; font-weight: 800;">Loading...</h3>
+        </div>
+
+        <!-- Stacked Professional Profile Details -->
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+            <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 11px; color: var(--text-sub);"><i class="fa-solid fa-at" style="color: var(--accent-cyan); width: 18px;"></i> Username</span>
+                <b id="profile-username" style="font-size: 11.5px; color: #fff;">@username</b>
+            </div>
+            <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 11px; color: var(--text-sub);"><i class="fa-solid fa-id-badge" style="color: var(--accent-cyan); width: 18px;"></i> User ID</span>
+                <b id="profile-userid" style="font-size: 11.5px; color: #fff; font-family: monospace;">000000</b>
+            </div>
+            <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 11px; color: var(--text-sub);"><i class="fa-solid fa-shield-halved" style="color: #10b981; width: 18px;"></i> Account Status</span>
+                <span style="font-size: 10px; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.25);">Verified & Secure</span>
             </div>
         </div>
 
-        <!-- Additional Professional Information Grid -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px;">
-            <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px;">
-                <span style="font-size: 9.5px; color: var(--text-sub); display: block; text-transform: uppercase;">Account Status</span>
-                <b style="font-size: 12px; color: #10b981; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
-                    <i class="fa-solid fa-shield-halved"></i> Active & Secure
-                </b>
-            </div>
-            <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px;">
-                <span style="font-size: 9.5px; color: var(--text-sub); display: block; text-transform: uppercase;">Membership Level</span>
-                <b style="font-size: 12px; color: #f59e0b; display: flex; align-items: center; gap: 4px; margin-top: 2px;">
-                    <i class="fa-solid fa-crown"></i> Investor Tier
-                </b>
-            </div>
-        </div>
-
-        <!-- Referral Link Section Intact -->
+        <!-- Referral Link Section -->
         <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;">
             <label style="margin-bottom: 5px;"><i class="fa-solid fa-link"></i> Your Referral Link ($3.50 Bonus per Deposit)</label>
             <div style="display: flex; gap: 6px;">
@@ -921,7 +909,7 @@
         document.getElementById('userid').innerText = `ID: ${userIdStr}`;
         document.getElementById('profile-fullname').innerText = fullName;
         document.getElementById('profile-username').innerText = usernameStr;
-        document.getElementById('profile-id-tag').innerText = `ID: ${userIdStr}`;
+        document.getElementById('profile-userid').innerText = userIdStr;
         document.getElementById('ref-link').value = `https://t.me/CoreXBot?start=ref_${userIdStr}`;
 
         if (tgUser.photo_url) {
