@@ -604,6 +604,9 @@
         
         // Start Live Profit Counter & Countdown Timer interval
         setInterval(updateLiveProfits, 1000);
+
+        // Start Real & Fake Live Toast Notifications
+        initRealAndFakeToasts();
     });
 
     async function initTelegramUser() {
@@ -663,6 +666,94 @@
             console.error("Fetch user data error:", e);
         }
     }
+
+    // --- REAL & FAKE TOAST NOTIFICATIONS SYSTEM ---
+    function initRealAndFakeToasts() {
+        const fakeUsers = ["CryptoKing", "Alice99", "Trader_Max", "BitcoinPro", "USDT_Master", "FastProfit", "Elena_V", "Hassan99", "CryptoMoon", "Safwan_Inv"];
+        const fakeAmounts = [20, 50, 100, 150, 200, 300, 500];
+        const actionTypes = [
+            { action: "deposited", color: "#10b981", icon: "fa-arrow-down" },
+            { action: "invested in Standard Plan", color: "var(--accent-cyan)", icon: "fa-bolt" },
+            { action: "invested in VIP Plan", color: "#f59e0b", icon: "fa-crown" },
+            { action: "withdrew profits", color: "#10b981", icon: "fa-arrow-up" }
+        ];
+
+        setInterval(() => {
+            let notificationText = "";
+            let iconClass = "fa-bell";
+            let accentColor = "var(--accent-cyan)";
+
+            // 50% chance to use real user database transaction if available, otherwise fake
+            let useReal = userData.macaamilo && userData.macaamilo.length > 0 && Math.random() > 0.5;
+
+            if (useReal) {
+                let randomTx = userData.macaamilo[Math.floor(Math.random() * userData.macaamilo.length)];
+                let username = currentUser?.username ? `@${currentUser.username}` : "User";
+                notificationText = `${username} ${randomTx.type.toLowerCase()} $${Math.abs(randomTx.amount).toFixed(2)}`;
+                iconClass = randomTx.type === 'DEPOSIT' ? 'fa-arrow-down' : (randomTx.type === 'WITHDRAWAL' ? 'fa-arrow-up' : 'fa-lock');
+                accentColor = randomTx.type === 'DEPOSIT' ? '#10b981' : (randomTx.type === 'WITHDRAWAL' ? '#ef4444' : 'var(--accent-cyan)');
+            } else {
+                let randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
+                let randomAmt = fakeAmounts[Math.floor(Math.random() * fakeAmounts.length)];
+                let randomAction = actionTypes[Math.floor(Math.random() * actionTypes.length)];
+                
+                notificationText = `@${randomUser} successfully ${randomAction.action} $${randomAmt}`;
+                iconClass = randomAction.icon;
+                accentColor = randomAction.color;
+            }
+
+            showLiveToast(notificationText, iconClass, accentColor);
+        }, 7000); // Triggers every 7 seconds
+    }
+
+    function showLiveToast(message, icon, color) {
+        let toastEl = document.getElementById('live-toast-popup');
+        if (!toastEl) {
+            toastEl = document.createElement('div');
+            toastEl.id = 'live-toast-popup';
+            toastEl.style.cssText = `
+                position: fixed;
+                bottom: 85px;
+                left: 16px;
+                background: rgba(15, 23, 42, 0.95);
+                color: #fff;
+                border: 1px solid var(--card-border);
+                padding: 10px 14px;
+                border-radius: 12px;
+                font-size: 12px;
+                font-weight: 500;
+                z-index: 9998;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                backdrop-filter: blur(10px);
+                transition: opacity 0.4s ease, transform 0.4s ease;
+                opacity: 0;
+                transform: translateY(10px);
+            `;
+            document.body.appendChild(toastEl);
+        }
+
+        toastEl.innerHTML = `
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; color: ${color}; font-size: 12px; flex-shrink: 0;">
+                <i class="fa-solid ${icon}"></i>
+            </div>
+            <div style="line-height: 1.3;">
+                <span style="font-size: 9px; color: var(--text-sub); display: block; text-transform: uppercase;">Live Notification</span>
+                <span>${message}</span>
+            </div>
+        `;
+
+        toastEl.style.opacity = '1';
+        toastEl.style.transform = 'translateY(0)';
+
+        setTimeout(() => {
+            toastEl.style.opacity = '0';
+            toastEl.style.transform = 'translateY(10px)';
+        }, 4000);
+    }
+    // --- END OF REAL & FALSE TOAST SYSTEM ---
 
     async function loadAdminAnalytics() {
         try {
