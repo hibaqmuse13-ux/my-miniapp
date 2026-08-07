@@ -303,7 +303,32 @@
         nav button i { font-size: 15px; }
         nav button.active { color: var(--accent-cyan); font-weight: 700; }
 
-        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 8px 14px; border-radius: 8px; font-size: 11px; z-index: 10000; display: none; }
+        /* PROFESSIONAL NOTIFICATION TOAST */
+        #toast { 
+            position: fixed; 
+            top: 20px; 
+            left: 50%; 
+            transform: translateX(-50%) translateY(-20px); 
+            background: rgba(15, 23, 42, 0.95); 
+            color: #fff; 
+            border: 1px solid rgba(0, 210, 255, 0.3); 
+            padding: 10px 16px; 
+            border-radius: 12px; 
+            font-size: 11.5px; 
+            font-weight: 500; 
+            z-index: 10000; 
+            display: none; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); 
+            backdrop-filter: blur(12px); 
+            align-items: center; 
+            gap: 10px; 
+            max-width: 90%; 
+            text-align: left;
+            animation: toastSlideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes toastSlideIn {
+            to { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
 
         /* PROFESSIONAL COREXBOT LIVE CHAT WIDGET STYLES */
         .chat-widget-btn {
@@ -1373,20 +1398,20 @@
 
     function copyAddress() {
         navigator.clipboard.writeText(document.getElementById('deposit-address-display').innerText);
-        showToast("Wallet Address Copied!");
+        showToast("Wallet Address Copied Successfully!");
     }
 
     function copyRefLink() {
         const refInput = document.getElementById('ref-link');
         refInput.select();
         navigator.clipboard.writeText(refInput.value);
-        showToast("Referral Link Copied!");
+        showToast("Referral Link Copied Successfully!");
     }
 
     async function sendTicket() {
         const sub = document.getElementById('support-subject').value;
         const msg = document.getElementById('support-msg').value;
-        if(!sub || !msg) { showToast("Please fill in all ticket fields!"); return; }
+        if(!sub || !msg) { showToast("⚠️ Please fill in all ticket fields!"); return; }
 
         const userId = currentUser ? currentUser.id.toString() : "5738022147";
         const username = currentUser ? (currentUser.username || currentUser.first_name || "User") : "User";
@@ -1404,7 +1429,7 @@
                 document.getElementById('support-msg').value = '';
                 loadSupportTickets(userId);
             }
-        } catch(e) { showToast("Connection error!"); }
+        } catch(e) { showToast("⚠️ Connection error!"); }
     }
 
     async function loadSupportTickets(userId) {
@@ -1432,9 +1457,33 @@
 
     function showToast(msg) {
         const toast = document.getElementById('toast');
-        toast.innerText = msg;
-        toast.style.display = 'block';
-        setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        let iconClass = "fa-solid fa-circle-info";
+        let iconColor = "var(--accent-cyan)";
+        let borderColor = "rgba(0, 210, 255, 0.3)";
+
+        if (msg.includes('⚠️') || msg.includes('locked') || msg.includes('Error') || msg.includes('wait') || msg.includes('pending')) {
+            iconClass = "fa-solid fa-triangle-exclamation";
+            iconColor = "#f59e0b";
+            borderColor = "rgba(245, 158, 11, 0.4)";
+        } else if (msg.includes('Successfully') || msg.includes('success') || msg.includes('Copied')) {
+            iconClass = "fa-solid fa-circle-check";
+            iconColor = "#10b981";
+            borderColor = "rgba(16, 185, 129, 0.4)";
+        }
+
+        toast.style.borderColor = borderColor;
+        toast.innerHTML = `
+            <div style="width: 26px; height: 26px; border-radius: 50%; background: ${iconColor}20; display: flex; align-items: center; justify-content: center; color: ${iconColor}; font-size: 12px; flex-shrink: 0; border: 1px solid ${iconColor}45;">
+                <i class="${iconClass}"></i>
+            </div>
+            <div style="flex: 1; line-height: 1.4;">
+                <span style="font-size: 8.5px; color: var(--text-sub); display: block; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">CoreXBot Notification</span>
+                <span style="color: #fff; font-weight: 600;">${msg.replace(/[⚠️🎉]/g, '').trim()}</span>
+            </div>
+        `;
+
+        toast.style.display = 'flex';
+        setTimeout(() => { toast.style.display = 'none'; }, 3500);
     }
 </script>
 
