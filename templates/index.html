@@ -44,6 +44,106 @@
         .profile small { font-size: 11px; color: var(--text-sub); }
         .verified { font-size: 10px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 5px; }
 
+        /* LIVE MARKET PRICES SECTION */
+        .market-section {
+            background-color: #151922;
+            border: 1px solid #222734;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .market-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #848e9c;
+        }
+
+        .market-header .live-badge {
+            background-color: rgba(14, 203, 129, 0.15);
+            color: #0ecb81;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .market-header .live-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background-color: #0ecb81;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .crypto-item {
+            background-color: #1e2329;
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .crypto-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .crypto-symbol {
+            font-weight: 700;
+            font-size: 13px;
+            color: #ffffff;
+        }
+
+        .crypto-name {
+            font-size: 10px;
+            color: #848e9c;
+        }
+
+        .crypto-price-box {
+            text-align: right;
+        }
+
+        .crypto-price {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .crypto-change {
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        .crypto-change.up {
+            color: #0ecb81;
+        }
+
+        .crypto-change.down {
+            color: #f6465d;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
         /* Balance Card */
         .balance-card { background: linear-gradient(145deg, rgba(16, 24, 40, 0.9) 0%, rgba(10, 15, 28, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; padding: 24px 20px; text-align: center; box-shadow: 0 12px 30px rgba(0,0,0,0.4); margin-bottom: 20px; position: relative; overflow: hidden; }
         .balance-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, transparent 60%); pointer-events: none; }
@@ -76,14 +176,6 @@
         .section-header { font-size: 15px; font-weight: 800; margin: 20px 0 12px 0; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
-
-        /* Crypto Live Price Card Styles */
-        .crypto-price-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 16px; margin-bottom: 20px; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
-        .crypto-price-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--accent-cyan); display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .price-list { display: flex; flex-direction: column; gap: 8px; }
-        .price-item { display: flex; justify-content: space-between; align-items: center; background: rgba(9, 13, 22, 0.6); padding: 10px 14px; border-radius: 12px; border: 1px solid var(--card-border); border-left: 4px solid var(--accent-cyan); }
-        .crypto-name { font-size: 13px; font-weight: 600; color: #fff; }
-        .price-value { font-size: 13px; font-weight: 700; color: #10b981; }
 
         /* Plans Grid */
         .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
@@ -206,6 +298,112 @@
     </div>
 </header>
 
+<!-- LIVE MARKET PRICES SECTION -->
+<div class="market-section">
+    <div class="market-header">
+        <span>Market Trends (Top 8)</span>
+        <span class="live-badge">LIVE</span>
+    </div>
+    
+    <div class="crypto-grid">
+        <!-- 1. BTC -->
+        <div class="crypto-item">
+            <div class="crypto-info">
+                <span class="crypto-symbol">BTC</span>
+                <span class="crypto-name">Bitcoin</span>
+            </div>
+            <div class="crypto-price-box">
+                <div class="crypto-price">$65,007</div>
+                <div class="crypto-change up">+2.4%</div>
+            </div>
+        </div>
+
+        <!-- 2. ETH -->
+        <div class="crypto-item">
+            <div class="crypto-info">
+                <span class="crypto-symbol">ETH</span>
+                <span class="crypto-name">Ethereum</span>
+            </div>
+            <div class="crypto-price-box">
+                <div class="crypto-price">$1,914</div>
+                <div class="crypto-change up">+1.8%</div>
+            </div>
+        </div>
+
+        <!-- 3. USDT -->
+        <div class="crypto-item">
+            <div class="crypto-info">
+                <span class="crypto-symbol">USDT</span>
+                <span class="crypto-name">Tether</span>
+            </div>
+            <div class="crypto-price-box">
+                <div class="crypto-price">$0.999</div>
+                <div class="crypto-change down">-0.02%</div>
+            </div>
+        </div>
+
+        <!-- 4. BNB -->
+        <div class="crypto-item">
+            <div class="crypto-info">
+                <span class="crypto-symbol">BNB</span>
+                <span class="crypto-name">Binance Coin</span>
+            </div>
+            <div class="crypto-price-box">
+                <div class="crypto-price">$590.9</div>
+                <div class="crypto-change down">-0.5%</div>
+            </div>
+        </div>
+
+        <!-- 5. USDC -->
+        <div class="crypto-item">
+            <div class="crypto-info">
+                <span class="crypto-symbol">USDC</span>
+                <span class="crypto-name">USD Coin</span>
+            </div>
+            <div class="crypto-price-box">
+                <div class="crypto-price">$0.999</div>
+                <div class="crypto-change down">-0.01%</div>
+            </div>
+        </div>
+
+        <!-- 6. XRP -->
+        <div class="crypto-item">
+            <div class="crypto-info">
+                <span class="crypto-symbol">XRP</span>
+                <span class="crypto-name">XRP</span>
+            </div>
+            <div class="crypto-price-box">
+                <div class="crypto-price">$1.03</div>
+                <div class="crypto-change down">-1.2%</div>
+            </div>
+        </div>
+
+        <!-- 7. SOL -->
+        <div class="crypto-item">
+            <div class="crypto-info">
+                <span class="crypto-symbol">SOL</span>
+                <span class="crypto-name">Solana</span>
+            </div>
+            <div class="crypto-price-box">
+                <div class="crypto-price">$73.56</div>
+                <div class="crypto-change up">+4.1%</div>
+            </div>
+        </div>
+
+        <!-- 8. TRX -->
+        <div class="crypto-item">
+            <div class="crypto-info">
+                <span class="crypto-symbol">TRX</span>
+                <span class="crypto-name">TRON</span>
+            </div>
+            <div class="crypto-price-box">
+                <div class="crypto-price">$0.326</div>
+                <div class="crypto-change down">-0.8%</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Balance Section -->
 <section class="balance-card">
     <p>Available Balance</p>
@@ -248,26 +446,6 @@
 
 <!-- Home / Plans Page -->
 <section id="invest" class="page active">
-    
-    <!-- LIVE CRYPTO MARKET PRICES CARD (INTEGRATED) -->
-    <div class="crypto-price-card">
-        <h3><i class="fa-solid fa-chart-line"></i> Suuqa Live-ka Crypto</h3>
-        <div class="price-list">
-            <div class="price-item">
-                <span class="crypto-name">Bitcoin (BTC)</span>
-                <span id="btc-price" class="price-value">Loading...</span>
-            </div>
-            <div class="price-item">
-                <span class="crypto-name">USDT (USDT)</span>
-                <span id="usdt-price" class="price-value">Loading...</span>
-            </div>
-            <div class="price-item">
-                <span class="crypto-name">Solana (SOL)</span>
-                <span id="sol-price" class="price-value">Loading...</span>
-            </div>
-        </div>
-    </div>
-
     <!-- Active Investments & Live Profit Section -->
     <div class="section-header standard" style="margin-top: 5px;">
         <i class="fa-solid fa-chart-line"></i> Active Investments & Live Profit
@@ -631,32 +809,9 @@
         updateDepositAddress();
         updateWithdrawIcon();
         
-        // Soo jiidashada qiimaha Live-ka Crypto
-        fetchCryptoPrices();
-        setInterval(fetchCryptoPrices, 60000);
-
         setInterval(updateLiveProfits, 1000);
         initRealAndFakeToasts();
     });
-
-    // Shaqada Live Prices-ka CoinGecko API
-    async function fetchCryptoPrices() {
-        try {
-            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether,solana&vs_currencies=usd');
-            const data = await response.json();
-
-            if (data) {
-                if(data.bitcoin) document.getElementById('btc-price').innerText = `$${data.bitcoin.usd.toLocaleString()}`;
-                if(data.tether) document.getElementById('usdt-price').innerText = `$${data.tether.usd.toLocaleString()}`;
-                if(data.solana) document.getElementById('sol-price').innerText = `$${data.solana.usd.toLocaleString()}`;
-            }
-        } catch (error) {
-            console.error('Cillad ayaa dhacday:', error);
-            document.getElementById('btc-price').innerText = 'Error';
-            document.getElementById('usdt-price').innerText = 'Error';
-            document.getElementById('sol-price').innerText = 'Error';
-        }
-    }
 
     async function initTelegramUser() {
         const tg = window.Telegram?.WebApp;
@@ -721,7 +876,13 @@
             "@CryptoKing", "@AliAhmed", "@MohamedSaeed", "@Farah99", "@LibanX", 
             "@Samantar", "@Nasteexo", "@KhadarAdmin", "@HindaWeb", "@GuledTech",
             "@Barkhad", "@HodanStar", "@AbdiCashir", "@Ilhaan99", "@Warsame01",
-            "@AhmedCrypto", "@AbdiStar", "@LibanBinance", "@FaysalTrader", "@KhadijaVIP"
+            "@AhmedCrypto", "@AbdiStar", "@LibanBinance", "@FaysalTrader", "@KhadijaVIP",
+            "@SagalMoon", "@ZakariaUSDT", "@CabdallaMax", "@YuusufPro", "@NajmaTech",
+            "@FarhiyaSol", "@BashiirInv", "@GuledX", "@NuuraWeb", "@AadenCrypto",
+            "@HamdaStar", "@MustafeTr", "@DeeqoGold", "@IbrahimMax", "@IkranVIP",
+            "@MahadTron", "@SamiraBinance", "@MukhtaarTr", "@MunaWeb", "@AbdikafiSol",
+            "@SafiaTech", "@CabdiGold", "@HassanTron", "@NasraVIP", "@KhaalidPro",
+            "@AmalCrypto", "@ZakariyeX", "@LeylaStar", "@CabdulahiTr", "@SahraMoon"
         ];
         
         const standardFakeAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
