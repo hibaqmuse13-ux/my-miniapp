@@ -206,6 +206,20 @@ def get_user_data(user_id):
         "maalgashi": [dict(i) for i in investments]
     })
 
+# API-ga loogu talagalay Live Feed-ka iyo Toasts-ka (Real Activities)
+@app.route('/api/public/activities', methods=['GET'])
+def public_activities():
+    db = get_db()
+    txs = db.execute('''
+        SELECT t.user_id, t.type, t.amount, t.network, t.date, u.username 
+        FROM transactions t 
+        JOIN users u ON t.user_id = u.telegram_id 
+        WHERE t.status = 'COMPLETED' 
+        ORDER BY t.date DESC LIMIT 10
+    ''').fetchall()
+    db.close()
+    return jsonify({"status": "success", "activities": [dict(tx) for tx in txs]})
+
 @app.route('/api/deposit/request', methods=['POST'])
 def request_deposit():
     user_id = request.form.get('user_id')
@@ -221,7 +235,6 @@ def request_deposit():
         return jsonify({"status": "error", "message": "⚠️ Please enter TXID or upload a screenshot!"})
         
     db = get_db()
-    # Anti-spam check for pending deposit
     pending_dep = db.execute("SELECT * FROM transactions WHERE user_id = ? AND type = 'DEPOSIT' AND status = 'PENDING'", (str(user_id),)).fetchone()
     if pending_dep:
         db.close()
@@ -307,7 +320,6 @@ def request_withdrawal():
     
     db = get_db()
     
-    # Anti-spam check for pending withdrawal
     pending_with = db.execute("SELECT * FROM transactions WHERE user_id = ? AND type = 'WITHDRAWAL' AND status = 'PENDING'", (user_id,)).fetchone()
     if pending_with:
         db.close()
@@ -362,7 +374,6 @@ def send_support():
         
     db = get_db()
     
-    # Anti-spam check for pending support ticket
     pending_ticket = db.execute("SELECT * FROM support_tickets WHERE user_id = ? AND status = 'PENDING'", (user_id,)).fetchone()
     if pending_ticket:
         db.close()
@@ -397,7 +408,7 @@ def get_user_tickets(user_id):
     return jsonify({"status": "success", "tickets": tickets})
 
 # ============================================================
-# ADMIN & TRACKING ENDPOINTS (Added for Users & Rankings)
+# ADMIN & TRACKING ENDPOINTS
 # ============================================================
 @app.route('/api/admin/users', methods=['GET'])
 def admin_get_users():
@@ -420,7 +431,7 @@ def admin_investment_ranking():
     return jsonify({"status": "success", "ranking": [dict(r) for r in ranking]})
 
 # ============================================================
-# TELEGRAM WEBHOOK (AUTOMATIC BALANCE UPDATE & TICKET REPLY)
+# TELEGRAM WEBHOOK
 # ============================================================
 @app.route('/webhook', methods=['POST'])
 def webhook():
