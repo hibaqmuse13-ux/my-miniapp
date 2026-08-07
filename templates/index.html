@@ -569,20 +569,6 @@
 <div id="toast">Message</div>
 
 <script>
-    // Professional Audio Engine
-    function playProfessionalSound(type) {
-        const sounds = {
-            'deposit': 'https://actions.google.com/sounds/v1/ui/notification_confirm.ogg',
-            'invest': 'https://actions.google.com/sounds/v1/ui/positive_generate.ogg',
-            'withdraw': 'https://actions.google.com/sounds/v1/ui/money_spin.ogg',
-            'support': 'https://actions.google.com/sounds/v1/ui/click_001.ogg',
-            'error': 'https://actions.google.com/sounds/v1/ui/error_tone.ogg'
-        };
-
-        const audio = new Audio(sounds[type]);
-        audio.play().catch(e => console.log("Audio waiting for user interaction"));
-    }
-
     let currentUser = null;
     let userData = {
         user: { balance: 0, active_deposit: 0 },
@@ -590,6 +576,7 @@
         maalgashi: []
     };
 
+    // Active Investments List for Live Ticker and Countdown Timer
     let activeInvestmentsList = [];
 
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -615,6 +602,7 @@
         updateDepositAddress();
         updateWithdrawIcon();
         
+        // Start Live Profit Counter & Countdown Timer interval
         setInterval(updateLiveProfits, 1000);
     });
 
@@ -772,6 +760,7 @@
         `).join('');
     }
 
+    // Live Profit & Countdown Timer Render Function
     function updateLiveProfits() {
         const container = document.getElementById('live-investments-container');
         
@@ -787,7 +776,7 @@
         container.innerHTML = activeInvestmentsList.map((inv) => {
             let now = new Date().getTime();
             let elapsedSeconds = Math.floor((now - inv.startTime) / 1000);
-            let totalDurationSeconds = 7 * 24 * 60 * 60;
+            let totalDurationSeconds = 7 * 24 * 60 * 60; // 7 Days Duration
             let timeLeft = (inv.startTime + (totalDurationSeconds * 1000)) - now;
 
             if (timeLeft < 0) timeLeft = 0;
@@ -797,6 +786,7 @@
             let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
+            // Live profit calculated per second
             let profitPerSecond = (inv.amount * (inv.dailyRate / 100)) / 86400;
             let currentProfit = elapsedSeconds * profitPerSecond;
             let maxProfit = inv.amount * (inv.dailyRate / 100) * 7;
@@ -860,17 +850,13 @@
             const result = await res.json();
             showToast(result.message);
             if(result.status === 'success') {
-                playProfessionalSound('deposit'); // Codka Deposit-ka
                 document.getElementById('deposit-amount').value = '';
                 document.getElementById('deposit-txid').value = '';
                 document.getElementById('deposit-screenshot').value = '';
                 fetchUserData(userId);
                 openPage('history');
-            } else {
-                playProfessionalSound('error');
             }
         } catch(e) {
-            playProfessionalSound('error');
             showToast("Connection error!");
         }
     }
@@ -896,16 +882,12 @@
             const result = await res.json();
             showToast(result.message);
             if(result.status === 'success') {
-                playProfessionalSound('withdraw'); // Codka Withdrawal-ka
                 document.getElementById('withdraw-amount').value = '';
                 document.getElementById('withdraw-address').value = '';
                 fetchUserData(userId);
                 openPage('history');
-            } else {
-                playProfessionalSound('error');
             }
         } catch(e) {
-            playProfessionalSound('error');
             showToast("Connection error!");
         }
     }
@@ -924,7 +906,7 @@
             const result = await res.json();
             showToast(result.message);
             if(result.status === 'success') {
-                playProfessionalSound('invest'); // Codka Investment-ka
+                // Add active investment locally to start the live counter and countdown timer instantly
                 const dailyRate = isVip ? 35 : 20;
                 activeInvestmentsList.push({
                     amount: amount,
@@ -933,17 +915,13 @@
                 });
                 updateLiveProfits();
                 fetchUserData(userId);
-            } else {
-                playProfessionalSound('error');
             }
         } catch(e) {
-            playProfessionalSound('error');
             showToast("Connection error!");
         }
     }
 
     function filterHistory(type, btn) {
-        playProfessionalSound('support');
         activeHistoryFilter = type;
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         if(btn) btn.classList.add('active');
@@ -1026,7 +1004,6 @@
     }
 
     function openPage(pageId, btnElement) {
-        playProfessionalSound('support'); // Codka badhamada navigation-ka
         document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
         document.getElementById(pageId).classList.add('active');
 
@@ -1037,14 +1014,12 @@
     }
 
     function copyAddress() {
-        playProfessionalSound('support');
         const addr = document.getElementById('deposit-address-display').innerText;
         navigator.clipboard.writeText(addr);
         showToast("Wallet Address Copied!");
     }
 
     function copyRefLink() {
-        playProfessionalSound('support');
         const refInput = document.getElementById('ref-link');
         refInput.select();
         navigator.clipboard.writeText(refInput.value);
@@ -1074,15 +1049,11 @@
             const result = await res.json();
             showToast(result.message);
             if(result.status === 'success') {
-                playProfessionalSound('support'); // Codka Support-ka
                 document.getElementById('support-subject').value = '';
                 document.getElementById('support-msg').value = '';
                 loadSupportTickets(userId);
-            } else {
-                playProfessionalSound('error');
             }
         } catch(e) {
-            playProfessionalSound('error');
             showToast("Connection error!");
         }
     }
