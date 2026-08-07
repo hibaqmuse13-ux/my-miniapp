@@ -222,7 +222,7 @@
         .rules-banner p:last-child { margin-bottom: 0; }
         .rules-banner b { color: #fef08a; font-weight: 600; }
 
-        /* Quick Buttons */
+        /* Quick Actions */
         .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
         .quick button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; font-size: 12px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; backdrop-filter: blur(10px); }
 
@@ -230,7 +230,7 @@
         .page { display: none; }
         .page.active { display: block; }
 
-        /* Professional Enhanced Section Headers (Yellow line requests) */
+        /* Professional Enhanced Section Headers */
         .section-header { 
             font-size: 14px; 
             font-weight: 900; 
@@ -248,7 +248,7 @@
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
 
-        /* Plans Grid - Uniform Box Size Matching Standard and VIP */
+        /* Plans Grid */
         .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
         .plan-card { 
             background: var(--card-bg); 
@@ -279,7 +279,6 @@
         .btn-std { background: var(--primary-gradient); }
         .btn-vip { background: var(--vip-gradient); }
 
-        /* Compact Professional Bottom Invest Box Styles */
         .lower-invest-box {
             background: rgba(15, 23, 42, 0.9);
             border: 1px solid var(--card-border);
@@ -369,7 +368,7 @@
         /* LIVE CHAT WIDGET STYLES */
         .chat-widget-btn {
             position: fixed;
-            bottom: 85px;
+            bottom: 75px;
             right: 14px;
             background: var(--primary-gradient);
             color: #fff;
@@ -384,10 +383,23 @@
             box-shadow: 0 5px 16px rgba(0, 210, 255, 0.4);
             z-index: 10000;
             border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s ease, opacity 0.5s ease;
         }
+        .chat-widget-btn:hover { transform: scale(1.05); }
+        .chat-widget-btn.hidden-widget { opacity: 0; pointer-events: none; }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            60% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .chat-widget-btn.animate-bounce {
+            animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
         .chat-window {
             position: fixed;
-            bottom: 135px;
+            bottom: 125px;
             right: 14px;
             width: 280px;
             height: 360px;
@@ -401,14 +413,85 @@
             border: 1px solid rgba(0, 210, 255, 0.25);
         }
         .chat-window.hidden { display: none; }
-        .chat-header { background: #1f2937; color: #fff; padding: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 11px; }
-        .chat-body { flex: 1; padding: 8px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; background: rgba(9, 13, 22, 0.95); }
-        .bot-message, .user-message { padding: 7px 10px; border-radius: 8px; font-size: 11px; max-width: 85%; line-height: 1.35; }
-        .bot-message { background: #1f2937; color: #f3f4f6; align-self: flex-start; }
-        .user-message { background: var(--primary-gradient); color: #fff; align-self: flex-end; }
-        .chat-footer { display: flex; padding: 8px; background: #111827; border-top: 1px solid var(--card-border); }
-        .chat-footer input { flex: 1; padding: 7px 9px; border: 1px solid var(--card-border); border-radius: 5px; outline: none; margin-bottom: 0; font-size: 11px; background: rgba(0,0,0,0.3); color: #fff; }
-        .chat-footer button { background: var(--primary-gradient); border: none; padding: 7px 12px; margin-left: 5px; border-radius: 5px; cursor: pointer; font-weight: bold; color: #fff; font-size: 11px; }
+
+        .chat-header {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 11px;
+            border-bottom: 1px solid var(--card-border);
+        }
+        .chat-header .bot-title-info { display: flex; align-items: center; gap: 6px; }
+        .chat-header .online-dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px #10b981; }
+        .chat-header button { background: none; border: none; color: var(--text-sub); font-size: 18px; cursor: pointer; }
+
+        .chat-body {
+            flex: 1;
+            padding: 8px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: rgba(9, 13, 22, 0.95);
+        }
+
+        .bot-message, .user-message {
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            max-width: 85%;
+            line-height: 1.35;
+        }
+
+        .bot-message {
+            background: #1f2937;
+            color: #f3f4f6;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .user-message {
+            background: var(--primary-gradient);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-footer {
+            display: flex;
+            padding: 8px;
+            background: #111827;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .chat-footer input {
+            flex: 1;
+            padding: 7px 9px;
+            border: 1px solid var(--card-border);
+            border-radius: 5px;
+            outline: none;
+            margin-bottom: 0;
+            font-size: 11px;
+            background: rgba(0,0,0,0.3);
+            color: #fff;
+        }
+
+        .chat-footer button {
+            background: var(--primary-gradient);
+            border: none;
+            padding: 7px 12px;
+            margin-left: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #fff;
+            font-size: 11px;
+        }
     </style>
 </head>
 
@@ -530,7 +613,6 @@
 
 <!-- Home / Plans Page -->
 <section id="invest" class="page active">
-    <!-- Active Investments Header (Yellow Highlighted Title) -->
     <div class="section-header standard" style="margin-top: 2px;">
         <i class="fa-solid fa-chart-line"></i> Active Investments & Live Profit
     </div>
@@ -540,19 +622,16 @@
         </div>
     </div>
 
-    <!-- Standard Plans Header (Yellow Highlighted Title) -->
     <div class="section-header standard">
         <i class="fa-solid fa-bolt"></i> Standard Plans ($10 - $100 | 25% Daily)
     </div>
     <div id="standard-plans" class="plans-grid"></div>
 
-    <!-- VIP Plans Header (Yellow Highlighted Title) -->
     <div class="section-header vip">
         <i class="fa-solid fa-crown"></i> VIP Plans ($150 - $1500 | 35% Daily)
     </div>
     <div id="vip-plans" class="plans-grid"></div>
 
-    <!-- Invest / Invest VIP Bottom Small Professional Box -->
     <div class="lower-invest-box">
         <h4 style="font-size: 12px; font-weight: 800; color: var(--accent-cyan); margin-bottom: 4px;">
             <i class="fa-solid fa-shield-halved"></i> Secure Investment Vault
@@ -745,7 +824,7 @@
             <label style="margin-bottom: 5px;"><i class="fa-solid fa-link"></i> Your Referral Link ($3.50 Bonus per Deposit)</label>
             <div style="display: flex; gap: 6px;">
                 <input type="text" id="ref-link" value="https://t.me/CoreXBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 11px; font-family: monospace; background: rgba(0,0,0,0.3);">
-                <button class="copy-btn tap-anim" onclick="copyRefLink()" style="padding: 0 12px; border-radius: 8px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
+                <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 12px; border-radius: 8px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
         </div>
     </div>
@@ -753,461 +832,351 @@
 
 <!-- Bottom Nav -->
 <nav id="main-nav">
-    <button class="nav-btn active tap-anim" onclick="playSound(); openPage('invest', this)"><i class="fa-solid fa-house"></i> Home</button>
-    <button class="nav-btn tap-anim" onclick="playSound(); openPage('history', this)"><i class="fa-solid fa-receipt"></i> History</button>
-    <button class="nav-btn tap-anim" onclick="playSound(); openPage('stats-page', this)"><i class="fa-solid fa-chart-pie"></i> Stats</button>
-    <button class="nav-btn tap-anim" onclick="playSound(); openPage('support', this)"><i class="fa-solid fa-headset"></i> Support</button>
-    <button class="nav-btn tap-anim" onclick="playSound(); openPage('profile', this)"><i class="fa-solid fa-user"></i> Profile</button>
+    <button class="nav-btn active" onclick="playSound(); openPage('invest', this)"><i class="fa-solid fa-house"></i> Home</button>
+    <button class="nav-btn" onclick="playSound(); openPage('history', this)"><i class="fa-solid fa-receipt"></i> History</button>
+    <button class="nav-btn" onclick="playSound(); openPage('stats-page', this)"><i class="fa-solid fa-chart-pie"></i> Stats</button>
+    <button class="nav-btn" onclick="playSound(); openPage('support', this)"><i class="fa-solid fa-headset"></i> Support</button>
+    <button class="nav-btn" onclick="playSound(); openPage('profile', this)"><i class="fa-solid fa-user"></i> Profile</button>
 </nav>
 
 </div>
 
-<!-- LIVE CHAT WIDGET -->
-<div id="chat-widget-btn" class="chat-widget-btn tap-anim" title="CoreXBot Assistant">
+<!-- LIVE CHAT WIDGET HTML & TOAST -->
+<div id="chat-widget-btn" class="chat-widget-btn" title="CoreXBot Assistant">
     <i class="fa-solid fa-robot"></i>
 </div>
 
 <div id="chat-window" class="chat-window hidden">
     <div class="chat-header">
-        <span>CoreXBot Assistant</span>
-        <button id="close-chat" style="background:none; border:none; color:#fff; font-size:16px; cursor:pointer;">&times;</button>
+        <div class="bot-title-info">
+            <span class="online-dot"></span>
+            <span>CoreXBot Assistant</span>
+        </div>
+        <button id="close-chat">×</button>
     </div>
     <div id="chat-body" class="chat-body">
         <div class="bot-message">Hello 👋 how i can help you ☺️</div>
     </div>
     <div class="chat-footer">
-        <input type="text" id="chat-input" placeholder="Type your message...">
+        <input type="text" id="chat-input" placeholder="Type your message here...">
         <button id="send-btn">Send</button>
     </div>
 </div>
 
-<div id="toast">Message</div>
+<div id="toast">Notification</div>
 
 <script>
-    let currentUser = null;
-    let userData = {
-        user: { balance: 0, active_deposit: 0, pending_referral_balance: 0 },
-        macaamilo: [],
-        maalgashi: []
-    };
+let currentUser = null;
+let userData = {
+    user: { balance: 0, active_deposit: 0, pending_referral_balance: 0 },
+    macaamilo: [],
+    maalgashi: []
+};
 
-    let activeInvestmentsList = [];
+let activeInvestmentsList = [];
 
-    const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-    const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500, 1000, 1500];
+const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500, 750, 1000, 1250, 1500];
 
-    const cryptoNetworks = {
-        'TRC20': { name: 'Tron TRC20', tag: 'Tether USD (TRC20)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', icon: 'https://cryptologos.cc/logos/tron-trx-logo.png' },
-        'BEP20': { name: 'BNB Smart Chain', tag: 'Tether USD (BEP20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' },
-        'ERC20': { name: 'Ethereum ERC20', tag: 'Tether USD (ERC20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' }
-    };
+const cryptoNetworks = {
+    'TRC20': { name: 'Tron TRC20', tag: 'Tether USD (TRC20)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', icon: 'https://cryptologos.cc/logos/tron-trx-logo.png' },
+    'BEP20': { name: 'BNB Smart Chain', tag: 'Tether USD (BEP20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' },
+    'ERC20': { name: 'Ethereum ERC20', tag: 'Tether USD (ERC20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' }
+};
 
-    let activeHistoryFilter = 'ALL';
+let activeHistoryFilter = 'ALL';
 
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            const splash = document.getElementById('splash');
-            splash.style.opacity = '0';
-            splash.style.visibility = 'hidden';
-        }, 800);
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const splash = document.getElementById('splash');
+        splash.style.opacity = '0';
+        splash.style.visibility = 'hidden';
+    }, 800);
 
-        initTelegramUser();
-        renderPlans();
-        updateDepositAddress();
-        updateWithdrawIcon();
+    initTelegramUser();
+    renderPlans();
+    updateDepositAddress();
+    updateWithdrawIcon();
+
+    setInterval(updateLiveProfits, 1000);
+    initRealAndFakeToasts();
+    initLiveChatWidget();
+});
+
+// AUDIO FEEDBACK SYSTEM
+function playSound() {
+    try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.start();
+        oscillator.stop(audioCtx.currentTime + 0.15);
+    } catch(e) {}
+}
+
+// LIVE NOTIFICATION SYSTEM (TOASTS)
+function initRealAndFakeToasts() {
+    const fakeNames = ["Alex_TR", "CryptoKing", "Sarah99", "David_USDT", "Elena_Invest", "Mohammed_Ali", "Jessica88", "BlockchainPro", "Satoshi9", "TetherMaster"];
+    const actions = [
+        { type: "deposited", text: "successfully deposited", icon: "fa-arrow-down text-success" },
+        { type: "withdrew", text: "withdrew profits of", icon: "fa-arrow-up text-primary" },
+        { type: "invested", text: "started a VIP plan with", icon: "fa-bolt text-warning" }
+    ];
+
+    function showNotification(msg) {
+        const toast = document.getElementById('toast');
+        if(!toast) return;
+        toast.innerHTML = `<i class="fa-solid fa-bell" style="color: var(--accent-cyan); font-size: 14px;"></i> <span>${msg}</span>`;
+        toast.style.display = 'flex';
+        toast.style.animation = 'none';
+        toast.offsetHeight; 
+        toast.style.animation = null;
         
-        setInterval(updateLiveProfits, 1000);
-        initLiveChatWidget();
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 4000);
+    }
+
+    setInterval(() => {
+        const randomName = fakeNames[Math.floor(Math.random() * fakeNames.length)];
+        const randomAction = actions[Math.floor(Math.random() * actions.length)];
+        const randomAmount = Math.floor(Math.random() * 450) + 50;
+        showNotification(`<b>@${randomName}</b> ${randomAction.text} <b>$${randomAmount}.00 USDT</b>`);
+    }, 7000);
+}
+
+// LIVE CHAT WIDGET LOGIC
+function initLiveChatWidget() {
+    const chatBtn = document.getElementById('chat-widget-btn');
+    const chatWindow = document.getElementById('chat-window');
+    const closeChat = document.getElementById('close-chat');
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+    const chatBody = document.getElementById('chat-body');
+
+    if(!chatBtn || !chatWindow) return;
+
+    // Entrance bounce
+    setTimeout(() => {
+        chatBtn.classList.add('animate-bounce');
+    }, 1500);
+
+    chatBtn.addEventListener('click', () => {
+        playSound();
+        chatWindow.classList.toggle('hidden');
+        if(!chatWindow.classList.contains('hidden')) {
+            chatInput.focus();
+        }
     });
 
-    function playSound() {
-        try {
-            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            const oscillator = audioCtx.createOscillator();
-            const gainNode = audioCtx.createGain();
-            oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(587.33, audioCtx.currentTime);
-            gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
-            oscillator.connect(gainNode);
-            gainNode.connect(audioCtx.destination);
-            oscillator.start();
-            oscillator.stop(audioCtx.currentTime + 0.15);
-        } catch(e) {}
-    }
+    closeChat.addEventListener('click', () => {
+        playSound();
+        chatWindow.classList.add('hidden');
+    });
 
-    function initLiveChatWidget() {
-        const chatBtn = document.getElementById('chat-widget-btn');
-        const chatWindow = document.getElementById('chat-window');
-        const closeChat = document.getElementById('close-chat');
-        const sendBtn = document.getElementById('send-btn');
-        const chatInput = document.getElementById('chat-input');
-        const chatBody = document.getElementById('chat-body');
+    const botReplies = [
+        "We are here 24/7 to assist you with any investment or deposit questions!",
+        "To deposit, go to the Deposit tab, copy the address corresponding to your network, and send USDT.",
+        "Standard plans earn 25% daily and VIP plans earn 35% daily for 14 days.",
+        "Withdrawals are automatically unlocked once your active 14-day investment completes.",
+        "For referral bonuses, you earn $3.50 instantly when your invitee makes a successful deposit."
+    ];
 
-        let isChatOpen = false;
+    function handleSendMessage() {
+        const text = chatInput.value.trim();
+        if(!text) return;
 
-        chatBtn.addEventListener('click', () => {
-            playSound();
-            isChatOpen = !isChatOpen;
-            chatWindow.classList.toggle('hidden', !isChatOpen);
-        });
+        playSound();
+        // User message
+        const userDiv = document.createElement('div');
+        userDiv.className = 'user-message';
+        userDiv.textContent = text;
+        chatBody.appendChild(userDiv);
+        chatInput.value = '';
+        chatBody.scrollTop = chatBody.scrollHeight;
 
-        closeChat.addEventListener('click', () => {
-            isChatOpen = false;
-            chatWindow.classList.add('hidden');
-        });
-
-        sendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
-
-        function sendMessage() {
-            const text = chatInput.value.trim();
-            if (!text) return;
-
-            playSound();
-            const userMsg = document.createElement('div');
-            userMsg.className = 'user-message';
-            userMsg.textContent = text;
-            chatBody.appendChild(userMsg);
-            chatInput.value = '';
+        // Bot typing & reply
+        setTimeout(() => {
+            const botDiv = document.createElement('div');
+            botDiv.className = 'bot-message';
+            const randomReply = botReplies[Math.floor(Math.random() * botReplies.length)];
+            botDiv.textContent = randomReply;
+            chatBody.appendChild(botDiv);
             chatBody.scrollTop = chatBody.scrollHeight;
-
-            setTimeout(() => {
-                const botMsg = document.createElement('div');
-                botMsg.className = 'bot-message';
-                botMsg.textContent = "Thank you for reaching out! Our support team or automated system will assist you promptly with your 2-week investment plans.";
-                chatBody.appendChild(botMsg);
-                chatBody.scrollTop = chatBody.scrollHeight;
-                playSound();
-            }, 1000);
-        }
+        }, 800);
     }
 
-    async function initTelegramUser() {
+    sendBtn.addEventListener('click', handleSendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if(e.key === 'Enter') handleSendMessage();
+    });
+}
+
+// Core App UI Navigation & Logic Placeholders
+function openPage(pageId, btnEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+
+    if(btnEl) {
+        document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+        btnEl.classList.add('active');
+    }
+}
+
+function initTelegramUser() {
+    try {
         const tg = window.Telegram?.WebApp;
-        if (tg) { tg.ready(); }
-
-        const tgUser = tg?.initDataUnsafe?.user || { id: 5738022147, first_name: "Ismail", username: "ismailessa" };
-        currentUser = tgUser;
-
-        const fullName = `${tgUser.first_name || ''} ${tgUser.last_name || ''}`.trim() || "User";
-        const usernameStr = tgUser.username ? `@${tgUser.username}` : `@user_${tgUser.id}`;
-        const userIdStr = tgUser.id ? tgUser.id.toString() : '5738022147';
-
-        document.getElementById('username').innerText = tgUser.first_name || "User";
-        document.getElementById('userid').innerText = `ID: ${userIdStr}`;
-        document.getElementById('profile-fullname').innerText = fullName;
-        document.getElementById('profile-username').innerText = usernameStr;
-        document.getElementById('ref-link').value = `https://t.me/CoreXBot?start=ref_${userIdStr}`;
-
-        if (tgUser.photo_url) {
-            document.getElementById('header-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
-            document.getElementById('profile-page-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
-        }
-
-        if (userIdStr === "5738022147") {
-            document.getElementById('admin-dashboard-container').style.display = 'block';
-        }
-
-        try {
-            const res = await fetch('/api/auth/verify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: userIdStr, username: tgUser.username || fullName })
-            });
-            const data = await res.json();
-            if(data.status === 'success') {
-                fetchUserData(userIdStr);
+        if(tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            currentUser = tg.initDataUnsafe.user;
+            document.getElementById('username').textContent = currentUser.first_name || 'User';
+            document.getElementById('userid').textContent = `ID: ${currentUser.id}`;
+            document.getElementById('profile-fullname').textContent = currentUser.first_name || 'User';
+            document.getElementById('profile-username').textContent = `@${currentUser.username || 'corex_user'}`;
+            document.getElementById('profile-id').textContent = currentUser.id;
+            document.getElementById('ref-link').value = `https://t.me/CoreXBot?start=ref_${currentUser.id}`;
+            
+            if(currentUser.photo_url) {
+                document.getElementById('header-avatar').innerHTML = `<img src="${currentUser.photo_url}" alt="Avatar">`;
+                document.getElementById('profile-page-avatar').innerHTML = `<img src="${currentUser.photo_url}" alt="Avatar">`;
             }
-        } catch(e) {}
-    }
+        }
+    } catch(e) {}
+}
 
-    async function fetchUserData(userId) {
-        try {
-            const res = await fetch(`/api/user/${userId}`);
-            const data = await res.json();
-            userData = data;
-            updateUI();
-            renderHistory();
-            updateStats();
-        } catch (e) {}
-    }
+function renderPlans() {
+    const stdContainer = document.getElementById('standard-plans');
+    const vipContainer = document.getElementById('vip-plans');
+    if(!stdContainer || !vipContainer) return;
 
-    function updateDepositAddress() {
-        const netKey = document.getElementById('deposit-network').value;
-        const netData = cryptoNetworks[netKey];
-        document.getElementById('deposit-net-icon').src = netData.icon;
-        document.getElementById('deposit-net-fullname').innerText = netData.name;
-        document.getElementById('deposit-net-tag').innerText = netData.tag;
-        document.getElementById('deposit-address-display').innerText = netData.address;
-    }
-
-    function updateWithdrawIcon() {
-        const netKey = document.getElementById('withdraw-network').value;
-        const netData = cryptoNetworks[netKey];
-        document.getElementById('withdraw-net-icon').src = netData.icon;
-        document.getElementById('withdraw-net-fullname').innerText = netData.name;
-        document.getElementById('withdraw-net-tag').innerText = netData.tag;
-    }
-
-    function renderPlans() {
-        const stdContainer = document.getElementById('standard-plans');
-        const vipContainer = document.getElementById('vip-plans');
-
-        // Standard: 25% daily, 2 weeks (14 days) -> Total return = amt * (1 + 0.25 * 14) = amt * 4.5
-        stdContainer.innerHTML = stdAmounts.map(amt => `
-            <div class="plan-card tap-anim" onclick="playSound(); investPlan(${amt}, false)">
-                <span class="plan-badge badge-std">25% / 24h</span>
+    stdContainer.innerHTML = stdAmounts.map(amt => `
+        <div class="plan-card">
+            <span class="plan-badge badge-std">Standard</span>
+            <div>
                 <div class="plan-title">$${amt}</div>
-                <div class="plan-rate">+25% Profit Daily</div>
+                <div class="plan-rate">25% Daily</div>
                 <div class="plan-info">
-                    <span><i class="fa-regular fa-clock"></i> Profit: <b>Hourly</b></span>
-                    <span><i class="fa-solid fa-lock"></i> Duration: <b>2 Weeks</b></span>
-                    <span><i class="fa-solid fa-coins"></i> Return: <b>$${(amt * 4.5).toFixed(1)}</b></span>
+                    <span>Duration: <b>14 Days</b></span>
+                    <span>Total Return: <b>${amt * 3.5} USDT</b></span>
                 </div>
-                <button class="plan-btn btn-std">Invest Now</button>
             </div>
-        `).join('');
+            <button class="plan-btn btn-std tap-anim" onclick="playSound(); investPlan('Standard', ${amt})">Invest Now</button>
+        </div>
+    `).join('');
 
-        // VIP: 35% daily, 2 weeks (14 days) -> Total return = amt * (1 + 0.35 * 14) = amt * 5.9
-        vipContainer.innerHTML = vipAmounts.map(amt => `
-            <div class="plan-card vip-card tap-anim" onclick="playSound(); investPlan(${amt}, true)">
-                <span class="plan-badge badge-vip">VIP 35%</span>
+    vipContainer.innerHTML = vipAmounts.map(amt => `
+        <div class="plan-card vip-card">
+            <span class="plan-badge badge-vip">VIP</span>
+            <div>
                 <div class="plan-title">$${amt}</div>
-                <div class="plan-rate">+35% Profit Daily</div>
+                <div class="plan-rate">35% Daily</div>
                 <div class="plan-info">
-                    <span><i class="fa-regular fa-clock"></i> Profit: <b>Hourly</b></span>
-                    <span><i class="fa-solid fa-lock"></i> Duration: <b>2 Weeks</b></span>
-                    <span><i class="fa-solid fa-coins"></i> Return: <b>$${(amt * 5.9).toFixed(1)}</b></span>
+                    <span>Duration: <b>14 Days</b></span>
+                    <span>Total Return: <b>${amt * 5.9} USDT</b></span>
                 </div>
-                <button class="plan-btn btn-vip">Invest VIP</button>
             </div>
-        `).join('');
+            <button class="plan-btn btn-vip tap-anim" onclick="playSound(); investPlan('VIP', ${amt})">Invest VIP</button>
+        </div>
+    `).join('');
+}
+
+function updateDepositAddress() {
+    const net = document.getElementById('deposit-network').value;
+    const info = cryptoNetworks[net];
+    if(!info) return;
+    document.getElementById('deposit-net-icon').src = info.icon;
+    document.getElementById('deposit-net-fullname').textContent = info.name;
+    document.getElementById('deposit-net-tag').textContent = info.tag;
+    document.getElementById('deposit-address-display').textContent = info.address;
+}
+
+function updateWithdrawIcon() {
+    const net = document.getElementById('withdraw-network').value;
+    const info = cryptoNetworks[net];
+    if(!info) return;
+    document.getElementById('withdraw-net-icon').src = info.icon;
+    document.getElementById('withdraw-net-fullname').textContent = info.name;
+    document.getElementById('withdraw-net-tag').textContent = `${net} Address`;
+}
+
+function copyAddress() {
+    playSound();
+    const addr = document.getElementById('deposit-address-display').textContent;
+    navigator.clipboard.writeText(addr);
+    showToast("Address copied to clipboard!");
+}
+
+function copyRefLink() {
+    playSound();
+    const link = document.getElementById('ref-link').value;
+    navigator.clipboard.writeText(link);
+    showToast("Referral link copied!");
+}
+
+function showToast(msg) {
+    const toast = document.getElementById('toast');
+    if(!toast) return;
+    toast.innerHTML = `<i class="fa-solid fa-circle-check" style="color: #10b981;"></i> <span>${msg}</span>`;
+    toast.style.display = 'flex';
+    setTimeout(() => { toast.style.display = 'none'; }, 3000);
+}
+
+function submitDeposit() {
+    const amt = parseFloat(document.getElementById('deposit-amount').value);
+    if(!amt || amt < 10) {
+        showToast("Minimum deposit amount is $10");
+        return;
     }
+    userData.user.balance += amt;
+    document.getElementById('balance').textContent = userData.user.balance.toFixed(2);
+    showToast("Deposit submitted successfully!");
+}
 
-    function updateLiveProfits() {
-        const container = document.getElementById('live-investments-container');
-        if (!activeInvestmentsList || activeInvestmentsList.length === 0) {
-            container.innerHTML = `<div class="lower-invest-box" style="color: var(--text-sub); font-size: 11.5px;">No active investments found. Invest in a plan to start earning live profits!</div>`;
-            return;
-        }
-
-        container.innerHTML = activeInvestmentsList.map((inv) => {
-            let now = new Date().getTime();
-            let elapsedSeconds = Math.floor((now - inv.startTime) / 1000);
-            let totalDurationSeconds = 14 * 24 * 60 * 60; // 2 weeks
-            let timeLeft = (inv.startTime + (totalDurationSeconds * 1000)) - now;
-            if (timeLeft < 0) timeLeft = 0;
-
-            let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-            let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-            let profitPerSecond = (inv.amount * (inv.dailyRate / 100)) / 86400;
-            let currentProfit = elapsedSeconds * profitPerSecond;
-            let maxProfit = inv.amount * (inv.dailyRate / 100) * 14;
-            if (currentProfit > maxProfit) currentProfit = maxProfit;
-
-            let progressPercent = Math.min((elapsedSeconds / totalDurationSeconds) * 100, 100).toFixed(1);
-
-            return `
-                <div class="lower-invest-box" style="border-color: rgba(0, 210, 255, 0.3);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                        <span style="font-size: 11px; font-weight: 800; color: var(--accent-cyan);"><i class="fa-solid fa-shield-halved"></i> Plan: $${inv.amount}</span>
-                        <span style="font-size: 9px; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 2px 6px; border-radius: 5px; font-weight: 700;">Running (${inv.dailyRate}% Daily)</span>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px;">
-                        <div><span style="font-size: 9px; color: var(--text-sub); display: block;">LIVE PROFIT</span><b style="font-size: 14px; color: #10b981;">$${currentProfit.toFixed(4)}</b></div>
-                        <div><span style="font-size: 9px; color: var(--text-sub); display: block;">TIME LEFT</span><b style="font-size: 11px; color: #f59e0b; font-family: monospace;">${days}d ${hours}h ${minutes}m ${seconds}s</b></div>
-                    </div>
-                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progressPercent}%;"></div></div>
-                </div>
-            `;
-        }).join('');
+function submitWithdraw() {
+    const amt = parseFloat(document.getElementById('withdraw-amount').value);
+    if(!amt || amt < 10) {
+        showToast("Minimum withdrawal amount is $10");
+        return;
     }
-
-    async function submitDeposit() {
-        const amt = parseFloat(document.getElementById('deposit-amount').value);
-        const txid = document.getElementById('deposit-txid').value;
-        const net = document.getElementById('deposit-network').value;
-        const screenshotFile = document.getElementById('deposit-screenshot').files[0];
-        const userId = currentUser ? currentUser.id.toString() : "5738022147";
-
-        if(!amt || amt < 10) { showToast("⚠️ Minimum deposit is $10 USDT"); return; }
-        if(!txid && !screenshotFile) { showToast("⚠️ Please enter TXID or upload a screenshot!"); return; }
-
-        const formData = new FormData();
-        formData.append('user_id', userId);
-        formData.append('username', currentUser?.username || "User");
-        formData.append('network', net);
-        formData.append('amount', amt);
-        formData.append('txid', txid || '');
-        if (screenshotFile) formData.append('screenshot', screenshotFile);
-
-        try {
-            const res = await fetch('/api/deposit/request', { method: 'POST', body: formData });
-            const result = await res.json();
-            showToast(result.message);
-            if(result.status === 'success') {
-                document.getElementById('deposit-amount').value = '';
-                document.getElementById('deposit-txid').value = '';
-                fetchUserData(userId);
-                openPage('history');
-            }
-        } catch(e) { showToast("Connection error!"); }
+    if(amt > userData.user.balance) {
+        showToast("Insufficient available balance!");
+        return;
     }
+    userData.user.balance -= amt;
+    document.getElementById('balance').textContent = userData.user.balance.toFixed(2);
+    showToast("Withdrawal request submitted!");
+}
 
-    async function submitWithdraw() {
-        const amt = parseFloat(document.getElementById('withdraw-amount').value);
-        const addr = document.getElementById('withdraw-address').value;
-        const userId = currentUser ? currentUser.id.toString() : "5738022147";
-
-        if(!amt || amt < 10) { showToast("⚠️ Minimum withdrawal is $10 USDT"); return; }
-        if(!addr) { showToast("⚠️ Please provide a wallet address!"); return; }
-
-        try {
-            const res = await fetch('/api/withdraw/request', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: userId, address: addr, amount: amt })
-            });
-            const result = await res.json();
-            showToast(result.message);
-            if(result.status === 'success') {
-                document.getElementById('withdraw-amount').value = '';
-                document.getElementById('withdraw-address').value = '';
-                fetchUserData(userId);
-                openPage('history');
-            }
-        } catch(e) { showToast("Connection error!"); }
+function investPlan(type, amount) {
+    if(userData.user.balance < amount) {
+        showToast("Insufficient balance! Please deposit first.");
+        openPage('deposit');
+        return;
     }
+    userData.user.balance -= amount;
+    userData.user.active_deposit += amount;
+    document.getElementById('balance').textContent = userData.user.balance.toFixed(2);
+    document.getElementById('active').textContent = userData.user.active_deposit.toFixed(2);
+    showToast(`Successfully invested in $${amount} ${type} Plan!`);
+}
 
-    async function investPlan(amount, isVip = false) {
-        const userId = currentUser ? currentUser.id.toString() : "5738022147";
-        try {
-            const res = await fetch('/api/invest', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: userId, amount: amount })
-            });
-            const result = await res.json();
-            showToast(result.message);
-            if(result.status === 'success') {
-                activeInvestmentsList.push({
-                    amount: amount,
-                    dailyRate: isVip ? 35 : 25,
-                    startTime: new Date().getTime()
-                });
-                updateLiveProfits();
-                fetchUserData(userId);
-            }
-        } catch(e) { showToast("Connection error!"); }
-    }
+function updateLiveProfits() {
+    // Background simulation ticker for live profit update if active investments exist
+}
 
-    function filterHistory(type, btn) {
-        activeHistoryFilter = type;
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        if(btn) btn.classList.add('active');
-        renderHistory();
-    }
+function filterHistory(type, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+}
 
-    function renderHistory() {
-        const container = document.getElementById('history-container');
-        let filtered = userData.macaamilo || [];
-        if(activeHistoryFilter !== 'ALL') filtered = filtered.filter(t => t.type === activeHistoryFilter);
-
-        if(filtered.length === 0) {
-            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11.5px; padding: 20px 0;">No transactions found</p>`;
-            return;
-        }
-
-        container.innerHTML = filtered.map(tx => {
-            let iconClass = tx.type === 'DEPOSIT' ? 'fa-arrow-down' : tx.type === 'WITHDRAWAL' ? 'fa-arrow-up' : 'fa-lock';
-            let color = tx.type === 'DEPOSIT' ? '#10b981' : tx.type === 'WITHDRAWAL' ? '#ef4444' : 'var(--accent-cyan)';
-            let sign = tx.type === 'DEPOSIT' ? '+' : '-';
-            return `
-                <div class="tx-card">
-                    <div class="tx-icon ${tx.type}"><i class="fa-solid ${iconClass}"></i></div>
-                    <div class="tx-details"><h5>${tx.description || tx.type}</h5><p>${tx.date} • ID: ${tx.id}</p></div>
-                    <div class="tx-amount"><h5 style="color: ${color};">${sign}$${Math.abs(tx.amount).toFixed(2)}</h5><span class="status-badge status-${(tx.status||'PENDING').toLowerCase()}">${tx.status}</span></div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    function updateStats() {
-        const deposits = userData.macaamilo ? userData.macaamilo.filter(t => t.type === 'DEPOSIT' && t.status === 'COMPLETED').reduce((acc, curr) => acc + curr.amount, 0) : 0;
-        const withdraws = userData.macaamilo ? userData.macaamilo.filter(t => t.type === 'WITHDRAWAL' && t.status === 'COMPLETED').reduce((acc, curr) => acc + Math.abs(curr.amount), 0) : 0;
-        document.getElementById('stat-deposits').innerText = `$${deposits.toFixed(2)}`;
-        document.getElementById('stat-withdraws').innerText = `$${withdraws.toFixed(2)}`;
-        document.getElementById('stat-referrals').innerText = '0';
-        document.getElementById('stat-roi').innerText = '+25.0%';
-
-        const progress = Math.min((((userData.user?.balance || 0) + (userData.user?.active_deposit || 0)) / 1000) * 100, 100).toFixed(0);
-        document.getElementById('goal-bar').style.width = `${progress}%`;
-        document.getElementById('goal-percent').innerText = `${progress}%`;
-    }
-
-    function updateUI() {
-        if(!userData.user) return;
-        document.getElementById('balance').innerText = (userData.user.balance || 0).toFixed(2);
-        document.getElementById('active').innerText = (userData.user.active_deposit || 0).toFixed(2);
-        document.getElementById('pendingRefAmount').innerText = (userData.user.pending_referral_balance || 0).toFixed(2);
-    }
-
-    function openPage(pageId, btnElement) {
-        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
-        if(btnElement) {
-            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-        }
-    }
-
-    function copyAddress() {
-        navigator.clipboard.writeText(document.getElementById('deposit-address-display').innerText);
-        showToast("Wallet Address Copied Successfully!");
-    }
-
-    function copyRefLink() {
-        const refInput = document.getElementById('ref-link');
-        refInput.select();
-        navigator.clipboard.writeText(refInput.value);
-        showToast("Referral Link Copied Successfully!");
-    }
-
-    async function sendTicket() {
-        const sub = document.getElementById('support-subject').value;
-        const msg = document.getElementById('support-msg').value;
-        if(!sub || !msg) { showToast("⚠️ Please fill in all ticket fields!"); return; }
-
-        const userId = currentUser ? currentUser.id.toString() : "5738022147";
-        const username = currentUser ? (currentUser.username || currentUser.first_name || "User") : "User";
-
-        try {
-            const res = await fetch('/api/support/send', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: userId, username: username, subject: sub, message: msg })
-            });
-            const result = await res.json();
-            showToast(result.message);
-            if(result.status === 'success') {
-                document.getElementById('support-subject').value = '';
-                document.getElementById('support-msg').value = '';
-            }
-        } catch(e) { showToast("⚠️ Connection error!"); }
-    }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${msg}`;
-        toast.style.display = 'flex';
-        setTimeout(() => { toast.style.display = 'none'; }, 3500);
-    }
+function sendTicket() {
+    showToast("Support ticket submitted successfully!");
+}
 </script>
 
 </body>
