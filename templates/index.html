@@ -223,7 +223,7 @@
 <!-- Rules & Guidelines Banner -->
 <div class="rules-banner">
     <h4><i class="fa-solid fa-circle-info"></i> Investment & Referral Rules</h4>
-    <p>• <b>Profits:</b> Earn high daily returns (20% to 35%) credited hourly to your balance.</p>
+    <p>• <b>Profits:</b> Standard plans ($10 - $100) earn 20% daily. VIP plans ($150 - $500) earn 35% daily credited hourly.</p>
     <p>• <b>Referral Bonus:</b> Invite friends and instantly earn <b>1.00 USDT</b> when your referral makes their first successful deposit.</p>
     <p>• <b>Withdrawals:</b> Withdrawals are <b>strictly locked</b> and only allowed after your active investment plan fully completes the <b>7-day duration</b>.</p>
 </div>
@@ -251,12 +251,12 @@
     </div>
 
     <div class="section-header standard">
-        <i class="fa-solid fa-bolt"></i> Standard Plans (20% Daily)
+        <i class="fa-solid fa-bolt"></i> Standard Plans ($10 - $100 | 20% Daily)
     </div>
     <div id="standard-plans" class="plans-grid"></div>
 
     <div class="section-header vip">
-        <i class="fa-solid fa-crown"></i> VIP Plans (35% Daily)
+        <i class="fa-solid fa-crown"></i> VIP Plans ($150 - $500 | 35% Daily)
     </div>
     <div id="vip-plans" class="plans-grid"></div>
 </section>
@@ -576,11 +576,12 @@
         maalgashi: []
     };
 
-    // Active Investments List for Live Ticker and Countdown Timer
     let activeInvestmentsList = [];
 
+    // Standard Plans: 10 ila 100
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-    const vipAmounts = [150, 200, 350, 400, 450, 500];
+    // VIP Plans: 150 ila 500
+    const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500];
 
     const cryptoNetworks = {
         'TRC20': { name: 'Tron TRC20', tag: 'Tether USD (TRC20)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', icon: 'https://cryptologos.cc/logos/tron-trx-logo.png' },
@@ -602,10 +603,7 @@
         updateDepositAddress();
         updateWithdrawIcon();
         
-        // Start Live Profit Counter & Countdown Timer interval
         setInterval(updateLiveProfits, 1000);
-
-        // Start Real & Fake Live Toast Notifications
         initRealAndFakeToasts();
     });
 
@@ -667,15 +665,19 @@
         }
     }
 
-    // --- REAL & FAKE TOAST NOTIFICATIONS SYSTEM ---
+    // --- REAL & FAKE TOAST NOTIFICATIONS SYSTEM (Saxsan oo ku salaysan Standard $10-$100 iyo VIP $150-$500) ---
     function initRealAndFakeToasts() {
         const fakeUsers = ["CryptoKing", "Alice99", "Trader_Max", "BitcoinPro", "USDT_Master", "FastProfit", "Elena_V", "Hassan99", "CryptoMoon", "Safwan_Inv"];
-        const fakeAmounts = [20, 50, 100, 150, 200, 300, 500];
+        
+        // Xogta fake-ka oo kala ah Standard ($10 - $100) iyo VIP ($150 - $500)
+        const standardFakeAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+        const vipFakeAmounts = [150, 200, 250, 300, 350, 400, 450, 500];
+
         const actionTypes = [
-            { action: "deposited", color: "#10b981", icon: "fa-arrow-down" },
-            { action: "invested in Standard Plan", color: "var(--accent-cyan)", icon: "fa-bolt" },
-            { action: "invested in VIP Plan", color: "#f59e0b", icon: "fa-crown" },
-            { action: "withdrew profits", color: "#10b981", icon: "fa-arrow-up" }
+            { action: "deposited", color: "#10b981", icon: "fa-arrow-down", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
+            { action: "invested in Standard Plan ($10-$100)", color: "var(--accent-cyan)", icon: "fa-bolt", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
+            { action: "invested in VIP Plan ($150-$500)", color: "#f59e0b", icon: "fa-crown", getAmt: () => vipFakeAmounts[Math.floor(Math.random() * vipFakeAmounts.length)] },
+            { action: "withdrew profits", color: "#10b981", icon: "fa-arrow-up", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] }
         ];
 
         setInterval(() => {
@@ -683,7 +685,6 @@
             let iconClass = "fa-bell";
             let accentColor = "var(--accent-cyan)";
 
-            // 50% chance to use real user database transaction if available, otherwise fake
             let useReal = userData.macaamilo && userData.macaamilo.length > 0 && Math.random() > 0.5;
 
             if (useReal) {
@@ -694,8 +695,8 @@
                 accentColor = randomTx.type === 'DEPOSIT' ? '#10b981' : (randomTx.type === 'WITHDRAWAL' ? '#ef4444' : 'var(--accent-cyan)');
             } else {
                 let randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
-                let randomAmt = fakeAmounts[Math.floor(Math.random() * fakeAmounts.length)];
                 let randomAction = actionTypes[Math.floor(Math.random() * actionTypes.length)];
+                let randomAmt = randomAction.getAmt();
                 
                 notificationText = `@${randomUser} successfully ${randomAction.action} $${randomAmt}`;
                 iconClass = randomAction.icon;
@@ -703,7 +704,7 @@
             }
 
             showLiveToast(notificationText, iconClass, accentColor);
-        }, 7000); // Triggers every 7 seconds
+        }, 7000);
     }
 
     function showLiveToast(message, icon, color) {
@@ -753,7 +754,6 @@
             toastEl.style.transform = 'translateY(10px)';
         }, 4000);
     }
-    // --- END OF REAL & FALSE TOAST SYSTEM ---
 
     async function loadAdminAnalytics() {
         try {
@@ -851,7 +851,6 @@
         `).join('');
     }
 
-    // Live Profit & Countdown Timer Render Function
     function updateLiveProfits() {
         const container = document.getElementById('live-investments-container');
         
@@ -867,7 +866,7 @@
         container.innerHTML = activeInvestmentsList.map((inv) => {
             let now = new Date().getTime();
             let elapsedSeconds = Math.floor((now - inv.startTime) / 1000);
-            let totalDurationSeconds = 7 * 24 * 60 * 60; // 7 Days Duration
+            let totalDurationSeconds = 7 * 24 * 60 * 60;
             let timeLeft = (inv.startTime + (totalDurationSeconds * 1000)) - now;
 
             if (timeLeft < 0) timeLeft = 0;
@@ -877,7 +876,6 @@
             let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
             let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-            // Live profit calculated per second
             let profitPerSecond = (inv.amount * (inv.dailyRate / 100)) / 86400;
             let currentProfit = elapsedSeconds * profitPerSecond;
             let maxProfit = inv.amount * (inv.dailyRate / 100) * 7;
@@ -997,7 +995,6 @@
             const result = await res.json();
             showToast(result.message);
             if(result.status === 'success') {
-                // Add active investment locally to start the live counter and countdown timer instantly
                 const dailyRate = isVip ? 35 : 20;
                 activeInvestmentsList.push({
                     amount: amount,
