@@ -1092,22 +1092,47 @@
         const uniqueNames = ["@Crypto", "@AliAhmed", "@MohamedSaeed", "@Farah99", "@Liban", "@Samantar", "@Nasteexo", "@KhadarAdmin", "@HindaWeb", "@Guled"];
         const standardFakeAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
         const vipFakeAmounts = [150, 200, 250, 300, 350, 400, 450, 500];
+        const netKeys = ['TRC20', 'BEP20', 'ERC20'];
 
         const actionTypes = [
-            { action: "deposited", color: "#10b981", icon: "fa-arrow-down", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
-            { action: "successfully invested", color: "var(--accent-cyan)", icon: "fa-bolt", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
-            { action: "withdrew profits", color: "#10b981", icon: "fa-arrow-up", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] }
+            { 
+                type: "DEPOSIT",
+                action: "deposited", 
+                color: "#10b981", 
+                getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] 
+            },
+            { 
+                type: "INVEST",
+                action: "successfully invested", 
+                color: "var(--accent-cyan)", 
+                icon: "fa-bolt", 
+                getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] 
+            },
+            { 
+                type: "WITHDRAWAL",
+                action: "withdrew profits", 
+                color: "#10b981", 
+                getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] 
+            }
         ];
 
         setInterval(() => {
             let randomUser = uniqueNames[Math.floor(Math.random() * uniqueNames.length)];
             let randomAction = actionTypes[Math.floor(Math.random() * actionTypes.length)];
             let randomAmt = randomAction.getAmt();
-            showLiveToast(`${randomUser} ${randomAction.action} $${randomAmt}`, randomAction.icon, randomAction.color);
+
+            if (randomAction.type === 'INVEST') {
+                showLiveToast(`${randomUser} ${randomAction.action} $${randomAmt}`, null, randomAction.color, randomAction.icon, 'fa');
+            } else {
+                let randomNetKey = netKeys[Math.floor(Math.random() * netKeys.length)];
+                let netInfo = cryptoNetworks[randomNetKey];
+                let actionText = randomAction.type === 'DEPOSIT' ? `deposited $${randomAmt} via ${randomNetKey}` : `withdrew $${randomAmt} via ${randomNetKey}`;
+                showLiveToast(`${randomUser} ${actionText}`, netInfo.icon, randomAction.color, null, 'img');
+            }
         }, 30000);
     }
 
-    function showLiveToast(message, icon, color) {
+    function showLiveToast(message, iconSrc, color, faIcon, type) {
         let toastEl = document.getElementById('live-toast-popup');
         if (!toastEl) {
             toastEl = document.createElement('div');
@@ -1122,10 +1147,15 @@
             document.body.appendChild(toastEl);
         }
 
+        let iconHTML = '';
+        if (type === 'img') {
+            iconHTML = `<div style="width: 30px; height: 30px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid ${color}40; flex-shrink: 0;"><img src="${iconSrc}" style="width: 18px; height: 18px; object-fit: contain;"></div>`;
+        } else {
+            iconHTML = `<div style="width: 30px; height: 30px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; color: ${color}; font-size: 12px; flex-shrink: 0;"><i class="fa-solid ${faIcon}"></i></div>`;
+        }
+
         toastEl.innerHTML = `
-            <div style="width: 28px; height: 28px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; color: ${color}; font-size: 12px; flex-shrink: 0;">
-                <i class="fa-solid ${icon}"></i>
-            </div>
+            ${iconHTML}
             <div>
                 <span style="font-size: 9px; color: var(--text-sub); display: block; text-transform: uppercase;">Live Notification</span>
                 <span>${message}</span>
