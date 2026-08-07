@@ -77,6 +77,14 @@
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
 
+        /* Crypto Live Price Card Styles */
+        .crypto-price-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 16px; margin-bottom: 20px; backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); }
+        .crypto-price-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--accent-cyan); display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .price-list { display: flex; flex-direction: column; gap: 8px; }
+        .price-item { display: flex; justify-content: space-between; align-items: center; background: rgba(9, 13, 22, 0.6); padding: 10px 14px; border-radius: 12px; border: 1px solid var(--card-border); border-left: 4px solid var(--accent-cyan); }
+        .crypto-name { font-size: 13px; font-weight: 600; color: #fff; }
+        .price-value { font-size: 13px; font-weight: 700; color: #10b981; }
+
         /* Plans Grid */
         .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
         .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 16px; text-align: center; position: relative; backdrop-filter: blur(10px); transition: transform 0.2s; }
@@ -240,6 +248,26 @@
 
 <!-- Home / Plans Page -->
 <section id="invest" class="page active">
+    
+    <!-- LIVE CRYPTO MARKET PRICES CARD (INTEGRATED) -->
+    <div class="crypto-price-card">
+        <h3><i class="fa-solid fa-chart-line"></i> Suuqa Live-ka Crypto</h3>
+        <div class="price-list">
+            <div class="price-item">
+                <span class="crypto-name">Bitcoin (BTC)</span>
+                <span id="btc-price" class="price-value">Loading...</span>
+            </div>
+            <div class="price-item">
+                <span class="crypto-name">USDT (USDT)</span>
+                <span id="usdt-price" class="price-value">Loading...</span>
+            </div>
+            <div class="price-item">
+                <span class="crypto-name">Solana (SOL)</span>
+                <span id="sol-price" class="price-value">Loading...</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Active Investments & Live Profit Section -->
     <div class="section-header standard" style="margin-top: 5px;">
         <i class="fa-solid fa-chart-line"></i> Active Investments & Live Profit
@@ -603,9 +631,32 @@
         updateDepositAddress();
         updateWithdrawIcon();
         
+        // Soo jiidashada qiimaha Live-ka Crypto
+        fetchCryptoPrices();
+        setInterval(fetchCryptoPrices, 60000);
+
         setInterval(updateLiveProfits, 1000);
         initRealAndFakeToasts();
     });
+
+    // Shaqada Live Prices-ka CoinGecko API
+    async function fetchCryptoPrices() {
+        try {
+            const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,tether,solana&vs_currencies=usd');
+            const data = await response.json();
+
+            if (data) {
+                if(data.bitcoin) document.getElementById('btc-price').innerText = `$${data.bitcoin.usd.toLocaleString()}`;
+                if(data.tether) document.getElementById('usdt-price').innerText = `$${data.tether.usd.toLocaleString()}`;
+                if(data.solana) document.getElementById('sol-price').innerText = `$${data.solana.usd.toLocaleString()}`;
+            }
+        } catch (error) {
+            console.error('Cillad ayaa dhacday:', error);
+            document.getElementById('btc-price').innerText = 'Error';
+            document.getElementById('usdt-price').innerText = 'Error';
+            document.getElementById('sol-price').innerText = 'Error';
+        }
+    }
 
     async function initTelegramUser() {
         const tg = window.Telegram?.WebApp;
@@ -665,88 +716,12 @@
         }
     }
 
-    // --- 500+ UNIQUE NAMES LIST FOR LIVE NOTIFICATION TOASTS ---
     function initRealAndFakeToasts() {
         const uniqueNames = [
             "@CryptoKing", "@AliAhmed", "@MohamedSaeed", "@Farah99", "@LibanX", 
             "@Samantar", "@Nasteexo", "@KhadarAdmin", "@HindaWeb", "@GuledTech",
             "@Barkhad", "@HodanStar", "@AbdiCashir", "@Ilhaan99", "@Warsame01",
-            "@AhmedCrypto", "@AbdiStar", "@LibanBinance", "@FaysalTrader", "@KhadijaVIP",
-            "@SagalMoon", "@ZakariaUSDT", "@YuusufPro", "@NajmaTech", "@FarhiyaSol",
-            "@BashiirInv", "@GuledX", "@NuuraWeb", "@AadenCrypto", "@HamdaStar",
-            "@MustafeTr", "@DeeqoGold", "@IbrahimMax", "@IkranVIP", "@MahadTron",
-            "@SamiraBinance", "@MukhtaarTr", "@MunaWeb", "@AbdikafiSol", "@SafiaTech",
-            "@CabdiGold", "@HassanTron", "@NasraVIP", "@KhaalidPro", "@AmalCrypto",
-            "@ZakariyeX", "@LeylaStar", "@CabdulahiTr", "@SahraMoon", "@CismaanPro",
-            "@KeyseCrypto", "@RidwaanInv", "@ShubeebTron", "@NajibWeb", "@AsadGold",
-            "@BilalBinance", "@HamzaTr", "@FahadVIP", "@SuheibMoon", "@YonisStar",
-            "@CabdiRashiid", "@MaxamedAmin", "@MukhtaarPro", "@MustafeX", "@NaciimaTech",
-            "@ZamzamSol", "@IfraaxGold", "@HodmanWeb", "@BishaarTron", "@GuuleedTr",
-            "@Cabdicasiis", "@Sharmarke99", "@DayibCrypto", "@KhalidBinance", "@CabdallaVIP",
-            "@FarxaanPro", "@MahadSol", "@MuscabTech", "@NuuxGold", "@SumayaWeb",
-            "@NastehaTr", "@BashiiraMoon", "@FadumoStar", "@KowsarTron", "@LuulVIP",
-            "@SucaadPro", "@YasmiinSol", "@ZeynabTech", "@AaminaGold", "@DeeqaWeb",
-            "@IqraTr", "@MarwoMoon", "@NashadStar", "@SahraTron", "@UbaxVIP",
-            "@AmranPro", "@AsmaSol", "@BushraTech", "@DahaboGold", "@FalisWeb",
-            "@GashanTr", "@HaniMoon", "@IkraamStar", "@JawahirTron", "@KhadijaVIP",
-            "@LeylaPro", "@MunaSol", "@NasroTech", "@QamarGold", "@RaxmoWeb",
-            "@SafiyaTr", "@TahliilMoon", "@UbahStar", "@WardaTron", "@XaliimoVIP",
-            "@YurubPro", "@ZamzamSol", "@ZaytuunTech", "@AsadBinance", "@BilalCrypto",
-            "@FarhanTr", "@HamzaMoon", "@IsmailPro", "@LibanSol", "@MahadTech",
-            "@MohamedGold", "@MustafeWeb", "@NasirTr", "@OmarMoon", "@QasimStar",
-            "@RidwanTron", "@SaedVIP", "@TariqPro", "@UmarSol", "@YusufTech",
-            "@ZackGold", "@AbdullahiWeb", "@AbdirahmanTr", "@AbdirisakMoon", "@AhmedStar",
-            "@AliTron", "@AwaleVIP", "@BashirPro", "@DahirSol", "@FarahTech",
-            "@GuledGold", "@HassanWeb", "@HusseinTr", "@IbrahimMoon", "@IsaqStar",
-            "@JamaTron", "@KadarVIP", "@LibanPro", "@MahamudSol", "@MohamudTech",
-            "@MuminGold", "@OsmanWeb", "@RageTr", "@SaidMoon", "@SalimStar",
-            "@WarsameTron", "@YacquubVIP", "@ZakariaPro", "@ZubairSol", "@AdanTech",
-            "@AliGold", "@AminWeb", "@BashiirTr", "@DeeqMoon", "@FaisalStar",
-            "@GelleTron", "@HassanVIP", "@IdrisPro", "@JibrilSol", "@KhaalidTech",
-            "@LibanGold", "@MohamedWeb", "@NasirTr", "@OmarMoon", "@QadarStar",
-            "@RashidTron", "@SaidVIP", "@TariqPro", "@UmarSol", "@YusufTech",
-            "@ZackGold", "@AbdiWeb", "@AhmedTr", "@AliMoon", "@AwaleStar",
-            "@BashirTron", "@DahirVIP", "@FarahPro", "@GuledSol", "@HassanTech",
-            "@HusseinGold", "@IbrahimWeb", "@IsaqTr", "@JamaMoon", "@KadarStar",
-            "@LibanTron", "@MahamudVIP", "@MohamudPro", "@MuminSol", "@OsmanTech",
-            "@RageGold", "@SaidWeb", "@SalimTr", "@WarsameMoon", "@YacquubStar",
-            "@ZakariaTron", "@ZubairVIP", "@AdanPro", "@AliSol", "@AminTech",
-            "@BashiirGold", "@DeeqWeb", "@FaisalTr", "@GelleMoon", "@HassanStar",
-            "@IdrisTron", "@JibrilVIP", "@KhaalidPro", "@LibanSol", "@MohamedTech",
-            "@NasirGold", "@OmarWeb", "@QadarTr", "@RashidMoon", "@SaidStar",
-            "@TariqTron", "@UmarVIP", "@YusufPro", "@ZackSol", "@AbdiTech",
-            "@AhmedGold", "@AliWeb", "@AwaleTr", "@BashirMoon", "@DahirStar",
-            "@FarahTron", "@GuledVIP", "@HassanPro", "@HusseinSol", "@IbrahimTech",
-            "@IsaqGold", "@JamaWeb", "@KadarTr", "@LibanMoon", "@MahamudStar",
-            "@MohamudTron", "@MuminVIP", "@OsmanPro", "@RageSol", "@SaidTech",
-            "@SalimGold", "@WarsameWeb", "@YacquubTr", "@ZakariaMoon", "@ZubairStar",
-            "@AdanTron", "@AliVIP", "@AminPro", "@BashiirSol", "@DeeqTech",
-            "@FaisalGold", "@GelleWeb", "@HassanTr", "@IdrisMoon", "@JibrilStar",
-            "@KhaalidTron", "@LibanVIP", "@MohamedPro", "@NasirSol", "@OmarTech",
-            "@QadarGold", "@RashidWeb", "@SaidTr", "@TariqMoon", "@UmarStar",
-            "@YusufTron", "@ZackVIP", "@AbdiPro", "@AhmedSol", "@AliTech",
-            "@AwaleGold", "@BashirWeb", "@DahirTr", "@FarahMoon", "@GuledStar",
-            "@HassanTron", "@HusseinVIP", "@IbrahimPro", "@IsaqSol", "@JamaTech",
-            "@KadarGold", "@LibanWeb", "@MahamudTr", "@MohamudMoon", "@MuminStar",
-            "@OsmanTron", "@RageVIP", "@SaidPro", "@SalimSol", "@WarsameTech",
-            "@YacquubGold", "@ZakariaWeb", "@ZubairTr", "@AdanMoon", "@AliStar",
-            "@AminTron", "@BashiirVIP", "@DeeqPro", "@FaisalSol", "@GelleTech",
-            "@HassanGold", "@IdrisWeb", "@JibrilTr", "@KhaalidMoon", "@LibanStar",
-            "@MohamedTron", "@NasirVIP", "@OmarPro", "@QadarSol", "@RashidTech",
-            "@SaidGold", "@TariqWeb", "@UmarTr", "@YusufMoon", "@ZackStar",
-            "@AbdiTron", "@AhmedVIP", "@AliPro", "@AwaleSol", "@BashirTech",
-            "@DahirGold", "@FarahWeb", "@GuledTr", "@HassanMoon", "@HusseinStar",
-            "@IbrahimTron", "@IsaqVIP", "@JamaPro", "@KadarSol", "@LibanTech",
-            "@MahamudGold", "@MohamudWeb", "@MuminTr", "@OsmanMoon", "@RageStar",
-            "@SaidTron", "@SalimVIP", "@WarsamePro", "@YacquubSol", "@ZakariaTech",
-            "@ZubairGold", "@AdanWeb", "@AliTr", "@AminMoon", "@BashiirStar",
-            "@DeeqTron", "@FaisalVIP", "@GellePro", "@HassanSol", "@IdrisTech",
-            "@JibrilGold", "@KhaalidWeb", "@LibanTr", "@MohamedMoon", "@NasirStar",
-            "@OmarTron", "@QadarVIP", "@RashidPro", "@SaidSol", "@TariqTech",
-            "@UmarGold", "@YusufWeb", "@ZackTr", "@AbdiMoon", "@AhmedStar",
-            "@AliTron", "@AwaleVIP", "@BashirPro", "@DahirSol", "@FarahTech",
-            "@GuledGold", "@HassanWeb", "@HusseinTr", "@IbrahimMoon", "@IsaqStar",
-            "@JamaTron", "@KadarVIP", "@LibanPro", "@MahamudSol", "@MohamudTech"
+            "@AhmedCrypto", "@AbdiStar", "@LibanBinance", "@FaysalTrader", "@KhadijaVIP"
         ];
         
         const standardFakeAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -759,7 +734,6 @@
             { action: "withdrew profits", color: "#10b981", icon: "fa-arrow-up", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] }
         ];
 
-        // 30 seconds interval popup toast notification
         setInterval(() => {
             let randomUser = uniqueNames[Math.floor(Math.random() * uniqueNames.length)];
             let randomAction = actionTypes[Math.floor(Math.random() * actionTypes.length)];
