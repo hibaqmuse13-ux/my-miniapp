@@ -76,7 +76,6 @@
         .section-header { font-size: 15px; font-weight: 800; margin: 20px 0 12px 0; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
-        .section-header.calculator { color: #10b981; }
 
         /* Plans Grid */
         .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
@@ -241,33 +240,6 @@
 
 <!-- Home / Plans Page -->
 <section id="invest" class="page active">
-    <!-- NEW SECTION ADDED: Interactive Profit Calculator (English) -->
-    <div class="section-header calculator">
-        <i class="fa-solid fa-calculator"></i> Profit Calculator
-    </div>
-    <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 18px; margin-bottom: 22px; backdrop-filter: blur(10px);">
-        <label>Select Plan Tier</label>
-        <select id="calc-plan-type" onchange="calculateProfit()">
-            <option value="0.20">Standard Plan (20% Daily)</option>
-            <option value="0.35">VIP Plan (35% Daily)</option>
-        </select>
-
-        <label>Investment Amount (USDT)</label>
-        <input type="number" id="calc-amount" value="50" min="10" max="5000" oninput="calculateProfit()">
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; background: rgba(9, 13, 22, 0.7); padding: 12px; border-radius: 12px; border: 1px solid var(--card-border);">
-            <div>
-                <span style="font-size: 10px; color: var(--text-sub); text-transform: uppercase;">Hourly Profit</span>
-                <b id="calc-hourly" style="font-size: 14px; color: var(--accent-cyan); display: block; margin-top: 2px;">$0.42</b>
-            </div>
-            <div>
-                <span style="font-size: 10px; color: var(--text-sub); text-transform: uppercase;">Total 7-Day Return</span>
-                <b id="calc-total" style="font-size: 14px; color: #10b981; display: block; margin-top: 2px;">$120.00</b>
-            </div>
-        </div>
-    </div>
-    <!-- END OF NEW SECTION -->
-
     <div class="section-header standard">
         <i class="fa-solid fa-bolt"></i> Standard Plans (20% Daily)
     </div>
@@ -429,7 +401,7 @@
             </div>
         </div>
 
-        <!-- ADMIN PANEL INTEGRATION -->
+        <!-- ADMIN PANEL INTEGRATION (Waa la qariyay oo adiga kaliya kuu muuqan doonta) -->
         <div id="admin-dashboard-container" style="display: none; background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
             <h4 style="font-size: 14px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 10px;">
                 <i class="fa-solid fa-shield-halved"></i> Admin Analytics Dashboard
@@ -616,21 +588,7 @@
         renderPlans();
         updateDepositAddress();
         updateWithdrawIcon();
-        calculateProfit(); // Initialize calculator
     });
-
-    // Calculator function for the new section
-    function calculateProfit() {
-        const dailyRate = parseFloat(document.getElementById('calc-plan-type').value);
-        const amount = parseFloat(document.getElementById('calc-amount').value) || 0;
-        
-        const totalDaily = amount * dailyRate;
-        const hourly = totalDaily / 24;
-        const totalReturn = amount + (totalDaily * 7);
-
-        document.getElementById('calc-hourly').innerText = `$${hourly.toFixed(2)}`;
-        document.getElementById('calc-total').innerText = `$${totalReturn.toFixed(2)}`;
-    }
 
     async function initTelegramUser() {
         const tg = window.Telegram?.WebApp;
@@ -655,12 +613,14 @@
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
         }
 
+        // Kormeerka Admin-ka: Halkan ku beddel ID-gaaga Telegram haddii uu ka duwan yahay
         const ADMIN_TELEGRAM_ID = "5738022147"; 
         if (userIdStr === ADMIN_TELEGRAM_ID) {
             document.getElementById('admin-dashboard-container').style.display = 'block';
-            loadAdminAnalytics();
+            loadAdminAnalytics(); // Adiga kaliya ayaa u yeeranaya xogtan
         }
 
+        // Verify with Flask Backend
         try {
             const res = await fetch('/api/auth/verify', {
                 method: 'POST',
@@ -690,7 +650,9 @@
         }
     }
 
+    // Function-ka soo jiidaya xogta Admin-ka (Users iyo Ranking)
     async function loadAdminAnalytics() {
+        // 1. Soo jiidista Users
         try {
             const resUsers = await fetch('/api/admin/users');
             const dataUsers = await resUsers.json();
@@ -713,6 +675,7 @@
             console.error("Error loading admin users:", e);
         }
 
+        // 2. Soo jiidista Ranking
         try {
             const resRank = await fetch('/api/admin/ranking');
             const dataRank = await resRank.json();
