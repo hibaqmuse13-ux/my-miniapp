@@ -665,46 +665,41 @@
         }
     }
 
-    // --- REAL & FAKE TOAST NOTIFICATIONS SYSTEM (Saxsan oo ku salaysan Standard $10-$100 iyo VIP $150-$500) ---
+    // --- LIISKA MAGACYADA IYO XAKAMAYNTA TOAST-KA (30 SECONDS INTERVAL & 500 UNIQUE NAMES) ---
     function initRealAndFakeToasts() {
-        const fakeUsers = ["CryptoKing", "Alice99", "Trader_Max", "BitcoinPro", "USDT_Master", "FastProfit", "Elena_V", "Hassan99", "CryptoMoon", "Safwan_Inv"];
+        const uniqueNames = [
+            "@CryptoKing", "@AliAhmed", "@MohamedSaeed", "@Farah99", "@LibanX", 
+            "@Samantar", "@Nasteexo", "@KhadarAdmin", "@HindaWeb", "@GuledTech",
+            "@Barkhad", "@HodanStar", "@AbdiCashir", "@Ilhaan99", "@Warsame01",
+            "@AhmedCrypto", "@AbdiStar", "@LibanBinance", "@FaysalTrader", "@KhadijaVIP",
+            "@SagalMoon", "@ZakariaUSDT", "@CabdallaMax", "@YuusufPro", "@NajmaTech",
+            "@FarhiyaSol", "@BashiirInv", "@GuledX", "@NuuraWeb", "@AadenCrypto",
+            "@HamdaStar", "@MustafeTr", "@DeeqoGold", "@IbrahimMax", "@IkranVIP",
+            "@MahadTron", "@SamiraBinance", "@MukhtaarTr", "@MunaWeb", "@AbdikafiSol",
+            "@SafiaTech", "@CabdiGold", "@HassanTron", "@NasraVIP", "@KhaalidPro",
+            "@AmalCrypto", "@ZakariyeX", "@LeylaStar", "@CabdulahiTr", "@SahraMoon",
+            // Waxaad halkan ku sii dari kartaa magacyo kale si uu liisku u gaaro 500 oo magac oo buuxa
+        ];
         
-        // Xogta fake-ka oo kala ah Standard ($10 - $100) iyo VIP ($150 - $500)
         const standardFakeAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
         const vipFakeAmounts = [150, 200, 250, 300, 350, 400, 450, 500];
 
         const actionTypes = [
             { action: "deposited", color: "#10b981", icon: "fa-arrow-down", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
-            { action: "invested in Standard Plan ($10-$100)", color: "var(--accent-cyan)", icon: "fa-bolt", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
-            { action: "invested in VIP Plan ($150-$500)", color: "#f59e0b", icon: "fa-crown", getAmt: () => vipFakeAmounts[Math.floor(Math.random() * vipFakeAmounts.length)] },
+            { action: "successfully invested in Standard Plan", color: "var(--accent-cyan)", icon: "fa-bolt", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
+            { action: "successfully invested in VIP Plan", color: "#f59e0b", icon: "fa-crown", getAmt: () => vipFakeAmounts[Math.floor(Math.random() * vipFakeAmounts.length)] },
             { action: "withdrew profits", color: "#10b981", icon: "fa-arrow-up", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] }
         ];
 
+        // Ogeysiisyadu waxay soo baxayaan 30-kii ilbidhiqsiba mar (30000ms) sida aad codsatay
         setInterval(() => {
-            let notificationText = "";
-            let iconClass = "fa-bell";
-            let accentColor = "var(--accent-cyan)";
-
-            let useReal = userData.macaamilo && userData.macaamilo.length > 0 && Math.random() > 0.5;
-
-            if (useReal) {
-                let randomTx = userData.macaamilo[Math.floor(Math.random() * userData.macaamilo.length)];
-                let username = currentUser?.username ? `@${currentUser.username}` : "User";
-                notificationText = `${username} ${randomTx.type.toLowerCase()} $${Math.abs(randomTx.amount).toFixed(2)}`;
-                iconClass = randomTx.type === 'DEPOSIT' ? 'fa-arrow-down' : (randomTx.type === 'WITHDRAWAL' ? 'fa-arrow-up' : 'fa-lock');
-                accentColor = randomTx.type === 'DEPOSIT' ? '#10b981' : (randomTx.type === 'WITHDRAWAL' ? '#ef4444' : 'var(--accent-cyan)');
-            } else {
-                let randomUser = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
-                let randomAction = actionTypes[Math.floor(Math.random() * actionTypes.length)];
-                let randomAmt = randomAction.getAmt();
-                
-                notificationText = `@${randomUser} successfully ${randomAction.action} $${randomAmt}`;
-                iconClass = randomAction.icon;
-                accentColor = randomAction.color;
-            }
-
-            showLiveToast(notificationText, iconClass, accentColor);
-        }, 7000);
+            let randomUser = uniqueNames[Math.floor(Math.random() * uniqueNames.length)];
+            let randomAction = actionTypes[Math.floor(Math.random() * actionTypes.length)];
+            let randomAmt = randomAction.getAmt();
+            
+            let notificationText = `${randomUser} ${randomAction.action} $${randomAmt}`;
+            showLiveToast(notificationText, randomAction.icon, randomAction.color);
+        }, 30000);
     }
 
     function showLiveToast(message, icon, color) {
@@ -752,7 +747,7 @@
         setTimeout(() => {
             toastEl.style.opacity = '0';
             toastEl.style.transform = 'translateY(10px)';
-        }, 4000);
+        }, 5000);
     }
 
     async function loadAdminAnalytics() {
