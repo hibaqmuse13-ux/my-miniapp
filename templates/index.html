@@ -165,37 +165,8 @@
         nav button i { font-size: 18px; }
         nav button.active { color: var(--accent-cyan); font-weight: 700; }
 
-        /* Enhanced Toast Popup with FX */
-        #toast { 
-            position: fixed; 
-            top: 20px; 
-            left: 50%; 
-            transform: translateX(-50%) translateY(-30px); 
-            background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.98) 100%); 
-            color: #fff; 
-            border: 1px solid rgba(0, 210, 255, 0.3); 
-            padding: 14px 22px; 
-            border-radius: 16px; 
-            font-size: 13px; 
-            font-weight: 600; 
-            z-index: 10000; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 210, 255, 0.2); 
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-        #toast.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-        #toast i {
-            font-size: 16px;
-            color: var(--accent-cyan);
-        }
+        /* Toast Popup */
+        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 12px 20px; border-radius: 12px; font-size: 13px; font-weight: 500; z-index: 10000; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
     </style>
 </head>
 
@@ -430,7 +401,7 @@
             </div>
         </div>
 
-        <!-- ADMIN PANEL INTEGRATION -->
+        <!-- ADMIN PANEL INTEGRATION (Waa la qariyay oo adiga kaliya kuu muuqan doonta) -->
         <div id="admin-dashboard-container" style="display: none; background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-top: 15px;">
             <h4 style="font-size: 14px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 10px;">
                 <i class="fa-solid fa-shield-halved"></i> Admin Analytics Dashboard
@@ -585,11 +556,7 @@
 
 </div>
 
-<!-- Enhanced Toast Element -->
-<div id="toast">
-    <i class="fa-solid fa-circle-info" id="toast-icon"></i>
-    <span id="toast-msg">Message</span>
-</div>
+<div id="toast">Message</div>
 
 <script>
     let currentUser = null;
@@ -646,12 +613,14 @@
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
         }
 
+        // Kormeerka Admin-ka: Halkan ku beddel ID-gaaga Telegram haddii uu ka duwan yahay
         const ADMIN_TELEGRAM_ID = "5738022147"; 
         if (userIdStr === ADMIN_TELEGRAM_ID) {
             document.getElementById('admin-dashboard-container').style.display = 'block';
-            loadAdminAnalytics();
+            loadAdminAnalytics(); // Adiga kaliya ayaa u yeeranaya xogtan
         }
 
+        // Verify with Flask Backend
         try {
             const res = await fetch('/api/auth/verify', {
                 method: 'POST',
@@ -681,7 +650,9 @@
         }
     }
 
+    // Function-ka soo jiidaya xogta Admin-ka (Users iyo Ranking)
     async function loadAdminAnalytics() {
+        // 1. Soo jiidista Users
         try {
             const resUsers = await fetch('/api/admin/users');
             const dataUsers = await resUsers.json();
@@ -704,6 +675,7 @@
             console.error("Error loading admin users:", e);
         }
 
+        // 2. Soo jiidista Ranking
         try {
             const resRank = await fetch('/api/admin/ranking');
             const dataRank = await resRank.json();
@@ -784,8 +756,8 @@
         const screenshotFile = document.getElementById('deposit-screenshot').files[0];
         const userId = currentUser ? currentUser.id.toString() : "5738022147";
 
-        if(!amt || amt < 10) { showToast("⚠️ Minimum deposit is $10 USDT", "warning"); return; }
-        if(!txid && !screenshotFile) { showToast("⚠️ Please enter TXID or upload a screenshot!", "warning"); return; }
+        if(!amt || amt < 10) { showToast("⚠️ Minimum deposit is $10 USDT"); return; }
+        if(!txid && !screenshotFile) { showToast("⚠️ Please enter TXID or upload a screenshot!"); return; }
 
         const formData = new FormData();
         formData.append('user_id', userId);
@@ -803,7 +775,7 @@
                 body: formData
             });
             const result = await res.json();
-            showToast(result.message, result.status === 'success' ? 'success' : 'error');
+            showToast(result.message);
             if(result.status === 'success') {
                 document.getElementById('deposit-amount').value = '';
                 document.getElementById('deposit-txid').value = '';
@@ -812,7 +784,7 @@
                 openPage('history');
             }
         } catch(e) {
-            showToast("Connection error!", "error");
+            showToast("Connection error!");
         }
     }
 
@@ -821,8 +793,8 @@
         const addr = document.getElementById('withdraw-address').value;
         const userId = currentUser ? currentUser.id.toString() : "5738022147";
 
-        if(!amt || amt < 10) { showToast("⚠️ Minimum withdrawal is $10 USDT", "warning"); return; }
-        if(!addr) { showToast("⚠️ Please provide a wallet address!", "warning"); return; }
+        if(!amt || amt < 10) { showToast("⚠️ Minimum withdrawal is $10 USDT"); return; }
+        if(!addr) { showToast("⚠️ Please provide a wallet address!"); return; }
 
         try {
             const res = await fetch('/api/withdraw/request', {
@@ -835,7 +807,7 @@
                 })
             });
             const result = await res.json();
-            showToast(result.message, result.status === 'success' ? 'success' : 'error');
+            showToast(result.message);
             if(result.status === 'success') {
                 document.getElementById('withdraw-amount').value = '';
                 document.getElementById('withdraw-address').value = '';
@@ -843,7 +815,7 @@
                 openPage('history');
             }
         } catch(e) {
-            showToast("Connection error!", "error");
+            showToast("Connection error!");
         }
     }
 
@@ -859,12 +831,12 @@
                 })
             });
             const result = await res.json();
-            showToast(result.message, result.status === 'success' ? 'success' : 'error');
+            showToast(result.message);
             if(result.status === 'success') {
                 fetchUserData(userId);
             }
         } catch(e) {
-            showToast("Connection error!", "error");
+            showToast("Connection error!");
         }
     }
 
@@ -963,21 +935,21 @@
     function copyAddress() {
         const addr = document.getElementById('deposit-address-display').innerText;
         navigator.clipboard.writeText(addr);
-        showToast("Wallet Address Copied!", "success");
+        showToast("Wallet Address Copied!");
     }
 
     function copyRefLink() {
         const refInput = document.getElementById('ref-link');
         refInput.select();
         navigator.clipboard.writeText(refInput.value);
-        showToast("Referral Link Copied!", "success");
+        showToast("Referral Link Copied!");
     }
 
     async function sendTicket() {
         const sub = document.getElementById('support-subject').value;
         const msg = document.getElementById('support-msg').value;
 
-        if(!sub || !msg) { showToast("Please fill in all ticket fields!", "warning"); return; }
+        if(!sub || !msg) { showToast("Please fill in all ticket fields!"); return; }
 
         const userId = currentUser ? currentUser.id.toString() : "5738022147";
         const username = currentUser ? (currentUser.username || currentUser.first_name || "User") : "User";
@@ -994,14 +966,14 @@
                 })
             });
             const result = await res.json();
-            showToast(result.message, result.status === 'success' ? 'success' : 'error');
+            showToast(result.message);
             if(result.status === 'success') {
                 document.getElementById('support-subject').value = '';
                 document.getElementById('support-msg').value = '';
                 loadSupportTickets(userId);
             }
         } catch(e) {
-            showToast("Connection error!", "error");
+            showToast("Connection error!");
         }
     }
 
@@ -1040,83 +1012,13 @@
         }
     }
 
-    // --- NOTIFICATION SOUND (Web Audio API Chime) ---
-    function playNotificationSound(type = 'info') {
-        try {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            if (!AudioContext) return;
-            const ctx = new AudioContext();
-
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            let startFreq = 587.33; // D5
-            let endFreq = 880;    // A5
-
-            if (type === 'success') {
-                startFreq = 523.25; // C5
-                endFreq = 1046.50; // C6 (High happy chime)
-            } else if (type === 'warning' || type === 'error') {
-                startFreq = 440; // A4
-                endFreq = 330;   // E4 (Low warning tone)
-            }
-
-            osc.frequency.setValueAtTime(startFreq, ctx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(endFreq, ctx.currentTime + 0.15);
-
-            gain.gain.setValueAtTime(0.12, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-
-            osc.start();
-            osc.stop(ctx.currentTime + 0.3);
-        } catch (e) {
-            // Audio context policy handler
-        }
-    }
-
-    // --- ENHANCED TOAST FX ---
-    let toastTimer = null;
-    function showToast(msg, type = 'info') {
+    function showToast(msg) {
         const toast = document.getElementById('toast');
-        const toastMsg = document.getElementById('toast-msg');
-        const toastIcon = document.getElementById('toast-icon');
-
-        toastMsg.innerText = msg;
-
-        // Icon iyo Color configuration
-        if (type === 'success') {
-            toastIcon.className = "fa-solid fa-circle-check";
-            toastIcon.style.color = "#10b981";
-            toast.style.borderColor = "rgba(16, 185, 129, 0.4)";
-        } else if (type === 'warning') {
-            toastIcon.className = "fa-solid fa-triangle-exclamation";
-            toastIcon.style.color = "#f59e0b";
-            toast.style.borderColor = "rgba(245, 158, 11, 0.4)";
-        } else if (type === 'error') {
-            toastIcon.className = "fa-solid fa-circle-xmark";
-            toastIcon.style.color = "#ef4444";
-            toast.style.borderColor = "rgba(239, 68, 68, 0.4)";
-        } else {
-            toastIcon.className = "fa-solid fa-circle-info";
-            toastIcon.style.color = "var(--accent-cyan)";
-            toast.style.borderColor = "rgba(0, 210, 255, 0.3)";
-        }
-
-        // Play sound effect
-        playNotificationSound(type);
-
-        // Show with animation FX
-        clearTimeout(toastTimer);
-        toast.classList.add('show');
-
-        toastTimer = setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3200);
+        toast.innerText = msg;
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 3000);
     }
 </script>
 
 </body>
-</html>
+        </html>
