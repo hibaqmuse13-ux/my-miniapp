@@ -153,38 +153,29 @@
             100% { opacity: 1; }
         }
 
-        /* Professional Luxurious Gold Balance Card */
+        /* Professional Available Balance Card */
         .balance-card { 
-            background: linear-gradient(135deg, rgba(15, 21, 36, 0.98) 0%, rgba(7, 11, 20, 0.99) 100%); 
-            border: 1px solid rgba(245, 158, 11, 0.4); 
+            background: var(--card-bg); 
+            border: 1px solid var(--card-border); 
             border-radius: 16px; 
-            padding: 14px 14px; 
+            padding: 16px 14px; 
             text-align: center; 
-            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 215, 0, 0.2); 
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4); 
             margin-bottom: 6px; 
             position: relative; 
             overflow: hidden; 
         }
-        .balance-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(245, 158, 11, 0.06) 0%, transparent 60%);
-            pointer-events: none;
-        }
-        .balance-card p { font-size: 10px; color: #fbbf24; text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 2px; font-weight: 700; }
-        .balance-card h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.5px; margin: 3px 0; background: linear-gradient(180deg, #fef08a 0%, #d97706 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 2px 10px rgba(245, 158, 11, 0.2); }
-        .balance-card span.badge-usdt { font-size: 10px; font-weight: 700; color: #00d2ff; background: rgba(0, 210, 255, 0.12); padding: 2px 8px; border-radius: 5px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid rgba(0, 210, 255, 0.25); }
-        .badge-usdt img { width: 12px; height: 12px; }
+        .balance-card p { font-size: 11px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; font-weight: 700; }
+        .balance-card h1 { font-size: 36px; font-weight: 800; letter-spacing: -0.5px; margin: 4px 0; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        span.badge-usdt { font-size: 11px; font-weight: 700; color: #00d2ff; background: rgba(0, 210, 255, 0.12); padding: 4px 10px; border-radius: 6px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(0, 210, 255, 0.25); }
+        .badge-usdt img { width: 14px; height: 14px; }
 
-        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .stats { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
         .stats div { text-align: center; }
-        .stats i { font-size: 11px; color: var(--accent-cyan); margin-bottom: 2px; }
-        .stats h4 { font-size: 9.5px; color: var(--text-sub); font-weight: 500; text-transform: uppercase; }
-        .stats b { font-size: 12px; color: #fff; font-weight: 700; display: block; margin-top: 1px; }
+        .stats i { font-size: 16px; color: var(--accent-cyan); margin-bottom: 4px; }
+        .stats h4 { font-size: 11px; color: var(--text-sub); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stats b { font-size: 14px; color: #fff; font-weight: 800; display: block; margin-top: 2px; }
 
         /* Compact Gold Pending Referral Balance Card */
         .pending-balance-card { 
@@ -518,19 +509,21 @@
     </div>
 </div>
 
-<!-- Professional Luxurious Available Balance Section -->
+<!-- Professional Available Balance Section -->
 <section class="balance-card">
     <p>Available Balance</p>
     <h1>$<span id="balance">0.00</span></h1>
-    <span class="badge-usdt">
-        <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT"> USDT
-    </span>
 
     <div class="stats">
         <div>
             <i class="fa-solid fa-chart-line"></i>
             <h4>Total Profit</h4>
             <b>$<span id="profit">0.00</span></b>
+        </div>
+        <div style="text-align: center; padding: 0 4px;">
+            <span class="badge-usdt" style="margin: 0; padding: 4px 8px; font-size: 11px;">
+                <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" style="width: 14px; height: 14px;"> USDT
+            </span>
         </div>
         <div>
             <i class="fa-solid fa-lock"></i>
