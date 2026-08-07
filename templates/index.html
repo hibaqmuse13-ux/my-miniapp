@@ -293,42 +293,41 @@
 
         #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 12px 20px; border-radius: 12px; font-size: 13px; z-index: 10000; display: none; }
 
-        /* PROFESSIONAL COREXBOT LIVE CHAT WIDGET STYLES WITH ANIMATION */
+        /* PROFESSIONAL COREXBOT LIVE CHAT WIDGET STYLES (Smaller Size & Animation) */
         .chat-widget-btn {
             position: fixed;
             bottom: 85px;
             right: 20px;
             background: var(--primary-gradient);
             color: #fff;
-            width: 56px;
-            height: 56px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(0, 210, 255, 0.4);
             z-index: 10000;
             border: 2px solid rgba(255, 255, 255, 0.2);
             transition: transform 0.3s ease, opacity 0.3s ease;
-            transform: scale(0);
-            opacity: 0;
+        }
+        .chat-widget-btn:hover { transform: scale(1.05); }
+
+        @keyframes popAnimation {
+            0% { transform: scale(0.6); opacity: 0; }
+            50% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .chat-widget-btn.show-animation {
-            animation: professionalPopup 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
-        @keyframes professionalPopup {
-            0% { transform: scale(0) translateY(30px); opacity: 0; }
-            70% { transform: scale(1.1) translateY(-5px); opacity: 1; }
-            100% { transform: scale(1) translateY(0); opacity: 1; }
+        .chat-widget-btn.animating {
+            animation: popAnimation 0.6s ease forwards;
         }
 
         .chat-window {
             position: fixed;
-            bottom: 155px;
+            bottom: 145px;
             right: 20px;
             width: 320px;
             height: 440px;
@@ -341,7 +340,6 @@
             overflow: hidden;
             font-family: sans-serif;
             border: 1px solid rgba(0, 210, 255, 0.25);
-            transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
         .chat-window.hidden { display: none; }
@@ -844,7 +842,7 @@
         <button id="close-chat">&times;</button>
     </div>
     <div id="chat-body" class="chat-body">
-        <div class="bot-message">Hello! Welcome to CoreXBot Assistant. How can I assist you with your investments, withdrawals, or account details today?</div>
+        <div class="bot-message">Hello 👋 how i can help you ☺️</div>
     </div>
     <div class="chat-footer">
         <input type="text" id="chat-input" placeholder="Type your message here...">
@@ -855,126 +853,6 @@
 <div id="toast">Message</div>
 
 <script>
-    // 100+ PROFESSIONAL ENGLISH Q&A DATABASE FOR LIVE BOT ASSISTANT
-    const faqDatabase = [
-        // 1-10: Deposits
-        { keywords: ['minimum deposit', 'min deposit', 'start deposit', 'lowest deposit'], answer: 'The minimum deposit amount required is 10.00 USDT across all supported blockchain networks.' },
-        { keywords: ['maximum deposit', 'max deposit', 'highest deposit', 'deposit limit'], answer: 'The maximum deposit limit per single transaction is 10,000 USDT. For higher transactions, please contact support.' },
-        { keywords: ['deposit network', 'supported network', 'trc20', 'bep20', 'erc20', 'networks'], answer: 'We support USDT on TRON (TRC20), BNB Smart Chain (BEP20), and Ethereum (ERC20) networks.' },
-        { keywords: ['deposit time', 'how long deposit', 'processing deposit', 'credit deposit'], answer: 'Deposits are credited automatically within 1 to 3 blockchain network confirmations (usually under 2 minutes).' },
-        { keywords: ['deposit fee', 'gas fee deposit', 'extra charge deposit'], answer: 'Our platform charges zero fees for incoming deposits. You only cover your standard blockchain gas fees.' },
-        { keywords: ['deposit txid', 'transaction hash', 'paste txid', 'find txid'], answer: 'You can locate your transaction hash (TXID) in your wallet transfer history and paste it into the deposit form.' },
-        { keywords: ['deposit screenshot', 'upload receipt', 'proof of payment'], answer: 'If your TXID is unavailable, you can upload a clear screenshot of your completed transfer receipt for manual review.' },
-        { keywords: ['deposit error', 'failed deposit', 'missing deposit', 'deposit not showing'], answer: 'If your deposit is delayed, ensure you selected the correct network and submit a support ticket with your TXID.' },
-        { keywords: ['deposit address', 'wallet address', 'where to send'], answer: 'Your official deposit wallet address is displayed on the Deposit page. Always select the correct network before copying.' },
-        { keywords: ['can i deposit btc', 'deposit bitcoin', 'deposit eth directly'], answer: 'All platform balances and investments operate in USDT. Please convert your crypto to USDT before depositing.' },
-
-        // 11-20: Withdrawals
-        { keywords: ['minimum withdrawal', 'min withdraw', 'lowest withdrawal'], answer: 'The minimum withdrawal amount is 10.00 USDT.' },
-        { keywords: ['maximum withdrawal', 'max withdraw', 'withdrawal limit'], answer: 'The maximum daily withdrawal limit is 5,000 USDT for standard accounts and up to 20,000 USDT for VIP accounts.' },
-        { keywords: ['withdrawal locked', 'why can not withdraw', 'withdraw rule', '7 day duration'], answer: 'Withdrawals are strictly locked and only permitted after your active investment plan fully completes its 7-day duration cycle.' },
-        { keywords: ['withdrawal time', 'payout speed', 'how fast withdrawal', 'receive withdrawal'], answer: 'Withdrawals are processed automatically and typically reach your external wallet within minutes up to 24 hours.' },
-        { keywords: ['withdrawal fee', 'payout fee', 'gas fee withdrawal'], answer: 'A minimal network fee may apply during high-demand network congestion periods to guarantee instant processing.' },
-        { keywords: ['withdrawal address', 'destination address', 'where do funds go'], answer: 'Funds are sent directly to the external wallet address you enter in the withdrawal form. Please verify your address carefully.' },
-        { keywords: ['cancel withdrawal', 'reverse withdrawal'], answer: 'Once a withdrawal request is submitted and enters the processing queue, it cannot be canceled or reversed.' },
-        { keywords: ['pending withdrawal', 'withdrawal status', 'delayed payout'], answer: 'Pending withdrawals undergo automated security checks to ensure safe asset delivery.' },
-        { keywords: ['wrong withdrawal address', 'sent to wrong address'], answer: 'Blockchain transactions are irreversible. Please ensure your wallet address is completely accurate before submitting.' },
-        { keywords: ['withdraw referral bonus', 'referral withdrawal'], answer: 'Referral bonuses become fully available for withdrawal once your invited user completes their first verified investment.' },
-
-        // 21-35: Investments, Standard & VIP Plans
-        { keywords: ['standard plan', 'standard tier', 'standard investment', 'standard plans'], answer: 'Standard plans range from $10 to $100 USDT, offering a 20% daily profit return with hourly compounding over 7 days.' },
-        { keywords: ['vip plan', 'vip tier', 'vip investment', 'vip package', 'vip plans'], answer: 'VIP plans range from $150 to $500 USDT, offering a high-yield 35% daily profit return credited hourly over 7 days.' },
-        { keywords: ['minimum investment', 'min invest'], answer: 'The minimum investment amount is 10.00 USDT for standard plans and 150.00 USDT for VIP plans.' },
-        { keywords: ['maximum investment', 'max invest'], answer: 'The maximum single investment amount is 100 USDT for standard plans and 500 USDT for VIP plans.' },
-        { keywords: ['investment duration', 'how long plan', '7 days rule'], answer: 'All investment plans run for a fixed duration of exactly 7 days (168 hours).' },
-        { keywords: ['profit frequency', 'hourly profit', 'when do i get profit'], answer: 'Profits are calculated and credited to your live balance automatically every single hour.' },
-        { keywords: ['total return standard', 'calculate standard profit'], answer: 'A standard plan yields 20% daily, resulting in a total return of 140% over the 7-day duration.' },
-        { keywords: ['total return vip', 'calculate vip profit'], answer: 'A VIP plan yields 35% daily, resulting in a lucrative total return of 245% over the 7-day duration.' },
-        { keywords: ['multiple investments', 'can i invest twice', 'active plans limit'], answer: 'You can run multiple active investment plans simultaneously to maximize your daily earnings.' },
-        { keywords: ['cancel investment', 'stop investment early'], answer: 'Active investments are locked for the full 7-day duration to ensure stable liquidity pool distribution and cannot be canceled early.' },
-        { keywords: ['investment profit calculation', 'how is profit made'], answer: 'Profits are generated through automated crypto mining algorithms and liquidity pool trading managed by our system.' },
-        { keywords: ['active deposit balance', 'where is invested money'], answer: 'Your active investment funds are securely locked in active mining contracts, generating hourly returns visible on your home screen.' },
-        { keywords: ['completed investment', 'what happens after 7 days'], answer: 'Once your 7-day plan finishes, your principal and accumulated profits are fully released to your available balance.' },
-        { keywords: ['reinvest profits', 'compound earnings'], answer: 'You can easily use your available balance or completed investment returns to purchase new standard or VIP plans.' },
-        { keywords: ['investment risk', 'is investment safe'], answer: 'While our automated mining strategies are optimized for high returns, all crypto investments carry inherent market risks. Invest responsibly.' },
-
-        // 36-50: Referral System & Ref-Link
-        { keywords: ['ref link', 'referral link', 'invite link', 'where is my referral link'], answer: 'Your unique referral link can be found in your Profile section. Share it with friends to earn commission.' },
-        { keywords: ['referral bonus', 'invite bonus', 'how much referral'], answer: 'You instantly earn 2.00 USDT in referral commission when your invited friend makes their first successful deposit.' },
-        { keywords: ['pending referral balance', 'pending commission', 'referral review'], answer: 'Pending referral balances are reviewed and unlocked once your referral completes their qualification criteria.' },
-        { keywords: ['how to invite', 'sharing referral link'], answer: 'Simply copy your referral link from your profile and share it via Telegram, WhatsApp, or social media channels.' },
-        { keywords: ['referral count', 'how many referrals', 'track referrals'], answer: 'You can track your total referral count and commission statistics directly in the Stats page.' },
-        { keywords: ['referral limit', 'max referrals', 'limit on invites'], answer: 'There is no limit on how many friends you can invite. The more you share, the more bonuses you can earn.' },
-        { keywords: ['referral not showing', 'missing referral reward'], answer: 'Referral rewards are credited automatically once your invited user registers through your link and completes a deposit.' },
-        { keywords: ['do i need to deposit to refer', 'referral without deposit'], answer: 'You can share your referral link freely, but your invited users must complete a deposit to trigger your bonus.' },
-        { keywords: ['referral tier levels', 'multi level referral'], answer: 'Our referral program is direct and instant, rewarding you directly for every qualified direct invite.' },
-        { keywords: ['change referral link', 'custom ref link'], answer: 'Your referral link is permanently tied to your Telegram user ID for absolute security and accurate commission tracking.' },
-        { keywords: ['referral payout', 'where does referral go'], answer: 'Unlocked referral earnings are credited straight to your main available balance.' },
-        { keywords: ['telegram bot referral', 'bot start link'], answer: 'Your referral link opens our official Telegram Web App with your unique tracking parameter attached automatically.' },
-        { keywords: ['referral rules', 'terms of referral'], answer: 'Creating fake accounts or self-referrals violates our terms of service and may result in account suspension.' },
-        { keywords: ['referral notifications', 'alert on referral'], answer: 'You will receive instant balance updates and dashboard notifications when your referral makes a deposit.' },
-        { keywords: ['affiliate program', 'partner program'], answer: 'Our affiliate program is built directly into the Telegram Web App for seamless tracking and instant rewards.' },
-
-        // 51-65: Account, Profile & Security
-        { keywords: ['account security', 'is my account safe', 'protect account'], answer: 'Your account is secured via Telegram token authentication and end-to-end encrypted session keys.' },
-        { keywords: ['telegram login', 'password', 'forgot password'], answer: 'No password is required! Your account is securely authenticated directly through your Telegram account.' },
-        { keywords: ['change username', 'update profile name'], answer: 'Your profile name and username are automatically synced directly from your official Telegram profile.' },
-        { keywords: ['telegram id', 'user id', 'find my id'], answer: 'Your unique Telegram ID is displayed in your Profile section and header.' },
-        { keywords: ['verified badge', 'verification status', 'verified account'], answer: 'Accounts authenticated through Telegram are automatically marked as Verified with platform security clearance.' },
-        { keywords: ['multiple accounts', 'one person multiple accounts'], answer: 'To maintain platform fairness and security, each user is permitted one primary account.' },
-        { keywords: ['delete account', 'remove account data'], answer: 'To close or reset your account data, please submit a direct support ticket to our administration team.' },
-        { keywords: ['language settings', 'change language', 'english language'], answer: 'Our platform interface and support assistant are optimized in professional English for global users.' },
-        { keywords: ['mobile app', 'telegram mini app', 'app download'], answer: 'Our platform runs smoothly as a Telegram Mini App directly inside your Telegram mobile or desktop application.' },
-        { keywords: ['browser compatibility', 'web version'], answer: 'You can access our platform seamlessly through any modern mobile or desktop browser via Telegram.' },
-        { keywords: ['session expired', 'logged out'], answer: 'If your session expires, simply reopen the Telegram Web App link to instantly restore your secure session.' },
-        { keywords: ['balance update', 'refresh balance'], answer: 'Your balances update in real-time. You can also switch tabs or reopen the app to sync latest database records.' },
-        { keywords: ['profile avatar', 'change picture'], answer: 'Your profile avatar automatically displays your official Telegram profile picture.' },
-        { keywords: ['privacy policy', 'data privacy'], answer: 'We strictly protect user data and financial records using industry-standard encryption protocols.' },
-        { keywords: ['terms of service', 'user agreement'], answer: 'By using our platform, you agree to adhere to our investment guidelines, security protocols, and fair usage rules.' },
-
-        // 66-80: Support, Live Chat & Tickets
-        { keywords: ['live support', 'contact support', 'talk to agent', 'customer service'], answer: 'Our 24/7 support team is available via the live chat widget or official Telegram support channel.' },
-        { keywords: ['support ticket', 'submit ticket', 'create ticket'], answer: 'You can submit a direct support ticket in the Support section by providing your subject and detailed message.' },
-        { keywords: ['admin reply', 'ticket response', 'check ticket status'], answer: 'You can view your submitted support tickets and official admin replies directly in the Support section.' },
-        { keywords: ['response time', 'how fast support', 'support hours'], answer: 'Our support team operates 24/7, with average response times under 15 minutes.' },
-        { keywords: ['telegram support channel', 'admin contact'], answer: 'You can contact our official support admin directly at @USDTPilotAdmin on Telegram.' },
-        { keywords: ['bug report', 'found a bug', 'technical issue'], answer: 'If you encounter any technical issues or bugs, please report them immediately via our support ticket system.' },
-        { keywords: ['complaint', 'file a complaint'], answer: 'We take all user feedback seriously. Please submit your concerns through our support ticketing system for prompt resolution.' },
-        { keywords: ['faq', 'frequently asked questions'], answer: 'You can ask our live assistant bot any question about deposits, withdrawals, VIP plans, or referrals anytime.' },
-        { keywords: ['help center', 'guidelines'], answer: 'Review our Rules & Guidelines banner on the home screen for quick summaries of profits, referrals, and rules.' },
-        { keywords: ['community', 'telegram group'], answer: 'Join our official Telegram community channel to connect with other investors and stay updated on platform news.' },
-        { keywords: ['announcements', 'news', 'updates'], answer: 'Platform updates, market trends, and special events are announced regularly in our official channels.' },
-        { keywords: ['feedback', 'suggest feature'], answer: 'We love user feedback! Send your feature suggestions to our support team to help us improve.' },
-        { keywords: ['connection error', 'network problem', 'server issue'], answer: 'If you experience connection issues, please check your internet connection and restart the Telegram Mini App.' },
-        { keywords: ['loading issue', 'screen frozen'], answer: 'Try closing and reopening the Mini App if the interface takes longer than usual to load.' },
-        { keywords: ['official links', 'avoid scams'], answer: 'Always use our official bot links and verify admin usernames to ensure complete protection against scams.' },
-
-        // 81-105: General Crypto, Mining & Platform Features
-        { keywords: ['what is usdt', 'tether currency'], answer: 'USDT (Tether) is a stablecoin pegged to the US Dollar, ensuring stable value for all investments and payouts.' },
-        { keywords: ['what is mining', 'crypto mining'], answer: 'Our platform utilizes advanced automated crypto mining and liquidity algorithms to generate steady daily returns.' },
-        { keywords: ['market trends', 'live prices', 'crypto prices'], answer: 'You can view live market prices and 24-hour trends for Bitcoin, Ethereum, USDT, BNB, Solana, and other top coins on our home screen.' },
-        { keywords: ['ticker', 'market ticker'], answer: 'Our real-time market ticker displays live cryptocurrency price fluctuations across global exchanges.' },
-        { keywords: ['statistics', 'performance analytics', 'analytics page'], answer: 'The Stats page provides comprehensive analytics on your total deposits, withdrawals, referrals, and portfolio goal progress.' },
-        { keywords: ['portfolio goal', 'investment goal'], answer: 'Our progress bar tracks your overall portfolio growth toward your financial milestones.' },
-        { keywords: ['admin dashboard', 'admin panel'], answer: 'The admin dashboard is restricted to authorized administrators to monitor user registrations, balances, and investment rankings.' },
-        { keywords: ['ranking', 'top investors'], answer: 'Top investment rankings display leading platform participants based on total invested capital and active plans.' },
-        { keywords: ['history', 'transaction history', 'activity log'], answer: 'The History page lets you filter and review all your past deposits, withdrawals, and investment activities.' },
-        { keywords: ['splash screen', 'loading screen'], answer: 'Our secure splash screen initializes your encrypted connection and loads your user profile instantly.' },
-        { keywords: ['bot name', 'miniapp v1 bot'], answer: 'Our official Telegram Mini App bot is securely hosted and verified for reliable automated investment management.' },
-        { keywords: ['fees explained', 'are there fees'], answer: 'We maintain complete transparency with zero platform deposit fees and minimal network withdrawal costs.' },
-        { keywords: ['payout guarantee', 'secure payouts'], answer: 'All completed plans and withdrawal requests are backed by our automated secure asset liquidity pool.' },
-        { keywords: ['automated system', 'bot automation'], answer: 'Our system runs on automated smart scripts to ensure lightning-fast profit crediting and instant processing.' },
-        { keywords: ['compound interest', 'hourly compounding'], answer: 'Hourly profit crediting allows your earnings to compound efficiently over your 7-day investment duration.' },
-        { keywords: ['how to start', 'beginner guide'], answer: 'To start: 1. Deposit USDT via TRC20/BEP20/ERC20. 2. Choose a Standard or VIP plan. 3. Watch hourly profits grow!' },
-        { keywords: ['legal compliance', 'terms'], answer: 'Our platform operates in compliance with international digital asset service guidelines.' },
-        { keywords: ['crypto wallet', 'external wallet'], answer: 'You can use any reliable crypto wallet like Trust Wallet, Binance, TonKeeper, or MetaMask to fund and withdraw.' },
-        { keywords: ['gas fee explained', 'network fee'], answer: 'Gas fees are blockchain network charges required by miners to process crypto transfers across distributed networks.' },
-        { keywords: ['stablecoin benefit', 'why usdt'], answer: 'USDT protects your investment capital from crypto market volatility by maintaining a stable 1:1 USD value.' },
-        { keywords: ['support team greeting', 'hello', 'hi', 'hey', 'greetings'], answer: 'Hello! Welcome to our secure investment platform. How can our live assistant help you today?' },
-        { keywords: ['thank you', 'thanks', 'thx'], answer: 'You are very welcome! Feel free to ask if you have any more questions about our investment plans or deposits.' },
-        { keywords: ['bye', 'goodbye', 'see you'], answer: 'Goodbye! Wishing you great success with your investments. Feel free to return anytime you need assistance.' }
-    ];
-
     let currentUser = null;
     let userData = {
         user: { balance: 0, active_deposit: 0, pending_referral_balance: 0 },
@@ -993,7 +871,125 @@
         'ERC20': { name: 'Ethereum ERC20', tag: 'Tether USD (ERC20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' }
     };
 
-    let activeHistoryFilter = 'ALL';
+    // 100+ PROFESSIONAL ENGLISH Q&A DATABASE FOR LIVE BOT ASSISTANT (CoreXBot Integrated)
+    const faqDatabase = [
+        // 1-10: Deposits
+        { keywords: ['minimum deposit', 'min deposit', 'start deposit', 'lowest deposit'], answer: 'CoreXBot requires a minimum deposit amount of 10.00 USDT across all supported blockchain networks.' },
+        { keywords: ['maximum deposit', 'max deposit', 'highest deposit', 'deposit limit'], answer: 'CoreXBot allows a maximum deposit limit per single transaction of 10,000 USDT. For higher transactions, please contact support.' },
+        { keywords: ['deposit network', 'supported network', 'trc20', 'bep20', 'erc20', 'networks'], answer: 'CoreXBot supports USDT on TRON (TRC20), BNB Smart Chain (BEP20), and Ethereum (ERC20) networks.' },
+        { keywords: ['deposit time', 'how long deposit', 'processing deposit', 'credit deposit'], answer: 'CoreXBot credits deposits automatically within 1 to 3 blockchain network confirmations (usually under 2 minutes).' },
+        { keywords: ['deposit fee', 'gas fee deposit', 'extra charge deposit'], answer: 'CoreXBot charges zero fees for incoming deposits. You only cover your standard blockchain gas fees.' },
+        { keywords: ['deposit txid', 'transaction hash', 'paste txid', 'find txid'], answer: 'You can locate your transaction hash (TXID) in your wallet transfer history and paste it into the CoreXBot deposit form.' },
+        { keywords: ['deposit screenshot', 'upload receipt', 'proof of payment'], answer: 'If your TXID is unavailable, you can upload a clear screenshot of your completed transfer receipt for manual review by CoreXBot administrators.' },
+        { keywords: ['deposit error', 'failed deposit', 'missing deposit', 'deposit not showing'], answer: 'If your deposit is delayed on CoreXBot, ensure you selected the correct network and submit a support ticket with your TXID.' },
+        { keywords: ['deposit address', 'wallet address', 'where to send'], answer: 'Your official CoreXBot deposit wallet address is displayed on the Deposit page. Always select the correct network before copying.' },
+        { keywords: ['can i deposit btc', 'deposit bitcoin', 'deposit eth directly'], answer: 'All CoreXBot platform balances and investments operate in USDT. Please convert your crypto to USDT before depositing.' },
+
+        // 11-20: Withdrawals
+        { keywords: ['minimum withdrawal', 'min withdraw', 'lowest withdrawal'], answer: 'The minimum withdrawal amount on CoreXBot is 10.00 USDT.' },
+        { keywords: ['maximum withdrawal', 'max withdraw', 'withdrawal limit'], answer: 'The maximum daily withdrawal limit on CoreXBot is 5,000 USDT for standard accounts and up to 20,000 USDT for VIP accounts.' },
+        { keywords: ['withdrawal locked', 'why can not withdraw', 'withdraw rule', '7 day duration'], answer: 'CoreXBot withdrawals are strictly locked and only permitted after your active investment plan fully completes its 7-day duration cycle.' },
+        { keywords: ['withdrawal time', 'payout speed', 'how fast withdrawal', 'receive withdrawal'], answer: 'CoreXBot withdrawals are processed automatically and typically reach your external wallet within minutes up to 24 hours.' },
+        { keywords: ['withdrawal fee', 'payout fee', 'gas fee withdrawal'], answer: 'A minimal network fee may apply on CoreXBot during high-demand network congestion periods to guarantee instant processing.' },
+        { keywords: ['withdrawal address', 'destination address', 'where do funds go'], answer: 'Funds are sent directly from CoreXBot to the external wallet address you enter in the withdrawal form. Please verify your address carefully.' },
+        { keywords: ['cancel withdrawal', 'reverse withdrawal'], answer: 'Once a withdrawal request is submitted to CoreXBot and enters the processing queue, it cannot be canceled or reversed.' },
+        { keywords: ['pending withdrawal', 'withdrawal status', 'delayed payout'], answer: 'Pending CoreXBot withdrawals undergo automated security checks to ensure safe asset delivery.' },
+        { keywords: ['wrong withdrawal address', 'sent to wrong address'], answer: 'Blockchain transactions are irreversible. Please ensure your wallet address is completely accurate before submitting to CoreXBot.' },
+        { keywords: ['withdraw referral bonus', 'referral withdrawal'], answer: 'CoreXBot referral bonuses become fully available for withdrawal once your invited user completes their first verified investment.' },
+
+        // 21-35: Investments, Standard & VIP Plans
+        { keywords: ['standard plan', 'standard tier', 'standard investment', 'standard plans'], answer: 'CoreXBot standard plans range from $10 to $100 USDT, offering a 20% daily profit return with hourly compounding over 7 days.' },
+        { keywords: ['vip plan', 'vip tier', 'vip investment', 'vip package', 'vip plans'], answer: 'CoreXBot VIP plans range from $150 to $500 USDT, offering a high-yield 35% daily profit return credited hourly over 7 days.' },
+        { keywords: ['minimum investment', 'min invest'], answer: 'The minimum investment amount on CoreXBot is 10.00 USDT for standard plans and 150.00 USDT for VIP plans.' },
+        { keywords: ['maximum investment', 'max invest'], answer: 'The maximum single investment amount on CoreXBot is 100 USDT for standard plans and 500 USDT for VIP plans.' },
+        { keywords: ['investment duration', 'how long plan', '7 days rule'], answer: 'All CoreXBot investment plans run for a fixed duration of exactly 7 days (168 hours).' },
+        { keywords: ['profit frequency', 'hourly profit', 'when do i get profit'], answer: 'CoreXBot profits are calculated and credited to your live balance automatically every single hour.' },
+        { keywords: ['total return standard', 'calculate standard profit'], answer: 'A CoreXBot standard plan yields 20% daily, resulting in a total return of 140% over the 7-day duration.' },
+        { keywords: ['total return vip', 'calculate vip profit'], answer: 'A CoreXBot VIP plan yields 35% daily, resulting in a lucrative total return of 245% over the 7-day duration.' },
+        { keywords: ['multiple investments', 'can i invest twice', 'active plans limit'], answer: 'You can run multiple active CoreXBot investment plans simultaneously to maximize your daily earnings.' },
+        { keywords: ['cancel investment', 'stop investment early'], answer: 'CoreXBot active investments are locked for the full 7-day duration to ensure stable liquidity pool distribution and cannot be canceled early.' },
+        { keywords: ['investment profit calculation', 'how is profit made'], answer: 'CoreXBot profits are generated through automated crypto mining algorithms and liquidity pool trading managed by our system.' },
+        { keywords: ['active deposit balance', 'where is invested money'], answer: 'Your active CoreXBot investment funds are securely locked in active mining contracts, generating hourly returns visible on your home screen.' },
+        { keywords: ['completed investment', 'what happens after 7 days'], answer: 'Once your 7-day CoreXBot plan finishes, your principal and accumulated profits are fully released to your available balance.' },
+        { keywords: ['reinvest profits', 'compound earnings'], answer: 'You can easily use your CoreXBot available balance or completed investment returns to purchase new standard or VIP plans.' },
+        { keywords: ['investment risk', 'is investment safe'], answer: 'While CoreXBot automated mining strategies are optimized for high returns, all crypto investments carry inherent market risks. Invest responsibly.' },
+
+        // 36-50: Referral System & Ref-Link
+        { keywords: ['ref link', 'referral link', 'invite link', 'where is my referral link'], answer: 'Your unique CoreXBot referral link can be found in your Profile section. Share it with friends to earn commission.' },
+        { keywords: ['referral bonus', 'invite bonus', 'how much referral'], answer: 'You instantly earn 2.00 USDT in CoreXBot referral commission when your invited friend makes their first successful deposit.' },
+        { keywords: ['pending referral balance', 'pending commission', 'referral review'], answer: 'Pending CoreXBot referral balances are reviewed and unlocked once your referral completes their qualification criteria.' },
+        { keywords: ['how to invite', 'sharing referral link'], answer: 'Simply copy your CoreXBot referral link from your profile and share it via Telegram, WhatsApp, or social media channels.' },
+        { keywords: ['referral count', 'how many referrals', 'track referrals'], answer: 'You can track your total CoreXBot referral count and commission statistics directly in the Stats page.' },
+        { keywords: ['referral limit', 'max referrals', 'limit on invites'], answer: 'There is no limit on how many friends you can invite to CoreXBot. The more you share, the more bonuses you can earn.' },
+        { keywords: ['referral not showing', 'missing referral reward'], answer: 'CoreXBot referral rewards are credited automatically once your invited user registers through your link and completes a deposit.' },
+        { keywords: ['do i need to deposit to refer', 'referral without deposit'], answer: 'You can share your CoreXBot referral link freely, but your invited users must complete a deposit to trigger your bonus.' },
+        { keywords: ['referral tier levels', 'multi level referral'], answer: 'CoreXBot referral program is direct and instant, rewarding you directly for every qualified direct invite.' },
+        { keywords: ['change referral link', 'custom ref link'], answer: 'Your CoreXBot referral link is permanently tied to your Telegram user ID for absolute security and accurate commission tracking.' },
+        { keywords: ['referral payout', 'where does referral go'], answer: 'Unlocked CoreXBot referral earnings are credited straight to your main available balance.' },
+        { keywords: ['telegram bot referral', 'bot start link'], answer: 'Your CoreXBot referral link opens our official Telegram Web App with your unique tracking parameter attached automatically.' },
+        { keywords: ['referral rules', 'terms of referral'], answer: 'Creating fake accounts or self-referrals on CoreXBot violates our terms of service and may result in account suspension.' },
+        { keywords: ['referral notifications', 'alert on referral'], answer: 'You will receive instant balance updates and dashboard notifications on CoreXBot when your referral makes a deposit.' },
+        { keywords: ['affiliate program', 'partner program'], answer: 'CoreXBot affiliate program is built directly into the Telegram Web App for seamless tracking and instant rewards.' },
+
+        // 51-65: Account, Profile & Security
+        { keywords: ['account security', 'is my account safe', 'protect account'], answer: 'Your CoreXBot account is secured via Telegram token authentication and end-to-end encrypted session keys.' },
+        { keywords: ['telegram login', 'password', 'forgot password'], answer: 'No password is required on CoreXBot! Your account is securely authenticated directly through your Telegram account.' },
+        { keywords: ['change username', 'update profile name'], answer: 'Your CoreXBot profile name and username are automatically synced directly from your official Telegram profile.' },
+        { keywords: ['telegram id', 'user id', 'find my id'], answer: 'Your unique CoreXBot Telegram ID is displayed in your Profile section and header.' },
+        { keywords: ['verified badge', 'verification status', 'verified account'], answer: 'Accounts authenticated through CoreXBot are automatically marked as Verified with platform security clearance.' },
+        { keywords: ['multiple accounts', 'one person multiple accounts'], answer: 'To maintain platform fairness and security on CoreXBot, each user is permitted one primary account.' },
+        { keywords: ['delete account', 'remove account data'], answer: 'To close or reset your CoreXBot account data, please submit a direct support ticket to our administration team.' },
+        { keywords: ['language settings', 'change language', 'english language'], answer: 'CoreXBot platform interface and support assistant are optimized in professional English for global users.' },
+        { keywords: ['mobile app', 'telegram mini app', 'app download'], answer: 'CoreXBot runs smoothly as a Telegram Mini App directly inside your Telegram mobile or desktop application.' },
+        { keywords: ['browser compatibility', 'web version'], answer: 'You can access CoreXBot seamlessly through any modern mobile or desktop browser via Telegram.' },
+        { keywords: ['session expired', 'logged out'], answer: 'If your CoreXBot session expires, simply reopen the Telegram Web App link to instantly restore your secure session.' },
+        { keywords: ['balance update', 'refresh balance'], answer: 'Your CoreXBot balances update in real-time. You can also switch tabs or reopen the app to sync latest database records.' },
+        { keywords: ['profile avatar', 'change picture'], answer: 'Your CoreXBot profile avatar automatically displays your official Telegram profile picture.' },
+        { keywords: ['privacy policy', 'data privacy'], answer: 'CoreXBot strictly protects user data and financial records using industry-standard encryption protocols.' },
+        { keywords: ['terms of service', 'user agreement'], answer: 'By using CoreXBot, you agree to adhere to our investment guidelines, security protocols, and fair usage rules.' },
+
+        // 66-80: Support, Live Chat & Tickets
+        { keywords: ['live support', 'contact support', 'talk to agent', 'customer service'], answer: 'CoreXBot 24/7 support team is available via the live chat widget or official Telegram support channel.' },
+        { keywords: ['support ticket', 'submit ticket', 'create ticket'], answer: 'You can submit a direct CoreXBot support ticket in the Support section by providing your subject and detailed message.' },
+        { keywords: ['admin reply', 'ticket response', 'check ticket status'], answer: 'You can view your submitted CoreXBot support tickets and official admin replies directly in the Support section.' },
+        { keywords: ['response time', 'how fast support', 'support hours'], answer: 'CoreXBot support team operates 24/7, with average response times under 15 minutes.' },
+        { keywords: ['telegram support channel', 'admin contact'], answer: 'You can contact our official CoreXBot support admin directly at @USDTPilotAdmin on Telegram.' },
+        { keywords: ['bug report', 'found a bug', 'technical issue'], answer: 'If you encounter any technical issues or bugs on CoreXBot, please report them immediately via our support ticket system.' },
+        { keywords: ['complaint', 'file a complaint'], answer: 'CoreXBot takes all user feedback seriously. Please submit your concerns through our support ticketing system for prompt resolution.' },
+        { keywords: ['faq', 'frequently asked questions'], answer: 'You can ask our CoreXBot live assistant bot any question about deposits, withdrawals, VIP plans, or referrals anytime.' },
+        { keywords: ['help center', 'guidelines'], answer: 'Review our CoreXBot Rules & Guidelines banner on the home screen for quick summaries of profits, referrals, and rules.' },
+        { keywords: ['community', 'telegram group'], answer: 'Join our official CoreXBot Telegram community channel to connect with other investors and stay updated on platform news.' },
+        { keywords: ['announcements', 'news', 'updates'], answer: 'CoreXBot platform updates, market trends, and special events are announced regularly in our official channels.' },
+        { keywords: ['feedback', 'suggest feature'], answer: 'CoreXBot loves user feedback! Send your feature suggestions to our support team to help us improve.' },
+        { keywords: ['connection error', 'network problem', 'server issue'], answer: 'If you experience connection issues on CoreXBot, please check your internet connection and restart the Telegram Mini App.' },
+        { keywords: ['loading issue', 'screen frozen'], answer: 'Try closing and reopening the CoreXBot Mini App if the interface takes longer than usual to load.' },
+        { keywords: ['official links', 'avoid scams'], answer: 'Always use our official CoreXBot links and verify admin usernames to ensure complete protection against scams.' },
+
+        // 81-105: General Crypto, Mining & Platform Features
+        { keywords: ['what is usdt', 'tether currency'], answer: 'USDT (Tether) is a stablecoin pegged to the US Dollar, ensuring stable value for all CoreXBot investments and payouts.' },
+        { keywords: ['what is mining', 'crypto mining'], answer: 'CoreXBot utilizes advanced automated crypto mining and liquidity algorithms to generate steady daily returns.' },
+        { keywords: ['market trends', 'live prices', 'crypto prices'], answer: 'You can view live market prices and 24-hour trends for Bitcoin, Ethereum, USDT, BNB, Solana, and other top coins on CoreXBot home screen.' },
+        { keywords: ['ticker', 'market ticker'], answer: 'CoreXBot real-time market ticker displays live cryptocurrency price fluctuations across global exchanges.' },
+        { keywords: ['statistics', 'performance analytics', 'analytics page'], answer: 'CoreXBot Stats page provides comprehensive analytics on your total deposits, withdrawals, referrals, and portfolio goal progress.' },
+        { keywords: ['portfolio goal', 'investment goal'], answer: 'CoreXBot progress bar tracks your overall portfolio growth toward your financial milestones.' },
+        { keywords: ['admin dashboard', 'admin panel'], answer: 'CoreXBot admin dashboard is restricted to authorized administrators to monitor user registrations, balances, and investment rankings.' },
+        { keywords: ['ranking', 'top investors'], answer: 'CoreXBot top investment rankings display leading platform participants based on total invested capital and active plans.' },
+        { keywords: ['history', 'transaction history', 'activity log'], answer: 'CoreXBot History page lets you filter and review all your past deposits, withdrawals, and investment activities.' },
+        { keywords: ['splash screen', 'loading screen'], answer: 'CoreXBot secure splash screen initializes your encrypted connection and loads your user profile instantly.' },
+        { keywords: ['bot name', 'miniapp v1 bot'], answer: 'CoreXBot official Telegram Mini App bot is securely hosted and verified for reliable automated investment management.' },
+        { keywords: ['fees explained', 'are there fees'], answer: 'CoreXBot maintains complete transparency with zero platform deposit fees and minimal network withdrawal costs.' },
+        { keywords: ['payout guarantee', 'secure payouts'], answer: 'All completed CoreXBot plans and withdrawal requests are backed by our automated secure asset liquidity pool.' },
+        { keywords: ['automated system', 'bot automation'], answer: 'CoreXBot system runs on automated smart scripts to ensure lightning-fast profit crediting and instant processing.' },
+        { keywords: ['compound interest', 'hourly compounding'], answer: 'CoreXBot hourly profit crediting allows your earnings to compound efficiently over your 7-day investment duration.' },
+        { keywords: ['how to start', 'beginner guide'], answer: 'To start on CoreXBot: 1. Deposit USDT via TRC20/BEP20/ERC20. 2. Choose a Standard or VIP plan. 3. Watch hourly profits grow!' },
+        { keywords: ['legal compliance', 'terms'], answer: 'CoreXBot platform operates in compliance with international digital asset service guidelines.' },
+        { keywords: ['crypto wallet', 'external wallet'], answer: 'You can use any reliable crypto wallet like Trust Wallet, Binance, TonKeeper, or MetaMask to fund and withdraw from CoreXBot.' },
+        { keywords: ['gas fee explained', 'network fee'], answer: 'Gas fees are blockchain network charges required by miners to process crypto transfers across distributed CoreXBot networks.' },
+        { keywords: ['stablecoin benefit', 'why usdt'], answer: 'USDT protects your CoreXBot investment capital from crypto market volatility by maintaining a stable 1:1 USD value.' },
+        { keywords: ['support team greeting', 'hello', 'hi', 'hey', 'greetings'], answer: 'Hello! Welcome to CoreXBot secure investment platform. How can our live assistant help you today?' },
+        { keywords: ['thank you', 'thanks', 'thx'], answer: 'You are very welcome! Feel free to ask CoreXBot if you have any more questions about our investment plans or deposits.' },
+        { keywords: ['bye', 'goodbye', 'see you'], answer: 'Goodbye! Wishing you great success with your CoreXBot investments. Feel free to return anytime you need assistance.' }
+    ];
 
     window.addEventListener('load', () => {
         setTimeout(() => {
@@ -1031,7 +1027,7 @@
         }
     }
 
-    // PROFESSIONAL ENGLISH LIVE CHAT ASSISTANT & ANIMATION (Every 1 min, shows 3 times or loops staying 10s then hiding)
+    // PROFESSIONAL COREXBOT LIVE CHAT ASSISTANT WITH ANIMATION & SOUND RULES
     function initLiveChatWidget() {
         const chatBtn = document.getElementById('chat-widget-btn');
         const chatWindow = document.getElementById('chat-window');
@@ -1040,12 +1036,44 @@
         const chatInput = document.getElementById('chat-input');
         const chatBody = document.getElementById('chat-body');
 
+        let isChatOpen = false;
+
+        // Logo animation routine: every 1 minute, show 3 times (animate for ~10s then pause)
+        function triggerLogoAnimationCycle() {
+            if (isChatOpen) return;
+            let count = 0;
+            const interval = setInterval(() => {
+                if (isChatOpen) {
+                    clearInterval(interval);
+                    chatBtn.classList.remove('animating');
+                    return;
+                }
+                chatBtn.classList.add('animating');
+                setTimeout(() => {
+                    chatBtn.classList.remove('animating');
+                }, 3000);
+
+                count++;
+                if (count >= 3) {
+                    clearInterval(interval);
+                }
+            }, 4000);
+        }
+
+        // Run every 60 seconds (1 minute)
+        setInterval(triggerLogoAnimationCycle, 60000);
+        // Also trigger once after 5 seconds on load
+        setTimeout(triggerLogoAnimationCycle, 5000);
+
         chatBtn.addEventListener('click', () => {
             playSound();
-            chatWindow.classList.toggle('hidden');
+            isChatOpen = !isChatOpen;
+            chatWindow.classList.toggle('hidden', !isChatOpen);
+            chatBtn.classList.remove('animating');
         });
 
         closeChat.addEventListener('click', () => {
+            isChatOpen = false;
             chatWindow.classList.add('hidden');
         });
 
@@ -1054,39 +1082,11 @@
             if (e.key === 'Enter') sendMessage();
         });
 
-        // Animation scheduler: every 1 minute, appears with professional animation, stays for 10 seconds, then hides
-        function triggerAssistantAnimationCycle() {
-            let cycles = 0;
-            const maxCycles = 3; // 3 times per minute trigger block
-
-            function runCycle() {
-                if (cycles >= maxCycles) return;
-                
-                // Show with animation
-                chatBtn.classList.add('show-animation');
-                
-                // Stay for 10 seconds
-                setTimeout(() => {
-                    chatBtn.classList.remove('show-animation');
-                    cycles++;
-                    if (cycles < maxCycles) {
-                        setTimeout(runCycle, 2000); // short pause between the 3 bursts
-                    }
-                }, 10000);
-            }
-
-            runCycle();
-        }
-
-        // Run immediately after load and then every 1 minute (60,000ms)
-        setTimeout(triggerAssistantAnimationCycle, 3000);
-        setInterval(triggerAssistantAnimationCycle, 60000);
-
         function sendMessage() {
             const text = chatInput.value.trim();
             if (!text) return;
 
-            playSound();
+            playSound(); // Sound when user sends message
             const userMsg = document.createElement('div');
             userMsg.className = 'user-message';
             userMsg.textContent = text;
@@ -1094,31 +1094,39 @@
             chatInput.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
 
+            // Typing indicator simulation (.....)
+            const typingMsg = document.createElement('div');
+            typingMsg.className = 'bot-message';
+            typingMsg.id = 'typing-indicator';
+            typingMsg.textContent = '.....';
+            chatBody.appendChild(typingMsg);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // Delay response for a few seconds
             setTimeout(() => {
+                const indicator = document.getElementById('typing-indicator');
+                if (indicator) indicator.remove();
+
                 const botMsg = document.createElement('div');
                 botMsg.className = 'bot-message';
                 botMsg.textContent = getCoreXBotResponse(text);
                 chatBody.appendChild(botMsg);
                 chatBody.scrollTop = chatBody.scrollHeight;
-                playSound();
-            }, 800);
+                
+                playSound(); // Sound when assistant delivers response
+            }, 1800);
         }
     }
 
     function getCoreXBotResponse(userText) {
-        const query = userText.toLowerCase();
-        
-        // Search through the 100+ FAQ database
-        for (let faq of faqDatabase) {
-            for (let keyword of faq.keywords) {
-                if (query.includes(keyword)) {
-                    return faq.answer;
-                }
-            }
+        const text = userText.toLowerCase();
+        let matched = faqDatabase.find(item => 
+            item.keywords.some(keyword => text.includes(keyword))
+        );
+        if (matched) {
+            return matched.answer;
         }
-        
-        // Fallback response if no keyword matched
-        return "Hello! Welcome to our secure investment platform. How can our live assistant help you today with your deposits, withdrawals, VIP plans, or referrals?";
+        return "Hello! I am CoreXBot Assistant. You can ask me anything about our deposits, withdrawals, VIP investment plans, or referral bonuses!";
     }
 
     async function initTelegramUser() {
@@ -1182,7 +1190,6 @@
     function initRealAndFakeToasts() {
         const uniqueNames = ["@Crypto", "@AliAhmed", "@MohamedSaeed", "@Farah99", "@Liban", "@Samantar", "@Nasteexo", "@KhadarAdmin", "@HindaWeb", "@Guled"];
         const standardFakeAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-        const vipFakeAmounts = [150, 200, 250, 300, 350, 400, 450, 500];
 
         const actionTypes = [
             { action: "deposited", color: "#10b981", icon: "fa-arrow-down", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
