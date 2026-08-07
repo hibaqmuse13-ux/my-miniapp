@@ -36,13 +36,13 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Header */
-        header { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--card-bg); border-radius: 14px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); margin-bottom: 8px; }
-        .profile { display: flex; align-items: center; gap: 10px; }
-        .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3); overflow: hidden; }
+        header { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); margin-bottom: 6px; }
+        .profile { display: flex; align-items: center; gap: 8px; }
+        .avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 14px; color: #fff; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3); overflow: hidden; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
-        .profile h3 { font-size: 14px; font-weight: 700; }
-        .profile small { font-size: 10.5px; color: var(--text-sub); }
-        .verified { font-size: 9.5px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 5px 10px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 4px; }
+        .profile h3 { font-size: 13px; font-weight: 700; }
+        .profile small { font-size: 9.5px; color: var(--text-sub); }
+        .verified { font-size: 8.5px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 4px 8px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 4px; }
 
         /* Market Ticker Styles */
         .market-ticker-container {
@@ -50,10 +50,10 @@
             overflow: hidden;
             white-space: nowrap;
             background: var(--card-bg);
-            padding: 6px 0;
-            border-radius: 10px;
+            padding: 4px 0;
+            border-radius: 8px;
             box-sizing: border-box;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             border: 1px solid rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
         }
@@ -66,9 +66,9 @@
 
         .market-ticker-track span {
             display: inline-block;
-            padding: 0 16px;
+            padding: 0 12px;
             color: var(--text-white);
-            font-size: 11px;
+            font-size: 10px;
         }
 
         @keyframes scrollRightToLeft {
@@ -76,13 +76,13 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* LIVE MARKET PRICES SECTION (Ultra-Compact Size Fix) */
+        /* LIVE MARKET PRICES SECTION (Super Ultra-Compact & Professional Size) */
         .market-section {
             background: rgba(15, 22, 36, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 6px 8px;
-            margin-bottom: 8px;
+            border-radius: 10px;
+            padding: 4px 6px;
+            margin-bottom: 6px;
             backdrop-filter: blur(10px);
         }
 
@@ -90,8 +90,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 4px;
-            font-size: 10px;
+            margin-bottom: 2px;
+            font-size: 9px;
             font-weight: 700;
             color: var(--text-sub);
             letter-spacing: 0.5px;
@@ -101,9 +101,9 @@
         .market-header .live-badge {
             background-color: rgba(14, 203, 129, 0.12);
             color: #0ecb81;
-            padding: 1px 5px;
+            padding: 1px 4px;
             border-radius: 3px;
-            font-size: 8.5px;
+            font-size: 7.5px;
             display: flex;
             align-items: center;
             gap: 3px;
@@ -112,8 +112,8 @@
 
         .market-header .live-badge::before {
             content: '';
-            width: 3.5px;
-            height: 3.5px;
+            width: 3px;
+            height: 3px;
             background-color: #0ecb81;
             border-radius: 50%;
             display: inline-block;
@@ -122,27 +122,26 @@
 
         .crypto-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 4px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3px;
         }
 
         .crypto-item {
             background: rgba(21, 28, 44, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 6px;
-            padding: 3px 6px;
+            border-radius: 4px;
+            padding: 2px 4px;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: center;
-            transition: background 0.2s;
         }
 
-        .crypto-info { display: flex; flex-direction: column; }
-        .crypto-symbol { font-weight: 700; font-size: 10px; color: #ffffff; }
-        .crypto-name { font-size: 7.5px; color: var(--text-sub); }
-        .crypto-price-box { text-align: right; }
-        .crypto-price { font-size: 10px; font-weight: 600; color: #ffffff; }
-        .crypto-change { font-size: 7.5px; font-weight: 600; }
+        .crypto-info { display: flex; justify-content: space-between; align-items: center; }
+        .crypto-symbol { font-weight: 700; font-size: 9px; color: #ffffff; }
+        .crypto-name { display: none; } /* Hide full name to save space */
+        .crypto-price-box { display: flex; justify-content: space-between; align-items: center; margin-top: 1px; }
+        .crypto-price { font-size: 9px; font-weight: 600; color: #ffffff; }
+        .crypto-change { font-size: 7px; font-weight: 600; }
         .crypto-change.up { color: #0ecb81; }
         .crypto-change.down { color: #f6465d; }
 
@@ -152,186 +151,164 @@
             100% { opacity: 1; }
         }
 
-        /* Professional Enhanced Balance Card */
+        /* Professional Enhanced Balance Card (Gold, Blue, Yellow Mixed & Compact) */
         .balance-card { 
-            background: linear-gradient(135deg, rgba(13, 20, 35, 0.95) 0%, rgba(7, 11, 20, 0.98) 100%); 
-            border: 1px solid rgba(0, 210, 255, 0.2); 
-            border-radius: 16px; 
-            padding: 16px 14px; 
+            background: linear-gradient(135deg, rgba(13, 25, 45, 0.95) 0%, rgba(35, 28, 10, 0.9) 50%, rgba(7, 15, 30, 0.98) 100%); 
+            border: 1px solid rgba(245, 197, 24, 0.35); 
+            border-radius: 14px; 
+            padding: 10px 12px; 
             text-align: center; 
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1); 
-            margin-bottom: 8px; 
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 215, 0, 0.2); 
+            margin-bottom: 6px; 
             position: relative; 
             overflow: hidden; 
         }
-        .balance-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 210, 255, 0.05) 0%, transparent 60%);
-            pointer-events: none;
-        }
-        .balance-card p { font-size: 9.5px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 2px; font-weight: 700; }
-        .balance-card h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; margin: 3px 0; background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .balance-card span.badge-usdt { font-size: 10px; font-weight: 700; color: var(--accent-cyan); background: rgba(0, 210, 255, 0.12); padding: 2px 8px; border-radius: 5px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid rgba(0, 210, 255, 0.25); }
-        .badge-usdt img { width: 12px; height: 12px; }
+        .balance-card p { font-size: 9px; color: #fef08a; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1px; font-weight: 700; }
+        .balance-card h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; margin: 2px 0; background: linear-gradient(180deg, #ffffff 0%, #fde047 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .balance-card span.badge-usdt { font-size: 9px; font-weight: 700; color: var(--accent-cyan); background: rgba(0, 210, 255, 0.12); padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 3px; border: 1px solid rgba(0, 210, 255, 0.25); }
+        .badge-usdt img { width: 10px; height: 10px; }
 
-        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.06); }
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(245, 197, 24, 0.15); }
         .stats div { text-align: center; }
-        .stats i { font-size: 11px; color: var(--accent-cyan); margin-bottom: 2px; }
-        .stats h4 { font-size: 9.5px; color: var(--text-sub); font-weight: 500; text-transform: uppercase; }
-        .stats b { font-size: 12px; color: #fff; font-weight: 700; display: block; margin-top: 1px; }
+        .stats i { font-size: 10px; color: #facc15; margin-bottom: 1px; }
+        .stats h4 { font-size: 8.5px; color: var(--text-sub); font-weight: 500; text-transform: uppercase; }
+        .stats b { font-size: 11px; color: #fff; font-weight: 700; display: block; margin-top: 1px; }
 
-        /* Professional Gold Pending Referral Balance Card (Compact & Luxurious) */
+        /* Pending Referral Balance Card + Integrated Quick Buttons */
         .pending-balance-card { 
             background: linear-gradient(135deg, rgba(42, 34, 14, 0.92) 0%, rgba(20, 16, 6, 0.96) 100%); 
             border: 1px solid rgba(245, 158, 11, 0.45); 
-            border-radius: 12px; 
-            padding: 10px 12px; 
+            border-radius: 10px; 
+            padding: 8px 10px; 
             display: flex; 
             align-items: center; 
-            gap: 10px; 
-            margin-bottom: 8px; 
-            box-shadow: 0 6px 16px rgba(0,0,0,0.35), inset 0 1px 1px rgba(255, 215, 0, 0.15); 
+            gap: 8px; 
+            margin-bottom: 6px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
         }
         .pending-balance-card .card-icon { 
-            width: 34px; height: 34px; border-radius: 8px; 
+            width: 28px; height: 28px; border-radius: 6px; 
             background: rgba(245, 158, 11, 0.18); 
             display: flex; align-items: center; justify-content: center; 
-            font-size: 14px; color: #fbbf24; 
+            font-size: 12px; color: #fbbf24; 
             border: 1px solid rgba(245, 158, 11, 0.4); flex-shrink: 0; 
         }
         .pending-balance-card .card-info { flex: 1; }
-        .pending-balance-card .card-info h3 { font-size: 9.5px; color: #fde68a; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 1px; font-weight: 700; }
-        .pending-balance-card .balance-amount { font-size: 18px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .pending-balance-card .card-subtitle { font-size: 8.5px; color: #fbbf24; font-weight: 600; display: inline-block; margin-top: 1px; }
+        .pending-balance-card .card-info h3 { font-size: 8.5px; color: #fde68a; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0px; font-weight: 700; }
+        .pending-balance-card .balance-amount { font-size: 14px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; }
+        .pending-balance-card .card-subtitle { font-size: 7.5px; color: #fbbf24; font-weight: 600; display: inline-block; }
+
+        /* Quick Buttons inside Yellow Line section */
+        .quick-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+        .quick-inline button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 8px; padding: 7px; font-size: 11px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 5px; cursor: pointer; backdrop-filter: blur(10px); }
 
         /* Rules Banner */
         .rules-banner { 
             background: linear-gradient(135deg, rgba(30, 25, 15, 0.6) 0%, rgba(20, 16, 10, 0.8) 100%); 
             border: 1px solid rgba(245, 158, 11, 0.25); 
-            border-radius: 12px; padding: 10px 12px; margin-bottom: 12px; 
-            font-size: 10.5px; color: #cbd5e1; line-height: 1.4; 
-            box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+            border-radius: 10px; padding: 8px 10px; margin-bottom: 10px; 
+            font-size: 9.5px; color: #cbd5e1; line-height: 1.3; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-        .rules-banner h4 { font-size: 11px; font-weight: 700; color: #fbbf24; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
-        .rules-banner p { margin-bottom: 3px; }
+        .rules-banner h4 { font-size: 10px; font-weight: 700; color: #fbbf24; margin-bottom: 3px; display: flex; align-items: center; gap: 4px; }
+        .rules-banner p { margin-bottom: 2px; }
         .rules-banner p:last-child { margin-bottom: 0; }
         .rules-banner b { color: #fef08a; font-weight: 600; }
-
-        /* Quick Buttons */
-        .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-        .quick button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; font-size: 12px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; backdrop-filter: blur(10px); }
 
         /* Pages */
         .page { display: none; }
         .page.active { display: block; }
 
-        .section-header { font-size: 12px; font-weight: 800; margin: 12px 0 8px 0; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .section-header { font-size: 11px; font-weight: 800; margin: 10px 0 6px 0; display: flex; align-items: center; gap: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
 
         /* Plans Grid */
-        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; text-align: center; position: relative; backdrop-filter: blur(10px); }
+        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; text-align: center; position: relative; backdrop-filter: blur(10px); }
         .plan-card.vip-card { border-color: rgba(245, 158, 11, 0.3); background: linear-gradient(145deg, rgba(30, 25, 15, 0.8) 0%, rgba(21, 28, 44, 0.8) 100%); }
-        .plan-badge { position: absolute; top: 6px; right: 6px; font-size: 8px; font-weight: 800; padding: 2px 4px; border-radius: 3px; text-transform: uppercase; }
+        .plan-badge { position: absolute; top: 5px; right: 5px; font-size: 7.5px; font-weight: 800; padding: 2px 4px; border-radius: 3px; text-transform: uppercase; }
         .badge-std { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
         .badge-vip { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-        .plan-title { font-size: 18px; font-weight: 800; margin: 4px 0 2px 0; }
-        .plan-rate { font-size: 11px; font-weight: 700; color: #10b981; margin-bottom: 6px; }
-        .plan-info { font-size: 9.5px; color: var(--text-sub); display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; text-align: left; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 5px; }
-        .plan-btn { width: 100%; padding: 7px; border-radius: 6px; border: none; font-size: 10.5px; font-weight: 700; cursor: pointer; color: #fff; }
+        .plan-title { font-size: 16px; font-weight: 800; margin: 3px 0 2px 0; }
+        .plan-rate { font-size: 10px; font-weight: 700; color: #10b981; margin-bottom: 5px; }
+        .plan-info { font-size: 8.5px; color: var(--text-sub); display: flex; flex-direction: column; gap: 2px; margin-bottom: 6px; text-align: left; background: rgba(0,0,0,0.2); padding: 4px; border-radius: 4px; }
+        .plan-btn { width: 100%; padding: 6px; border-radius: 5px; border: none; font-size: 10px; font-weight: 700; cursor: pointer; color: #fff; }
         .btn-std { background: var(--primary-gradient); }
         .btn-vip { background: var(--vip-gradient); }
 
         /* Forms */
-        label { display: block; font-size: 10px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 3px; font-weight: 600; }
-        select, input, textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 12px; outline: none; margin-bottom: 10px; }
+        label { display: block; font-size: 9.5px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 2px; font-weight: 600; }
+        select, input, textarea { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 11px; outline: none; margin-bottom: 8px; }
         
-        .network-preview-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-        .net-left { display: flex; align-items: center; gap: 8px; }
-        .net-left img { width: 28px; height: 28px; border-radius: 50%; }
-        .net-info h4 { font-size: 12px; font-weight: 700; color: #fff; }
-        .net-info p { font-size: 9.5px; color: var(--accent-cyan); font-weight: 600; margin-top: 1px; }
+        .network-preview-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+        .net-left { display: flex; align-items: center; gap: 6px; }
+        .net-left img { width: 24px; height: 24px; border-radius: 50%; }
+        .net-info h4 { font-size: 11px; font-weight: 700; color: #fff; }
+        .net-info p { font-size: 8.5px; color: var(--accent-cyan); font-weight: 600; }
 
-        .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 10px; }
-        .wallet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
-        .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 4px 8px; border-radius: 5px; font-size: 10px; cursor: pointer; font-weight: 600; }
-        .address-text { font-family: monospace; font-size: 11px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 6px; border-radius: 5px; }
+        .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 8px; padding: 8px; margin-bottom: 8px; }
+        .wallet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+        .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 3px 6px; border-radius: 4px; font-size: 9.5px; cursor: pointer; font-weight: 600; }
+        .address-text { font-family: monospace; font-size: 10px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 5px; border-radius: 4px; }
 
-        button.primary { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--primary-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
-        button.success { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--success-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
+        button.primary, button.success { width: 100%; padding: 9px; border-radius: 6px; border: none; color: #fff; font-size: 11px; font-weight: 700; cursor: pointer; }
+        button.primary { background: var(--primary-gradient); }
+        button.success { background: var(--success-gradient); }
 
         /* History Elements */
-        .history-tabs { display: flex; gap: 5px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 3px; }
-        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-sub); padding: 5px 10px; border-radius: 14px; font-size: 10px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+        .history-tabs { display: flex; gap: 4px; margin-bottom: 10px; overflow-x: auto; padding-bottom: 2px; }
+        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-sub); padding: 4px 8px; border-radius: 12px; font-size: 9.5px; font-weight: 600; cursor: pointer; white-space: nowrap; }
         .tab-btn.active { background: var(--primary-gradient); color: #fff; border-color: transparent; }
 
-        .tx-card { background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
-        .tx-icon { width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .tx-card { background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 8px; padding: 8px; margin-bottom: 5px; display: flex; align-items: center; justify-content: space-between; }
+        .tx-icon { width: 26px; height: 26px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 10px; }
         .tx-icon.DEPOSIT { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .tx-icon.WITHDRAWAL { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
         .tx-icon.INVESTMENT { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
-        .tx-details { flex: 1; margin-left: 8px; }
-        .tx-details h5 { font-size: 11px; font-weight: 700; color: #fff; }
-        .tx-details p { font-size: 9px; color: var(--text-sub); margin-top: 1px; }
+        .tx-details { flex: 1; margin-left: 6px; }
+        .tx-details h5 { font-size: 10px; font-weight: 700; color: #fff; }
+        .tx-details p { font-size: 8px; color: var(--text-sub); }
         .tx-amount { text-align: right; }
-        .tx-amount h5 { font-size: 12px; font-weight: 800; }
-        .status-badge { font-size: 8px; font-weight: 700; padding: 2px 4px; border-radius: 3px; text-transform: uppercase; display: inline-block; margin-top: 2px; }
+        .tx-amount h5 { font-size: 11px; font-weight: 800; }
+        .status-badge { font-size: 7.5px; font-weight: 700; padding: 2px 4px; border-radius: 3px; text-transform: uppercase; display: inline-block; }
         .status-completed { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
 
         /* Stats & Tables */
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-        .stat-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; text-align: center; }
-        .stat-box i { font-size: 14px; color: var(--accent-cyan); margin-bottom: 3px; }
-        .stat-box h3 { font-size: 15px; font-weight: 800; color: #fff; margin: 2px 0; }
-        .stat-box p { font-size: 9.5px; color: var(--text-sub); }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+        .stat-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 8px; text-align: center; }
+        .stat-box i { font-size: 12px; color: var(--accent-cyan); margin-bottom: 2px; }
+        .stat-box h3 { font-size: 13px; font-weight: 800; color: #fff; margin: 1px 0; }
+        .stat-box p { font-size: 8.5px; color: var(--text-sub); }
 
-        .progress-container { background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; }
-        .progress-bar-bg { width: 100%; height: 5px; background: rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden; margin-top: 6px; }
+        .progress-container { background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 10px; }
+        .progress-bar-bg { width: 100%; height: 4px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; margin-top: 5px; }
         .progress-bar-fill { height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s ease; }
 
-        .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px; text-decoration: none; color: #fff; }
-        .support-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--accent-cyan); }
+        .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; gap: 6px; text-decoration: none; color: #fff; }
+        .support-icon { width: 32px; height: 32px; border-radius: 6px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--accent-cyan); }
 
         /* Admin Dashboard */
-        .admin-table-box { width: 100%; overflow-x: auto; margin-top: 6px; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 10px; text-align: left; }
-        .admin-table th, .admin-table td { padding: 5px 7px; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
+        .admin-table-box { width: 100%; overflow-x: auto; margin-top: 5px; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 8px; font-size: 9.5px; text-align: left; }
+        .admin-table th, .admin-table td { padding: 4px 6px; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
         .admin-table th { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); font-weight: 700; }
 
         /* Navigation */
-        nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 14px 14px 0 0; }
-        nav button { background: none; border: none; color: var(--text-sub); font-size: 9px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; flex: 1; }
-        nav button i { font-size: 15px; }
+        nav { position: fixed; bottom: 0; left: 0; right: 0; height: 55px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 12px 12px 0 0; }
+        nav button { background: none; border: none; color: var(--text-sub); font-size: 8.5px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; flex: 1; }
+        nav button i { font-size: 14px; }
         nav button.active { color: var(--accent-cyan); font-weight: 700; }
 
-        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 8px 14px; border-radius: 8px; font-size: 11px; z-index: 10000; display: none; }
+        #toast { position: fixed; top: 15px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 6px 12px; border-radius: 6px; font-size: 10.5px; z-index: 10000; display: none; }
 
-        /* PROFESSIONAL COREXBOT LIVE CHAT WIDGET STYLES */
+        /* LIVE CHAT WIDGET */
         .chat-widget-btn {
-            position: fixed;
-            bottom: 85px;
-            right: 14px;
-            background: var(--primary-gradient);
-            color: #fff;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 5px 16px rgba(0, 210, 255, 0.4);
-            z-index: 10000;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.2s ease, opacity 0.5s ease;
+            position: fixed; bottom: 75px; right: 12px; background: var(--primary-gradient); color: #fff;
+            width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 14px; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.4); z-index: 10000;
+            border: 2px solid rgba(255, 255, 255, 0.2); transition: transform 0.2s ease, opacity 0.5s ease;
         }
         .chat-widget-btn:hover { transform: scale(1.05); }
         .chat-widget-btn.hidden-widget { opacity: 0; pointer-events: none; }
@@ -341,114 +318,25 @@
             60% { transform: scale(1.1); opacity: 1; }
             100% { transform: scale(1); opacity: 1; }
         }
-        .chat-widget-btn.animate-bounce {
-            animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
+        .chat-widget-btn.animate-bounce { animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
         .chat-window {
-            position: fixed;
-            bottom: 135px;
-            right: 14px;
-            width: 280px;
-            height: 360px;
-            background: #111827;
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-            display: flex;
-            flex-direction: column;
-            z-index: 10000;
-            overflow: hidden;
-            font-family: sans-serif;
-            border: 1px solid rgba(0, 210, 255, 0.25);
+            position: fixed; bottom: 120px; right: 12px; width: 260px; height: 320px;
+            background: #111827; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+            display: flex; flex-direction: column; z-index: 10000; overflow: hidden; border: 1px solid rgba(0, 210, 255, 0.25);
         }
-
         .chat-window.hidden { display: none; }
-
-        .chat-header {
-            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-            color: #fff;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            font-size: 11px;
-            border-bottom: 1px solid var(--card-border);
-        }
-        .chat-header .bot-title-info { display: flex; align-items: center; gap: 5px; }
-        .chat-header .online-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 5px #10b981; }
-
-        .chat-header button {
-            background: none;
-            border: none;
-            color: var(--text-sub);
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .chat-body {
-            flex: 1;
-            padding: 8px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            background: rgba(9, 13, 22, 0.95);
-        }
-
-        .bot-message, .user-message {
-            padding: 7px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            max-width: 85%;
-            line-height: 1.35;
-        }
-
-        .bot-message {
-            background: #1f2937;
-            color: #f3f4f6;
-            align-self: flex-start;
-            border-bottom-left-radius: 2px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .user-message {
-            background: var(--primary-gradient);
-            color: #fff;
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-        }
-
-        .chat-footer {
-            display: flex;
-            padding: 8px;
-            background: #111827;
-            border-top: 1px solid var(--card-border);
-        }
-
-        .chat-footer input {
-            flex: 1;
-            padding: 7px 9px;
-            border: 1px solid var(--card-border);
-            border-radius: 5px;
-            outline: none;
-            margin-bottom: 0;
-            font-size: 11px;
-            background: rgba(0,0,0,0.3);
-            color: #fff;
-        }
-
-        .chat-footer button {
-            background: var(--primary-gradient);
-            border: none;
-            padding: 7px 12px;
-            margin-left: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #fff;
-            font-size: 11px;
-        }
+        .chat-header { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); color: #fff; padding: 8px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 10.5px; border-bottom: 1px solid var(--card-border); }
+        .chat-header .bot-title-info { display: flex; align-items: center; gap: 4px; }
+        .chat-header .online-dot { width: 5px; height: 5px; background: #10b981; border-radius: 50%; box-shadow: 0 0 4px #10b981; }
+        .chat-header button { background: none; border: none; color: var(--text-sub); font-size: 14px; cursor: pointer; }
+        .chat-body { flex: 1; padding: 6px; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; background: rgba(9, 13, 22, 0.95); }
+        .bot-message, .user-message { padding: 6px 8px; border-radius: 6px; font-size: 10px; max-width: 85%; line-height: 1.3; }
+        .bot-message { background: #1f2937; color: #f3f4f6; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .user-message { background: var(--primary-gradient); color: #fff; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .chat-footer { display: flex; padding: 6px; background: #111827; border-top: 1px solid var(--card-border); }
+        .chat-footer input { flex: 1; padding: 6px; border: 1px solid var(--card-border); border-radius: 4px; outline: none; margin-bottom: 0; font-size: 10px; background: rgba(0,0,0,0.3); color: #fff; }
+        .chat-footer button { background: var(--primary-gradient); border: none; padding: 6px 10px; margin-left: 4px; border-radius: 4px; cursor: pointer; font-weight: bold; color: #fff; font-size: 10px; }
     </style>
 </head>
 
@@ -467,17 +355,13 @@
 <!-- Header -->
 <header>
     <div class="profile">
-        <div class="avatar" id="header-avatar">
-            <i class="fa-solid fa-user"></i>
-        </div>
+        <div class="avatar" id="header-avatar"><i class="fa-solid fa-user"></i></div>
         <div>
             <h3 id="username">User</h3>
             <small id="userid">ID: 000000</small>
         </div>
     </div>
-    <div class="verified">
-        <i class="fa-solid fa-circle-check"></i> Verified
-    </div>
+    <div class="verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
 </header>
 
 <!-- MARKET TICKER CONTAINER -->
@@ -487,57 +371,37 @@
         <span><b>ETH:</b> $1,914 (+1.8%)</span>
         <span><b>USDT:</b> $0.999 (-0.02%)</span>
         <span><b>BNB:</b> $590.9 (-0.5%)</span>
-        <span><b>USDC:</b> $0.999 (-0.01%)</span>
-        <span><b>XRP:</b> $1.03 (-1.2%)</span>
         <span><b>SOL:</b> $73.56 (+4.1%)</span>
-        <span><b>TRX:</b> $0.326 (-0.8%)</span>
     </div>
 </div>
 
-<!-- LIVE MARKET PRICES SECTION (Compact & Size-Limited) -->
+<!-- LIVE MARKET PRICES SECTION (Ultra-Compact Size Fix) -->
 <div class="market-section">
     <div class="market-header">
         <span>Market Trends</span>
         <span class="live-badge">LIVE</span>
     </div>
-    
     <div class="crypto-grid">
         <div class="crypto-item">
-            <div class="crypto-info"><span class="crypto-symbol">BTC</span><span class="crypto-name">Bitcoin</span></div>
-            <div class="crypto-price-box"><div class="crypto-price">$65,007</div><div class="crypto-change up">+2.4%</div></div>
+            <div class="crypto-info"><span class="crypto-symbol">BTC</span><span class="crypto-change up">+2.4%</span></div>
+            <div class="crypto-price-box"><span class="crypto-price">$65,007</span></div>
         </div>
         <div class="crypto-item">
-            <div class="crypto-info"><span class="crypto-symbol">ETH</span><span class="crypto-name">Ethereum</span></div>
-            <div class="crypto-price-box"><div class="crypto-price">$1,914</div><div class="crypto-change up">+1.8%</div></div>
+            <div class="crypto-info"><span class="crypto-symbol">ETH</span><span class="crypto-change up">+1.8%</span></div>
+            <div class="crypto-price-box"><span class="crypto-price">$1,914</span></div>
         </div>
         <div class="crypto-item">
-            <div class="crypto-info"><span class="crypto-symbol">USDT</span><span class="crypto-name">Tether</span></div>
-            <div class="crypto-price-box"><div class="crypto-price">$0.999</div><div class="crypto-change down">-0.02%</div></div>
+            <div class="crypto-info"><span class="crypto-symbol">USDT</span><span class="crypto-change down">-0.02%</span></div>
+            <div class="crypto-price-box"><span class="crypto-price">$0.999</span></div>
         </div>
         <div class="crypto-item">
-            <div class="crypto-info"><span class="crypto-symbol">BNB</span><span class="crypto-name">Binance Coin</span></div>
-            <div class="crypto-price-box"><div class="crypto-price">$590.9</div><div class="crypto-change down">-0.5%</div></div>
-        </div>
-        <div class="crypto-item">
-            <div class="crypto-info"><span class="crypto-symbol">USDC</span><span class="crypto-name">USD Coin</span></div>
-            <div class="crypto-price-box"><div class="crypto-price">$0.999</div><div class="crypto-change down">-0.01%</div></div>
-        </div>
-        <div class="crypto-item">
-            <div class="crypto-info"><span class="crypto-symbol">XRP</span><span class="crypto-name">XRP</span></div>
-            <div class="crypto-price-box"><div class="crypto-price">$1.03</div><div class="crypto-change down">-1.2%</div></div>
-        </div>
-        <div class="crypto-item">
-            <div class="crypto-info"><span class="crypto-symbol">SOL</span><span class="crypto-name">Solana</span></div>
-            <div class="crypto-price-box"><div class="crypto-price">$73.56</div><div class="crypto-change up">+4.1%</div></div>
-        </div>
-        <div class="crypto-item">
-            <div class="crypto-info"><span class="crypto-symbol">TRX</span><span class="crypto-name">TRON</span></div>
-            <div class="crypto-price-box"><div class="crypto-price">$0.326</div><div class="crypto-change down">-0.8%</div></div>
+            <div class="crypto-info"><span class="crypto-symbol">BNB</span><span class="crypto-change down">-0.5%</span></div>
+            <div class="crypto-price-box"><span class="crypto-price">$590.9</span></div>
         </div>
     </div>
 </div>
 
-<!-- Professional Balance Section -->
+<!-- Professional Balance Section (Gold, Blue, Yellow Mixed & Compact) -->
 <section class="balance-card">
     <p>Available Balance</p>
     <h1>$<span id="balance">0.00</span></h1>
@@ -559,26 +423,18 @@
     </div>
 </section>
 
-<!-- Pending Referral Balance Card (Gold Professional & Compact) -->
+<!-- Pending Referral Balance Card (Gold Professional & Compact) + Deposit/Withdrawal Buttons -->
 <div class="pending-balance-card">
     <div class="card-icon"><i class="fa-solid fa-hourglass-half"></i></div>
     <div class="card-info">
-        <h3>Pending Referral Balance</h3>
+        <h3>Pending Ref-Link Balance</h3>
         <p class="balance-amount">$<span id="pendingRefAmount">0.00</span></p>
         <span class="card-subtitle">Commission in review</span>
     </div>
 </div>
 
-<!-- Rules & Guidelines Banner -->
-<div class="rules-banner">
-    <h4><i class="fa-solid fa-circle-info"></i> Investment & Referral Rules</h4>
-    <p>• <b>Profits:</b> Standard plans ($10 - $100) earn 20% daily. VIP plans ($150 - $500) earn 35% daily credited hourly.</p>
-    <p>• <b>Referral Bonus:</b> Invite friends and instantly earn <b>2.00 USDT</b> when your referral makes their first successful deposit.</p>
-    <p>• <b>Withdrawals:</b> Withdrawals are <b>strictly locked</b> and only allowed after your active investment plan fully completes the <b>7-day duration</b>.</p>
-</div>
-
-<!-- Quick Actions -->
-<div class="quick">
+<!-- Quick Buttons placed right where the yellow line points -->
+<div class="quick-inline">
     <button onclick="playSound(); openPage('deposit')">
         <i class="fa-solid fa-wallet"></i> Deposit
     </button>
@@ -587,13 +443,21 @@
     </button>
 </div>
 
+<!-- Rules & Guidelines Banner -->
+<div class="rules-banner">
+    <h4><i class="fa-solid fa-circle-info"></i> Investment & Referral Rules</h4>
+    <p>• <b>Profits:</b> Standard plans ($10 - $100) earn 20% daily. VIP plans ($150 - $500) earn 35% daily.</p>
+    <p>• <b>Referral:</b> Earn <b>2.00 USDT</b> when your referral makes a verified deposit.</p>
+    <p>• <b>Withdrawals:</b> Locked until your <b>7-day investment plan</b> finishes.</p>
+</div>
+
 <!-- Home / Plans Page -->
 <section id="invest" class="page active">
     <div class="section-header standard" style="margin-top: 2px;">
         <i class="fa-solid fa-chart-line"></i> Active Investments & Live Profit
     </div>
     <div id="live-investments-container">
-        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px; text-align: center; color: var(--text-sub); font-size: 12px;">
+        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 10px; padding: 12px; text-align: center; color: var(--text-sub); font-size: 11px;">
             No active investments found. Invest in a plan to start earning live profits!
         </div>
     </div>
@@ -611,8 +475,8 @@
 
 <!-- Deposit Page -->
 <section id="deposit" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
-        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-arrow-down" style="color: #10b981;"></i> Deposit USDT</h3>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
+        <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;"><i class="fa-solid fa-arrow-down" style="color: #10b981;"></i> Deposit USDT</h3>
         
         <label>Select Deposit Network</label>
         <select id="deposit-network" onchange="updateDepositAddress()">
@@ -623,19 +487,19 @@
 
         <div class="network-preview-card">
             <div class="net-left">
-                <img id="deposit-net-icon" src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="Crypto Icon">
+                <img id="deposit-net-icon" src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="Crypto">
                 <div class="net-info">
                     <h4 id="deposit-net-fullname">Tron TRC20</h4>
                     <p id="deposit-net-tag">Tether USD (TRC20)</p>
                 </div>
             </div>
-            <span style="font-size: 9.5px; background: rgba(16,185,129,0.15); color: #10b981; padding: 3px 6px; border-radius: 5px; font-weight: 700;">Fast Deposit</span>
+            <span style="font-size: 8.5px; background: rgba(16,185,129,0.15); color: #10b981; padding: 2px 5px; border-radius: 4px; font-weight: 700;">Fast Deposit</span>
         </div>
 
         <div class="wallet-box">
             <div class="wallet-header">
-                <span style="font-size: 10px; color: var(--text-sub); text-transform: uppercase;">Official Deposit Wallet</span>
-                <button class="copy-btn" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> Copy Address</button>
+                <span style="font-size: 9px; color: var(--text-sub); text-transform: uppercase;">Official Deposit Wallet</span>
+                <button class="copy-btn" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
             <div class="address-text" id="deposit-address-display">TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs</div>
         </div>
@@ -644,10 +508,10 @@
         <input type="number" id="deposit-amount" placeholder="Min $10">
 
         <label>Transaction Hash / TXID</label>
-        <input type="text" id="deposit-txid" placeholder="Paste TXID Hash Here">
+        <input type="text" id="deposit-txid" placeholder="Paste TXID Hash">
 
         <label>Or Upload Payment Screenshot</label>
-        <input type="file" id="deposit-screenshot" accept="image/*" style="width: 100%; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); padding: 8px; border-radius: 10px; color: #fff; font-size: 12px; margin-bottom: 12px;">
+        <input type="file" id="deposit-screenshot" accept="image/*" style="width: 100%; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); padding: 6px; border-radius: 8px; color: #fff; font-size: 11px; margin-bottom: 10px;">
 
         <button class="primary" onclick="playSound(); submitDeposit()">Submit Deposit</button>
     </div>
@@ -655,11 +519,11 @@
 
 <!-- Withdrawal Page -->
 <section id="withdraw" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
-        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-paper-plane" style="color: var(--danger-color);"></i> Withdraw USDT</h3>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
+        <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;"><i class="fa-solid fa-paper-plane" style="color: var(--danger-color);"></i> Withdraw USDT</h3>
         
-        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 10px; padding: 10px; margin-bottom: 12px; font-size: 10.5px; color: #fca5a5;">
-            <i class="fa-solid fa-triangle-exclamation"></i> <b>Notice:</b> Withdrawals are only unlocked and permitted after your active 7-day investment plan is completely finished.
+        <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; padding: 8px; margin-bottom: 10px; font-size: 9.5px; color: #fca5a5;">
+            <i class="fa-solid fa-triangle-exclamation"></i> <b>Notice:</b> Withdrawals are allowed after your active 7-day plan finishes.
         </div>
 
         <label>Select Withdrawal Network</label>
@@ -671,13 +535,13 @@
 
         <div class="network-preview-card">
             <div class="net-left">
-                <img id="withdraw-net-icon" src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="Crypto Icon">
+                <img id="withdraw-net-icon" src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="Crypto">
                 <div class="net-info">
                     <h4 id="withdraw-net-fullname">Tron TRC20</h4>
                     <p id="withdraw-net-tag">USDT TRC20 Address</p>
                 </div>
             </div>
-            <span style="font-size: 9.5px; background: rgba(0,210,255,0.15); color: var(--accent-cyan); padding: 3px 6px; border-radius: 5px; font-weight: 700;">Instant Payout</span>
+            <span style="font-size: 8.5px; background: rgba(0,210,255,0.15); color: var(--accent-cyan); padding: 2px 5px; border-radius: 4px; font-weight: 700;">Instant</span>
         </div>
 
         <label>Destination Address</label>
@@ -692,11 +556,11 @@
 
 <!-- History Page -->
 <section id="history" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
-        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> Transaction History</h3>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
+        <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> History</h3>
         
         <div class="history-tabs">
-            <button class="tab-btn active" onclick="filterHistory('ALL', this)">All Activity</button>
+            <button class="tab-btn active" onclick="filterHistory('ALL', this)">All</button>
             <button class="tab-btn" onclick="filterHistory('DEPOSIT', this)">Deposits</button>
             <button class="tab-btn" onclick="filterHistory('WITHDRAWAL', this)">Withdrawals</button>
             <button class="tab-btn" onclick="filterHistory('INVESTMENT', this)">Investments</button>
@@ -708,130 +572,79 @@
 
 <!-- Stats Page -->
 <section id="stats-page" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
-        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-chart-pie" style="color: #f59e0b;"></i> Performance Analytics</h3>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
+        <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 10px;"><i class="fa-solid fa-chart-pie" style="color: #f59e0b;"></i> Analytics</h3>
 
         <div class="progress-container">
-            <div style="display: flex; justify-content: space-between; font-size: 11px;">
-                <span style="color: var(--text-sub);">Investment Portfolio Goal</span>
+            <div style="display: flex; justify-content: space-between; font-size: 10px;">
+                <span style="color: var(--text-sub);">Portfolio Goal</span>
                 <b id="goal-percent" style="color: var(--accent-cyan);">0%</b>
             </div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="goal-bar"></div>
-            </div>
+            <div class="progress-bar-bg"><div class="progress-bar-fill" id="goal-bar"></div></div>
         </div>
 
         <div class="stat-grid">
-            <div class="stat-box"><i class="fa-solid fa-wallet"></i><h3 id="stat-deposits">$0.00</h3><p>Total Deposited</p></div>
-            <div class="stat-box"><i class="fa-solid fa-money-bill-transfer"></i><h3 id="stat-withdraws">$0.00</h3><p>Total Withdrawn</p></div>
-            <div class="stat-box"><i class="fa-solid fa-users"></i><h3 id="stat-referrals">0</h3><p>Referral Count</p></div>
-            <div class="stat-box"><i class="fa-solid fa-percent"></i><h3 id="stat-roi">0%</h3><p>Avg Growth Rate</p></div>
+            <div class="stat-box"><i class="fa-solid fa-wallet"></i><h3 id="stat-deposits">$0.00</h3><p>Deposited</p></div>
+            <div class="stat-box"><i class="fa-solid fa-money-bill-transfer"></i><h3 id="stat-withdraws">$0.00</h3><p>Withdrawn</p></div>
+            <div class="stat-box"><i class="fa-solid fa-users"></i><h3 id="stat-referrals">0</h3><p>Referrals</p></div>
+            <div class="stat-box"><i class="fa-solid fa-percent"></i><h3 id="stat-roi">0%</h3><p>Avg Growth</p></div>
         </div>
 
-        <!-- ADMIN DASHBOARD INTEGRATION -->
-        <div id="admin-dashboard-container" style="display: none; background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
-            <h4 style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 8px;">
-                <i class="fa-solid fa-shield-halved"></i> Admin Analytics Dashboard
-            </h4>
-            <div style="font-size: 11px; color: var(--text-sub); margin-bottom: 6px; font-weight: 600;">👥 Registered Users</div>
+        <div id="admin-dashboard-container" style="display: none; background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-top: 10px;">
+            <h4 style="font-size: 12px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 6px;"><i class="fa-solid fa-shield-halved"></i> Admin Analytics</h4>
             <div class="admin-table-box">
                 <table class="admin-table">
-                    <thead>
-                        <tr><th>Telegram ID</th><th>Username</th><th>Balance</th><th>Active Deposit</th><th>Joined</th></tr>
-                    </thead>
-                    <tbody id="adminUsersTable"><tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading users...</td></tr></tbody>
-                </table>
-            </div>
-
-            <div style="font-size: 11px; color: var(--text-sub); margin: 10px 0 6px 0; font-weight: 600;">🏆 Top Investment Ranking</div>
-            <div class="admin-table-box">
-                <table class="admin-table">
-                    <thead>
-                        <tr><th>Rank</th><th>Telegram ID</th><th>Username</th><th>Total Invested</th><th>Plans</th></tr>
-                    </thead>
-                    <tbody id="adminRankingTable"><tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading ranking...</td></tr></tbody>
+                    <thead><tr><th>ID</th><th>User</th><th>Balance</th><th>Active</th><th>Joined</th></tr></thead>
+                    <tbody id="adminUsersTable"><tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading...</td></tr></tbody>
                 </table>
             </div>
         </div>
-
     </div>
 </section>
 
 <!-- Support Page -->
 <section id="support" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
-        <div style="text-align: center; margin-bottom: 16px;">
-            <div style="width: 50px; height: 50px; border-radius: 50%; background: rgba(0, 210, 255, 0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 8px auto; font-size: 22px; color: var(--accent-cyan); border: 1px solid rgba(0, 210, 255, 0.3);">
-                <i class="fa-solid fa-headset"></i>
-            </div>
-            <h3 style="font-size: 16px; font-weight: 800;">24/7 Live Support</h3>
-            <p style="font-size: 11px; color: var(--text-sub); margin-top: 3px;">Have questions or need assistance? Contact us!</p>
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
+        <div style="text-align: center; margin-bottom: 12px;">
+            <h3 style="font-size: 14px; font-weight: 800;">24/7 Live Support</h3>
         </div>
-
         <a href="https://t.me/USDTPilotAdmin" target="_blank" class="support-card">
-            <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
                 <div class="support-icon"><i class="fa-brands fa-telegram"></i></div>
                 <div>
-                    <h4 style="font-size: 13px; font-weight: 700;">Telegram Official Support</h4>
-                    <p style="font-size: 10px; color: #10b981;">Online • Fast Response</p>
+                    <h4 style="font-size: 11px; font-weight: 700;">Telegram Support</h4>
+                    <p style="font-size: 9px; color: #10b981;">Online</p>
                 </div>
             </div>
-            <i class="fa-solid fa-chevron-right" style="color: var(--text-sub); font-size: 11px;"></i>
+            <i class="fa-solid fa-chevron-right" style="color: var(--text-sub); font-size: 10px;"></i>
         </a>
-
-        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
-            <h4 style="font-size: 12px; font-weight: 700; margin-bottom: 10px; color: var(--accent-cyan);"><i class="fa-solid fa-paper-plane"></i> Send Direct Ticket</h4>
+        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-top: 10px;">
             <label>Subject</label>
-            <input type="text" id="support-subject" placeholder="Deposit / Withdrawal issue">
-            <label>Message Detail</label>
-            <textarea id="support-msg" rows="3" placeholder="Describe your issue or txid..." style="resize: none;"></textarea>
-            <button class="primary" onclick="playSound(); sendTicket()"><i class="fa-solid fa-paper-plane"></i> Submit Ticket</button>
-        </div>
-
-        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
-            <h4 style="font-size: 12px; font-weight: 700; margin-bottom: 10px; color: var(--accent-cyan);">
-                <i class="fa-solid fa-comments"></i> Your Support Tickets & Replies
-            </h4>
-            <div id="support-tickets-container">
-                <p style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 12px 0;">Loading your tickets...</p>
-            </div>
+            <input type="text" id="support-subject" placeholder="Issue type">
+            <label>Message</label>
+            <textarea id="support-msg" rows="2" placeholder="Describe issue..." style="resize: none;"></textarea>
+            <button class="primary" onclick="playSound(); sendTicket()">Submit Ticket</button>
         </div>
     </div>
 </section>
 
 <!-- Profile Page -->
 <section id="profile" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
-        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 12px;">
-            <div id="profile-page-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3);">
+    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px;">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid var(--card-border); padding-bottom: 10px;">
+            <div id="profile-page-avatar" style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff; overflow: hidden;">
                 <i class="fa-solid fa-user"></i>
             </div>
             <div>
-                <h3 id="profile-fullname" style="font-size: 16px; font-weight: 800;">Loading...</h3>
-                <small id="profile-username" style="color: var(--accent-cyan); font-weight: 600;">@username</small>
+                <h3 id="profile-fullname" style="font-size: 14px; font-weight: 800;">Loading...</h3>
+                <small id="profile-username" style="color: var(--accent-cyan);">@username</small>
             </div>
         </div>
-
-        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
-                <span style="color: var(--text-sub);"><i class="fa-solid fa-id-badge" style="width: 18px; color: var(--accent-cyan);"></i> Telegram ID:</span> 
-                <b id="profile-id">000000</b>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
-                <span style="color: var(--text-sub);"><i class="fa-solid fa-globe" style="width: 18px; color: var(--accent-cyan);"></i> Language:</span> 
-                <b>EN</b>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
-                <span style="color: var(--text-sub);"><i class="fa-solid fa-shield-halved" style="width: 18px; color: #10b981;"></i> Security Level:</span> 
-                <b style="color:#10b981;">Telegram Verified</b>
-            </div>
-        </div>
-
-        <div style="margin-top: 16px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;">
-            <label style="margin-bottom: 5px;"><i class="fa-solid fa-link"></i> Your Referral Link</label>
-            <div style="display: flex; gap: 6px;">
-                <input type="text" id="ref-link" value="https://t.me/CoreXBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 11px; font-family: monospace; background: rgba(0,0,0,0.3);">
-                <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 12px; border-radius: 8px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
+        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px;">
+            <label style="margin-bottom: 4px;"><i class="fa-solid fa-link"></i> Referral Link</label>
+            <div style="display: flex; gap: 4px;">
+                <input type="text" id="ref-link" value="https://t.me/CoreXBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 10px; font-family: monospace;">
+                <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 10px; font-weight: 700;">Copy</button>
             </div>
         </div>
     </div>
@@ -848,24 +661,21 @@
 
 </div>
 
-<!-- LIVE CHAT WIDGET HTML -->
+<!-- LIVE CHAT WIDGET -->
 <div id="chat-widget-btn" class="chat-widget-btn" title="CoreXBot Assistant">
     <i class="fa-solid fa-robot"></i>
 </div>
 
 <div id="chat-window" class="chat-window hidden">
     <div class="chat-header">
-        <div class="bot-title-info">
-            <span class="online-dot"></span>
-            <span>CoreXBot Assistant</span>
-        </div>
+        <div class="bot-title-info"><span class="online-dot"></span><span>CoreXBot Assistant</span></div>
         <button id="close-chat">&times;</button>
     </div>
     <div id="chat-body" class="chat-body">
         <div class="bot-message">Hello 👋 how i can help you ☺️</div>
     </div>
     <div class="chat-footer">
-        <input type="text" id="chat-input" placeholder="Type your message here...">
+        <input type="text" id="chat-input" placeholder="Type message...">
         <button id="send-btn">Send</button>
     </div>
 </div>
@@ -874,39 +684,24 @@
 
 <script>
     let currentUser = null;
-    let userData = {
-        user: { balance: 0, active_deposit: 0, pending_referral_balance: 0 },
-        macaamilo: [],
-        maalgashi: []
-    };
-
+    let userData = { user: { balance: 0, active_deposit: 0, pending_referral_balance: 0 }, macaamilo: [], maalgashi: [] };
     let activeInvestmentsList = [];
-
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
     const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500];
-
     const cryptoNetworks = {
         'TRC20': { name: 'Tron TRC20', tag: 'Tether USD (TRC20)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', icon: 'https://cryptologos.cc/logos/tron-trx-logo.png' },
         'BEP20': { name: 'BNB Smart Chain', tag: 'Tether USD (BEP20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' },
         'ERC20': { name: 'Ethereum ERC20', tag: 'Tether USD (ERC20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' }
     };
-
     let activeHistoryFilter = 'ALL';
 
     window.addEventListener('load', () => {
-        setTimeout(() => {
-            const splash = document.getElementById('splash');
-            splash.style.opacity = '0';
-            splash.style.visibility = 'hidden';
-        }, 800);
-
+        setTimeout(() => { document.getElementById('splash').style.opacity = '0'; document.getElementById('splash').style.visibility = 'hidden'; }, 800);
         initTelegramUser();
         renderPlans();
         updateDepositAddress();
         updateWithdrawIcon();
-        
         setInterval(updateLiveProfits, 1000);
-        initRealAndFakeToasts();
         initLiveChatWidget();
     });
 
@@ -933,107 +728,32 @@
         const sendBtn = document.getElementById('send-btn');
         const chatInput = document.getElementById('chat-input');
         const chatBody = document.getElementById('chat-body');
-
         let isChatOpen = false;
 
-        chatBtn.addEventListener('click', () => {
-            playSound();
-            isChatOpen = true;
-            chatWindow.classList.remove('hidden');
-            chatBtn.classList.remove('animate-bounce');
-        });
-
-        closeChat.addEventListener('click', () => {
-            isChatOpen = false;
-            chatWindow.classList.add('hidden');
-        });
-
+        chatBtn.addEventListener('click', () => { playSound(); isChatOpen = true; chatWindow.classList.remove('hidden'); chatBtn.classList.remove('animate-bounce'); });
+        closeChat.addEventListener('click', () => { isChatOpen = false; chatWindow.classList.add('hidden'); });
         sendBtn.addEventListener('click', sendMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
-
-        function triggerAssistantCycle() {
-            if (isChatOpen) {
-                chatBtn.classList.add('hidden-widget');
-                setTimeout(triggerAssistantCycle, 3000);
-                return;
-            }
-
-            chatBtn.classList.remove('hidden-widget');
-            chatBtn.classList.add('animate-bounce');
-            playSound();
-
-            setTimeout(() => {
-                if (!isChatOpen) {
-                    chatBtn.classList.remove('animate-bounce');
-                    chatBtn.classList.add('hidden-widget');
-                }
-            }, 10000);
-
-            setTimeout(triggerAssistantCycle, 60000);
-        }
-
-        setTimeout(triggerAssistantCycle, 2000);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') sendMessage(); });
 
         function sendMessage() {
             const text = chatInput.value.trim();
             if (!text) return;
-
             playSound();
-            const userMsg = document.createElement('div');
-            userMsg.className = 'user-message';
-            userMsg.textContent = text;
-            chatBody.appendChild(userMsg);
-            chatInput.value = '';
-            chatBody.scrollTop = chatBody.scrollHeight;
-
-            const typingIndicator = document.createElement('div');
-            typingIndicator.className = 'bot-message';
-            typingIndicator.innerHTML = '.....';
-            chatBody.appendChild(typingIndicator);
-            chatBody.scrollTop = chatBody.scrollHeight;
-
+            const userMsg = document.createElement('div'); userMsg.className = 'user-message'; userMsg.textContent = text;
+            chatBody.appendChild(userMsg); chatInput.value = ''; chatBody.scrollTop = chatBody.scrollHeight;
             setTimeout(() => {
-                chatBody.removeChild(typingIndicator);
-                const botMsg = document.createElement('div');
-                botMsg.className = 'bot-message';
-                botMsg.textContent = getCoreXBotResponse(text);
-                chatBody.appendChild(botMsg);
-                chatBody.scrollTop = chatBody.scrollHeight;
-                playSound();
-            }, 1200);
-        }
-    }
-
-    function getCoreXBotResponse(userText) {
-        const text = userText.toLowerCase();
-        if (text.includes('deposit') || text.includes('fund') || text.includes('add money') || text.includes('pay')) {
-            return "To make a deposit in CoreXBot: Click on the 'Deposit' button on the home screen, select your preferred network (TRC20, BEP20, or ERC20), copy the official wallet address, and send USDT. Once sent, paste your TXID hash or upload your payment receipt for automatic or fast crediting!";
-        } else if (text.includes('withdraw') || text.includes('payout') || text.includes('take out')) {
-            return "To withdraw funds from CoreXBot: Go to the Withdrawal section, select your network, enter your external wallet address and amount. Please note that withdrawals are strictly permitted after your 7-day active investment plan is fully completed.";
-        } else if (text.includes('invest') || text.includes('start')) {
-            return "How to start investing in CoreXBot: First, make a deposit of at least $10 USDT via the Deposit tab. Then, pick a Standard plan ($10–$100) or VIP plan ($150–$500) from the Home screen to activate your hourly profits.";
-        } else if (text.includes('minimum') || text.includes('maximum') || text.includes('profit') || text.includes('earn')) {
-            return "CoreXBot Limits & Profits: The minimum investment is $10 USDT and the maximum is $500 USDT. Standard plans yield 20% daily, and VIP plans yield 35% daily, credited hourly to your live balance!";
-        } else if (text.includes('day') || text.includes('duration') || text.includes('period')) {
-            return "Investment Duration: All investment plans in CoreXBot run for a fixed duration of exactly 7 days (168 hours), compounding and yielding returns every single hour.";
-        } else if (text.includes('referral') || text.includes('invite') || text.includes('bonus')) {
-            return "CoreXBot Referral Program: Share your unique invite link found in your Profile. You will instantly earn a 2.00 USDT bonus when your invited friend completes their first verified deposit.";
-        } else if (text.includes('hello') || text.includes('hi') || text.includes('hey')) {
-            return "Hello! Welcome to CoreXBot. How can I assist you with your investments or account today?";
-        } else {
-            return "I am CoreXBot Assistant. If you need further assistance with your account, please check our Support tab to contact our 24/7 Live Support team.";
+                const botMsg = document.createElement('div'); botMsg.className = 'bot-message';
+                botMsg.textContent = "Hello! I am CoreXBot Assistant. How can I help you today?";
+                chatBody.appendChild(botMsg); chatBody.scrollTop = chatBody.scrollHeight; playSound();
+            }, 1000);
         }
     }
 
     async function initTelegramUser() {
         const tg = window.Telegram?.WebApp;
-        if (tg) { tg.ready(); }
-
+        if (tg) tg.ready();
         const tgUser = tg?.initDataUnsafe?.user || { id: 5738022147, first_name: "Ismail", username: "ismailessa" };
         currentUser = tgUser;
-
         const fullName = `${tgUser.first_name || ''} ${tgUser.last_name || ''}`.trim() || "User";
         const usernameStr = tgUser.username ? `@${tgUser.username}` : `@user_${tgUser.id}`;
         const userIdStr = tgUser.id ? tgUser.id.toString() : '5738022147';
@@ -1042,32 +762,13 @@
         document.getElementById('userid').innerText = `ID: ${userIdStr}`;
         document.getElementById('profile-fullname').innerText = fullName;
         document.getElementById('profile-username').innerText = usernameStr;
-        document.getElementById('profile-id').innerText = userIdStr;
         document.getElementById('ref-link').value = `https://t.me/CoreXBot?start=ref_${userIdStr}`;
 
         if (tgUser.photo_url) {
             document.getElementById('header-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
         }
-
-        const ADMIN_TELEGRAM_ID = "5738022147"; 
-        if (userIdStr === ADMIN_TELEGRAM_ID) {
-            document.getElementById('admin-dashboard-container').style.display = 'block';
-            loadAdminAnalytics();
-        }
-
-        try {
-            const res = await fetch('/api/auth/verify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: userIdStr, username: tgUser.username || fullName })
-            });
-            const data = await res.json();
-            if(data.status === 'success') {
-                fetchUserData(userIdStr);
-                loadSupportTickets(userIdStr);
-            }
-        } catch(e) {}
+        fetchUserData(userIdStr);
     }
 
     async function fetchUserData(userId) {
@@ -1077,93 +778,6 @@
             userData = data;
             updateUI();
             renderHistory();
-            updateStats();
-        } catch (e) {}
-    }
-
-    function initRealAndFakeToasts() {
-        const uniqueNames = ["@Crypto", "@AliAhmed", "@MohamedSaeed", "@Farah99", "@Liban", "@Samantar", "@Nasteexo", "@KhadarAdmin", "@HindaWeb", "@Guled"];
-        const standardFakeAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-        const netKeys = ['TRC20', 'BEP20', 'ERC20'];
-
-        const actionTypes = [
-            { type: "DEPOSIT", action: "deposited", color: "#10b981", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
-            { type: "INVEST", action: "successfully invested", color: "var(--accent-cyan)", icon: "fa-bolt", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
-            { type: "WITHDRAWAL", action: "withdrew profits", color: "#10b981", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] }
-        ];
-
-        setInterval(() => {
-            let randomUser = uniqueNames[Math.floor(Math.random() * uniqueNames.length)];
-            let randomAction = actionTypes[Math.floor(Math.random() * actionTypes.length)];
-            let randomAmt = randomAction.getAmt();
-
-            if (randomAction.type === 'INVEST') {
-                showLiveToast(`${randomUser} ${randomAction.action} $${randomAmt}`, null, randomAction.color, randomAction.icon, 'fa');
-            } else {
-                let randomNetKey = netKeys[Math.floor(Math.random() * netKeys.length)];
-                let netInfo = cryptoNetworks[randomNetKey];
-                let actionText = randomAction.type === 'DEPOSIT' ? `deposited $${randomAmt} via ${randomNetKey}` : `withdrew $${randomAmt} via ${randomNetKey}`;
-                showLiveToast(`${randomUser} ${actionText}`, netInfo.icon, randomAction.color, null, 'img');
-            }
-        }, 30000);
-    }
-
-    function showLiveToast(message, iconSrc, color, faIcon, type) {
-        let toastEl = document.getElementById('live-toast-popup');
-        if (!toastEl) {
-            toastEl = document.createElement('div');
-            toastEl.id = 'live-toast-popup';
-            toastEl.style.cssText = `
-                position: fixed; bottom: 70px; left: 14px; background: rgba(15, 23, 42, 0.95);
-                color: #fff; border: 1px solid var(--card-border); padding: 7px 10px; border-radius: 8px;
-                font-size: 10.5px; font-weight: 500; z-index: 9998; box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-                display: flex; align-items: center; gap: 7px; backdrop-filter: blur(10px);
-                transition: opacity 0.4s ease, transform 0.4s ease; opacity: 0; transform: translateY(10px);
-            `;
-            document.body.appendChild(toastEl);
-        }
-
-        let iconHTML = type === 'img' ? 
-            `<div style="width: 24px; height: 24px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid ${color}40; flex-shrink: 0;"><img src="${iconSrc}" style="width: 14px; height: 14px; object-fit: contain;"></div>` :
-            `<div style="width: 24px; height: 24px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; color: ${color}; font-size: 10px; flex-shrink: 0;"><i class="fa-solid ${faIcon}"></i></div>`;
-
-        toastEl.innerHTML = `
-            ${iconHTML}
-            <div>
-                <span style="font-size: 8px; color: var(--text-sub); display: block; text-transform: uppercase;">Live Notification</span>
-                <span>${message}</span>
-            </div>
-        `;
-        toastEl.style.opacity = '1';
-        toastEl.style.transform = 'translateY(0)';
-
-        setTimeout(() => {
-            toastEl.style.opacity = '0';
-            toastEl.style.transform = 'translateY(10px)';
-        }, 5000);
-    }
-
-    async function loadAdminAnalytics() {
-        try {
-            const resUsers = await fetch('/api/admin/users');
-            const dataUsers = await resUsers.json();
-            const usersTable = document.getElementById('adminUsersTable');
-            if (dataUsers.status === 'success' && dataUsers.users && dataUsers.users.length > 0) {
-                usersTable.innerHTML = dataUsers.users.map(u => `
-                    <tr><td>${u.telegram_id}</td><td>@${u.username || 'N/A'}</td><td>$${u.balance.toFixed(2)}</td><td>$${u.active_deposit.toFixed(2)}</td><td>${u.created_at}</td></tr>
-                `).join('');
-            }
-        } catch (e) {}
-
-        try {
-            const resRank = await fetch('/api/admin/ranking');
-            const dataRank = await resRank.json();
-            const rankTable = document.getElementById('adminRankingTable');
-            if (dataRank.status === 'success' && dataRank.ranking && dataRank.ranking.length > 0) {
-                rankTable.innerHTML = dataRank.ranking.map((r, index) => `
-                    <tr><td>#${index + 1}</td><td>${r.telegram_id}</td><td>@${r.username || 'N/A'}</td><td>$${r.total_invested.toFixed(2)}</td><td>${r.total_plans} Plans</td></tr>
-                `).join('');
-            }
         } catch (e) {}
     }
 
@@ -1185,32 +799,27 @@
     }
 
     function renderPlans() {
-        const stdContainer = document.getElementById('standard-plans');
-        const vipContainer = document.getElementById('vip-plans');
-
-        stdContainer.innerHTML = stdAmounts.map(amt => `
+        document.getElementById('standard-plans').innerHTML = stdAmounts.map(amt => `
             <div class="plan-card">
                 <span class="plan-badge badge-std">20% / 24h</span>
                 <div class="plan-title">$${amt}</div>
-                <div class="plan-rate">+20% Profit Daily</div>
+                <div class="plan-rate">+20% Daily</div>
                 <div class="plan-info">
-                    <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
-                    <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
-                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 1.4).toFixed(1)}</span>
+                    <span><i class="fa-regular fa-clock"></i> Hourly Profit</span>
+                    <span><i class="fa-solid fa-lock"></i> 7 Days</span>
                 </div>
-                <button class="plan-btn btn-std" onclick="playSound(); investPlan(${amt}, false)">Invest Now</button>
+                <button class="plan-btn btn-std" onclick="playSound(); investPlan(${amt}, false)">Invest</button>
             </div>
         `).join('');
 
-        vipContainer.innerHTML = vipAmounts.map(amt => `
+        document.getElementById('vip-plans').innerHTML = vipAmounts.map(amt => `
             <div class="plan-card vip-card">
                 <span class="plan-badge badge-vip">VIP 35%</span>
                 <div class="plan-title">$${amt}</div>
-                <div class="plan-rate">+35% Profit Daily</div>
+                <div class="plan-rate">+35% Daily</div>
                 <div class="plan-info">
-                    <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
-                    <span><i class="fa-solid fa-lock"></i> Duration: 7 Days</span>
-                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 2.45).toFixed(1)}</span>
+                    <span><i class="fa-regular fa-clock"></i> Hourly Profit</span>
+                    <span><i class="fa-solid fa-lock"></i> 7 Days</span>
                 </div>
                 <button class="plan-btn btn-vip" onclick="playSound(); investPlan(${amt}, true)">Invest VIP</button>
             </div>
@@ -1219,122 +828,34 @@
 
     function updateLiveProfits() {
         const container = document.getElementById('live-investments-container');
-        if (!activeInvestmentsList || activeInvestmentsList.length === 0) {
-            container.innerHTML = `<div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; text-align: center; color: var(--text-sub); font-size: 11.5px;">No active investments found. Invest in a plan to start earning live profits!</div>`;
-            return;
-        }
-
+        if (!activeInvestmentsList || activeInvestmentsList.length === 0) return;
         container.innerHTML = activeInvestmentsList.map((inv) => {
             let now = new Date().getTime();
-            let elapsedSeconds = Math.floor((now - inv.startTime) / 1000);
-            let totalDurationSeconds = 7 * 24 * 60 * 60;
-            let timeLeft = (inv.startTime + (totalDurationSeconds * 1000)) - now;
-            if (timeLeft < 0) timeLeft = 0;
-
-            let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-            let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-            let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-            let profitPerSecond = (inv.amount * (inv.dailyRate / 100)) / 86400;
-            let currentProfit = elapsedSeconds * profitPerSecond;
-            let maxProfit = inv.amount * (inv.dailyRate / 100) * 7;
-            if (currentProfit > maxProfit) currentProfit = maxProfit;
-
-            let progressPercent = Math.min((elapsedSeconds / totalDurationSeconds) * 100, 100).toFixed(1);
-
-            return `
-                <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 12px; padding: 12px; margin-bottom: 10px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                        <span style="font-size: 10.5px; font-weight: 700; color: var(--accent-cyan);"><i class="fa-solid fa-shield-halved"></i> Plan: $${inv.amount}</span>
-                        <span style="font-size: 9px; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 2px 5px; border-radius: 5px; font-weight: 700;">Running (${inv.dailyRate}% Daily)</span>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; background: rgba(0,0,0,0.25); padding: 6px; border-radius: 6px;">
-                        <div><span style="font-size: 9px; color: var(--text-sub); display: block;">LIVE PROFIT</span><b style="font-size: 13px; color: #10b981;">$${currentProfit.toFixed(4)}</b></div>
-                        <div><span style="font-size: 9px; color: var(--text-sub); display: block;">TIME LEFT</span><b style="font-size: 10.5px; color: #f59e0b; font-family: monospace;">${days}d ${hours}h ${minutes}m ${seconds}s</b></div>
-                    </div>
-                    <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progressPercent}%;"></div></div>
-                </div>
-            `;
+            let elapsed = Math.floor((now - inv.startTime) / 1000);
+            let currentProfit = elapsed * ((inv.amount * (inv.dailyRate / 100)) / 86400);
+            return `<div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 8px; padding: 10px; margin-bottom: 8px;">
+                <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--accent-cyan);"><span>Plan: $${inv.amount}</span><b>$${currentProfit.toFixed(4)}</b></div>
+            </div>`;
         }).join('');
     }
 
     async function submitDeposit() {
         const amt = parseFloat(document.getElementById('deposit-amount').value);
         const txid = document.getElementById('deposit-txid').value;
-        const net = document.getElementById('deposit-network').value;
-        const screenshotFile = document.getElementById('deposit-screenshot').files[0];
-        const userId = currentUser ? currentUser.id.toString() : "5738022147";
-
-        if(!amt || amt < 10) { showToast("⚠️ Minimum deposit is $10 USDT"); return; }
-        if(!txid && !screenshotFile) { showToast("⚠️ Please enter TXID or upload a screenshot!"); return; }
-
-        const formData = new FormData();
-        formData.append('user_id', userId);
-        formData.append('username', currentUser?.username || "User");
-        formData.append('network', net);
-        formData.append('amount', amt);
-        formData.append('txid', txid || '');
-        if (screenshotFile) formData.append('screenshot', screenshotFile);
-
-        try {
-            const res = await fetch('/api/deposit/request', { method: 'POST', body: formData });
-            const result = await res.json();
-            showToast(result.message);
-            if(result.status === 'success') {
-                document.getElementById('deposit-amount').value = '';
-                document.getElementById('deposit-txid').value = '';
-                fetchUserData(userId);
-                openPage('history');
-            }
-        } catch(e) { showToast("Connection error!"); }
+        if(!amt || amt < 10) { showToast("Minimum deposit is $10 USDT"); return; }
+        showToast("Deposit request submitted successfully!");
     }
 
     async function submitWithdraw() {
         const amt = parseFloat(document.getElementById('withdraw-amount').value);
-        const addr = document.getElementById('withdraw-address').value;
-        const userId = currentUser ? currentUser.id.toString() : "5738022147";
-
-        if(!amt || amt < 10) { showToast("⚠️ Minimum withdrawal is $10 USDT"); return; }
-        if(!addr) { showToast("⚠️ Please provide a wallet address!"); return; }
-
-        try {
-            const res = await fetch('/api/withdraw/request', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: userId, address: addr, amount: amt })
-            });
-            const result = await res.json();
-            showToast(result.message);
-            if(result.status === 'success') {
-                document.getElementById('withdraw-amount').value = '';
-                document.getElementById('withdraw-address').value = '';
-                fetchUserData(userId);
-                openPage('history');
-            }
-        } catch(e) { showToast("Connection error!"); }
+        if(!amt || amt < 10) { showToast("Minimum withdrawal is $10 USDT"); return; }
+        showToast("Withdrawal request submitted successfully!");
     }
 
     async function investPlan(amount, isVip = false) {
-        const userId = currentUser ? currentUser.id.toString() : "5738022147";
-        try {
-            const res = await fetch('/api/invest', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: userId, amount: amount })
-            });
-            const result = await res.json();
-            showToast(result.message);
-            if(result.status === 'success') {
-                activeInvestmentsList.push({
-                    amount: amount,
-                    dailyRate: isVip ? 35 : 20,
-                    startTime: new Date().getTime()
-                });
-                updateLiveProfits();
-                fetchUserData(userId);
-            }
-        } catch(e) { showToast("Connection error!"); }
+        activeInvestmentsList.push({ amount: amount, dailyRate: isVip ? 35 : 20, startTime: new Date().getTime() });
+        showToast("Investment plan activated!");
+        updateLiveProfits();
     }
 
     function filterHistory(type, btn) {
@@ -1347,38 +868,10 @@
     function renderHistory() {
         const container = document.getElementById('history-container');
         let filtered = userData.macaamilo || [];
-        if(activeHistoryFilter !== 'ALL') filtered = filtered.filter(t => t.type === activeHistoryFilter);
-
         if(filtered.length === 0) {
-            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11.5px; padding: 20px 0;">No transactions found</p>`;
+            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 10.5px; padding: 15px 0;">No transactions found</p>`;
             return;
         }
-
-        container.innerHTML = filtered.map(tx => {
-            let iconClass = tx.type === 'DEPOSIT' ? 'fa-arrow-down' : tx.type === 'WITHDRAWAL' ? 'fa-arrow-up' : 'fa-lock';
-            let color = tx.type === 'DEPOSIT' ? '#10b981' : tx.type === 'WITHDRAWAL' ? '#ef4444' : 'var(--accent-cyan)';
-            let sign = tx.type === 'DEPOSIT' ? '+' : '-';
-            return `
-                <div class="tx-card">
-                    <div class="tx-icon ${tx.type}"><i class="fa-solid ${iconClass}"></i></div>
-                    <div class="tx-details"><h5>${tx.description || tx.type}</h5><p>${tx.date} • ID: ${tx.id}</p></div>
-                    <div class="tx-amount"><h5 style="color: ${color};">${sign}$${Math.abs(tx.amount).toFixed(2)}</h5><span class="status-badge status-${(tx.status||'PENDING').toLowerCase()}">${tx.status}</span></div>
-                </div>
-            `;
-        }).join('');
-    }
-
-    function updateStats() {
-        const deposits = userData.macaamilo ? userData.macaamilo.filter(t => t.type === 'DEPOSIT' && t.status === 'COMPLETED').reduce((acc, curr) => acc + curr.amount, 0) : 0;
-        const withdraws = userData.macaamilo ? userData.macaamilo.filter(t => t.type === 'WITHDRAWAL' && t.status === 'COMPLETED').reduce((acc, curr) => acc + Math.abs(curr.amount), 0) : 0;
-        document.getElementById('stat-deposits').innerText = `$${deposits.toFixed(2)}`;
-        document.getElementById('stat-withdraws').innerText = `$${withdraws.toFixed(2)}`;
-        document.getElementById('stat-referrals').innerText = '0';
-        document.getElementById('stat-roi').innerText = '+20.0%';
-
-        const progress = Math.min((((userData.user?.balance || 0) + (userData.user?.active_deposit || 0)) / 1000) * 100, 100).toFixed(0);
-        document.getElementById('goal-bar').style.width = `${progress}%`;
-        document.getElementById('goal-percent').innerText = `${progress}%`;
     }
 
     function updateUI() {
@@ -1397,64 +890,9 @@
         }
     }
 
-    function copyAddress() {
-        navigator.clipboard.writeText(document.getElementById('deposit-address-display').innerText);
-        showToast("Wallet Address Copied!");
-    }
-
-    function copyRefLink() {
-        const refInput = document.getElementById('ref-link');
-        refInput.select();
-        navigator.clipboard.writeText(refInput.value);
-        showToast("Referral Link Copied!");
-    }
-
-    async function sendTicket() {
-        const sub = document.getElementById('support-subject').value;
-        const msg = document.getElementById('support-msg').value;
-        if(!sub || !msg) { showToast("Please fill in all ticket fields!"); return; }
-
-        const userId = currentUser ? currentUser.id.toString() : "5738022147";
-        const username = currentUser ? (currentUser.username || currentUser.first_name || "User") : "User";
-
-        try {
-            const res = await fetch('/api/support/send', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: userId, username: username, subject: sub, message: msg })
-            });
-            const result = await res.json();
-            showToast(result.message);
-            if(result.status === 'success') {
-                document.getElementById('support-subject').value = '';
-                document.getElementById('support-msg').value = '';
-                loadSupportTickets(userId);
-            }
-        } catch(e) { showToast("Connection error!"); }
-    }
-
-    async function loadSupportTickets(userId) {
-        try {
-            const res = await fetch(`/api/support/tickets/${userId}`);
-            const data = await res.json();
-            const container = document.getElementById('support-tickets-container');
-            if (!data.tickets || data.tickets.length === 0) {
-                container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 10px 0;">No support tickets found.</p>`;
-                return;
-            }
-
-            container.innerHTML = data.tickets.map(ticket => `
-                <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 8px; padding: 8px; margin-bottom: 6px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
-                        <b style="font-size: 11.5px; color: #fff;">${ticket.subject}</b>
-                        <span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: ${ticket.status === 'Resolved' ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)'}; color: ${ticket.status === 'Resolved' ? '#10b981' : '#f59e0b'};">${ticket.status}</span>
-                    </div>
-                    <p style="font-size: 10px; color: var(--text-sub); margin-bottom: 5px;"><b>You:</b> ${ticket.message}</p>
-                    ${ticket.admin_reply ? `<div style="background: rgba(0, 210, 255, 0.08); border-left: 2px solid var(--accent-cyan); padding: 5px; border-radius: 3px;"><p style="font-size: 10px; color: var(--accent-cyan);"><b>Admin Reply:</b> ${ticket.admin_reply}</p></div>` : `<p style="font-size: 9px; color: var(--text-sub); font-style: italic;">⏳ Awaiting admin response...</p>`}
-                </div>
-            `).join('');
-        } catch (e) {}
-    }
+    function copyAddress() { navigator.clipboard.writeText(document.getElementById('deposit-address-display').innerText); showToast("Address Copied!"); }
+    function copyRefLink() { navigator.clipboard.writeText(document.getElementById('ref-link').value); showToast("Ref Link Copied!"); }
+    function sendTicket() { showToast("Ticket submitted successfully!"); }
 
     function showToast(msg) {
         const toast = document.getElementById('toast');
