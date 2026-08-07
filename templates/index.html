@@ -27,6 +27,16 @@
         body { background: var(--bg-dark); color: var(--text-white); padding-bottom: 90px; overflow-x: hidden; }
         .app { max-width: 480px; margin: 0 auto; padding: 12px; }
 
+        /* Tap Animation */
+        @keyframes tapEffect {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+        .tap-anim:active, button:active, .plan-card:active {
+            animation: tapEffect 0.2s ease;
+        }
+
         /* Splash Screen */
         #splash { position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; transition: opacity 0.5s ease, visibility 0.5s; }
         #splash img { width: 80px; height: 80px; filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4)); }
@@ -76,7 +86,7 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* LIVE MARKET PRICES SECTION (4-Item Compact Layout) */
+        /* LIVE MARKET PRICES SECTION */
         .market-section {
             background: rgba(15, 22, 36, 0.85);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -135,12 +145,10 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
-            transition: background 0.2s;
         }
 
         .crypto-info { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .crypto-symbol { font-weight: 700; font-size: 10px; color: #ffffff; }
-        .crypto-name { font-size: 7px; color: var(--text-sub); display: none; }
         .crypto-price-box { text-align: center; width: 100%; margin-top: 2px; }
         .crypto-price { font-size: 9.5px; font-weight: 600; color: #ffffff; }
         .crypto-change { font-size: 8px; font-weight: 600; }
@@ -222,48 +230,64 @@
         .page { display: none; }
         .page.active { display: block; }
 
-        .section-header { font-size: 12px; font-weight: 800; margin: 12px 0 8px 0; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* Professional Enhanced Section Headers (Yellow line requests) */
+        .section-header { 
+            font-size: 14px; 
+            font-weight: 900; 
+            margin: 14px 0 10px 0; 
+            display: flex; 
+            align-items: center; 
+            gap: 6px; 
+            text-transform: uppercase; 
+            letter-spacing: 0.8px; 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis;
+            padding: 4px 0;
+        }
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
 
-        /* Plans Grid & Cards (Standardized Size & Click Animations) */
+        /* Plans Grid - Uniform Box Size Matching Standard and VIP */
         .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
         .plan-card { 
             background: var(--card-bg); 
             border: 1px solid var(--card-border); 
             border-radius: 14px; 
-            padding: 12px; 
+            padding: 14px 10px; 
             text-align: center; 
             position: relative; 
-            backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 195px;
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
-            cursor: pointer;
+            backdrop-filter: blur(10px); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            min-height: 165px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease, border-color 0.2s ease;
         }
-        .plan-card:active {
-            transform: scale(0.96);
-        }
-        .plan-card.vip-card { 
-            border-color: rgba(245, 158, 11, 0.3); 
-            background: linear-gradient(145deg, rgba(30, 25, 15, 0.8) 0%, rgba(21, 28, 44, 0.8) 100%); 
-        }
-        .plan-badge { position: absolute; top: 6px; right: 6px; font-size: 8.5px; font-weight: 800; padding: 2px 5px; border-radius: 4px; text-transform: uppercase; }
-        .badge-std { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
-        .badge-vip { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .plan-card:hover { border-color: rgba(0, 210, 255, 0.4); }
+        .plan-card.vip-card { border-color: rgba(245, 158, 11, 0.35); background: linear-gradient(145deg, rgba(30, 25, 15, 0.85) 0%, rgba(21, 28, 44, 0.85) 100%); }
+        .plan-badge { position: absolute; top: 6px; right: 6px; font-size: 8.5px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+        .badge-std { background: rgba(0, 210, 255, 0.2); color: var(--accent-cyan); }
+        .badge-vip { background: rgba(245, 158, 11, 0.25); color: #f59e0b; }
         
-        /* Large & Clear Texts inside Box */
-        .plan-title { font-size: 20px; font-weight: 800; margin: 6px 0 2px 0; color: #ffffff; letter-spacing: 0.5px; }
-        .plan-rate { font-size: 12px; font-weight: 700; color: #10b981; margin-bottom: 6px; }
-        .plan-info { font-size: 10.5px; color: #e2e8f0; display: flex; flex-direction: column; gap: 3px; margin-bottom: 8px; text-align: left; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 6px; font-weight: 600; }
-        
-        /* Small, Normal & Professional Button */
-        .plan-btn { width: 100%; padding: 6px 8px; border-radius: 6px; border: none; font-size: 10px; font-weight: 700; cursor: pointer; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); transition: opacity 0.2s; }
-        .plan-btn:hover { opacity: 0.9; }
+        .plan-title { font-size: 22px; font-weight: 900; margin: 4px 0 2px 0; color: #ffffff; letter-spacing: -0.5px; }
+        .plan-rate { font-size: 12px; font-weight: 800; color: #10b981; margin-bottom: 6px; }
+        .plan-info { font-size: 10px; color: var(--text-sub); display: flex; flex-direction: column; gap: 3px; margin-bottom: 8px; text-align: left; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 6px; font-weight: 600; }
+        .plan-info b { color: #fff; }
+        .plan-btn { width: 100%; padding: 8px; border-radius: 8px; border: none; font-size: 11.5px; font-weight: 800; cursor: pointer; color: #fff; letter-spacing: 0.5px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); }
         .btn-std { background: var(--primary-gradient); }
         .btn-vip { background: var(--vip-gradient); }
+
+        /* Compact Professional Bottom Invest Box Styles */
+        .lower-invest-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
+            text-align: center;
+        }
 
         /* Forms */
         label { display: block; font-size: 10px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 3px; font-weight: 600; }
@@ -313,15 +337,6 @@
         .progress-bar-bg { width: 100%; height: 5px; background: rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden; margin-top: 6px; }
         .progress-bar-fill { height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s ease; }
 
-        .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px; text-decoration: none; color: #fff; }
-        .support-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--accent-cyan); }
-
-        /* Admin Dashboard */
-        .admin-table-box { width: 100%; overflow-x: auto; margin-top: 6px; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 10px; text-align: left; }
-        .admin-table th, .admin-table td { padding: 5px 7px; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
-        .admin-table th { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); font-weight: 700; }
-
         /* Navigation */
         nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 14px 14px 0 0; }
         nav button { background: none; border: none; color: var(--text-sub); font-size: 9px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; flex: 1; }
@@ -349,13 +364,9 @@
             gap: 10px; 
             max-width: 90%; 
             text-align: left;
-            animation: toastSlideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-        @keyframes toastSlideIn {
-            to { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
 
-        /* PROFESSIONAL COREXBOT LIVE CHAT WIDGET STYLES */
+        /* LIVE CHAT WIDGET STYLES */
         .chat-widget-btn {
             position: fixed;
             bottom: 85px;
@@ -373,20 +384,7 @@
             box-shadow: 0 5px 16px rgba(0, 210, 255, 0.4);
             z-index: 10000;
             border: 2px solid rgba(255, 255, 255, 0.2);
-            transition: transform 0.2s ease, opacity 0.5s ease;
         }
-        .chat-widget-btn:hover { transform: scale(1.05); }
-        .chat-widget-btn.hidden-widget { opacity: 0; pointer-events: none; }
-
-        @keyframes bounceIn {
-            0% { transform: scale(0); opacity: 0; }
-            60% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .chat-widget-btn.animate-bounce {
-            animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-        }
-
         .chat-window {
             position: fixed;
             bottom: 135px;
@@ -400,97 +398,17 @@
             flex-direction: column;
             z-index: 10000;
             overflow: hidden;
-            font-family: sans-serif;
             border: 1px solid rgba(0, 210, 255, 0.25);
         }
-
         .chat-window.hidden { display: none; }
-
-        .chat-header {
-            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-            color: #fff;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: bold;
-            font-size: 11px;
-            border-bottom: 1px solid var(--card-border);
-        }
-        .chat-header .bot-title-info { display: flex; align-items: center; gap: 5px; }
-        .chat-header .online-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 5px #10b981; }
-
-        .chat-header button {
-            background: none;
-            border: none;
-            color: var(--text-sub);
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .chat-body {
-            flex: 1;
-            padding: 8px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            background: rgba(9, 13, 22, 0.95);
-        }
-
-        .bot-message, .user-message {
-            padding: 7px 10px;
-            border-radius: 8px;
-            font-size: 11px;
-            max-width: 85%;
-            line-height: 1.35;
-        }
-
-        .bot-message {
-            background: #1f2937;
-            color: #f3f4f6;
-            align-self: flex-start;
-            border-bottom-left-radius: 2px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .user-message {
-            background: var(--primary-gradient);
-            color: #fff;
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-        }
-
-        .chat-footer {
-            display: flex;
-            padding: 8px;
-            background: #111827;
-            border-top: 1px solid var(--card-border);
-        }
-
-        .chat-footer input {
-            flex: 1;
-            padding: 7px 9px;
-            border: 1px solid var(--card-border);
-            border-radius: 5px;
-            outline: none;
-            margin-bottom: 0;
-            font-size: 11px;
-            background: rgba(0,0,0,0.3);
-            color: #fff;
-        }
-
-        .chat-footer button {
-            background: var(--primary-gradient);
-            border: none;
-            padding: 7px 12px;
-            margin-left: 5px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            color: #fff;
-            font-size: 11px;
-        }
+        .chat-header { background: #1f2937; color: #fff; padding: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 11px; }
+        .chat-body { flex: 1; padding: 8px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; background: rgba(9, 13, 22, 0.95); }
+        .bot-message, .user-message { padding: 7px 10px; border-radius: 8px; font-size: 11px; max-width: 85%; line-height: 1.35; }
+        .bot-message { background: #1f2937; color: #f3f4f6; align-self: flex-start; }
+        .user-message { background: var(--primary-gradient); color: #fff; align-self: flex-end; }
+        .chat-footer { display: flex; padding: 8px; background: #111827; border-top: 1px solid var(--card-border); }
+        .chat-footer input { flex: 1; padding: 7px 9px; border: 1px solid var(--card-border); border-radius: 5px; outline: none; margin-bottom: 0; font-size: 11px; background: rgba(0,0,0,0.3); color: #fff; }
+        .chat-footer button { background: var(--primary-gradient); border: none; padding: 7px 12px; margin-left: 5px; border-radius: 5px; cursor: pointer; font-weight: bold; color: #fff; font-size: 11px; }
     </style>
 </head>
 
@@ -538,7 +456,6 @@
         <span>Market Trends</span>
         <span class="live-badge">LIVE</span>
     </div>
-    
     <div class="crypto-grid">
         <div class="crypto-item">
             <div class="crypto-info"><span class="crypto-symbol">BTC</span></div>
@@ -589,48 +506,59 @@
     <div class="card-info">
         <h3>Pending Referral Balance</h3>
         <p class="balance-amount">$<span id="pendingRefAmount">0.00</span></p>
-        <span class="card-subtitle">Commission in review</span>
+        <span class="card-subtitle">Commission in review (Min. payout $150)</span>
     </div>
 </div>
 
 <!-- Rules & Guidelines Banner -->
 <div class="rules-banner">
     <h4><i class="fa-solid fa-circle-info"></i> Investment & Referral Rules</h4>
-    <p>• <b>Profits:</b> Standard plans ($5 - $100) earn 25% daily. VIP plans ($150 - $2000) earn 35% daily credited hourly.</p>
-    <p>• <b>Referral Bonus:</b> Invite friends and instantly earn <b>2.00 USDT</b> when your referral makes their first successful deposit.</p>
-    <p>• <b>Withdrawals:</b> Withdrawals are <b>strictly locked</b> and only allowed after your active investment plan fully completes the <b>2-week duration</b>.</p>
+    <p>• <b>Standard Plans:</b> Earn <b>25% daily</b> for 2 weeks (14 days).</p>
+    <p>• <b>VIP Plans:</b> Earn <b>35% daily</b> for 2 weeks (14 days) credited hourly.</p>
+    <p>• <b>Referral Bonus:</b> Earn <b>$3.50</b> per referral deposit. Minimum withdrawal threshold for referral earnings is <b>$150</b>.</p>
 </div>
 
 <!-- Quick Actions -->
 <div class="quick">
-    <button onclick="playSound(); openPage('deposit')">
+    <button class="tap-anim" onclick="playSound(); openPage('deposit')">
         <i class="fa-solid fa-wallet"></i> Deposit
     </button>
-    <button onclick="playSound(); openPage('withdraw')">
+    <button class="tap-anim" onclick="playSound(); openPage('withdraw')">
         <i class="fa-solid fa-arrow-up"></i> Withdraw
     </button>
 </div>
 
 <!-- Home / Plans Page -->
 <section id="invest" class="page active">
+    <!-- Active Investments Header (Yellow Highlighted Title) -->
     <div class="section-header standard" style="margin-top: 2px;">
         <i class="fa-solid fa-chart-line"></i> Active Investments & Live Profit
     </div>
     <div id="live-investments-container">
-        <div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px; text-align: center; color: var(--text-sub); font-size: 12px;">
+        <div class="lower-invest-box" style="color: var(--text-sub); font-size: 11.5px;">
             No active investments found. Invest in a plan to start earning live profits!
         </div>
     </div>
 
+    <!-- Standard Plans Header (Yellow Highlighted Title) -->
     <div class="section-header standard">
-        <i class="fa-solid fa-bolt"></i> Standard Plans ($5 - $100 | 25% Daily)
+        <i class="fa-solid fa-bolt"></i> Standard Plans ($10 - $100 | 25% Daily)
     </div>
     <div id="standard-plans" class="plans-grid"></div>
 
+    <!-- VIP Plans Header (Yellow Highlighted Title) -->
     <div class="section-header vip">
-        <i class="fa-solid fa-crown"></i> VIP Plans ($150 - $2000 | 35% Daily)
+        <i class="fa-solid fa-crown"></i> VIP Plans ($150 - $1500 | 35% Daily)
     </div>
     <div id="vip-plans" class="plans-grid"></div>
+
+    <!-- Invest / Invest VIP Bottom Small Professional Box -->
+    <div class="lower-invest-box">
+        <h4 style="font-size: 12px; font-weight: 800; color: var(--accent-cyan); margin-bottom: 4px;">
+            <i class="fa-solid fa-shield-halved"></i> Secure Investment Vault
+        </h4>
+        <p style="font-size: 10px; color: var(--text-sub);">Select any Standard or VIP plan above to start automatic hourly compounding returns instantly.</p>
+    </div>
 </section>
 
 <!-- Deposit Page -->
@@ -665,7 +593,7 @@
         </div>
 
         <label>Amount USDT</label>
-        <input type="number" id="deposit-amount" placeholder="Min $5">
+        <input type="number" id="deposit-amount" placeholder="Min $10">
 
         <label>Transaction Hash / TXID</label>
         <input type="text" id="deposit-txid" placeholder="Paste TXID Hash Here">
@@ -673,7 +601,7 @@
         <label>Or Upload Payment Screenshot</label>
         <input type="file" id="deposit-screenshot" accept="image/*" style="width: 100%; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); padding: 8px; border-radius: 10px; color: #fff; font-size: 12px; margin-bottom: 12px;">
 
-        <button class="primary" onclick="playSound(); submitDeposit()">Submit Deposit</button>
+        <button class="primary tap-anim" onclick="playSound(); submitDeposit()">Submit Deposit</button>
     </div>
 </section>
 
@@ -683,7 +611,7 @@
         <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-paper-plane" style="color: var(--danger-color);"></i> Withdraw USDT</h3>
         
         <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 10px; padding: 10px; margin-bottom: 12px; font-size: 10.5px; color: #fca5a5;">
-            <i class="fa-solid fa-triangle-exclamation"></i> <b>Notice:</b> Withdrawals are only unlocked and permitted after your active 2-week investment plan is completely finished.
+            <i class="fa-solid fa-triangle-exclamation"></i> <b>Notice:</b> Withdrawals are unlocked after your 2-week investment plan completes. Referral commission withdrawal requires $150 minimum balance.
         </div>
 
         <label>Select Withdrawal Network</label>
@@ -708,9 +636,9 @@
         <input type="text" id="withdraw-address" placeholder="Enter Wallet Address">
 
         <label>Amount USDT</label>
-        <input type="number" id="withdraw-amount" placeholder="Min $5">
+        <input type="number" id="withdraw-amount" placeholder="Min $10">
 
-        <button class="success" onclick="playSound(); submitWithdraw()">Submit Withdrawal</button>
+        <button class="success tap-anim" onclick="playSound(); submitWithdraw()">Submit Withdrawal</button>
     </div>
 </section>
 
@@ -752,32 +680,18 @@
             <div class="stat-box"><i class="fa-solid fa-percent"></i><h3 id="stat-roi">0%</h3><p>Avg Growth Rate</p></div>
         </div>
 
-        <!-- ADMIN DASHBOARD INTEGRATION -->
         <div id="admin-dashboard-container" style="display: none; background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
             <h4 style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 8px;">
                 <i class="fa-solid fa-shield-halved"></i> Admin Analytics Dashboard
             </h4>
             <div style="font-size: 11px; color: var(--text-sub); margin-bottom: 6px; font-weight: 600;">👥 Registered Users</div>
-            <div class="admin-table-box">
-                <table class="admin-table">
-                    <thead>
-                        <tr><th>Telegram ID</th><th>Username</th><th>Balance</th><th>Active Deposit</th><th>Joined</th></tr>
-                    </thead>
-                    <tbody id="adminUsersTable"><tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading users...</td></tr></tbody>
-                </table>
-            </div>
-
-            <div style="font-size: 11px; color: var(--text-sub); margin: 10px 0 6px 0; font-weight: 600;">🏆 Top Investment Ranking</div>
-            <div class="admin-table-box">
-                <table class="admin-table">
-                    <thead>
-                        <tr><th>Rank</th><th>Telegram ID</th><th>Username</th><th>Total Invested</th><th>Plans</th></tr>
-                    </thead>
-                    <tbody id="adminRankingTable"><tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading ranking...</td></tr></tbody>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; font-size: 10px; text-align: left;">
+                    <thead><tr style="background: rgba(0,210,255,0.15); color: var(--accent-cyan);"><th style="padding: 5px;">ID</th><th style="padding: 5px;">User</th><th style="padding: 5px;">Bal</th><th style="padding: 5px;">Active</th></tr></thead>
+                    <tbody id="adminUsersTable"><tr><td colspan="4" style="text-align: center; color: var(--text-sub);">Loading...</td></tr></tbody>
                 </table>
             </div>
         </div>
-
     </div>
 </section>
 
@@ -792,9 +706,9 @@
             <p style="font-size: 11px; color: var(--text-sub); margin-top: 3px;">Have questions or need assistance? Contact us!</p>
         </div>
 
-        <a href="https://t.me/USDTPilotAdmin" target="_blank" class="support-card">
+        <a href="https://t.me/USDTPilotAdmin" target="_blank" class="support-card" style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #fff; margin-bottom: 12px;">
             <div style="display: flex; align-items: center; gap: 10px;">
-                <div class="support-icon"><i class="fa-brands fa-telegram"></i></div>
+                <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--accent-cyan);"><i class="fa-brands fa-telegram"></i></div>
                 <div>
                     <h4 style="font-size: 13px; font-weight: 700;">Telegram Official Support</h4>
                     <p style="font-size: 10px; color: #10b981;">Online • Fast Response</p>
@@ -803,22 +717,13 @@
             <i class="fa-solid fa-chevron-right" style="color: var(--text-sub); font-size: 11px;"></i>
         </a>
 
-        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
+        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;">
             <h4 style="font-size: 12px; font-weight: 700; margin-bottom: 10px; color: var(--accent-cyan);"><i class="fa-solid fa-paper-plane"></i> Send Direct Ticket</h4>
             <label>Subject</label>
             <input type="text" id="support-subject" placeholder="Deposit / Withdrawal issue">
             <label>Message Detail</label>
-            <textarea id="support-msg" rows="3" placeholder="Describe your issue or txid..." style="resize: none;"></textarea>
-            <button class="primary" onclick="playSound(); sendTicket()"><i class="fa-solid fa-paper-plane"></i> Submit Ticket</button>
-        </div>
-
-        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
-            <h4 style="font-size: 12px; font-weight: 700; margin-bottom: 10px; color: var(--accent-cyan);">
-                <i class="fa-solid fa-comments"></i> Your Support Tickets & Replies
-            </h4>
-            <div id="support-tickets-container">
-                <p style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 12px 0;">Loading your tickets...</p>
-            </div>
+            <textarea id="support-msg" rows="3" placeholder="Describe your issue..." style="resize: none;"></textarea>
+            <button class="primary tap-anim" onclick="playSound(); sendTicket()">Submit Ticket</button>
         </div>
     </div>
 </section>
@@ -827,7 +732,7 @@
 <section id="profile" class="page">
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
         <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 12px;">
-            <div id="profile-page-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3);">
+            <div id="profile-page-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; overflow: hidden;">
                 <i class="fa-solid fa-user"></i>
             </div>
             <div>
@@ -836,26 +741,11 @@
             </div>
         </div>
 
-        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 12px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
-                <span style="color: var(--text-sub);"><i class="fa-solid fa-id-badge" style="width: 18px; color: var(--accent-cyan);"></i> Telegram ID:</span> 
-                <b id="profile-id">000000</b>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
-                <span style="color: var(--text-sub);"><i class="fa-solid fa-globe" style="width: 18px; color: var(--accent-cyan);"></i> Language:</span> 
-                <b>EN</b>
-            </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); padding-bottom: 8px;">
-                <span style="color: var(--text-sub);"><i class="fa-solid fa-shield-halved" style="width: 18px; color: #10b981;"></i> Security Level:</span> 
-                <b style="color:#10b981;">Telegram Verified</b>
-            </div>
-        </div>
-
         <div style="margin-top: 16px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;">
-            <label style="margin-bottom: 5px;"><i class="fa-solid fa-link"></i> Your Referral Link</label>
+            <label style="margin-bottom: 5px;"><i class="fa-solid fa-link"></i> Your Referral Link ($3.50 Bonus per Deposit)</label>
             <div style="display: flex; gap: 6px;">
                 <input type="text" id="ref-link" value="https://t.me/CoreXBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 11px; font-family: monospace; background: rgba(0,0,0,0.3);">
-                <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 12px; border-radius: 8px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
+                <button class="copy-btn tap-anim" onclick="copyRefLink()" style="padding: 0 12px; border-radius: 8px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
             </div>
         </div>
     </div>
@@ -863,33 +753,30 @@
 
 <!-- Bottom Nav -->
 <nav id="main-nav">
-    <button class="nav-btn active" onclick="playSound(); openPage('invest', this)"><i class="fa-solid fa-house"></i> Home</button>
-    <button class="nav-btn" onclick="playSound(); openPage('history', this)"><i class="fa-solid fa-receipt"></i> History</button>
-    <button class="nav-btn" onclick="playSound(); openPage('stats-page', this)"><i class="fa-solid fa-chart-pie"></i> Stats</button>
-    <button class="nav-btn" onclick="playSound(); openPage('support', this)"><i class="fa-solid fa-headset"></i> Support</button>
-    <button class="nav-btn" onclick="playSound(); openPage('profile', this)"><i class="fa-solid fa-user"></i> Profile</button>
+    <button class="nav-btn active tap-anim" onclick="playSound(); openPage('invest', this)"><i class="fa-solid fa-house"></i> Home</button>
+    <button class="nav-btn tap-anim" onclick="playSound(); openPage('history', this)"><i class="fa-solid fa-receipt"></i> History</button>
+    <button class="nav-btn tap-anim" onclick="playSound(); openPage('stats-page', this)"><i class="fa-solid fa-chart-pie"></i> Stats</button>
+    <button class="nav-btn tap-anim" onclick="playSound(); openPage('support', this)"><i class="fa-solid fa-headset"></i> Support</button>
+    <button class="nav-btn tap-anim" onclick="playSound(); openPage('profile', this)"><i class="fa-solid fa-user"></i> Profile</button>
 </nav>
 
 </div>
 
-<!-- LIVE CHAT WIDGET HTML -->
-<div id="chat-widget-btn" class="chat-widget-btn" title="CoreXBot Assistant">
+<!-- LIVE CHAT WIDGET -->
+<div id="chat-widget-btn" class="chat-widget-btn tap-anim" title="CoreXBot Assistant">
     <i class="fa-solid fa-robot"></i>
 </div>
 
 <div id="chat-window" class="chat-window hidden">
     <div class="chat-header">
-        <div class="bot-title-info">
-            <span class="online-dot"></span>
-            <span>CoreXBot Assistant</span>
-        </div>
-        <button id="close-chat">&times;</button>
+        <span>CoreXBot Assistant</span>
+        <button id="close-chat" style="background:none; border:none; color:#fff; font-size:16px; cursor:pointer;">&times;</button>
     </div>
     <div id="chat-body" class="chat-body">
         <div class="bot-message">Hello 👋 how i can help you ☺️</div>
     </div>
     <div class="chat-footer">
-        <input type="text" id="chat-input" placeholder="Type your message here...">
+        <input type="text" id="chat-input" placeholder="Type your message...">
         <button id="send-btn">Send</button>
     </div>
 </div>
@@ -906,9 +793,8 @@
 
     let activeInvestmentsList = [];
 
-    // Updated amounts: Standard includes $5. VIP includes $1000, $1500, $2000.
-    const stdAmounts = [5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-    const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500, 1000, 1500, 2000];
+    const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+    const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500, 1000, 1500];
 
     const cryptoNetworks = {
         'TRC20': { name: 'Tron TRC20', tag: 'Tether USD (TRC20)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', icon: 'https://cryptologos.cc/logos/tron-trx-logo.png' },
@@ -931,7 +817,6 @@
         updateWithdrawIcon();
         
         setInterval(updateLiveProfits, 1000);
-        initRealAndFakeToasts();
         initLiveChatWidget();
     });
 
@@ -963,9 +848,8 @@
 
         chatBtn.addEventListener('click', () => {
             playSound();
-            isChatOpen = true;
-            chatWindow.classList.remove('hidden');
-            chatBtn.classList.remove('animate-bounce');
+            isChatOpen = !isChatOpen;
+            chatWindow.classList.toggle('hidden', !isChatOpen);
         });
 
         closeChat.addEventListener('click', () => {
@@ -977,29 +861,6 @@
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage();
         });
-
-        function triggerAssistantCycle() {
-            if (isChatOpen) {
-                chatBtn.classList.add('hidden-widget');
-                setTimeout(triggerAssistantCycle, 3000);
-                return;
-            }
-
-            chatBtn.classList.remove('hidden-widget');
-            chatBtn.classList.add('animate-bounce');
-            playSound();
-
-            setTimeout(() => {
-                if (!isChatOpen) {
-                    chatBtn.classList.remove('animate-bounce');
-                    chatBtn.classList.add('hidden-widget');
-                }
-            }, 10000);
-
-            setTimeout(triggerAssistantCycle, 60000);
-        }
-
-        setTimeout(triggerAssistantCycle, 2000);
 
         function sendMessage() {
             const text = chatInput.value.trim();
@@ -1013,42 +874,14 @@
             chatInput.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
 
-            const typingIndicator = document.createElement('div');
-            typingIndicator.className = 'bot-message';
-            typingIndicator.innerHTML = '.....';
-            chatBody.appendChild(typingIndicator);
-            chatBody.scrollTop = chatBody.scrollHeight;
-
             setTimeout(() => {
-                chatBody.removeChild(typingIndicator);
                 const botMsg = document.createElement('div');
                 botMsg.className = 'bot-message';
-                botMsg.textContent = getCoreXBotResponse(text);
+                botMsg.textContent = "Thank you for reaching out! Our support team or automated system will assist you promptly with your 2-week investment plans.";
                 chatBody.appendChild(botMsg);
                 chatBody.scrollTop = chatBody.scrollHeight;
                 playSound();
-            }, 1200);
-        }
-    }
-
-    function getCoreXBotResponse(userText) {
-        const text = userText.toLowerCase();
-        if (text.includes('deposit') || text.includes('fund') || text.includes('add money') || text.includes('pay')) {
-            return "To make a deposit in CoreXBot: Click on the 'Deposit' button on the home screen, select your preferred network (TRC20, BEP20, or ERC20), copy the official wallet address, and send USDT. Once sent, paste your TXID hash or upload your payment receipt for automatic or fast crediting!";
-        } else if (text.includes('withdraw') || text.includes('payout') || text.includes('take out')) {
-            return "To withdraw funds from CoreXBot: Go to the Withdrawal section, select your network, enter your external wallet address and amount. Please note that withdrawals are strictly permitted after your 2-week active investment plan is fully completed.";
-        } else if (text.includes('invest') || text.includes('start')) {
-            return "How to start investing in CoreXBot: First, make a deposit of at least $5 USDT via the Deposit tab. Then, pick a Standard plan ($5–$100) or VIP plan ($150–$2000) from the Home screen to activate your hourly profits.";
-        } else if (text.includes('minimum') || text.includes('maximum') || text.includes('profit') || text.includes('earn')) {
-            return "CoreXBot Limits & Profits: The minimum investment is $5 USDT and the maximum is $2000 USDT. Standard plans yield 25% daily, and VIP plans yield 35% daily, credited hourly to your live balance!";
-        } else if (text.includes('day') || text.includes('duration') || text.includes('period')) {
-            return "Investment Duration: All investment plans in CoreXBot run for a fixed duration of exactly 2 weeks (14 days / 336 hours), compounding and yielding returns every single hour.";
-        } else if (text.includes('referral') || text.includes('invite') || text.includes('bonus')) {
-            return "CoreXBot Referral Program: Share your unique invite link found in your Profile. You will instantly earn a 2.00 USDT bonus when your invited friend completes their first verified deposit.";
-        } else if (text.includes('hello') || text.includes('hi') || text.includes('hey')) {
-            return "Hello! Welcome to CoreXBot. How can I assist you with your investments or account today?";
-        } else {
-            return "I am CoreXBot Assistant. If you need further assistance with your account, please check our Support tab to contact our 24/7 Live Support team.";
+            }, 1000);
         }
     }
 
@@ -1067,7 +900,6 @@
         document.getElementById('userid').innerText = `ID: ${userIdStr}`;
         document.getElementById('profile-fullname').innerText = fullName;
         document.getElementById('profile-username').innerText = usernameStr;
-        document.getElementById('profile-id').innerText = userIdStr;
         document.getElementById('ref-link').value = `https://t.me/CoreXBot?start=ref_${userIdStr}`;
 
         if (tgUser.photo_url) {
@@ -1075,10 +907,8 @@
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
         }
 
-        const ADMIN_TELEGRAM_ID = "5738022147"; 
-        if (userIdStr === ADMIN_TELEGRAM_ID) {
+        if (userIdStr === "5738022147") {
             document.getElementById('admin-dashboard-container').style.display = 'block';
-            loadAdminAnalytics();
         }
 
         try {
@@ -1090,7 +920,6 @@
             const data = await res.json();
             if(data.status === 'success') {
                 fetchUserData(userIdStr);
-                loadSupportTickets(userIdStr);
             }
         } catch(e) {}
     }
@@ -1103,92 +932,6 @@
             updateUI();
             renderHistory();
             updateStats();
-        } catch (e) {}
-    }
-
-    function initRealAndFakeToasts() {
-        const uniqueNames = ["@Crypto", "@AliAhmed", "@MohamedSaeed", "@Farah99", "@Liban", "@Samantar", "@Nasteexo", "@KhadarAdmin", "@HindaWeb", "@Guled"];
-        const standardFakeAmounts = [5, 10, 20, 50, 100, 500, 1000];
-        const netKeys = ['TRC20', 'BEP20', 'ERC20'];
-
-        const actionTypes = [
-            { type: "DEPOSIT", action: "deposited", color: "#10b981", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
-            { type: "INVEST", action: "successfully invested", color: "var(--accent-cyan)", icon: "fa-bolt", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
-            { type: "WITHDRAWAL", action: "withdrew profits", color: "#10b981", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] }
-        ];
-
-        setInterval(() => {
-            let randomUser = uniqueNames[Math.floor(Math.random() * uniqueNames.length)];
-            let randomAction = actionTypes[Math.floor(Math.random() * actionTypes.length)];
-            let randomAmt = randomAction.getAmt();
-
-            if (randomAction.type === 'INVEST') {
-                showLiveToast(`${randomUser} ${randomAction.action} $${randomAmt}`, null, randomAction.color, randomAction.icon, 'fa');
-            } else {
-                let randomNetKey = netKeys[Math.floor(Math.random() * netKeys.length)];
-                let netInfo = cryptoNetworks[randomNetKey];
-                let actionText = randomAction.type === 'DEPOSIT' ? `deposited $${randomAmt} via ${randomNetKey}` : `withdrew $${randomAmt} via ${randomNetKey}`;
-                showLiveToast(`${randomUser} ${actionText}`, netInfo.icon, randomAction.color, null, 'img');
-            }
-        }, 30000);
-    }
-
-    function showLiveToast(message, iconSrc, color, faIcon, type) {
-        let toastEl = document.getElementById('live-toast-popup');
-        if (!toastEl) {
-            toastEl = document.createElement('div');
-            toastEl.id = 'live-toast-popup';
-            toastEl.style.cssText = `
-                position: fixed; bottom: 70px; left: 14px; background: rgba(15, 23, 42, 0.95);
-                color: #fff; border: 1px solid var(--card-border); padding: 7px 10px; border-radius: 8px;
-                font-size: 10.5px; font-weight: 500; z-index: 9998; box-shadow: 0 6px 16px rgba(0,0,0,0.4);
-                display: flex; align-items: center; gap: 7px; backdrop-filter: blur(10px);
-                transition: opacity 0.4s ease, transform 0.4s ease; opacity: 0; transform: translateY(10px);
-            `;
-            document.body.appendChild(toastEl);
-        }
-
-        let iconHTML = type === 'img' ? 
-            `<div style="width: 24px; height: 24px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid ${color}40; flex-shrink: 0;"><img src="${iconSrc}" style="width: 14px; height: 14px; object-fit: contain;"></div>` :
-            `<div style="width: 24px; height: 24px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; color: ${color}; font-size: 10px; flex-shrink: 0;"><i class="fa-solid ${faIcon}"></i></div>`;
-
-        toastEl.innerHTML = `
-            ${iconHTML}
-            <div>
-                <span style="font-size: 8px; color: var(--text-sub); display: block; text-transform: uppercase;">Live Notification</span>
-                <span>${message}</span>
-            </div>
-        `;
-        toastEl.style.opacity = '1';
-        toastEl.style.transform = 'translateY(0)';
-
-        setTimeout(() => {
-            toastEl.style.opacity = '0';
-            toastEl.style.transform = 'translateY(10px)';
-        }, 5000);
-    }
-
-    async function loadAdminAnalytics() {
-        try {
-            const resUsers = await fetch('/api/admin/users');
-            const dataUsers = await resUsers.json();
-            const usersTable = document.getElementById('adminUsersTable');
-            if (dataUsers.status === 'success' && dataUsers.users && dataUsers.users.length > 0) {
-                usersTable.innerHTML = dataUsers.users.map(u => `
-                    <tr><td>${u.telegram_id}</td><td>@${u.username || 'N/A'}</td><td>$${u.balance.toFixed(2)}</td><td>$${u.active_deposit.toFixed(2)}</td><td>${u.created_at}</td></tr>
-                `).join('');
-            }
-        } catch (e) {}
-
-        try {
-            const resRank = await fetch('/api/admin/ranking');
-            const dataRank = await resRank.json();
-            const rankTable = document.getElementById('adminRankingTable');
-            if (dataRank.status === 'success' && dataRank.ranking && dataRank.ranking.length > 0) {
-                rankTable.innerHTML = dataRank.ranking.map((r, index) => `
-                    <tr><td>#${index + 1}</td><td>${r.telegram_id}</td><td>@${r.username || 'N/A'}</td><td>$${r.total_invested.toFixed(2)}</td><td>${r.total_plans} Plans</td></tr>
-                `).join('');
-            }
         } catch (e) {}
     }
 
@@ -1213,33 +956,33 @@
         const stdContainer = document.getElementById('standard-plans');
         const vipContainer = document.getElementById('vip-plans');
 
-        // Standard: 25% daily, duration 2 weeks (14 days). Total return = Amount + (Amount * 0.25 * 14) = Amount * 4.5
+        // Standard: 25% daily, 2 weeks (14 days) -> Total return = amt * (1 + 0.25 * 14) = amt * 4.5
         stdContainer.innerHTML = stdAmounts.map(amt => `
-            <div class="plan-card">
-                <span class="plan-badge badge-std">25% / 24H</span>
+            <div class="plan-card tap-anim" onclick="playSound(); investPlan(${amt}, false)">
+                <span class="plan-badge badge-std">25% / 24h</span>
                 <div class="plan-title">$${amt}</div>
                 <div class="plan-rate">+25% Profit Daily</div>
                 <div class="plan-info">
-                    <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
-                    <span><i class="fa-solid fa-lock"></i> Duration: 2 Weeks</span>
-                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 4.5).toFixed(1)}</span>
+                    <span><i class="fa-regular fa-clock"></i> Profit: <b>Hourly</b></span>
+                    <span><i class="fa-solid fa-lock"></i> Duration: <b>2 Weeks</b></span>
+                    <span><i class="fa-solid fa-coins"></i> Return: <b>$${(amt * 4.5).toFixed(1)}</b></span>
                 </div>
-                <button class="plan-btn btn-std" onclick="playSound(); investPlan(${amt}, false)">Invest Now</button>
+                <button class="plan-btn btn-std">Invest Now</button>
             </div>
         `).join('');
 
-        // VIP: 35% daily, duration 2 weeks (14 days). Total return = Amount + (Amount * 0.35 * 14) = Amount * 5.9
+        // VIP: 35% daily, 2 weeks (14 days) -> Total return = amt * (1 + 0.35 * 14) = amt * 5.9
         vipContainer.innerHTML = vipAmounts.map(amt => `
-            <div class="plan-card vip-card">
+            <div class="plan-card vip-card tap-anim" onclick="playSound(); investPlan(${amt}, true)">
                 <span class="plan-badge badge-vip">VIP 35%</span>
                 <div class="plan-title">$${amt}</div>
                 <div class="plan-rate">+35% Profit Daily</div>
                 <div class="plan-info">
-                    <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
-                    <span><i class="fa-solid fa-lock"></i> Duration: 2 Weeks</span>
-                    <span><i class="fa-solid fa-coins"></i> Return: $${(amt * 5.9).toFixed(1)}</span>
+                    <span><i class="fa-regular fa-clock"></i> Profit: <b>Hourly</b></span>
+                    <span><i class="fa-solid fa-lock"></i> Duration: <b>2 Weeks</b></span>
+                    <span><i class="fa-solid fa-coins"></i> Return: <b>$${(amt * 5.9).toFixed(1)}</b></span>
                 </div>
-                <button class="plan-btn btn-vip" onclick="playSound(); investPlan(${amt}, true)">Invest VIP</button>
+                <button class="plan-btn btn-vip">Invest VIP</button>
             </div>
         `).join('');
     }
@@ -1247,14 +990,14 @@
     function updateLiveProfits() {
         const container = document.getElementById('live-investments-container');
         if (!activeInvestmentsList || activeInvestmentsList.length === 0) {
-            container.innerHTML = `<div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; text-align: center; color: var(--text-sub); font-size: 11.5px;">No active investments found. Invest in a plan to start earning live profits!</div>`;
+            container.innerHTML = `<div class="lower-invest-box" style="color: var(--text-sub); font-size: 11.5px;">No active investments found. Invest in a plan to start earning live profits!</div>`;
             return;
         }
 
         container.innerHTML = activeInvestmentsList.map((inv) => {
             let now = new Date().getTime();
             let elapsedSeconds = Math.floor((now - inv.startTime) / 1000);
-            let totalDurationSeconds = 14 * 24 * 60 * 60; // 2 weeks = 14 days
+            let totalDurationSeconds = 14 * 24 * 60 * 60; // 2 weeks
             let timeLeft = (inv.startTime + (totalDurationSeconds * 1000)) - now;
             if (timeLeft < 0) timeLeft = 0;
 
@@ -1271,14 +1014,14 @@
             let progressPercent = Math.min((elapsedSeconds / totalDurationSeconds) * 100, 100).toFixed(1);
 
             return `
-                <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 12px; padding: 12px; margin-bottom: 10px;">
+                <div class="lower-invest-box" style="border-color: rgba(0, 210, 255, 0.3);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                        <span style="font-size: 10.5px; font-weight: 700; color: var(--accent-cyan);"><i class="fa-solid fa-shield-halved"></i> Plan: $${inv.amount}</span>
-                        <span style="font-size: 9px; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 2px 5px; border-radius: 5px; font-weight: 700;">Running (${inv.dailyRate}% Daily)</span>
+                        <span style="font-size: 11px; font-weight: 800; color: var(--accent-cyan);"><i class="fa-solid fa-shield-halved"></i> Plan: $${inv.amount}</span>
+                        <span style="font-size: 9px; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 2px 6px; border-radius: 5px; font-weight: 700;">Running (${inv.dailyRate}% Daily)</span>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; background: rgba(0,0,0,0.25); padding: 6px; border-radius: 6px;">
-                        <div><span style="font-size: 9px; color: var(--text-sub); display: block;">LIVE PROFIT</span><b style="font-size: 13px; color: #10b981;">$${currentProfit.toFixed(4)}</b></div>
-                        <div><span style="font-size: 9px; color: var(--text-sub); display: block;">TIME LEFT</span><b style="font-size: 10.5px; color: #f59e0b; font-family: monospace;">${days}d ${hours}h ${minutes}m ${seconds}s</b></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 8px;">
+                        <div><span style="font-size: 9px; color: var(--text-sub); display: block;">LIVE PROFIT</span><b style="font-size: 14px; color: #10b981;">$${currentProfit.toFixed(4)}</b></div>
+                        <div><span style="font-size: 9px; color: var(--text-sub); display: block;">TIME LEFT</span><b style="font-size: 11px; color: #f59e0b; font-family: monospace;">${days}d ${hours}h ${minutes}m ${seconds}s</b></div>
                     </div>
                     <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progressPercent}%;"></div></div>
                 </div>
@@ -1293,7 +1036,7 @@
         const screenshotFile = document.getElementById('deposit-screenshot').files[0];
         const userId = currentUser ? currentUser.id.toString() : "5738022147";
 
-        if(!amt || amt < 5) { showToast("⚠️ Minimum deposit is $5 USDT"); return; }
+        if(!amt || amt < 10) { showToast("⚠️ Minimum deposit is $10 USDT"); return; }
         if(!txid && !screenshotFile) { showToast("⚠️ Please enter TXID or upload a screenshot!"); return; }
 
         const formData = new FormData();
@@ -1322,7 +1065,7 @@
         const addr = document.getElementById('withdraw-address').value;
         const userId = currentUser ? currentUser.id.toString() : "5738022147";
 
-        if(!amt || amt < 5) { showToast("⚠️ Minimum withdrawal is $5 USDT"); return; }
+        if(!amt || amt < 10) { showToast("⚠️ Minimum withdrawal is $10 USDT"); return; }
         if(!addr) { showToast("⚠️ Please provide a wallet address!"); return; }
 
         try {
@@ -1455,61 +1198,13 @@
             if(result.status === 'success') {
                 document.getElementById('support-subject').value = '';
                 document.getElementById('support-msg').value = '';
-                loadSupportTickets(userId);
             }
         } catch(e) { showToast("⚠️ Connection error!"); }
     }
 
-    async function loadSupportTickets(userId) {
-        try {
-            const res = await fetch(`/api/support/tickets/${userId}`);
-            const data = await res.json();
-            const container = document.getElementById('support-tickets-container');
-            if (!data.tickets || data.tickets.length === 0) {
-                container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 10px 0;">No support tickets found.</p>`;
-                return;
-            }
-
-            container.innerHTML = data.tickets.map(ticket => `
-                <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 8px; padding: 8px; margin-bottom: 6px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
-                        <b style="font-size: 11.5px; color: #fff;">${ticket.subject}</b>
-                        <span style="font-size: 8px; padding: 2px 4px; border-radius: 3px; background: ${ticket.status === 'Resolved' ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)'}; color: ${ticket.status === 'Resolved' ? '#10b981' : '#f59e0b'};">${ticket.status}</span>
-                    </div>
-                    <p style="font-size: 10px; color: var(--text-sub); margin-bottom: 5px;"><b>You:</b> ${ticket.message}</p>
-                    ${ticket.admin_reply ? `<div style="background: rgba(0, 210, 255, 0.08); border-left: 2px solid var(--accent-cyan); padding: 5px; border-radius: 3px;"><p style="font-size: 10px; color: var(--accent-cyan);"><b>Admin Reply:</b> ${ticket.admin_reply}</p></div>` : `<p style="font-size: 9px; color: var(--text-sub); font-style: italic;">⏳ Awaiting admin response...</p>`}
-                </div>
-            `).join('');
-        } catch (e) {}
-    }
-
     function showToast(msg) {
         const toast = document.getElementById('toast');
-        let iconClass = "fa-solid fa-circle-info";
-        let iconColor = "var(--accent-cyan)";
-        let borderColor = "rgba(0, 210, 255, 0.3)";
-
-        if (msg.includes('⚠️') || msg.includes('locked') || msg.includes('Error') || msg.includes('wait') || msg.includes('pending')) {
-            iconClass = "fa-solid fa-triangle-exclamation";
-            iconColor = "#f59e0b";
-            borderColor = "rgba(245, 158, 11, 0.4)";
-        } else if (msg.includes('Successfully') || msg.includes('success') || msg.includes('Copied')) {
-            iconClass = "fa-solid fa-circle-check";
-            iconColor = "#10b981";
-            borderColor = "rgba(16, 185, 129, 0.4)";
-        }
-
-        toast.style.borderColor = borderColor;
-        toast.innerHTML = `
-            <div style="width: 26px; height: 26px; border-radius: 50%; background: ${iconColor}20; display: flex; align-items: center; justify-content: center; color: ${iconColor}; font-size: 12px; flex-shrink: 0; border: 1px solid ${iconColor}45;">
-                <i class="${iconClass}"></i>
-            </div>
-            <div style="flex: 1; line-height: 1.4;">
-                <span style="font-size: 8.5px; color: var(--text-sub); display: block; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">CoreXBot Notification</span>
-                <span style="color: #fff; font-weight: 600;">${msg.replace(/[⚠️🎉]/g, '').trim()}</span>
-            </div>
-        `;
-
+        toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${msg}`;
         toast.style.display = 'flex';
         setTimeout(() => { toast.style.display = 'none'; }, 3500);
     }
