@@ -44,7 +44,7 @@
         .profile small { font-size: 11px; color: var(--text-sub); }
         .verified { font-size: 10px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 5px; }
 
-        /* LIVE MARKET PRICES SECTION - Refined compact professional cards */
+        /* LIVE MARKET PRICES SECTION */
         .market-section {
             background: rgba(15, 22, 36, 0.75);
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -169,7 +169,56 @@
         .stats h4 { font-size: 11px; color: var(--text-sub); font-weight: 500; }
         .stats b { font-size: 14px; color: #fff; font-weight: 700; display: block; margin-top: 2px; }
 
-        /* Rules Notification Banner - Professional styling */
+        /* Pending Referral Balance Card Style */
+        .pending-balance-card { 
+            background: linear-gradient(145deg, rgba(16, 24, 40, 0.9) 0%, rgba(10, 15, 28, 0.95) 100%); 
+            border: 1px solid rgba(245, 158, 11, 0.25); 
+            border-radius: 20px; 
+            padding: 18px 20px; 
+            display: flex; 
+            align-items: center; 
+            gap: 16px; 
+            margin-bottom: 16px; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3); 
+        }
+        .pending-balance-card .card-icon { 
+            width: 44px; 
+            height: 44px; 
+            border-radius: 12px; 
+            background: rgba(245, 158, 11, 0.15); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 18px; 
+            color: #f59e0b; 
+            border: 1px solid rgba(245, 158, 11, 0.3); 
+            flex-shrink: 0; 
+        }
+        .pending-balance-card .card-info { flex: 1; }
+        .pending-balance-card .card-info h3 { 
+            font-size: 11px; 
+            color: var(--text-sub); 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+            margin-bottom: 4px; 
+            font-weight: 600; 
+        }
+        .pending-balance-card .balance-amount { 
+            font-size: 24px; 
+            font-weight: 800; 
+            color: #fff; 
+            margin: 0; 
+            letter-spacing: -0.5px; 
+        }
+        .pending-balance-card .card-subtitle { 
+            font-size: 10px; 
+            color: #f59e0b; 
+            font-weight: 600; 
+            display: inline-block; 
+            margin-top: 2px; 
+        }
+
+        /* Rules Notification Banner */
         .rules-banner { 
             background: linear-gradient(135deg, rgba(30, 25, 15, 0.6) 0%, rgba(20, 16, 10, 0.8) 100%); 
             border: 1px solid rgba(245, 158, 11, 0.25); 
@@ -338,7 +387,7 @@
     </div>
 </header>
 
-<!-- LIVE MARKET PRICES SECTION (Compacted & Professionally Styled) -->
+<!-- LIVE MARKET PRICES SECTION -->
 <div class="market-section">
     <div class="market-header">
         <span>Market Trends</span>
@@ -466,7 +515,19 @@
     </div>
 </section>
 
-<!-- Rules & Guidelines Banner (Clean, Professional Typography) -->
+<!-- Pending Referral Balance / Pending Commission Section -->
+<div class="pending-balance-card">
+    <div class="card-icon">
+        <i class="fa-solid fa-hourglass-half"></i>
+    </div>
+    <div class="card-info">
+        <h3>Pending Referral Balance</h3>
+        <p class="balance-amount">$<span id="pendingRefAmount">0.00</span></p>
+        <span class="card-subtitle">Commission in review</span>
+    </div>
+</div>
+
+<!-- Rules & Guidelines Banner -->
 <div class="rules-banner">
     <h4><i class="fa-solid fa-circle-info"></i> Investment & Referral Rules</h4>
     <p>• <b>Profits:</b> Standard plans ($10 - $100) earn 20% daily. VIP plans ($150 - $500) earn 35% daily credited hourly.</p>
@@ -486,7 +547,6 @@
 
 <!-- Home / Plans Page -->
 <section id="invest" class="page active">
-    <!-- Active Investments & Live Profit Section -->
     <div class="section-header standard" style="margin-top: 5px;">
         <i class="fa-solid fa-chart-line"></i> Active Investments & Live Profit
     </div>
@@ -817,7 +877,7 @@
 <script>
     let currentUser = null;
     let userData = {
-        user: { balance: 0, active_deposit: 0 },
+        user: { balance: 0, active_deposit: 0, pending_referral_balance: 0 },
         macaamilo: [],
         maalgashi: []
     };
@@ -1324,6 +1384,7 @@
         if(!userData.user) return;
         document.getElementById('balance').innerText = (userData.user.balance || 0).toFixed(2);
         document.getElementById('active').innerText = (userData.user.active_deposit || 0).toFixed(2);
+        document.getElementById('pendingRefAmount').innerText = (userData.user.pending_referral_balance || 0).toFixed(2);
         document.getElementById('profit').innerText = "0.00"; 
     }
 
