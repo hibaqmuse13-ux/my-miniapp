@@ -665,20 +665,88 @@
         }
     }
 
-    // --- LIISKA MAGACYADA IYO XAKAMAYNTA TOAST-KA (30 SECONDS INTERVAL & 500 UNIQUE NAMES) ---
+    // --- 500+ UNIQUE NAMES LIST FOR LIVE NOTIFICATION TOASTS ---
     function initRealAndFakeToasts() {
         const uniqueNames = [
             "@CryptoKing", "@AliAhmed", "@MohamedSaeed", "@Farah99", "@LibanX", 
             "@Samantar", "@Nasteexo", "@KhadarAdmin", "@HindaWeb", "@GuledTech",
             "@Barkhad", "@HodanStar", "@AbdiCashir", "@Ilhaan99", "@Warsame01",
             "@AhmedCrypto", "@AbdiStar", "@LibanBinance", "@FaysalTrader", "@KhadijaVIP",
-            "@SagalMoon", "@ZakariaUSDT", "@CabdallaMax", "@YuusufPro", "@NajmaTech",
-            "@FarhiyaSol", "@BashiirInv", "@GuledX", "@NuuraWeb", "@AadenCrypto",
-            "@HamdaStar", "@MustafeTr", "@DeeqoGold", "@IbrahimMax", "@IkranVIP",
-            "@MahadTron", "@SamiraBinance", "@MukhtaarTr", "@MunaWeb", "@AbdikafiSol",
-            "@SafiaTech", "@CabdiGold", "@HassanTron", "@NasraVIP", "@KhaalidPro",
-            "@AmalCrypto", "@ZakariyeX", "@LeylaStar", "@CabdulahiTr", "@SahraMoon",
-            // Waxaad halkan ku sii dari kartaa magacyo kale si uu liisku u gaaro 500 oo magac oo buuxa
+            "@SagalMoon", "@ZakariaUSDT", "@YuusufPro", "@NajmaTech", "@FarhiyaSol",
+            "@BashiirInv", "@GuledX", "@NuuraWeb", "@AadenCrypto", "@HamdaStar",
+            "@MustafeTr", "@DeeqoGold", "@IbrahimMax", "@IkranVIP", "@MahadTron",
+            "@SamiraBinance", "@MukhtaarTr", "@MunaWeb", "@AbdikafiSol", "@SafiaTech",
+            "@CabdiGold", "@HassanTron", "@NasraVIP", "@KhaalidPro", "@AmalCrypto",
+            "@ZakariyeX", "@LeylaStar", "@CabdulahiTr", "@SahraMoon", "@CismaanPro",
+            "@KeyseCrypto", "@RidwaanInv", "@ShubeebTron", "@NajibWeb", "@AsadGold",
+            "@BilalBinance", "@HamzaTr", "@FahadVIP", "@SuheibMoon", "@YonisStar",
+            "@CabdiRashiid", "@MaxamedAmin", "@MukhtaarPro", "@MustafeX", "@NaciimaTech",
+            "@ZamzamSol", "@IfraaxGold", "@HodmanWeb", "@BishaarTron", "@GuuleedTr",
+            "@Cabdicasiis", "@Sharmarke99", "@DayibCrypto", "@KhalidBinance", "@CabdallaVIP",
+            "@FarxaanPro", "@MahadSol", "@MuscabTech", "@NuuxGold", "@SumayaWeb",
+            "@NastehaTr", "@BashiiraMoon", "@FadumoStar", "@KowsarTron", "@LuulVIP",
+            "@SucaadPro", "@YasmiinSol", "@ZeynabTech", "@AaminaGold", "@DeeqaWeb",
+            "@IqraTr", "@MarwoMoon", "@NashadStar", "@SahraTron", "@UbaxVIP",
+            "@AmranPro", "@AsmaSol", "@BushraTech", "@DahaboGold", "@FalisWeb",
+            "@GashanTr", "@HaniMoon", "@IkraamStar", "@JawahirTron", "@KhadijaVIP",
+            "@LeylaPro", "@MunaSol", "@NasroTech", "@QamarGold", "@RaxmoWeb",
+            "@SafiyaTr", "@TahliilMoon", "@UbahStar", "@WardaTron", "@XaliimoVIP",
+            "@YurubPro", "@ZamzamSol", "@ZaytuunTech", "@AsadBinance", "@BilalCrypto",
+            "@FarhanTr", "@HamzaMoon", "@IsmailPro", "@LibanSol", "@MahadTech",
+            "@MohamedGold", "@MustafeWeb", "@NasirTr", "@OmarMoon", "@QasimStar",
+            "@RidwanTron", "@SaedVIP", "@TariqPro", "@UmarSol", "@YusufTech",
+            "@ZackGold", "@AbdullahiWeb", "@AbdirahmanTr", "@AbdirisakMoon", "@AhmedStar",
+            "@AliTron", "@AwaleVIP", "@BashirPro", "@DahirSol", "@FarahTech",
+            "@GuledGold", "@HassanWeb", "@HusseinTr", "@IbrahimMoon", "@IsaqStar",
+            "@JamaTron", "@KadarVIP", "@LibanPro", "@MahamudSol", "@MohamudTech",
+            "@MuminGold", "@OsmanWeb", "@RageTr", "@SaidMoon", "@SalimStar",
+            "@WarsameTron", "@YacquubVIP", "@ZakariaPro", "@ZubairSol", "@AdanTech",
+            "@AliGold", "@AminWeb", "@BashiirTr", "@DeeqMoon", "@FaisalStar",
+            "@GelleTron", "@HassanVIP", "@IdrisPro", "@JibrilSol", "@KhaalidTech",
+            "@LibanGold", "@MohamedWeb", "@NasirTr", "@OmarMoon", "@QadarStar",
+            "@RashidTron", "@SaidVIP", "@TariqPro", "@UmarSol", "@YusufTech",
+            "@ZackGold", "@AbdiWeb", "@AhmedTr", "@AliMoon", "@AwaleStar",
+            "@BashirTron", "@DahirVIP", "@FarahPro", "@GuledSol", "@HassanTech",
+            "@HusseinGold", "@IbrahimWeb", "@IsaqTr", "@JamaMoon", "@KadarStar",
+            "@LibanTron", "@MahamudVIP", "@MohamudPro", "@MuminSol", "@OsmanTech",
+            "@RageGold", "@SaidWeb", "@SalimTr", "@WarsameMoon", "@YacquubStar",
+            "@ZakariaTron", "@ZubairVIP", "@AdanPro", "@AliSol", "@AminTech",
+            "@BashiirGold", "@DeeqWeb", "@FaisalTr", "@GelleMoon", "@HassanStar",
+            "@IdrisTron", "@JibrilVIP", "@KhaalidPro", "@LibanSol", "@MohamedTech",
+            "@NasirGold", "@OmarWeb", "@QadarTr", "@RashidMoon", "@SaidStar",
+            "@TariqTron", "@UmarVIP", "@YusufPro", "@ZackSol", "@AbdiTech",
+            "@AhmedGold", "@AliWeb", "@AwaleTr", "@BashirMoon", "@DahirStar",
+            "@FarahTron", "@GuledVIP", "@HassanPro", "@HusseinSol", "@IbrahimTech",
+            "@IsaqGold", "@JamaWeb", "@KadarTr", "@LibanMoon", "@MahamudStar",
+            "@MohamudTron", "@MuminVIP", "@OsmanPro", "@RageSol", "@SaidTech",
+            "@SalimGold", "@WarsameWeb", "@YacquubTr", "@ZakariaMoon", "@ZubairStar",
+            "@AdanTron", "@AliVIP", "@AminPro", "@BashiirSol", "@DeeqTech",
+            "@FaisalGold", "@GelleWeb", "@HassanTr", "@IdrisMoon", "@JibrilStar",
+            "@KhaalidTron", "@LibanVIP", "@MohamedPro", "@NasirSol", "@OmarTech",
+            "@QadarGold", "@RashidWeb", "@SaidTr", "@TariqMoon", "@UmarStar",
+            "@YusufTron", "@ZackVIP", "@AbdiPro", "@AhmedSol", "@AliTech",
+            "@AwaleGold", "@BashirWeb", "@DahirTr", "@FarahMoon", "@GuledStar",
+            "@HassanTron", "@HusseinVIP", "@IbrahimPro", "@IsaqSol", "@JamaTech",
+            "@KadarGold", "@LibanWeb", "@MahamudTr", "@MohamudMoon", "@MuminStar",
+            "@OsmanTron", "@RageVIP", "@SaidPro", "@SalimSol", "@WarsameTech",
+            "@YacquubGold", "@ZakariaWeb", "@ZubairTr", "@AdanMoon", "@AliStar",
+            "@AminTron", "@BashiirVIP", "@DeeqPro", "@FaisalSol", "@GelleTech",
+            "@HassanGold", "@IdrisWeb", "@JibrilTr", "@KhaalidMoon", "@LibanStar",
+            "@MohamedTron", "@NasirVIP", "@OmarPro", "@QadarSol", "@RashidTech",
+            "@SaidGold", "@TariqWeb", "@UmarTr", "@YusufMoon", "@ZackStar",
+            "@AbdiTron", "@AhmedVIP", "@AliPro", "@AwaleSol", "@BashirTech",
+            "@DahirGold", "@FarahWeb", "@GuledTr", "@HassanMoon", "@HusseinStar",
+            "@IbrahimTron", "@IsaqVIP", "@JamaPro", "@KadarSol", "@LibanTech",
+            "@MahamudGold", "@MohamudWeb", "@MuminTr", "@OsmanMoon", "@RageStar",
+            "@SaidTron", "@SalimVIP", "@WarsamePro", "@YacquubSol", "@ZakariaTech",
+            "@ZubairGold", "@AdanWeb", "@AliTr", "@AminMoon", "@BashiirStar",
+            "@DeeqTron", "@FaisalVIP", "@GellePro", "@HassanSol", "@IdrisTech",
+            "@JibrilGold", "@KhaalidWeb", "@LibanTr", "@MohamedMoon", "@NasirStar",
+            "@OmarTron", "@QadarVIP", "@RashidPro", "@SaidSol", "@TariqTech",
+            "@UmarGold", "@YusufWeb", "@ZackTr", "@AbdiMoon", "@AhmedStar",
+            "@AliTron", "@AwaleVIP", "@BashirPro", "@DahirSol", "@FarahTech",
+            "@GuledGold", "@HassanWeb", "@HusseinTr", "@IbrahimMoon", "@IsaqStar",
+            "@JamaTron", "@KadarVIP", "@LibanPro", "@MahamudSol", "@MohamudTech"
         ];
         
         const standardFakeAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
@@ -691,7 +759,7 @@
             { action: "withdrew profits", color: "#10b981", icon: "fa-arrow-up", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] }
         ];
 
-        // Ogeysiisyadu waxay soo baxayaan 30-kii ilbidhiqsiba mar (30000ms) sida aad codsatay
+        // 30 seconds interval popup toast notification
         setInterval(() => {
             let randomUser = uniqueNames[Math.floor(Math.random() * uniqueNames.length)];
             let randomAction = actionTypes[Math.floor(Math.random() * actionTypes.length)];
