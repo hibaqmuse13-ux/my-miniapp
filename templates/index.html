@@ -36,7 +36,7 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         /* Header */
-        header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); margin-bottom: 16px; }
+        header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); backdrop-filter: blur(10px); margin-bottom: 12px; }
         .profile { display: flex; align-items: center; gap: 12px; }
         .avatar { width: 42px; height: 42px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3); overflow: hidden; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -50,10 +50,10 @@
             overflow: hidden;
             white-space: nowrap;
             background: var(--card-bg);
-            padding: 10px 0;
+            padding: 8px 0;
             border-radius: 12px;
             box-sizing: border-box;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
             border: 1px solid rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
         }
@@ -68,7 +68,7 @@
             display: inline-block;
             padding: 0 20px;
             color: var(--text-white);
-            font-size: 13px;
+            font-size: 12px;
         }
 
         @keyframes scrollRightToLeft {
@@ -76,13 +76,13 @@
             100% { transform: translateX(-100%); }
         }
 
-        /* LIVE MARKET PRICES SECTION */
+        /* LIVE MARKET PRICES SECTION (Compact & Professional Size Fix) */
         .market-section {
-            background: rgba(15, 22, 36, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 16px;
-            padding: 12px 14px;
-            margin-bottom: 16px;
+            background: rgba(15, 22, 36, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            padding: 8px 10px;
+            margin-bottom: 12px;
             backdrop-filter: blur(10px);
         }
 
@@ -90,8 +90,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            font-size: 12px;
+            margin-bottom: 6px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-sub);
             letter-spacing: 0.5px;
@@ -101,9 +101,9 @@
         .market-header .live-badge {
             background-color: rgba(14, 203, 129, 0.12);
             color: #0ecb81;
-            padding: 2px 7px;
-            border-radius: 5px;
-            font-size: 10px;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-size: 9px;
             display: flex;
             align-items: center;
             gap: 4px;
@@ -112,8 +112,8 @@
 
         .market-header .live-badge::before {
             content: '';
-            width: 5px;
-            height: 5px;
+            width: 4px;
+            height: 4px;
             background-color: #0ecb81;
             border-radius: 50%;
             display: inline-block;
@@ -123,14 +123,14 @@
         .crypto-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
+            gap: 6px;
         }
 
         .crypto-item {
-            background: rgba(21, 28, 44, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 10px;
-            padding: 8px 10px;
+            background: rgba(21, 28, 44, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 5px 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -138,11 +138,11 @@
         }
 
         .crypto-info { display: flex; flex-direction: column; }
-        .crypto-symbol { font-weight: 700; font-size: 12px; color: #ffffff; }
-        .crypto-name { font-size: 9px; color: var(--text-sub); }
+        .crypto-symbol { font-weight: 700; font-size: 11px; color: #ffffff; }
+        .crypto-name { font-size: 8.5px; color: var(--text-sub); }
         .crypto-price-box { text-align: right; }
-        .crypto-price { font-size: 12px; font-weight: 600; color: #ffffff; }
-        .crypto-change { font-size: 9px; font-weight: 600; }
+        .crypto-price { font-size: 11px; font-weight: 600; color: #ffffff; }
+        .crypto-change { font-size: 8.5px; font-weight: 600; }
         .crypto-change.up { color: #0ecb81; }
         .crypto-change.down { color: #f6465d; }
 
@@ -152,161 +152,181 @@
             100% { opacity: 1; }
         }
 
-        /* Balance Card */
-        .balance-card { background: linear-gradient(145deg, rgba(16, 24, 40, 0.9) 0%, rgba(10, 15, 28, 0.95) 100%); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 24px; padding: 24px 20px; text-align: center; box-shadow: 0 12px 30px rgba(0,0,0,0.4); margin-bottom: 16px; position: relative; overflow: hidden; }
-        .balance-card p { font-size: 11px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; }
-        .balance-card h1 { font-size: 38px; font-weight: 800; letter-spacing: -1px; margin: 4px 0; }
-        .balance-card span.badge-usdt { font-size: 11px; font-weight: 700; color: var(--accent-cyan); background: rgba(0, 210, 255, 0.15); padding: 3px 10px; border-radius: 6px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px; border: 1px solid rgba(0, 210, 255, 0.25); }
-        .badge-usdt img { width: 14px; height: 14px; }
+        /* Professional Enhanced Balance Card */
+        .balance-card { 
+            background: linear-gradient(135deg, rgba(13, 20, 35, 0.95) 0%, rgba(7, 11, 20, 0.98) 100%); 
+            border: 1px solid rgba(0, 210, 255, 0.2); 
+            border-radius: 20px; 
+            padding: 20px 16px; 
+            text-align: center; 
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1); 
+            margin-bottom: 12px; 
+            position: relative; 
+            overflow: hidden; 
+        }
+        .balance-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 210, 255, 0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .balance-card p { font-size: 10px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 2px; font-weight: 700; }
+        .balance-card h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.5px; margin: 4px 0; background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .balance-card span.badge-usdt { font-size: 10.5px; font-weight: 700; color: var(--accent-cyan); background: rgba(0, 210, 255, 0.12); padding: 3px 10px; border-radius: 6px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px; border: 1px solid rgba(0, 210, 255, 0.25); }
+        .badge-usdt img { width: 13px; height: 13px; }
 
-        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, 0.06); }
         .stats div { text-align: center; }
-        .stats i { font-size: 13px; color: var(--accent-cyan); margin-bottom: 4px; }
-        .stats h4 { font-size: 11px; color: var(--text-sub); font-weight: 500; }
-        .stats b { font-size: 14px; color: #fff; font-weight: 700; display: block; margin-top: 2px; }
+        .stats i { font-size: 12px; color: var(--accent-cyan); margin-bottom: 3px; }
+        .stats h4 { font-size: 10px; color: var(--text-sub); font-weight: 500; text-transform: uppercase; }
+        .stats b { font-size: 13px; color: #fff; font-weight: 700; display: block; margin-top: 2px; }
 
         /* Pending Referral Balance Card */
         .pending-balance-card { 
             background: linear-gradient(145deg, rgba(16, 24, 40, 0.9) 0%, rgba(10, 15, 28, 0.95) 100%); 
             border: 1px solid rgba(245, 158, 11, 0.25); 
-            border-radius: 20px; 
-            padding: 18px 20px; 
+            border-radius: 16px; 
+            padding: 14px 16px; 
             display: flex; 
             align-items: center; 
-            gap: 16px; 
-            margin-bottom: 16px; 
+            gap: 14px; 
+            margin-bottom: 12px; 
             box-shadow: 0 8px 20px rgba(0,0,0,0.3); 
         }
         .pending-balance-card .card-icon { 
-            width: 44px; height: 44px; border-radius: 12px; 
+            width: 40px; height: 40px; border-radius: 10px; 
             background: rgba(245, 158, 11, 0.15); 
             display: flex; align-items: center; justify-content: center; 
-            font-size: 18px; color: #f59e0b; 
+            font-size: 16px; color: #f59e0b; 
             border: 1px solid rgba(245, 158, 11, 0.3); flex-shrink: 0; 
         }
         .pending-balance-card .card-info { flex: 1; }
-        .pending-balance-card .card-info h3 { font-size: 11px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-weight: 600; }
-        .pending-balance-card .balance-amount { font-size: 24px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; }
-        .pending-balance-card .card-subtitle { font-size: 10px; color: #f59e0b; font-weight: 600; display: inline-block; margin-top: 2px; }
+        .pending-balance-card .card-info h3 { font-size: 10.5px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; font-weight: 600; }
+        .pending-balance-card .balance-amount { font-size: 22px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; }
+        .pending-balance-card .card-subtitle { font-size: 9.5px; color: #f59e0b; font-weight: 600; display: inline-block; margin-top: 2px; }
 
         /* Rules Banner */
         .rules-banner { 
             background: linear-gradient(135deg, rgba(30, 25, 15, 0.6) 0%, rgba(20, 16, 10, 0.8) 100%); 
             border: 1px solid rgba(245, 158, 11, 0.25); 
-            border-radius: 16px; padding: 16px; margin-bottom: 20px; 
-            font-size: 11.5px; color: #cbd5e1; line-height: 1.6; 
+            border-radius: 14px; padding: 14px; margin-bottom: 16px; 
+            font-size: 11px; color: #cbd5e1; line-height: 1.5; 
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
-        .rules-banner h4 { font-size: 13px; font-weight: 700; color: #fbbf24; margin-bottom: 8px; display: flex; align-items: center; gap: 7px; }
-        .rules-banner p { margin-bottom: 6px; }
+        .rules-banner h4 { font-size: 12px; font-weight: 700; color: #fbbf24; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .rules-banner p { margin-bottom: 4px; }
         .rules-banner p:last-child { margin-bottom: 0; }
         .rules-banner b { color: #fef08a; font-weight: 600; }
 
         /* Quick Buttons */
-        .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .quick button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; font-size: 14px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 10px; cursor: pointer; backdrop-filter: blur(10px); }
+        .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .quick button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; font-size: 13px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer; backdrop-filter: blur(10px); }
 
         /* Pages */
         .page { display: none; }
         .page.active { display: block; }
 
-        .section-header { font-size: 14px; font-weight: 800; margin: 20px 0 12px 0; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .section-header { font-size: 13px; font-weight: 800; margin: 16px 0 10px 0; display: flex; align-items: center; gap: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
 
         /* Plans Grid */
-        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 16px; text-align: center; position: relative; backdrop-filter: blur(10px); }
+        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; text-align: center; position: relative; backdrop-filter: blur(10px); }
         .plan-card.vip-card { border-color: rgba(245, 158, 11, 0.3); background: linear-gradient(145deg, rgba(30, 25, 15, 0.8) 0%, rgba(21, 28, 44, 0.8) 100%); }
-        .plan-badge { position: absolute; top: 10px; right: 10px; font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 6px; text-transform: uppercase; }
+        .plan-badge { position: absolute; top: 8px; right: 8px; font-size: 8.5px; font-weight: 800; padding: 2px 5px; border-radius: 4px; text-transform: uppercase; }
         .badge-std { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
         .badge-vip { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
-        .plan-title { font-size: 22px; font-weight: 800; margin: 8px 0 4px 0; }
-        .plan-rate { font-size: 13px; font-weight: 700; color: #10b981; margin-bottom: 10px; }
-        .plan-info { font-size: 11px; color: var(--text-sub); display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; text-align: left; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px; }
-        .plan-btn { width: 100%; padding: 10px; border-radius: 10px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; color: #fff; }
+        .plan-title { font-size: 20px; font-weight: 800; margin: 6px 0 2px 0; }
+        .plan-rate { font-size: 12px; font-weight: 700; color: #10b981; margin-bottom: 8px; }
+        .plan-info { font-size: 10px; color: var(--text-sub); display: flex; flex-direction: column; gap: 3px; margin-bottom: 10px; text-align: left; background: rgba(0,0,0,0.2); padding: 6px; border-radius: 6px; }
+        .plan-btn { width: 100%; padding: 8px; border-radius: 8px; border: none; font-size: 11px; font-weight: 700; cursor: pointer; color: #fff; }
         .btn-std { background: var(--primary-gradient); }
         .btn-vip { background: var(--vip-gradient); }
 
         /* Forms */
-        label { display: block; font-size: 11px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 6px; font-weight: 600; }
-        select, input, textarea { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 14px; outline: none; margin-bottom: 14px; }
+        label { display: block; font-size: 10.5px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 4px; font-weight: 600; }
+        select, input, textarea { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 13px; outline: none; margin-bottom: 12px; }
         
-        .network-preview-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-        .net-left { display: flex; align-items: center; gap: 12px; }
-        .net-left img { width: 36px; height: 36px; border-radius: 50%; }
-        .net-info h4 { font-size: 14px; font-weight: 700; color: #fff; }
-        .net-info p { font-size: 11px; color: var(--accent-cyan); font-weight: 600; margin-top: 2px; }
+        .network-preview-card { background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+        .net-left { display: flex; align-items: center; gap: 10px; }
+        .net-left img { width: 32px; height: 32px; border-radius: 50%; }
+        .net-info h4 { font-size: 13px; font-weight: 700; color: #fff; }
+        .net-info p { font-size: 10.5px; color: var(--accent-cyan); font-weight: 600; margin-top: 1px; }
 
-        .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
-        .wallet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-        .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 6px 12px; border-radius: 8px; font-size: 11px; cursor: pointer; font-weight: 600; }
-        .address-text { font-family: monospace; font-size: 12px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 10px; border-radius: 8px; }
+        .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; }
+        .wallet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+        .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 5px 10px; border-radius: 6px; font-size: 10.5px; cursor: pointer; font-weight: 600; }
+        .address-text { font-family: monospace; font-size: 11.5px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 6px; }
 
-        button.primary { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--primary-gradient); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; }
-        button.success { width: 100%; padding: 14px; border-radius: 12px; border: none; background: var(--success-gradient); color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; }
+        button.primary { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--primary-gradient); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; }
+        button.success { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--success-gradient); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; }
 
         /* History Elements */
-        .history-tabs { display: flex; gap: 8px; margin-bottom: 16px; overflow-x: auto; padding-bottom: 4px; }
-        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-sub); padding: 8px 14px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+        .history-tabs { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; padding-bottom: 4px; }
+        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-sub); padding: 6px 12px; border-radius: 16px; font-size: 10.5px; font-weight: 600; cursor: pointer; white-space: nowrap; }
         .tab-btn.active { background: var(--primary-gradient); color: #fff; border-color: transparent; }
 
-        .tx-card { background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
-        .tx-icon { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .tx-card { background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; }
+        .tx-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
         .tx-icon.DEPOSIT { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .tx-icon.WITHDRAWAL { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
         .tx-icon.INVESTMENT { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
-        .tx-details { flex: 1; margin-left: 12px; }
-        .tx-details h5 { font-size: 13px; font-weight: 700; color: #fff; }
-        .tx-details p { font-size: 10px; color: var(--text-sub); margin-top: 2px; }
+        .tx-details { flex: 1; margin-left: 10px; }
+        .tx-details h5 { font-size: 12px; font-weight: 700; color: #fff; }
+        .tx-details p { font-size: 9.5px; color: var(--text-sub); margin-top: 1px; }
         .tx-amount { text-align: right; }
-        .tx-amount h5 { font-size: 14px; font-weight: 800; }
-        .status-badge { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-top: 3px; }
+        .tx-amount h5 { font-size: 13px; font-weight: 800; }
+        .status-badge { font-size: 8.5px; font-weight: 700; padding: 2px 5px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-top: 2px; }
         .status-completed { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
 
         /* Stats & Tables */
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-        .stat-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 14px; text-align: center; }
-        .stat-box i { font-size: 18px; color: var(--accent-cyan); margin-bottom: 6px; }
-        .stat-box h3 { font-size: 18px; font-weight: 800; color: #fff; margin: 2px 0; }
-        .stat-box p { font-size: 11px; color: var(--text-sub); }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+        .stat-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; text-align: center; }
+        .stat-box i { font-size: 16px; color: var(--accent-cyan); margin-bottom: 4px; }
+        .stat-box h3 { font-size: 16px; font-weight: 800; color: #fff; margin: 2px 0; }
+        .stat-box p { font-size: 10px; color: var(--text-sub); }
 
-        .progress-container { background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 16px; }
-        .progress-bar-bg { width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-top: 10px; }
+        .progress-container { background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 14px; }
+        .progress-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 8px; overflow: hidden; margin-top: 8px; }
         .progress-bar-fill { height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s ease; }
 
-        .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; color: #fff; }
-        .support-icon { width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 20px; color: var(--accent-cyan); }
+        .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; text-decoration: none; color: #fff; }
+        .support-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--accent-cyan); }
 
         /* Admin Dashboard */
-        .admin-table-box { width: 100%; overflow-x: auto; margin-top: 10px; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 11px; text-align: left; }
-        .admin-table th, .admin-table td { padding: 8px 10px; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
+        .admin-table-box { width: 100%; overflow-x: auto; margin-top: 8px; }
+        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 10.5px; text-align: left; }
+        .admin-table th, .admin-table td { padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
         .admin-table th { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); font-weight: 700; }
 
         /* Navigation */
-        nav { position: fixed; bottom: 0; left: 0; right: 0; height: 70px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 20px 20px 0 0; }
-        nav button { background: none; border: none; color: var(--text-sub); font-size: 10px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; flex: 1; }
-        nav button i { font-size: 18px; }
+        nav { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 16px 16px 0 0; }
+        nav button { background: none; border: none; color: var(--text-sub); font-size: 9.5px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; flex: 1; }
+        nav button i { font-size: 16px; }
         nav button.active { color: var(--accent-cyan); font-weight: 700; }
 
-        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 12px 20px; border-radius: 12px; font-size: 13px; z-index: 10000; display: none; }
+        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; border: 1px solid var(--card-border); padding: 10px 16px; border-radius: 10px; font-size: 12px; z-index: 10000; display: none; }
 
-        /* PROFESSIONAL COREXBOT LIVE CHAT WIDGET STYLES (Adjusted Size & Position) */
+        /* PROFESSIONAL COREXBOT LIVE CHAT WIDGET STYLES */
         .chat-widget-btn {
             position: fixed;
-            bottom: 110px;
-            right: 20px;
+            bottom: 100px;
+            right: 16px;
             background: var(--primary-gradient);
             color: #fff;
-            width: 46px;
-            height: 46px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
             box-shadow: 0 6px 20px rgba(0, 210, 255, 0.4);
             z-index: 10000;
@@ -327,12 +347,12 @@
 
         .chat-window {
             position: fixed;
-            bottom: 165px;
-            right: 20px;
-            width: 320px;
-            height: 420px;
+            bottom: 155px;
+            right: 16px;
+            width: 300px;
+            height: 400px;
             background: #111827;
-            border-radius: 16px;
+            border-radius: 14px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.6);
             display: flex;
             flex-direction: column;
@@ -347,41 +367,41 @@
         .chat-header {
             background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
             color: #fff;
-            padding: 14px;
+            padding: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 12px;
             border-bottom: 1px solid var(--card-border);
         }
-        .chat-header .bot-title-info { display: flex; align-items: center; gap: 8px; }
-        .chat-header .online-dot { width: 8px; height: 8px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 8px #10b981; }
+        .chat-header .bot-title-info { display: flex; align-items: center; gap: 6px; }
+        .chat-header .online-dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px #10b981; }
 
         .chat-header button {
             background: none;
             border: none;
             color: var(--text-sub);
-            font-size: 20px;
+            font-size: 18px;
             cursor: pointer;
         }
 
         .chat-body {
             flex: 1;
-            padding: 12px;
+            padding: 10px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             background: rgba(9, 13, 22, 0.95);
         }
 
         .bot-message, .user-message {
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 12.5px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 12px;
             max-width: 85%;
-            line-height: 1.45;
+            line-height: 1.4;
         }
 
         .bot-message {
@@ -401,19 +421,19 @@
 
         .chat-footer {
             display: flex;
-            padding: 12px;
+            padding: 10px;
             background: #111827;
             border-top: 1px solid var(--card-border);
         }
 
         .chat-footer input {
             flex: 1;
-            padding: 10px 12px;
+            padding: 8px 10px;
             border: 1px solid var(--card-border);
-            border-radius: 8px;
+            border-radius: 6px;
             outline: none;
             margin-bottom: 0;
-            font-size: 12px;
+            font-size: 11.5px;
             background: rgba(0,0,0,0.3);
             color: #fff;
         }
@@ -421,13 +441,13 @@
         .chat-footer button {
             background: var(--primary-gradient);
             border: none;
-            padding: 10px 16px;
-            margin-left: 8px;
-            border-radius: 8px;
+            padding: 8px 14px;
+            margin-left: 6px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
             color: #fff;
-            font-size: 12px;
+            font-size: 11.5px;
         }
     </style>
 </head>
@@ -474,7 +494,7 @@
     </div>
 </div>
 
-<!-- LIVE MARKET PRICES SECTION -->
+<!-- LIVE MARKET PRICES SECTION (Optimized size & layout) -->
 <div class="market-section">
     <div class="market-header">
         <span>Market Trends</span>
@@ -517,7 +537,7 @@
     </div>
 </div>
 
-<!-- Balance Section -->
+<!-- Professional Balance Section -->
 <section class="balance-card">
     <p>Available Balance</p>
     <h1>$<span id="balance">0.00</span></h1>
@@ -828,7 +848,7 @@
 
 </div>
 
-<!-- BEAUTIFIED LIVE CHAT WIDGET HTML (CoreXBot Assistant) -->
+<!-- LIVE CHAT WIDGET HTML -->
 <div id="chat-widget-btn" class="chat-widget-btn" title="CoreXBot Assistant">
     <i class="fa-solid fa-robot"></i>
 </div>
@@ -890,26 +910,22 @@
         initLiveChatWidget();
     });
 
-    // AUDIO FEEDBACK SYSTEM (Web Audio API)
     function playSound() {
         try {
             const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             const oscillator = audioCtx.createOscillator();
             const gainNode = audioCtx.createGain();
             oscillator.type = 'sine';
-            oscillator.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5 note
+            oscillator.frequency.setValueAtTime(587.33, audioCtx.currentTime);
             gainNode.gain.setValueAtTime(0.05, audioCtx.currentTime);
             gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
             oscillator.connect(gainNode);
             gainNode.connect(audioCtx.destination);
             oscillator.start();
             oscillator.stop(audioCtx.currentTime + 0.15);
-        } catch(e) {
-            // Audio context not allowed or supported without user interaction
-        }
+        } catch(e) {}
     }
 
-    // PROFESSIONAL ENGLISH LIVE CHAT ASSISTANT & ANIMATION / TIMING LOGIC
     function initLiveChatWidget() {
         const chatBtn = document.getElementById('chat-widget-btn');
         const chatWindow = document.getElementById('chat-window');
@@ -944,10 +960,9 @@
                 return;
             }
 
-            // Show for 10 seconds with animation
             chatBtn.classList.remove('hidden-widget');
             chatBtn.classList.add('animate-bounce');
-            playSound(); // Sound notification when assistant pops up
+            playSound();
 
             setTimeout(() => {
                 if (!isChatOpen) {
@@ -956,11 +971,9 @@
                 }
             }, 10000);
 
-            // Schedule the cycle: 1 minute total duration per appearance cycle (10s visible + 50s hidden or similar repeat)
             setTimeout(triggerAssistantCycle, 60000);
         }
 
-        // Start the cycle
         setTimeout(triggerAssistantCycle, 2000);
 
         function sendMessage() {
@@ -975,7 +988,6 @@
             chatInput.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
 
-            // Typing indicator / delay
             const typingIndicator = document.createElement('div');
             typingIndicator.className = 'bot-message';
             typingIndicator.innerHTML = '.....';
@@ -989,45 +1001,30 @@
                 botMsg.textContent = getCoreXBotResponse(text);
                 chatBody.appendChild(botMsg);
                 chatBody.scrollTop = chatBody.scrollHeight;
-                playSound(); // Sound when response arrives
+                playSound();
             }, 1200);
         }
     }
 
     function getCoreXBotResponse(userText) {
         const text = userText.toLowerCase();
-        
         if (text.includes('deposit') || text.includes('fund') || text.includes('add money') || text.includes('pay')) {
             return "To make a deposit in CoreXBot: Click on the 'Deposit' button on the home screen, select your preferred network (TRC20, BEP20, or ERC20), copy the official wallet address, and send USDT. Once sent, paste your TXID hash or upload your payment receipt for automatic or fast crediting!";
-        }
-        else if (text.includes('withdraw') || text.includes('payout') || text.includes('take out') || text.includes('labaxo')) {
+        } else if (text.includes('withdraw') || text.includes('payout') || text.includes('take out')) {
             return "To withdraw funds from CoreXBot: Go to the Withdrawal section, select your network, enter your external wallet address and amount. Please note that withdrawals are strictly permitted after your 7-day active investment plan is fully completed.";
-        } 
-        else if (text.includes('invest') || text.includes('start') || text.includes('begin')) {
+        } else if (text.includes('invest') || text.includes('start')) {
             return "How to start investing in CoreXBot: First, make a deposit of at least $10 USDT via the Deposit tab. Then, pick a Standard plan ($10–$100) or VIP plan ($150–$500) from the Home screen to activate your hourly profits.";
-        }
-        else if (text.includes('minimum') || text.includes('maximum') || text.includes('profit') || text.includes('earn') || text.includes('much')) {
+        } else if (text.includes('minimum') || text.includes('maximum') || text.includes('profit') || text.includes('earn')) {
             return "CoreXBot Limits & Profits: The minimum investment is $10 USDT and the maximum is $500 USDT. Standard plans yield 20% daily, and VIP plans yield 35% daily, credited hourly to your live balance!";
-        }
-        else if (text.includes('day') || text.includes('duration') || text.includes('period') || text.includes('long')) {
+        } else if (text.includes('day') || text.includes('duration') || text.includes('period')) {
             return "Investment Duration: All investment plans in CoreXBot run for a fixed duration of exactly 7 days (168 hours), compounding and yielding returns every single hour.";
-        }
-        else if (text.includes('account') || text.includes('balance') || profileMatch(text)) {
-            return "CoreXBot Account Details: Your account is securely linked to your Telegram profile. You can check your available balance, active deposits, and performance analytics anytime.";
-        }
-        else if (text.includes('referral') || text.includes('invite') || text.includes('bonus')) {
+        } else if (text.includes('referral') || text.includes('invite') || text.includes('bonus')) {
             return "CoreXBot Referral Program: Share your unique invite link found in your Profile. You will instantly earn a 2.00 USDT bonus when your invited friend completes their first verified deposit.";
-        }
-        else if (text.includes('hello') || text.includes('hi') || text.includes('hey') || text.includes('greetings')) {
+        } else if (text.includes('hello') || text.includes('hi') || text.includes('hey')) {
             return "Hello! Welcome to CoreXBot. How can I assist you with your investments or account today?";
+        } else {
+            return "I am CoreXBot Assistant. If you need further assistance with your account, please check our Support tab to contact our 24/7 Live Support team.";
         }
-        else {
-            return "I am CoreXBot Assistant. If you are experiencing technical difficulties or need further assistance with your account, please check our FAQ or navigate to the Support tab where you can contact our 24/7 Live Support team for immediate resolution.";
-        }
-    }
-
-    function profileMatch(text) {
-        return text.includes('profile') || text.includes('username') || text.includes('name');
     }
 
     async function initTelegramUser() {
@@ -1070,9 +1067,7 @@
                 fetchUserData(userIdStr);
                 loadSupportTickets(userIdStr);
             }
-        } catch(e) {
-            console.error("Auth sync error:", e);
-        }
+        } catch(e) {}
     }
 
     async function fetchUserData(userId) {
@@ -1083,37 +1078,18 @@
             updateUI();
             renderHistory();
             updateStats();
-        } catch (e) {
-            console.error("Fetch user data error:", e);
-        }
+        } catch (e) {}
     }
 
     function initRealAndFakeToasts() {
         const uniqueNames = ["@Crypto", "@AliAhmed", "@MohamedSaeed", "@Farah99", "@Liban", "@Samantar", "@Nasteexo", "@KhadarAdmin", "@HindaWeb", "@Guled"];
         const standardFakeAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
-        const vipFakeAmounts = [150, 200, 250, 300, 350, 400, 450, 500];
         const netKeys = ['TRC20', 'BEP20', 'ERC20'];
 
         const actionTypes = [
-            { 
-                type: "DEPOSIT",
-                action: "deposited", 
-                color: "#10b981", 
-                getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] 
-            },
-            { 
-                type: "INVEST",
-                action: "successfully invested", 
-                color: "var(--accent-cyan)", 
-                icon: "fa-bolt", 
-                getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] 
-            },
-            { 
-                type: "WITHDRAWAL",
-                action: "withdrew profits", 
-                color: "#10b981", 
-                getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] 
-            }
+            { type: "DEPOSIT", action: "deposited", color: "#10b981", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
+            { type: "INVEST", action: "successfully invested", color: "var(--accent-cyan)", icon: "fa-bolt", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] },
+            { type: "WITHDRAWAL", action: "withdrew profits", color: "#10b981", getAmt: () => standardFakeAmounts[Math.floor(Math.random() * standardFakeAmounts.length)] }
         ];
 
         setInterval(() => {
@@ -1138,26 +1114,23 @@
             toastEl = document.createElement('div');
             toastEl.id = 'live-toast-popup';
             toastEl.style.cssText = `
-                position: fixed; bottom: 85px; left: 16px; background: rgba(15, 23, 42, 0.95);
-                color: #fff; border: 1px solid var(--card-border); padding: 10px 14px; border-radius: 12px;
-                font-size: 12px; font-weight: 500; z-index: 9998; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-                display: flex; align-items: center; gap: 10px; backdrop-filter: blur(10px);
+                position: fixed; bottom: 75px; left: 16px; background: rgba(15, 23, 42, 0.95);
+                color: #fff; border: 1px solid var(--card-border); padding: 8px 12px; border-radius: 10px;
+                font-size: 11px; font-weight: 500; z-index: 9998; box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+                display: flex; align-items: center; gap: 8px; backdrop-filter: blur(10px);
                 transition: opacity 0.4s ease, transform 0.4s ease; opacity: 0; transform: translateY(10px);
             `;
             document.body.appendChild(toastEl);
         }
 
-        let iconHTML = '';
-        if (type === 'img') {
-            iconHTML = `<div style="width: 30px; height: 30px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid ${color}40; flex-shrink: 0;"><img src="${iconSrc}" style="width: 18px; height: 18px; object-fit: contain;"></div>`;
-        } else {
-            iconHTML = `<div style="width: 30px; height: 30px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; color: ${color}; font-size: 12px; flex-shrink: 0;"><i class="fa-solid ${faIcon}"></i></div>`;
-        }
+        let iconHTML = type === 'img' ? 
+            `<div style="width: 26px; height: 26px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid ${color}40; flex-shrink: 0;"><img src="${iconSrc}" style="width: 15px; height: 15px; object-fit: contain;"></div>` :
+            `<div style="width: 26px; height: 26px; border-radius: 50%; background: ${color}20; display: flex; align-items: center; justify-content: center; color: ${color}; font-size: 11px; flex-shrink: 0;"><i class="fa-solid ${faIcon}"></i></div>`;
 
         toastEl.innerHTML = `
             ${iconHTML}
             <div>
-                <span style="font-size: 9px; color: var(--text-sub); display: block; text-transform: uppercase;">Live Notification</span>
+                <span style="font-size: 8.5px; color: var(--text-sub); display: block; text-transform: uppercase;">Live Notification</span>
                 <span>${message}</span>
             </div>
         `;
@@ -1180,7 +1153,7 @@
                     <tr><td>${u.telegram_id}</td><td>@${u.username || 'N/A'}</td><td>$${u.balance.toFixed(2)}</td><td>$${u.active_deposit.toFixed(2)}</td><td>${u.created_at}</td></tr>
                 `).join('');
             }
-        } catch (e) { console.error("Error loading admin users:", e); }
+        } catch (e) {}
 
         try {
             const resRank = await fetch('/api/admin/ranking');
@@ -1191,7 +1164,7 @@
                     <tr><td>#${index + 1}</td><td>${r.telegram_id}</td><td>@${r.username || 'N/A'}</td><td>$${r.total_invested.toFixed(2)}</td><td>${r.total_plans} Plans</td></tr>
                 `).join('');
             }
-        } catch (e) { console.error("Error loading admin ranking:", e); }
+        } catch (e) {}
     }
 
     function updateDepositAddress() {
@@ -1247,7 +1220,7 @@
     function updateLiveProfits() {
         const container = document.getElementById('live-investments-container');
         if (!activeInvestmentsList || activeInvestmentsList.length === 0) {
-            container.innerHTML = `<div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; text-align: center; color: var(--text-sub); font-size: 13px;">No active investments found. Invest in a plan to start earning live profits!</div>`;
+            container.innerHTML = `<div style="background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; text-align: center; color: var(--text-sub); font-size: 12px;">No active investments found. Invest in a plan to start earning live profits!</div>`;
             return;
         }
 
@@ -1271,14 +1244,14 @@
             let progressPercent = Math.min((elapsedSeconds / totalDurationSeconds) * 100, 100).toFixed(1);
 
             return `
-                <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 16px; padding: 16px; margin-bottom: 14px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <span style="font-size: 12px; font-weight: 700; color: var(--accent-cyan);"><i class="fa-solid fa-shield-halved"></i> Plan: $${inv.amount}</span>
-                        <span style="font-size: 10px; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 3px 8px; border-radius: 6px; font-weight: 700;">Running (${inv.dailyRate}% Daily)</span>
+                <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(0, 210, 255, 0.2); border-radius: 14px; padding: 14px; margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 11px; font-weight: 700; color: var(--accent-cyan);"><i class="fa-solid fa-shield-halved"></i> Plan: $${inv.amount}</span>
+                        <span style="font-size: 9.5px; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 2px 6px; border-radius: 6px; font-weight: 700;">Running (${inv.dailyRate}% Daily)</span>
                     </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; background: rgba(0,0,0,0.25); padding: 10px; border-radius: 10px;">
-                        <div><span style="font-size: 10px; color: var(--text-sub); display: block;">LIVE PROFIT</span><b style="font-size: 15px; color: #10b981;">$${currentProfit.toFixed(4)}</b></div>
-                        <div><span style="font-size: 10px; color: var(--text-sub); display: block;">TIME LEFT</span><b style="font-size: 12px; color: #f59e0b; font-family: monospace;">${days}d ${hours}h ${minutes}m ${seconds}s</b></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; background: rgba(0,0,0,0.25); padding: 8px; border-radius: 8px;">
+                        <div><span style="font-size: 9.5px; color: var(--text-sub); display: block;">LIVE PROFIT</span><b style="font-size: 14px; color: #10b981;">$${currentProfit.toFixed(4)}</b></div>
+                        <div><span style="font-size: 9.5px; color: var(--text-sub); display: block;">TIME LEFT</span><b style="font-size: 11px; color: #f59e0b; font-family: monospace;">${days}d ${hours}h ${minutes}m ${seconds}s</b></div>
                     </div>
                     <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: ${progressPercent}%;"></div></div>
                 </div>
@@ -1377,7 +1350,7 @@
         if(activeHistoryFilter !== 'ALL') filtered = filtered.filter(t => t.type === activeHistoryFilter);
 
         if(filtered.length === 0) {
-            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 13px; padding: 30px 0;">No transactions found</p>`;
+            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 12px; padding: 25px 0;">No transactions found</p>`;
             return;
         }
 
@@ -1466,21 +1439,21 @@
             const data = await res.json();
             const container = document.getElementById('support-tickets-container');
             if (!data.tickets || data.tickets.length === 0) {
-                container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 12px; padding: 15px 0;">No support tickets found.</p>`;
+                container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11.5px; padding: 12px 0;">No support tickets found.</p>`;
                 return;
             }
 
             container.innerHTML = data.tickets.map(ticket => `
-                <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 10px;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                        <b style="font-size: 13px; color: #fff;">${ticket.subject}</b>
-                        <span style="font-size: 9px; padding: 2px 6px; border-radius: 4px; background: ${ticket.status === 'Resolved' ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)'}; color: ${ticket.status === 'Resolved' ? '#10b981' : '#f59e0b'};">${ticket.status}</span>
+                <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 8px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                        <b style="font-size: 12px; color: #fff;">${ticket.subject}</b>
+                        <span style="font-size: 8.5px; padding: 2px 5px; border-radius: 4px; background: ${ticket.status === 'Resolved' ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)'}; color: ${ticket.status === 'Resolved' ? '#10b981' : '#f59e0b'};">${ticket.status}</span>
                     </div>
-                    <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 8px;"><b>You:</b> ${ticket.message}</p>
-                    ${ticket.admin_reply ? `<div style="background: rgba(0, 210, 255, 0.08); border-left: 2px solid var(--accent-cyan); padding: 8px; border-radius: 4px;"><p style="font-size: 11px; color: var(--accent-cyan);"><b>Admin Reply:</b> ${ticket.admin_reply}</p></div>` : `<p style="font-size: 10px; color: var(--text-sub); font-style: italic;">⏳ Awaiting admin response...</p>`}
+                    <p style="font-size: 10.5px; color: var(--text-sub); margin-bottom: 6px;"><b>You:</b> ${ticket.message}</p>
+                    ${ticket.admin_reply ? `<div style="background: rgba(0, 210, 255, 0.08); border-left: 2px solid var(--accent-cyan); padding: 6px; border-radius: 4px;"><p style="font-size: 10.5px; color: var(--accent-cyan);"><b>Admin Reply:</b> ${ticket.admin_reply}</p></div>` : `<p style="font-size: 9.5px; color: var(--text-sub); font-style: italic;">⏳ Awaiting admin response...</p>`}
                 </div>
             `).join('');
-        } catch (e) { console.error("Error loading tickets:", e); }
+        } catch (e) {}
     }
 
     function showToast(msg) {
