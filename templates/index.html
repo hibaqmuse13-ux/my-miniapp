@@ -44,6 +44,42 @@
         .profile small { font-size: 11px; color: var(--text-sub); }
         .verified { font-size: 10px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 5px; }
 
+        /* Market Ticker Styles (Added from new code) */
+        .market-ticker-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            background: var(--card-bg);
+            padding: 10px 0;
+            border-radius: 12px;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .market-ticker-track {
+            display: inline-block;
+            white-space: nowrap;
+            animation: scrollRightToLeft 18s linear infinite;
+        }
+
+        .market-ticker-track span {
+            display: inline-block;
+            padding: 0 20px;
+            color: var(--text-white);
+            font-size: 13px;
+        }
+
+        @keyframes scrollRightToLeft {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
         /* LIVE MARKET PRICES SECTION */
         .market-section {
             background: rgba(15, 22, 36, 0.75);
@@ -386,6 +422,20 @@
         <i class="fa-solid fa-circle-check"></i> Verified
     </div>
 </header>
+
+<!-- MARKET TICKER CONTAINER (Added from new code) -->
+<div class="market-ticker-container">
+    <div class="market-ticker-track">
+        <span><b>BTC:</b> $65,007 (+2.4%)</span>
+        <span><b>ETH:</b> $1,914 (+1.8%)</span>
+        <span><b>USDT:</b> $0.999 (-0.02%)</span>
+        <span><b>BNB:</b> $590.9 (-0.5%)</span>
+        <span><b>USDC:</b> $0.999 (-0.01%)</span>
+        <span><b>XRP:</b> $1.03 (-1.2%)</span>
+        <span><b>SOL:</b> $73.56 (+4.1%)</span>
+        <span><b>TRX:</b> $0.326 (-0.8%)</span>
+    </div>
+</div>
 
 <!-- LIVE MARKET PRICES SECTION -->
 <div class="market-section">
