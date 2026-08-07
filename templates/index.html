@@ -27,16 +27,6 @@
         body { background: var(--bg-dark); color: var(--text-white); padding-bottom: 90px; overflow-x: hidden; }
         .app { max-width: 480px; margin: 0 auto; padding: 12px; }
 
-        /* Tap Animation */
-        @keyframes tapEffect {
-            0% { transform: scale(1); }
-            50% { transform: scale(0.95); }
-            100% { transform: scale(1); }
-        }
-        .tap-anim:active, button:active, .plan-card:active {
-            animation: tapEffect 0.2s ease;
-        }
-
         /* Splash Screen */
         #splash { position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; transition: opacity 0.5s ease, visibility 0.5s; }
         #splash img { width: 80px; height: 80px; filter: drop-shadow(0 0 15px rgba(0, 210, 255, 0.4)); }
@@ -63,7 +53,7 @@
             padding: 6px 0;
             border-radius: 10px;
             box-sizing: border-box;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             border: 1px solid rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
         }
@@ -92,7 +82,7 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             padding: 6px 8px;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             backdrop-filter: blur(10px);
         }
 
@@ -132,7 +122,7 @@
 
         .crypto-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 4px;
         }
 
@@ -140,18 +130,19 @@
             background: rgba(21, 28, 44, 0.5);
             border: 1px solid rgba(255, 255, 255, 0.03);
             border-radius: 6px;
-            padding: 4px 5px;
+            padding: 3px 6px;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            text-align: center;
+            transition: background 0.2s;
         }
 
-        .crypto-info { display: flex; flex-direction: column; align-items: center; width: 100%; }
+        .crypto-info { display: flex; flex-direction: column; }
         .crypto-symbol { font-weight: 700; font-size: 10px; color: #ffffff; }
-        .crypto-price-box { text-align: center; width: 100%; margin-top: 2px; }
-        .crypto-price { font-size: 9.5px; font-weight: 600; color: #ffffff; }
-        .crypto-change { font-size: 8px; font-weight: 600; }
+        .crypto-name { font-size: 7.5px; color: var(--text-sub); }
+        .crypto-price-box { text-align: right; }
+        .crypto-price { font-size: 10px; font-weight: 600; color: #ffffff; }
+        .crypto-change { font-size: 7.5px; font-weight: 600; }
         .crypto-change.up { color: #0ecb81; }
         .crypto-change.down { color: #f6465d; }
 
@@ -161,53 +152,52 @@
             100% { opacity: 1; }
         }
 
-        /* Professional Available Balance Card */
+        /* Professional Enhanced Balance Card */
         .balance-card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--card-border); 
+            background: linear-gradient(135deg, rgba(13, 20, 35, 0.95) 0%, rgba(7, 11, 20, 0.98) 100%); 
+            border: 1px solid rgba(0, 210, 255, 0.2); 
             border-radius: 16px; 
             padding: 16px 14px; 
             text-align: center; 
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4); 
-            margin-bottom: 6px; 
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1); 
+            margin-bottom: 8px; 
             position: relative; 
             overflow: hidden; 
         }
-        .balance-card p { font-size: 13px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; font-weight: 700; }
-        .balance-card h1 { font-size: 44px; font-weight: 800; letter-spacing: -0.5px; margin: 4px 0; color: #ffffff; }
-        span.badge-usdt { font-size: 11px; font-weight: 700; color: #00d2ff; background: rgba(0, 210, 255, 0.12); padding: 4px 10px; border-radius: 6px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(0, 210, 255, 0.25); }
-        .badge-usdt img { width: 14px; height: 14px; }
+        .balance-card p { font-size: 9.5px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.2px; margin-bottom: 2px; font-weight: 700; }
+        .balance-card h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.5px; margin: 3px 0; background: linear-gradient(180deg, #ffffff 0%, #cbd5e1 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .balance-card span.badge-usdt { font-size: 10px; font-weight: 700; color: var(--accent-cyan); background: rgba(0, 210, 255, 0.12); padding: 2px 8px; border-radius: 5px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid rgba(0, 210, 255, 0.25); }
+        .badge-usdt img { width: 12px; height: 12px; }
 
-        .stats { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.06); }
         .stats div { text-align: center; }
-        .stats i { font-size: 16px; color: var(--accent-cyan); margin-bottom: 4px; }
-        .stats h4 { font-size: 11px; color: var(--text-sub); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        .stats b { font-size: 14px; color: #fff; font-weight: 800; display: block; margin-top: 2px; }
+        .stats i { font-size: 11px; color: var(--accent-cyan); margin-bottom: 2px; }
+        .stats h4 { font-size: 9.5px; color: var(--text-sub); font-weight: 500; text-transform: uppercase; }
+        .stats b { font-size: 12px; color: #fff; font-weight: 700; display: block; margin-top: 1px; }
 
-        /* Compact Gold Pending Referral Balance Card */
+        /* Professional Gold Pending Referral Balance Card */
         .pending-balance-card { 
-            background: linear-gradient(135deg, rgba(42, 34, 14, 0.9) 0%, rgba(20, 16, 6, 0.94) 100%); 
-            border: 1px solid rgba(245, 158, 11, 0.35); 
-            border-radius: 10px; 
-            padding: 8px 10px; 
+            background: linear-gradient(135deg, rgba(42, 34, 14, 0.92) 0%, rgba(20, 16, 6, 0.96) 100%); 
+            border: 1px solid rgba(245, 158, 11, 0.45); 
+            border-radius: 12px; 
+            padding: 10px 12px; 
             display: flex; 
             align-items: center; 
-            gap: 8px; 
-            margin-bottom: 6px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
+            gap: 10px; 
+            margin-bottom: 8px; 
+            box-shadow: 0 6px 16px rgba(0,0,0,0.35), inset 0 1px 1px rgba(255, 215, 0, 0.15); 
         }
         .pending-balance-card .card-icon { 
-            width: 28px; height: 28px; border-radius: 6px; 
+            width: 34px; height: 34px; border-radius: 8px; 
             background: rgba(245, 158, 11, 0.18); 
             display: flex; align-items: center; justify-content: center; 
-            font-size: 12px; color: #fbbf24; 
+            font-size: 14px; color: #fbbf24; 
             border: 1px solid rgba(245, 158, 11, 0.4); flex-shrink: 0; 
         }
         .pending-balance-card .card-info { flex: 1; }
-        .pending-balance-card .card-info h3 { font-size: 9px; color: #fde68a; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0px; font-weight: 700; }
-        .pending-balance-card .balance-amount { font-size: 15px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; }
-        .pending-balance-card .card-subtitle { font-size: 7.5px; color: #fbbf24; font-weight: 600; display: inline-block; margin-top: 0px; }
+        .pending-balance-card .card-info h3 { font-size: 9.5px; color: #fde68a; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 1px; font-weight: 700; }
+        .pending-balance-card .balance-amount { font-size: 18px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .pending-balance-card .card-subtitle { font-size: 8.5px; color: #fbbf24; font-weight: 600; display: inline-block; margin-top: 1px; }
 
         /* Rules Banner */
         .rules-banner { 
@@ -230,63 +220,23 @@
         .page { display: none; }
         .page.active { display: block; }
 
-        /* Professional Enhanced Section Headers */
-        .section-header { 
-            font-size: 14px; 
-            font-weight: 900; 
-            margin: 14px 0 10px 0; 
-            display: flex; 
-            align-items: center; 
-            gap: 6px; 
-            text-transform: uppercase; 
-            letter-spacing: 0.8px; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            text-overflow: ellipsis;
-            padding: 4px 0;
-        }
+        .section-header { font-size: 12px; font-weight: 800; margin: 12px 0 8px 0; display: flex; align-items: center; gap: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
 
         /* Plans Grid */
-        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-        .plan-card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--card-border); 
-            border-radius: 14px; 
-            padding: 14px 10px; 
-            text-align: center; 
-            position: relative; 
-            backdrop-filter: blur(10px); 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: space-between; 
-            min-height: 165px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: transform 0.2s ease, border-color 0.2s ease;
-        }
-        .plan-card:hover { border-color: rgba(0, 210, 255, 0.4); }
-        .plan-card.vip-card { border-color: rgba(245, 158, 11, 0.35); background: linear-gradient(145deg, rgba(30, 25, 15, 0.85) 0%, rgba(21, 28, 44, 0.85) 100%); }
-        .plan-badge { position: absolute; top: 6px; right: 6px; font-size: 8.5px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
-        .badge-std { background: rgba(0, 210, 255, 0.2); color: var(--accent-cyan); }
-        .badge-vip { background: rgba(245, 158, 11, 0.25); color: #f59e0b; }
-        
-        .plan-title { font-size: 22px; font-weight: 900; margin: 4px 0 2px 0; color: #ffffff; letter-spacing: -0.5px; }
-        .plan-rate { font-size: 12px; font-weight: 800; color: #10b981; margin-bottom: 6px; }
-        .plan-info { font-size: 10px; color: var(--text-sub); display: flex; flex-direction: column; gap: 3px; margin-bottom: 8px; text-align: left; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 6px; font-weight: 600; }
-        .plan-info b { color: #fff; }
-        .plan-btn { width: 100%; padding: 8px; border-radius: 8px; border: none; font-size: 11.5px; font-weight: 800; cursor: pointer; color: #fff; letter-spacing: 0.5px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); }
+        .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 12px; text-align: center; position: relative; backdrop-filter: blur(10px); }
+        .plan-card.vip-card { border-color: rgba(245, 158, 11, 0.3); background: linear-gradient(145deg, rgba(30, 25, 15, 0.8) 0%, rgba(21, 28, 44, 0.8) 100%); }
+        .plan-badge { position: absolute; top: 6px; right: 6px; font-size: 8px; font-weight: 800; padding: 2px 4px; border-radius: 3px; text-transform: uppercase; }
+        .badge-std { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
+        .badge-vip { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .plan-title { font-size: 18px; font-weight: 800; margin: 4px 0 2px 0; }
+        .plan-rate { font-size: 11px; font-weight: 700; color: #10b981; margin-bottom: 6px; }
+        .plan-info { font-size: 9.5px; color: var(--text-sub); display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; text-align: left; background: rgba(0,0,0,0.2); padding: 5px; border-radius: 5px; }
+        .plan-btn { width: 100%; padding: 7px; border-radius: 6px; border: none; font-size: 10.5px; font-weight: 700; cursor: pointer; color: #fff; }
         .btn-std { background: var(--primary-gradient); }
         .btn-vip { background: var(--vip-gradient); }
-
-        .lower-invest-box {
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid var(--card-border);
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 12px;
-            text-align: center;
-        }
 
         /* Forms */
         label { display: block; font-size: 10px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 3px; font-weight: 600; }
@@ -336,13 +286,15 @@
         .progress-bar-bg { width: 100%; height: 5px; background: rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden; margin-top: 6px; }
         .progress-bar-fill { height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s ease; }
 
+        .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px; text-decoration: none; color: #fff; }
+        .support-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--accent-cyan); }
+
         /* Navigation */
         nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 14px 14px 0 0; }
         nav button { background: none; border: none; color: var(--text-sub); font-size: 9px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; flex: 1; }
         nav button i { font-size: 15px; }
         nav button.active { color: var(--accent-cyan); font-weight: 700; }
 
-        /* Toast */
         #toast { 
             position: fixed; 
             top: 20px; 
@@ -365,7 +317,7 @@
             text-align: left;
         }
 
-        /* LIVE CHAT WIDGET */
+        /* LIVE CHAT WIDGET STYLES */
         .chat-widget-btn {
             position: fixed;
             bottom: 85px;
@@ -383,7 +335,10 @@
             box-shadow: 0 5px 16px rgba(0, 210, 255, 0.4);
             z-index: 10000;
             border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.2s ease;
         }
+        .chat-widget-btn:hover { transform: scale(1.05); }
+
         .chat-window {
             position: fixed;
             bottom: 135px;
@@ -400,7 +355,20 @@
             border: 1px solid rgba(0, 210, 255, 0.25);
         }
         .chat-window.hidden { display: none; }
-        .chat-header { background: #1f2937; color: #fff; padding: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 11px; }
+        .chat-header {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 11px;
+            border-bottom: 1px solid var(--card-border);
+        }
+        .chat-header .bot-title-info { display: flex; align-items: center; gap: 5px; }
+        .chat-header .online-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 5px #10b981; }
+        .chat-header button { background: none; border: none; color: var(--text-sub); font-size: 16px; cursor: pointer; }
         .chat-body { flex: 1; padding: 8px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; background: rgba(9, 13, 22, 0.95); }
         .bot-message, .user-message { padding: 7px 10px; border-radius: 8px; font-size: 11px; max-width: 85%; line-height: 1.35; }
         .bot-message { background: #1f2937; color: #f3f4f6; align-self: flex-start; }
@@ -475,7 +443,7 @@
     </div>
 </div>
 
-<!-- Professional Available Balance Section -->
+<!-- Balance Card -->
 <section class="balance-card">
     <p>Available Balance</p>
     <h1>$<span id="balance">0.00</span></h1>
@@ -486,11 +454,6 @@
             <h4>Total Profit</h4>
             <b>$<span id="profit">0.00</span></b>
         </div>
-        <div style="text-align: center; padding: 0 4px;">
-            <span class="badge-usdt" style="margin: 0; padding: 4px 8px; font-size: 11px;">
-                <img src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="USDT" style="width: 14px; height: 14px;"> USDT
-            </span>
-        </div>
         <div>
             <i class="fa-solid fa-lock"></i>
             <h4>Active Investment</h4>
@@ -499,7 +462,7 @@
     </div>
 </section>
 
-<!-- Compact Gold Pending Referral Balance Card -->
+<!-- Pending Referral Balance Card -->
 <div class="pending-balance-card">
     <div class="card-icon"><i class="fa-solid fa-hourglass-half"></i></div>
     <div class="card-info">
@@ -533,7 +496,7 @@
         <i class="fa-solid fa-chart-line"></i> Active Investments & Live Profit
     </div>
     <div id="live-investments-container">
-        <div class="lower-invest-box" style="color: var(--text-sub); font-size: 11.5px;">
+        <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; text-align: center; color: var(--text-sub); font-size: 11.5px;">
             No active investments found. Invest in a plan to start earning live profits!
         </div>
     </div>
@@ -547,13 +510,6 @@
         <i class="fa-solid fa-crown"></i> VIP Plans ($150 - $1500 | 35% Daily)
     </div>
     <div id="vip-plans" class="plans-grid"></div>
-
-    <div class="lower-invest-box">
-        <h4 style="font-size: 12px; font-weight: 800; color: var(--accent-cyan); margin-bottom: 4px;">
-            <i class="fa-solid fa-shield-halved"></i> Secure Investment Vault
-        </h4>
-        <p style="font-size: 10px; color: var(--text-sub);">Select any Standard or VIP plan above to start automatic hourly compounding returns instantly.</p>
-    </div>
 </section>
 
 <!-- Deposit Page -->
@@ -674,19 +630,6 @@
             <div class="stat-box"><i class="fa-solid fa-users"></i><h3 id="stat-referrals">0</h3><p>Referral Count</p></div>
             <div class="stat-box"><i class="fa-solid fa-percent"></i><h3 id="stat-roi">0%</h3><p>Avg Growth Rate</p></div>
         </div>
-
-        <div id="admin-dashboard-container" style="display: none; background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
-            <h4 style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 8px;">
-                <i class="fa-solid fa-shield-halved"></i> Admin Analytics Dashboard
-            </h4>
-            <div style="font-size: 11px; color: var(--text-sub); margin-bottom: 6px; font-weight: 600;">👥 Registered Users</div>
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 10px; text-align: left;">
-                    <thead><tr style="background: rgba(0,210,255,0.15); color: var(--accent-cyan);"><th style="padding: 5px;">ID</th><th style="padding: 5px;">User</th><th style="padding: 5px;">Bal</th><th style="padding: 5px;">Active</th></tr></thead>
-                    <tbody id="adminUsersTable"><tr><td colspan="4" style="text-align: center; color: var(--text-sub);">Loading...</td></tr></tbody>
-                </table>
-            </div>
-        </div>
     </div>
 </section>
 
@@ -701,9 +644,9 @@
             <p style="font-size: 11px; color: var(--text-sub); margin-top: 3px;">Have questions or need assistance? Contact us!</p>
         </div>
 
-        <a href="https://t.me/USDTPilotAdmin" target="_blank" class="support-card" style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: #fff; margin-bottom: 12px;">
+        <a href="https://t.me/USDTPilotAdmin" target="_blank" class="support-card">
             <div style="display: flex; align-items: center; gap: 10px;">
-                <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--accent-cyan);"><i class="fa-brands fa-telegram"></i></div>
+                <div class="support-icon"><i class="fa-brands fa-telegram"></i></div>
                 <div>
                     <h4 style="font-size: 13px; font-weight: 700;">Telegram Official Support</h4>
                     <p style="font-size: 10px; color: #10b981;">Online • Fast Response</p>
@@ -712,7 +655,7 @@
             <i class="fa-solid fa-chevron-right" style="color: var(--text-sub); font-size: 11px;"></i>
         </a>
 
-        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;">
+        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
             <h4 style="font-size: 12px; font-weight: 700; margin-bottom: 10px; color: var(--accent-cyan);"><i class="fa-solid fa-paper-plane"></i> Send Direct Ticket</h4>
             <label>Subject</label>
             <input type="text" id="support-subject" placeholder="Deposit / Withdrawal issue">
@@ -723,29 +666,36 @@
     </div>
 </section>
 
-<!-- Profile Page (Updated Professional Stacked Layout) -->
+<!-- Profile Page (Updated Professional Stacked Layout: Username, ID, Other Info, Ref-Link) -->
 <section id="profile" class="page">
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
-        <div style="text-align: center; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 16px;">
-            <div id="profile-page-avatar" style="width: 64px; height: 64px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; overflow: hidden; margin: 0 auto 10px auto; box-shadow: 0 4px 15px rgba(0,210,255,0.3);">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px; border-bottom: 1px solid var(--card-border); padding-bottom: 12px;">
+            <div id="profile-page-avatar" style="width: 48px; height: 48px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 18px; color: #fff; overflow: hidden;">
                 <i class="fa-solid fa-user"></i>
             </div>
-            <h3 id="profile-fullname" style="font-size: 16px; font-weight: 800;">Loading...</h3>
+            <div>
+                <h3 id="profile-fullname" style="font-size: 16px; font-weight: 800;">Loading...</h3>
+                <small style="color: #10b981; font-weight: 600;"><i class="fa-solid fa-circle-check"></i> Verified Account</small>
+            </div>
         </div>
 
-        <!-- Stacked Professional Profile Details -->
-        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
-            <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 11px; color: var(--text-sub);"><i class="fa-solid fa-at" style="color: var(--accent-cyan); width: 18px;"></i> Username</span>
-                <b id="profile-username" style="font-size: 11.5px; color: #fff;">@username</b>
+        <!-- Stacked Professional Info (Username, ID, Other Info) -->
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-at"></i> Username</span>
+                <span id="profile-username" style="color: var(--accent-cyan); font-weight: 700;">@username</span>
             </div>
-            <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 11px; color: var(--text-sub);"><i class="fa-solid fa-id-badge" style="color: var(--accent-cyan); width: 18px;"></i> User ID</span>
-                <b id="profile-userid" style="font-size: 11.5px; color: #fff; font-family: monospace;">000000</b>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-id-badge"></i> User ID</span>
+                <span id="profile-userid" style="color: #fff; font-weight: 700; font-family: monospace;">000000</span>
             </div>
-            <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 11px; color: var(--text-sub);"><i class="fa-solid fa-shield-halved" style="color: #10b981; width: 18px;"></i> Account Status</span>
-                <span style="font-size: 10px; font-weight: 700; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 3px 8px; border-radius: 6px; border: 1px solid rgba(16, 185, 129, 0.25);">Verified & Secure</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 8px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-shield-halved"></i> Account Status</span>
+                <span style="color: #10b981; font-weight: 700;">Active & Secure</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11.5px;">
+                <span style="color: var(--text-sub);"><i class="fa-solid fa-crown"></i> Investor Tier</span>
+                <span style="color: #f59e0b; font-weight: 700;">Standard / VIP Vault</span>
             </div>
         </div>
 
@@ -778,11 +728,14 @@
 
 <div id="chat-window" class="chat-window hidden">
     <div class="chat-header">
-        <span>CoreXBot Assistant</span>
-        <button id="close-chat" style="background:none; border:none; color:#fff; font-size:16px; cursor:pointer;">&times;</button>
+        <div class="bot-title-info">
+            <span class="online-dot"></span>
+            <span>CoreXBot Assistant</span>
+        </div>
+        <button id="close-chat">&times;</button>
     </div>
     <div id="chat-body" class="chat-body">
-        <div class="bot-message">Hello 👋 how i can help you ☺️</div>
+        <div class="bot-message">Hello 👋 how can I help you today ☺️</div>
     </div>
     <div class="chat-footer">
         <input type="text" id="chat-input" placeholder="Type your message...">
@@ -886,7 +839,7 @@
             setTimeout(() => {
                 const botMsg = document.createElement('div');
                 botMsg.className = 'bot-message';
-                botMsg.textContent = "Thank you for reaching out! Our support team or automated system will assist you promptly with your 2-week investment plans.";
+                botMsg.textContent = "Thank you for reaching out! Our support team or automated system will assist you promptly with your investment plans.";
                 chatBody.appendChild(botMsg);
                 chatBody.scrollTop = chatBody.scrollHeight;
                 playSound();
@@ -915,10 +868,6 @@
         if (tgUser.photo_url) {
             document.getElementById('header-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
             document.getElementById('profile-page-avatar').innerHTML = `<img src="${tgUser.photo_url}" alt="Avatar">`;
-        }
-
-        if (userIdStr === "5738022147") {
-            document.getElementById('admin-dashboard-container').style.display = 'block';
         }
 
         try {
@@ -998,7 +947,7 @@
     function updateLiveProfits() {
         const container = document.getElementById('live-investments-container');
         if (!activeInvestmentsList || activeInvestmentsList.length === 0) {
-            container.innerHTML = `<div class="lower-invest-box" style="color: var(--text-sub); font-size: 11.5px;">No active investments found. Invest in a plan to start earning live profits!</div>`;
+            container.innerHTML = `<div style="background: rgba(15, 23, 42, 0.9); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; text-align: center; color: var(--text-sub); font-size: 11.5px;">No active investments found. Invest in a plan to start earning live profits!</div>`;
             return;
         }
 
@@ -1022,7 +971,7 @@
             let progressPercent = Math.min((elapsedSeconds / totalDurationSeconds) * 100, 100).toFixed(1);
 
             return `
-                <div class="lower-invest-box" style="border-color: rgba(0, 210, 255, 0.3);">
+                <div style="background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 12px; padding: 12px; margin-bottom: 12px; text-align: center;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                         <span style="font-size: 11px; font-weight: 800; color: var(--accent-cyan);"><i class="fa-solid fa-shield-halved"></i> Plan: $${inv.amount}</span>
                         <span style="font-size: 9px; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 2px 6px; border-radius: 5px; font-weight: 700;">Running (${inv.dailyRate}% Daily)</span>
