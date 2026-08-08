@@ -423,25 +423,28 @@
             margin-top: 1px;
         }
 
-        /* Live Chat Widget */
+        /* Live Chat Widget Styles */
         .chat-widget-btn {
-            position: fixed; bottom: 85px; right: 14px; background: var(--primary-gradient); color: #fff;
-            width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 16px; cursor: pointer; box-shadow: 0 5px 16px rgba(0, 210, 255, 0.4); z-index: 10000;
-            border: 2px solid rgba(255, 255, 255, 0.2); transition: transform 0.2s ease, opacity 0.5s ease;
+            position: fixed; bottom: 75px; right: 14px; background: var(--primary-gradient); color: #fff;
+            width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 18px; cursor: pointer; box-shadow: 0 5px 16px rgba(0, 210, 255, 0.4); z-index: 10000;
+            border: 2px solid rgba(255, 255, 255, 0.2); transition: transform 0.25s ease, opacity 0.5s ease;
         }
-        .chat-widget-btn.hidden-widget { opacity: 0; pointer-events: none; }
-        @keyframes bounceIn {
-            0% { transform: scale(0); opacity: 0; }
-            60% { transform: scale(1.1); opacity: 1; }
-            100% { transform: scale(1); opacity: 1; }
+        @keyframes chatBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.18); box-shadow: 0 0 20px rgba(0, 210, 255, 0.8); }
         }
-        .chat-widget-btn.animate-bounce { animation: bounceIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        .chat-widget-btn.animate-bounce { animation: chatBounce 1.2s infinite ease-in-out; }
 
         .chat-window {
-            position: fixed; bottom: 135px; right: 14px; width: 280px; height: 360px;
+            position: fixed; bottom: 130px; right: 14px; width: 290px; height: 380px;
             background: #111827; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.6);
             display: flex; flex-direction: column; z-index: 10000; overflow: hidden; border: 1px solid rgba(0, 210, 255, 0.25);
+            animation: fadeInWindow 0.3s ease forwards;
+        }
+        @keyframes fadeInWindow {
+            from { opacity: 0; transform: translateY(15px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
         .chat-window.hidden { display: none; }
         .chat-header { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); color: #fff; padding: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 11px; border-bottom: 1px solid var(--card-border); }
@@ -449,9 +452,10 @@
         .chat-header .online-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 5px #10b981; }
         .chat-header button { background: none; border: none; color: var(--text-sub); font-size: 16px; cursor: pointer; }
         .chat-body { flex: 1; padding: 8px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; background: rgba(9, 13, 22, 0.95); }
-        .bot-message, .user-message { padding: 7px 10px; border-radius: 8px; font-size: 11px; max-width: 85%; line-height: 1.35; }
+        .bot-message, .user-message { padding: 7px 10px; border-radius: 8px; font-size: 11px; max-width: 88%; line-height: 1.35; }
         .bot-message { background: #1f2937; color: #f3f4f6; align-self: flex-start; border: 1px solid rgba(255, 255, 255, 0.05); }
         .user-message { background: var(--primary-gradient); color: #fff; align-self: flex-end; }
+        .typing-indicator { color: #10b981; font-size: 10.5px; font-weight: 600; font-style: italic; display: flex; align-items: center; gap: 5px; background: rgba(16, 185, 129, 0.1); padding: 6px 10px; border-radius: 8px; align-self: flex-start; border: 1px solid rgba(16, 185, 129, 0.25); }
         .chat-footer { display: flex; padding: 8px; background: #111827; border-top: 1px solid var(--card-border); }
         .chat-footer input { flex: 1; padding: 7px 9px; border: 1px solid var(--card-border); border-radius: 5px; outline: none; margin-bottom: 0; font-size: 11px; background: rgba(0,0,0,0.3); color: #fff; }
         .chat-footer button { background: var(--primary-gradient); border: none; padding: 7px 12px; margin-left: 5px; border-radius: 5px; cursor: pointer; font-weight: bold; color: #fff; font-size: 11px; }
@@ -879,15 +883,15 @@
     };
 
     const dummyNames = [
-        "Asma9", "Raxama5t", "Jamac09", "Alexo", "Faraxiye", "Hoyoo", "Faysail", "Aki", "Abdi",
-        "Mohamedu9", "Fatima", "Ali", "Khadija", "Hassan", "Amina", "Ibrahimes", "Zainababdi",
-        "Yusuf8", "Mariam mude3", "Osman9", "Safiao", "Bilail1", "Aishaikow856", "zain", "Leyla",
-        "Omarali6t", "Hindo", "Abdirahman45", "Nasra abdi ", "Guled09", "Sahro2355", "aden16", "Hodan",
-        "Mustafejamc", "Fardowso", "Barkhadnour", "Ikranjamac9", "Abdikadir", "Muna", "Nasteho",
-        "Zakariyemuse", "Sumaya", "Mahad65", "Yasmin", "Khalid0", "alex sad", "Nuur", "Farhia",
-        "Saciid", "Ubax1", "Abdifatahhudar", "Sagal", "James", "johns1", "Ahmed086", "Shukri",
-        "Abdirisaq4", "Ruqiya jmc", "Adankir3", "Lul", "Mukhtar", "Deeqa", "Bashir", "Siham tahlil3",
-        "Dahir", "Fadumo dahir", "Suleiman", "Bilan", "Abdishakur", "Naima", "Yahyaosmn75", "Ilhaancadey13",
+        "Asma", "Raxama", "Jamac", "Alex", "Farax", "Hoyo", "Faysal", "Aki", "Abdi",
+        "Mohamed", "Fatima", "Ali", "Khadija", "Hassan", "Amina", "Ibrahim", "Zainab",
+        "Yusuf", "Mariam", "Osman", "Safia", "Bilal", "Aisha", "Hamza", "Leyla",
+        "Omar", "Hinda", "Abdirahman", "Nasra", "Guled", "Sahra", "Liban", "Hodan",
+        "Mustafe", "Fardowso", "Barkhad", "Ikran", "Abdikadir", "Muna", "Nasteho",
+        "Zakariye", "Sumaya", "Mahad", "Yasmin", "Khalid", "Amal", "Nuur", "Farhia",
+        "Saciid", "Ubax", "Abdifatah", "Sagal", "Guled", "Najmo", "Ahmed", "Shukri",
+        "Abdirisaq", "Ruqiya", "Adan", "Lul", "Mukhtar", "Deeqa", "Bashir", "Siham",
+        "Dahir", "Fadumo", "Suleiman", "Bilan", "Abdishakur", "Naima", "Yahya", "Ilhaan",
         "Mubarak", "Nimo", "Said", "Warsan", "Gelle", "Hodan", "Cabdalla", "Amran"
     ];
 
@@ -911,15 +915,13 @@
     });
 
     function initLiveNotifications() {
-        // Trigger 2 notifications every 120 seconds precisely, nicely staggered
         setInterval(() => {
             triggerRandomLiveNotification();
             setTimeout(() => {
                 triggerRandomLiveNotification();
-            }, 15000); // 15 seconds apart within the minute window
+            }, 15000);
         }, 30000);
 
-        // Trigger first one shortly after load
         setTimeout(() => {
             triggerRandomLiveNotification();
         }, 3000);
@@ -938,7 +940,6 @@
         let desc = '';
 
         if (type === 'INVEST') {
-            // User invest 20$ standard plan or standard (10-100) or VIP (150-1500)
             const isVip = Math.random() > 0.7;
             if (isVip) {
                 amount = vipAmounts[Math.floor(Math.random() * vipAmounts.length)];
@@ -972,11 +973,7 @@
         `;
 
         container.appendChild(notifCard);
-
-        // Remove after animation finishes (5 seconds)
-        setTimeout(() => {
-            notifCard.remove();
-        }, 5000);
+        setTimeout(() => { notifCard.remove(); }, 5000);
     }
 
     function playSound() {
@@ -995,6 +992,7 @@
         } catch(e) {}
     }
 
+    // Professional Knowledge Base & Smart Live Chat Assistant Integration
     function initLiveChatWidget() {
         const chatBtn = document.getElementById('chat-widget-btn');
         const chatWindow = document.getElementById('chat-window');
@@ -1004,25 +1002,124 @@
         const chatBody = document.getElementById('chat-body');
 
         let isChatOpen = false;
+        let popupInterval = null;
+
+        // Start 60s pop-up animation interval
+        startPopupTimer();
+
+        function startPopupTimer() {
+            if (popupInterval) clearInterval(popupInterval);
+            popupInterval = setInterval(() => {
+                if (!isChatOpen) {
+                    chatBtn.classList.add('animate-bounce');
+                }
+            }, 60000);
+        }
 
         chatBtn.addEventListener('click', () => {
             playSound();
             isChatOpen = true;
             chatWindow.classList.remove('hidden');
             chatBtn.classList.remove('animate-bounce');
+            if (popupInterval) clearInterval(popupInterval); // Stop popping once interacted
+            chatBody.scrollTop = chatBody.scrollHeight;
         });
 
         closeChat.addEventListener('click', () => {
             isChatOpen = false;
             chatWindow.classList.add('hidden');
+            startPopupTimer(); // Resume timer when closed
         });
 
-        sendBtn.addEventListener('click', sendMessage);
+        sendBtn.addEventListener('click', handleUserMessage);
         chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
+            if (e.key === 'Enter') handleUserMessage();
         });
 
-        function sendMessage() {
+        const knowledgeBase = [
+            {
+                keywords: ['deposit', 'fund', 'add money', 'usdt'],
+                answer: 'To deposit, navigate to the Deposit page from the quick actions menu, select your preferred network (TRC20, BEP20, or ERC20), and transfer funds to the official wallet address provided. Afterward, submit your TXID or upload a payment screenshot for fast verification.'
+            },
+            {
+                keywords: ['minimum deposit', 'least deposit', 'start invest'],
+                answer: 'The minimum deposit amount required to start investing on CoreXBot is $10 USDT.'
+            },
+            {
+                keywords: ['network', 'trc20', 'bep20', 'erc20', 'blockchain'],
+                answer: 'We currently support three major networks: TRON (USDT-TRC20), BNB Smart Chain (USDT-BEP20), and Ethereum (USDT-ERC20).'
+            },
+            {
+                keywords: ['how long deposit', 'deposit time', 'credit time'],
+                answer: 'Deposits are typically processed and credited to your account balance within 1 to 5 minutes after network confirmation.'
+            },
+            {
+                keywords: ['forgot txid', 'no txid', 'missing txid'],
+                answer: 'Please contact our 24/7 support team via the Support ticket system or live chat, providing your transaction details and user ID for immediate assistance.'
+            },
+            {
+                keywords: ['withdraw', 'payout', 'take out money', 'cashout'],
+                answer: 'Go to the Withdraw page, select your payout network, enter your destination wallet address and the amount you wish to withdraw, then click Submit Withdrawal.'
+            },
+            {
+                keywords: ['locked', 'restriction', 'why withdraw locked', 'blocked withdrawal'],
+                answer: 'Withdrawals are strictly locked and only permitted after your active 2-week investment plan has completely finished its duration.'
+            },
+            {
+                keywords: ['minimum withdraw', 'least withdrawal'],
+                answer: 'The minimum amount you can withdraw from your available balance is $10 USDT.'
+            },
+            {
+                keywords: ['withdraw speed', 'how fast withdraw'],
+                answer: 'Withdrawal requests are handled securely and processed as instant payouts to ensure you receive your funds promptly.'
+            },
+            {
+                keywords: ['change address', 'modify address', 'edit wallet'],
+                answer: 'For security reasons, withdrawal addresses cannot be modified once a payout request has been successfully submitted.'
+            },
+            {
+                keywords: ['standard plan', 'standard investment', '25%'],
+                answer: 'Standard plans range from $10 to $100, offering a 25% daily profit credited hourly over a duration of 2 weeks.'
+            },
+            {
+                keywords: ['vip plan', 'vip investment', '35%'],
+                answer: 'VIP plans range from $150 to $1500, offering a 35% daily profit credited hourly over a duration of 2 weeks for higher returns.'
+            },
+            {
+                keywords: ['track profit', 'live profit', 'active investment'],
+                answer: 'You can monitor your running investments in real-time on the Home / Invest page under the Active Investments & Live Profit section, which updates second by second.'
+            },
+            {
+                keywords: ['multiple plan', 'many plans'],
+                answer: 'Yes, you are welcome to invest in multiple plans at the same time to maximize your earning potential.'
+            },
+            {
+                keywords: ['duration', 'how long plan', 'days'],
+                answer: 'Every standard and VIP investment plan runs for a fixed duration of 2 weeks (14 days).'
+            },
+            {
+                keywords: ['referral', 'invite', 'bonus', 'friend'],
+                answer: 'You instantly earn 3.50 USDT whenever someone you invite makes their first successful deposit using your referral link.'
+            },
+            {
+                keywords: ['referral link', 'find link'],
+                answer: 'Your personalized referral link is available on your Profile page, where you can easily copy it with a single click.'
+            },
+            {
+                keywords: ['withdraw referral', 'pending referral balance'],
+                answer: 'Referral commissions accumulate in your pending balance and can be withdrawn once your pending referral total reaches $150.'
+            },
+            {
+                keywords: ['pending commission', 'where referral balance'],
+                answer: 'You can view your unconfirmed commission earnings anytime on the Pending Referral Balance card located on the main dashboard.'
+            },
+            {
+                keywords: ['support', 'contact', 'customer service', 'help'],
+                answer: 'You can reach out to our team 24/7 by submitting a direct ticket on the Support page or contacting @USDTPilotAdmin on Telegram.'
+            }
+        ];
+
+        function handleUserMessage() {
             const text = chatInput.value.trim();
             if (!text) return;
 
@@ -1034,14 +1131,38 @@
             chatInput.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
 
+            // Show 7-second green typing indicator
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-indicator';
+            typingIndicator.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> CoreXBot Assistant is typing...`;
+            chatBody.appendChild(typingIndicator);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
             setTimeout(() => {
+                typingIndicator.remove();
+                
+                // Match with knowledge base
+                let matchedAnswer = null;
+                const query = text.toLowerCase();
+                for (let item of knowledgeBase) {
+                    if (item.keywords.some(kw => query.includes(kw))) {
+                        matchedAnswer = item.answer;
+                        break;
+                    }
+                }
+
+                if (!matchedAnswer) {
+                    // Smart fallback for misunderstood questions
+                    matchedAnswer = `I understand you are asking about "${text}". While I am specialized in CoreXBot investments, deposits, withdrawals, and referrals, I want to ensure you get the most accurate assistance. Please check our FAQ guidelines or reach out to our 24/7 Support team on the Support page for personalized help! ☺️`;
+                }
+
                 const botMsg = document.createElement('div');
                 botMsg.className = 'bot-message';
-                botMsg.textContent = "Thank you for reaching out! Our team will assist you shortly.";
+                botMsg.textContent = matchedAnswer;
                 chatBody.appendChild(botMsg);
                 chatBody.scrollTop = chatBody.scrollHeight;
                 playSound();
-            }, 1000);
+            }, 7000); // Exactly 7 seconds typing delay
         }
     }
 
@@ -1144,7 +1265,6 @@
         const stdContainer = document.getElementById('standard-plans');
         const vipContainer = document.getElementById('vip-plans');
 
-        // Standard: 25% daily for 2 weeks (14 days). Return calculation: amt + (amt * 0.25 * 14) = amt * 4.5
         stdContainer.innerHTML = stdAmounts.map(amt => {
             const returnAmt = (amt + (amt * 0.25 * 14)).toFixed(1);
             return `
@@ -1162,7 +1282,6 @@
             `;
         }).join('');
 
-        // VIP: 35% daily for 2 weeks (14 days). Return calculation: amt + (amt * 0.35 * 14) = amt * 5.9
         vipContainer.innerHTML = vipAmounts.map(amt => {
             const returnAmt = (amt + (amt * 0.35 * 14)).toFixed(1);
             return `
@@ -1191,7 +1310,7 @@
         container.innerHTML = activeInvestmentsList.map((inv) => {
             let now = new Date().getTime();
             let elapsedSeconds = Math.floor((now - inv.startTime) / 1000);
-            let totalDurationSeconds = 14 * 24 * 60 * 60; // 2 weeks
+            let totalDurationSeconds = 14 * 24 * 60 * 60;
             let timeLeft = (inv.startTime + (totalDurationSeconds * 1000)) - now;
             if (timeLeft < 0) timeLeft = 0;
 
