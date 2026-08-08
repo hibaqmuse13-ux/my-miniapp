@@ -1268,35 +1268,43 @@
         const stdContainer = document.getElementById('standard-plans');
         const vipContainer = document.getElementById('vip-plans');
         
-        stdContainer.innerHTML = stdAmounts.map(amt => `
-            <div class="plan-card">
-                <div>
-                    <span class="plan-badge badge-std">Standard</span>
-                    <div class="plan-title">$${amt}</div>
-                    <div class="plan-rate">25% Daily</div>
-                    <div class="plan-info">
-                        <span><i class="fa-solid fa-clock"></i> Duration: 14 Days</span>
-                        <span><i class="fa-solid fa-percent"></i> Return: 25% Daily</span>
+        stdContainer.innerHTML = stdAmounts.map(amt => {
+            const returnVal = (amt * 0.25 * 14).toFixed(1);
+            return `
+                <div class="plan-card">
+                    <div>
+                        <span class="plan-badge badge-std">25% / 24H</span>
+                        <div class="plan-title">$${amt}</div>
+                        <div class="plan-rate">+25% Profit Daily</div>
+                        <div class="plan-info">
+                            <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
+                            <span><i class="fa-solid fa-lock"></i> Duration: 14 Days</span>
+                            <span><i class="fa-solid fa-coins"></i> Return: $${returnVal}</span>
+                        </div>
                     </div>
+                    <button class="plan-btn btn-std" onclick="playSound(); investPlan(${amt})">Invest Now</button>
                 </div>
-                <button class="plan-btn btn-std" onclick="playSound(); investPlan(${amt})">Invest Now</button>
-            </div>
-        `).join('');
+            `;
+        }).join('');
 
-        vipContainer.innerHTML = vipAmounts.map(amt => `
-            <div class="plan-card vip-card">
-                <div>
-                    <span class="plan-badge badge-vip">VIP Plan</span>
-                    <div class="plan-title">$${amt}</div>
-                    <div class="plan-rate">35% Daily</div>
-                    <div class="plan-info">
-                        <span><i class="fa-solid fa-clock"></i> Duration: 14 Days</span>
-                        <span><i class="fa-solid fa-percent"></i> Return: 35% Daily</span>
+        vipContainer.innerHTML = vipAmounts.map(amt => {
+            const returnVal = (amt * 0.35 * 14).toFixed(1);
+            return `
+                <div class="plan-card vip-card">
+                    <div>
+                        <span class="plan-badge badge-vip">35% / 24H</span>
+                        <div class="plan-title">$${amt}</div>
+                        <div class="plan-rate">+35% Profit Daily</div>
+                        <div class="plan-info">
+                            <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
+                            <span><i class="fa-solid fa-lock"></i> Duration: 14 Days</span>
+                            <span><i class="fa-solid fa-coins"></i> Return: $${returnVal}</span>
+                        </div>
                     </div>
+                    <button class="plan-btn btn-vip" onclick="playSound(); investPlan(${amt})">Invest Now</button>
                 </div>
-                <button class="plan-btn btn-vip" onclick="playSound(); investPlan(${amt})">VIP Invest</button>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
     async function investPlan(amount) {
