@@ -1460,7 +1460,7 @@
         }
 
         container.innerHTML = invs.map(inv => {
-            const progress = Math.min(100, Math.round((inv.hours_passed / 168) * 100));
+            const progress = Math.min(100, Math.round((inv.hours_passed / 336) * 100));
             const isVip = inv.amount >= 150;
             const badgeClass = isVip ? 'badge-vip' : 'badge-std';
             const badgeText = isVip ? 'VIP Plan' : 'Standard';
@@ -1485,7 +1485,7 @@
                         <div class="progress-bar-fill" style="width: ${progress}%;"></div>
                     </div>
                     <div style="display: flex; justify-content: space-between; font-size: 9.5px; color: var(--text-sub); margin-top: 6px;">
-                        <span><i class="fa-solid fa-clock"></i> ${inv.hours_passed}/168 hrs</span>
+                        <span><i class="fa-solid fa-clock"></i> ${inv.hours_passed}/336 hrs</span>
                         <span><i class="fa-solid fa-calendar-check"></i> ${new Date(inv.maturity_date).toLocaleDateString()}</span>
                     </div>
                 </div>
