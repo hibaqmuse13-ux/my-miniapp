@@ -210,14 +210,14 @@
             background: var(--card-bg); 
             border: 1px solid var(--card-border); 
             border-radius: 14px; 
-            padding: 14px 10px; 
+            padding: 10px 8px; 
             text-align: center; 
             position: relative; 
             backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 195px;
+            min-height: 175px;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
         .plan-card:hover {
@@ -236,30 +236,30 @@
         .badge-std { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
         .badge-vip { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
 
-        .plan-title { font-size: 20px; font-weight: 900; margin: 2px 0; color: #ffffff; letter-spacing: 0.5px; }
-        .plan-rate { font-size: 12px; font-weight: 800; color: #10b981; margin-bottom: 6px; }
+        .plan-title { font-size: 18px; font-weight: 900; margin: 2px 0; color: #ffffff; letter-spacing: 0.5px; }
+        .plan-rate { font-size: 11px; font-weight: 800; color: #10b981; margin-bottom: 4px; }
 
         .plan-info { 
-            font-size: 9.5px; 
+            font-size: 9px; 
             color: #e2e8f0; 
             display: flex; 
             flex-direction: column; 
-            gap: 2.5px; 
-            margin-bottom: 8px; 
+            gap: 2px; 
+            margin-bottom: 6px; 
             text-align: left; 
             background: rgba(0, 0, 0, 0.35); 
-            padding: 6px 8px; 
-            border-radius: 8px; 
+            padding: 5px 6px; 
+            border-radius: 6px; 
             border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .plan-info span { font-weight: 600; display: flex; align-items: center; gap: 4px; }
 
         .plan-btn { 
             width: 100%; 
-            padding: 8px; 
-            border-radius: 8px; 
+            padding: 7px; 
+            border-radius: 7px; 
             border: none; 
-            font-size: 11px; 
+            font-size: 10.5px; 
             font-weight: 800; 
             cursor: pointer; 
             color: #fff; 
@@ -1213,6 +1213,16 @@
         document.getElementById('profile-id').textContent = tgUser.id;
         document.getElementById('ref-link').value = `https://t.me/CoreXBot?start=ref_${tgUser.id}`;
 
+        // Sawirka Profile-ka Telegram-ka soo jiido (Haddii uu leeyahay)
+        if (tgUser.photo_url) {
+            const avatarHtml = `<img src="${tgUser.photo_url}" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover;">`;
+            document.getElementById('header-avatar').innerHTML = avatarHtml;
+            const profilePageAvatar = document.getElementById('profile-page-avatar');
+            if (profilePageAvatar) {
+                profilePageAvatar.innerHTML = avatarHtml;
+            }
+        }
+
         try {
             const response = await fetch('/api/auth/verify', {
                 method: 'POST',
@@ -1268,35 +1278,43 @@
         const stdContainer = document.getElementById('standard-plans');
         const vipContainer = document.getElementById('vip-plans');
         
-        stdContainer.innerHTML = stdAmounts.map(amt => `
-            <div class="plan-card">
-                <div>
-                    <span class="plan-badge badge-std">Standard</span>
-                    <div class="plan-title">$${amt}</div>
-                    <div class="plan-rate">25% Daily</div>
-                    <div class="plan-info">
-                        <span><i class="fa-solid fa-clock"></i> 2 Weeks Duration</span>
-                        <span><i class="fa-solid fa-coins"></i> Hourly Profit</span>
+        stdContainer.innerHTML = stdAmounts.map(amt => {
+            const returnVal = (amt * 0.25 * 14).toFixed(1);
+            return `
+                <div class="plan-card">
+                    <div>
+                        <span class="plan-badge badge-std">25% / 24H</span>
+                        <div class="plan-title">$${amt}</div>
+                        <div class="plan-rate">+25% Profit Daily</div>
+                        <div class="plan-info">
+                            <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
+                            <span><i class="fa-solid fa-lock"></i> Duration: 14 Days</span>
+                            <span><i class="fa-solid fa-coins"></i> Return: $${returnVal}</span>
+                        </div>
                     </div>
+                    <button class="plan-btn btn-std" onclick="playSound(); investPlan(${amt})">Invest Now</button>
                 </div>
-                <button class="plan-btn btn-std" onclick="playSound(); investPlan(${amt})">Invest Now</button>
-            </div>
-        `).join('');
+            `;
+        }).join('');
 
-        vipContainer.innerHTML = vipAmounts.map(amt => `
-            <div class="plan-card vip-card">
-                <div>
-                    <span class="plan-badge badge-vip">VIP Plan</span>
-                    <div class="plan-title">$${amt}</div>
-                    <div class="plan-rate">35% Daily</div>
-                    <div class="plan-info">
-                        <span><i class="fa-solid fa-clock"></i> 2 Weeks Duration</span>
-                        <span><i class="fa-solid fa-coins"></i> Hourly VIP Profit</span>
+        vipContainer.innerHTML = vipAmounts.map(amt => {
+            const returnVal = (amt * 0.35 * 14).toFixed(1);
+            return `
+                <div class="plan-card vip-card">
+                    <div>
+                        <span class="plan-badge badge-vip">35% / 24H</span>
+                        <div class="plan-title">$${amt}</div>
+                        <div class="plan-rate">+35% Profit Daily</div>
+                        <div class="plan-info">
+                            <span><i class="fa-regular fa-clock"></i> Profit: Hourly</span>
+                            <span><i class="fa-solid fa-lock"></i> Duration: 14 Days</span>
+                            <span><i class="fa-solid fa-coins"></i> Return: $${returnVal}</span>
+                        </div>
                     </div>
+                    <button class="plan-btn btn-vip" onclick="playSound(); investPlan(${amt})">Invest Now</button>
                 </div>
-                <button class="plan-btn btn-vip" onclick="playSound(); investPlan(${amt})">VIP Invest</button>
-            </div>
-        `).join('');
+            `;
+        }).join('');
     }
 
     async function investPlan(amount) {
@@ -1466,6 +1484,9 @@
             const badgeText = isVip ? 'VIP Plan' : 'Standard';
             const cardStyle = isVip ? 'border-color: rgba(245, 158, 11, 0.35); background: linear-gradient(145deg, rgba(30, 25, 15, 0.85) 0%, rgba(21, 28, 44, 0.85) 100%);' : '';
 
+            const invDate = new Date(inv.date || Date.now());
+            const maturityDate = new Date(invDate.getTime() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString();
+
             return `
                 <div class="progress-container" style="margin-bottom: 8px; ${cardStyle}">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -1486,7 +1507,7 @@
                     </div>
                     <div style="display: flex; justify-content: space-between; font-size: 9.5px; color: var(--text-sub); margin-top: 6px;">
                         <span><i class="fa-solid fa-clock"></i> ${inv.hours_passed}/336 hrs</span>
-                        <span><i class="fa-solid fa-calendar-check"></i> ${new Date(inv.maturity_date).toLocaleDateString()}</span>
+                        <span><i class="fa-solid fa-calendar-check"></i> ${maturityDate}</span>
                     </div>
                 </div>
             `;
