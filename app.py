@@ -15,16 +15,14 @@ app.secret_key = os.getenv("SECRET_KEY", secrets.token_hex(32))
 # ============================================================
 BOT_TOKEN = os.getenv("BOT_TOKEN", "8641054545:AAE-ETeHuB3ki-pGG0FwysQOi73gSOtz_eE")
 ADMIN_ID = os.getenv("ADMIN_ID", "5738022147")
-WEBAPP_URL = os.getenv("WEBAPP_URL", "https://my-miniapp-4uo7.onrender.com/")
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://my-miniapp-1-9z6j.onrender.com/")
 
 TOTAL_PROFIT_RATE = 0.20   # 20% Total Return
 INVESTMENT_DAYS = 7
 TOTAL_HOURS = INVESTMENT_DAYS * 24  # 168 Hours
 
-# Added VIP Plan amounts here (Standard + VIP plans)
 ALLOWED_PLANS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500]
 
-# Memory storage for tracking admin replies
 admin_waiting_reply = {}
 
 # ============================================================
@@ -444,7 +442,6 @@ def webhook():
         chat_id = str(msg["chat"]["id"])
         text = msg.get("text", "")
         
-        # Handle Admin replies
         if chat_id == str(ADMIN_ID) and chat_id in admin_waiting_reply:
             user_id = admin_waiting_reply[chat_id]
             reply_text = text
@@ -465,14 +462,8 @@ def webhook():
             
             return jsonify({"status": "ok"})
             
-        # Handle /start command for users to open the WebApp
         if text.startswith("/start"):
-            keyboard = {
-                "inline_keyboard": [
-                    [{"text": "🚀 Open App", "web_app": {"url": WEBAPP_URL}}]
-                ]
-            }
-            send_telegram(chat_id, "🚀 <b>CoreX Investment Platform</b>\n\nSecure, transparent, and automated USDT growth. Click the button below to launch the app:", keyboard)
+            send_telegram(chat_id, "🚀 <b>CoreX Investment Platform</b>\n\nSecure, transparent, and automated USDT growth. Click the menu button below to launch the app:")
             return jsonify({"status": "ok"})
 
     if update and "callback_query" in update:
@@ -562,7 +553,7 @@ def webhook():
             db.close()
 
         elif data.startswith("reject_with_"):
-            tx_id = data.split("_")[2]
+            tx_id = data.str("...") if False else data.split("_")[2]
             db = get_db()
             tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
             
