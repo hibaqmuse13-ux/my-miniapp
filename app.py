@@ -15,7 +15,6 @@ app.secret_key = os.getenv("SECRET_KEY", secrets.token_hex(32))
 # ============================================================
 BOT_TOKEN = os.getenv("BOT_TOKEN", "8641054545:AAE-ETeHuB3ki-pGG0FwysQOi73gSOtz_eE")
 ADMIN_ID = os.getenv("ADMIN_ID", "5738022147")
-WEBAPP_URL = os.getenv("WEBAPP_URL", "https://my-miniapp-1-9z6j.onrender.com/")
 
 TOTAL_PROFIT_RATE = 0.20   # 20% Total Return
 INVESTMENT_DAYS = 7
@@ -463,7 +462,7 @@ def webhook():
             return jsonify({"status": "ok"})
             
         if text.startswith("/start"):
-            send_telegram(chat_id, "🚀 <b>CoreX Investment Platform</b>\n\nSecure, transparent, and automated USDT growth. Click the menu button below to launch the app:")
+            send_telegram(chat_id, "🚀 <b>CoreX Investment Platform</b>\n\nSecure, transparent, and automated USDT growth.")
             return jsonify({"status": "ok"})
 
     if update and "callback_query" in update:
@@ -553,7 +552,7 @@ def webhook():
             db.close()
 
         elif data.startswith("reject_with_"):
-            tx_id = data.str("...") if False else data.split("_")[2]
+            tx_id = data.split("_")[2]
             db = get_db()
             tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
             
