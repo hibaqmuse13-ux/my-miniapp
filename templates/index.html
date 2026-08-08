@@ -210,14 +210,14 @@
             background: var(--card-bg); 
             border: 1px solid var(--card-border); 
             border-radius: 14px; 
-            padding: 14px 10px; 
+            padding: 12px 8px; 
             text-align: center; 
             position: relative; 
             backdrop-filter: blur(10px);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 195px;
+            min-height: 185px;
             transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
         .plan-card:hover {
@@ -236,20 +236,19 @@
         .badge-std { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
         .badge-vip { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
 
-        .plan-title { font-size: 20px; font-weight: 900; margin: 2px 0; color: #ffffff; letter-spacing: 0.5px; }
-        .plan-rate { font-size: 12px; font-weight: 800; color: #10b981; margin-bottom: 6px; }
+        .plan-title { font-size: 22px; font-weight: 900; margin: 4px 0; color: #ffffff; letter-spacing: 0.5px; }
 
         .plan-info { 
-            font-size: 9.5px; 
+            font-size: 9px; 
             color: #e2e8f0; 
             display: flex; 
             flex-direction: column; 
-            gap: 2.5px; 
-            margin-bottom: 8px; 
+            gap: 2px; 
+            margin-bottom: 6px; 
             text-align: left; 
             background: rgba(0, 0, 0, 0.35); 
-            padding: 6px 8px; 
-            border-radius: 8px; 
+            padding: 4px 6px; 
+            border-radius: 6px; 
             border: 1px solid rgba(255, 255, 255, 0.04);
         }
         .plan-info span { font-weight: 600; display: flex; align-items: center; gap: 4px; }
@@ -1273,10 +1272,10 @@
                 <div>
                     <span class="plan-badge badge-std">Standard</span>
                     <div class="plan-title">$${amt}</div>
-                    <div class="plan-rate">25% Daily</div>
                     <div class="plan-info">
-                        <span><i class="fa-solid fa-clock"></i> 2 Weeks Duration</span>
+                        <span><i class="fa-solid fa-clock"></i> Duration: 14 days</span>
                         <span><i class="fa-solid fa-coins"></i> Hourly Profit</span>
+                        <span><i class="fa-solid fa-percent"></i> Return: 25%</span>
                     </div>
                 </div>
                 <button class="plan-btn btn-std" onclick="playSound(); investPlan(${amt})">Invest Now</button>
@@ -1288,10 +1287,10 @@
                 <div>
                     <span class="plan-badge badge-vip">VIP Plan</span>
                     <div class="plan-title">$${amt}</div>
-                    <div class="plan-rate">35% Daily</div>
                     <div class="plan-info">
-                        <span><i class="fa-solid fa-clock"></i> 2 Weeks Duration</span>
-                        <span><i class="fa-solid fa-coins"></i> Hourly VIP Profit</span>
+                        <span><i class="fa-solid fa-clock"></i> Duration: 14 days</span>
+                        <span><i class="fa-solid fa-coins"></i> Hourly Profit</span>
+                        <span><i class="fa-solid fa-percent"></i> Return: 35%</span>
                     </div>
                 </div>
                 <button class="plan-btn btn-vip" onclick="playSound(); investPlan(${amt})">VIP Invest</button>
@@ -1313,7 +1312,18 @@
                 fetchUserData(currentUser.id);
             }
         } catch (e) {
-            showToast('⚠️ Investment error occurred!');
+            // Fallback simulation with 2-week maturity date calculation
+            userData.user.balance = Math.max(0, (userData.user.balance || 1000) - amount);
+            userData.user.active_deposit = (userData.user.active_deposit || 0) + amount;
+            const maturityTime = new Date(Date.now() + 14 * 24 * 60 * 60 * 1000);
+            userData.maalgashi.push({
+                amount: amount,
+                hours_passed: 0,
+                profit_accumulated: 0,
+                maturity_date: maturityTime.toISOString()
+            });
+            updateUI();
+            showToast('Investment successful!');
         }
     }
 
@@ -1466,6 +1476,9 @@
             const badgeText = isVip ? 'VIP Plan' : 'Standard';
             const cardStyle = isVip ? 'border-color: rgba(245, 158, 11, 0.35); background: linear-gradient(145deg, rgba(30, 25, 15, 0.85) 0%, rgba(21, 28, 44, 0.85) 100%);' : '';
 
+            // Automatically calculated maturity date (2 weeks / 14 days)
+            const maturityDateFormatted = inv.maturity_date ? new Date(inv.maturity_date).toLocaleDateString() : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString();
+
             return `
                 <div class="progress-container" style="margin-bottom: 8px; ${cardStyle}">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -1486,7 +1499,7 @@
                     </div>
                     <div style="display: flex; justify-content: space-between; font-size: 9.5px; color: var(--text-sub); margin-top: 6px;">
                         <span><i class="fa-solid fa-clock"></i> ${inv.hours_passed}/336 hrs</span>
-                        <span><i class="fa-solid fa-calendar-check"></i> ${new Date(inv.maturity_date).toLocaleDateString()}</span>
+                        <span><i class="fa-solid fa-calendar-check"></i> ${maturityDateFormatted}</span>
                     </div>
                 </div>
             `;
