@@ -3,6 +3,8 @@ import requests
 import json
 import secrets
 import sqlite3
+import threading
+import telebot
 from flask import Flask, render_template, request, jsonify
 from datetime import datetime, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -15,17 +17,16 @@ app.secret_key = os.getenv("SECRET_KEY", secrets.token_hex(32))
 # ============================================================
 BOT_TOKEN = os.getenv("BOT_TOKEN", "8641054545:AAE-ETeHuB3ki-pGG0FwysQOi73gSOtz_eE")
 ADMIN_ID = os.getenv("ADMIN_ID", "5738022147")
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://yourdomain.com")  # Replace with your actual domain/GitHub Pages URL
 
-TOTAL_PROFIT_RATE = 0.20   # 20% Total Return
-INVESTMENT_DAYS = 7
-TOTAL_HOURS = INVESTMENT_DAYS * 24  # 168 Hours
+INVESTMENT_DAYS = 14
+TOTAL_HOURS = INVESTMENT_DAYS * 24  # 336 Hours (2 Weeks)
 
-ALLOWED_PLANS = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350, 400, 450, 500]
-
-admin_waiting_reply = {}
+# Initialize TeleBot
+bot = telebot.TeleBot(BOT_TOKEN)
 
 # ============================================================
-# SQLITE DATABASE
+# SQLITE DATABASE INITIALIZATION
 # ============================================================
 def get_db():
     db = sqlite3.connect('usdtpilot.db', timeout=10)
@@ -41,6 +42,12 @@ def init_db():
             username TEXT,
             balance REAL DEFAULT 0,
             active_deposit REAL DEFAULT 0,
+            profit REAL DEFAULT 0,
+            pending_referral_balance REAL DEFAULT 0,
+            total_deposits REAL DEFAULT 0,
+            total_withdrawals REAL DEFAULT 0,
+            referral_count INTEGER DEFAULT 0,
+            roi INTEGER DEFAULT 25,
             referral_code TEXT UNIQUE,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             last_login TIMESTAMP
@@ -109,7 +116,7 @@ def process_hourly_profits():
         hourly_profit = inv['hourly_profit']
         hours_passed = inv['hours_passed'] + 1
         
-        db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (hourly_profit, user_id))
+        db.execute("UPDATE users SET balance = balance + ?, profit = profit + ? WHERE telegram_id = ?", (hourly_profit, hourly_profit, user_id))
         
         if hours_passed >= TOTAL_HOURS:
             db.execute('''
@@ -169,6 +176,88 @@ def create_notification(user_id, title, message):
     db.close()
 
 # ============================================================
+# TELEGRAM BOT HANDLERS (/start & callbacks)
+# ============================================================
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    user_id = message.from_user.id
+    username = message.from_user.username or "User"
+    
+    get_user(user_id)
+    db = get_db()
+    db.execute('UPDATE users SET username = ? WHERE telegram_id = ?', (username, str(user_id)))
+    db.commit()
+    db.close()
+    
+    markup = telebot.types.InlineKeyboardMarkup()
+    webapp_btn = telebot.types.InlineKeyboardButton(
+        text="🚀 Open CoreXBot App", 
+        web_app=telebot.types.WebAppInfo(url=WEBAPP_URL)
+    )
+    markup.add(webapp_btn)
+    
+    welcome_text = (
+        f"👋 Welcome to <b>CoreXBot</b>, {username}!\n\n"
+        "Secure USDT Investment & Earning Platform.\n"
+        "Click the button below to open your dashboard and start earning hourly profits!"
+    )
+    bot.send_message(message.chat.id, welcome_text, parse_mode="HTML", reply_markup=markup)
+
+@bot.callback_query_handler(func=lambda call: True)
+def handle_admin_callbacks(call):
+    data = call.data
+    db = get_db()
+    
+    if data.startswith("app_") or data.startswith("canc_"):
+        parts = data.split("_")
+        action = parts[0] # app or canc
+        tx_id = parts[1]
+        
+        tx = db.execute("SELECT * FROM transactions WHERE id = ?", (tx_id,)).fetchone()
+        if not tx:
+            bot.answer_callback_query(call.id, "⚠️ Transaction not found!")
+            db.close()
+            return
+            
+        user_id = tx['user_id']
+        amount = abs(tx['amount'])
+        tx_type = tx['type']
+        
+        if action == "app":
+            db.execute("UPDATE transactions SET status = 'COMPLETED' WHERE id = ?", (tx_id,))
+            
+            if tx_type == 'DEPOSIT':
+                db.execute("UPDATE users SET balance = balance + ?, total_deposits = total_deposits + ? WHERE telegram_id = ?", (amount, amount, user_id))
+                create_notification(user_id, "✅ Deposit Approved", f"Your deposit of ${amount} USDT has been successfully approved and credited!")
+            elif tx_type == 'WITHDRAWAL':
+                create_notification(user_id, "✅ Withdrawal Approved", f"Your withdrawal of ${amount} USDT has been successfully processed and sent!")
+                
+            db.commit()
+            try:
+                bot.edit_message_text(f"{call.message.text}\n\n✅ <b>STATUS: APPROVED</b>", call.message.chat.id, call.message.message_id, parse_mode="HTML")
+            except:
+                pass
+            bot.answer_callback_query(call.id, "Successfully Approved!")
+            
+        elif action == "canc":
+            db.execute("UPDATE transactions SET status = 'CANCELLED' WHERE id = ?", (tx_id,))
+            
+            if tx_type == 'WITHDRAWAL':
+                db.execute("UPDATE users SET balance = balance + ?, total_withdrawals = total_withdrawals - ? WHERE telegram_id = ?", (amount, amount, user_id))
+                create_notification(user_id, "❌ Withdrawal Cancelled", f"Your withdrawal request of ${amount} USDT was cancelled. Funds returned to balance.")
+            elif tx_type == 'DEPOSIT':
+                create_notification(user_id, "❌ Deposit Cancelled", f"Your deposit request of ${amount} USDT was rejected or cancelled.")
+                
+            db.commit()
+            try:
+                bot.edit_message_text(f"{call.message.text}\n\n❌ <b>STATUS: CANCELLED</b>", call.message.chat.id, call.message.message_id, parse_mode="HTML")
+            except:
+                pass
+            bot.answer_callback_query(call.id, "Transaction Cancelled!")
+            
+    db.close()
+
+# ============================================================
 # API ENDPOINTS
 # ============================================================
 @app.route('/')
@@ -218,383 +307,159 @@ def public_activities():
     db.close()
     return jsonify({"status": "success", "activities": [dict(tx) for tx in txs]})
 
-@app.route('/api/deposit/request', methods=['POST'])
-def request_deposit():
-    user_id = request.form.get('user_id')
-    username = request.form.get('username', 'User')
-    network = request.form.get('network', 'TRC20')
-    txid = request.form.get('txid', '')
-    amount = float(request.form.get('amount', 0))
-    screenshot = request.files.get('screenshot')
-    
-    if amount < 10:
-        return jsonify({"status": "error", "message": "⚠️ Minimum deposit is $10 USDT"})
-    if not txid and not screenshot:
-        return jsonify({"status": "error", "message": "⚠️ Please enter TXID or upload a screenshot!"})
-        
-    db = get_db()
-    pending_dep = db.execute("SELECT * FROM transactions WHERE user_id = ? AND type = 'DEPOSIT' AND status = 'PENDING'", (str(user_id),)).fetchone()
-    if pending_dep:
-        db.close()
-        return jsonify({"status": "error", "message": "⚠️ Please wait for your pending deposit request to be processed before submitting a new one."})
-
-    cursor = db.cursor()
-    cursor.execute('INSERT INTO transactions (user_id, type, amount, status, txid, network, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
-                   (user_id, 'DEPOSIT', amount, 'PENDING', txid if txid else 'SCREENSHOT_UPLOADED', network, f'Deposit via {network}'))
-    tx_id = cursor.lastrowid
-    db.commit()
-    db.close()
-    
-    keyboard = {
-        "inline_keyboard": [
-            [{"text": "✅ Approve", "callback_data": f"approve_dep_{tx_id}"},
-             {"text": "❌ Reject", "callback_data": f"reject_dep_{tx_id}"}]
-        ]
-    }
-    
-    txid_display = txid if txid else 'N/A (See Screenshot)'
-    admin_msg = f"📥 <b>NEW DEPOSIT REQUEST</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nNetwork: {network}\nTXID: <code>{txid_display}</code>"
-    
-    if screenshot:
-        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendPhoto"
-        files = {'photo': (screenshot.filename, screenshot.read(), screenshot.content_type)}
-        payload = {
-            "chat_id": ADMIN_ID,
-            "caption": admin_msg,
-            "parse_mode": "HTML",
-            "reply_markup": json.dumps(keyboard)
-        }
-        try:
-            requests.post(url, data=payload, files=files, timeout=10)
-        except:
-            send_telegram(ADMIN_ID, admin_msg, keyboard)
-    else:
-        send_telegram(ADMIN_ID, admin_msg, keyboard)
-    
-    return jsonify({"status": "success", "message": "✅ Deposit request submitted successfully! Pending approval."})
-
 @app.route('/api/invest', methods=['POST'])
-def invest():
+def invest_plan():
     data = request.json
     user_id = str(data.get('user_id'))
-    amount = int(data.get('amount', 0))
-    
-    if amount not in ALLOWED_PLANS:
-        return jsonify({"status": "error", "message": "⚠️ Invalid Investment Plan!"})
+    amount = float(data.get('amount', 0))
     
     user = get_user(user_id)
-    if not user or user['balance'] < amount:
-        return jsonify({"status": "error", "message": "⚠️ Insufficient balance! Please deposit first."})
+    if user['balance'] < amount:
+        return jsonify({"status": "error", "message": "⚠️ Insufficient balance to deploy investment plan!"})
     
-    total_profit = amount * TOTAL_PROFIT_RATE
+    daily_rate = 0.35 if amount >= 150 else 0.25
+    total_profit = amount * daily_rate * INVESTMENT_DAYS
     hourly_profit = total_profit / TOTAL_HOURS
+    
     maturity_date = datetime.now() + timedelta(days=INVESTMENT_DAYS)
     
     db = get_db()
-    db.execute('UPDATE users SET balance = balance - ?, active_deposit = active_deposit + ? WHERE telegram_id = ?', (amount, amount, user_id))
+    db.execute("UPDATE users SET balance = balance - ?, active_deposit = active_deposit + ? WHERE telegram_id = ?", 
+               (amount, amount, user_id))
+    
     db.execute('''
-        INSERT INTO investments (user_id, amount, total_profit, hourly_profit, maturity_date)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO investments (user_id, amount, total_profit, hourly_profit, maturity_date, status)
+        VALUES (?, ?, ?, ?, ?, 'ACTIVE')
     ''', (user_id, amount, total_profit, hourly_profit, maturity_date))
-    db.execute('INSERT INTO transactions (user_id, type, amount, status, description) VALUES (?, ?, ?, ?, ?)',
-               (user_id, 'INVESTMENT', -amount, 'COMPLETED', f'Invested ${amount} USDT'))
+    
+    db.execute('''
+        INSERT INTO transactions (user_id, type, amount, status, description)
+        VALUES (?, 'INVESTMENT', ?, 'COMPLETED', ?)
+    ''', (user_id, -amount, f"Invested in ${amount} Plan"))
+    
     db.commit()
     db.close()
     
-    create_notification(user_id, "🚀 Investment Started", f"Successfully invested ${amount} USDT!")
-    return jsonify({"status": "success", "message": f"🎉 Successfully invested ${amount} USDT!"})
+    return jsonify({"status": "success", "message": f"Successfully invested ${amount} USDT!"})
 
-@app.route('/api/withdraw/request', methods=['POST'])
-def request_withdrawal():
-    data = request.json
-    user_id = str(data.get('user_id'))
-    address = data.get('address')
-    amount = float(data.get('amount', 0))
-    
-    if amount < 10:
-        return jsonify({"status": "error", "message": "⚠️ Minimum withdrawal is $10 USDT"})
-    if not address:
-        return jsonify({"status": "error", "message": "⚠️ Please provide a wallet address!"})
+@app.route('/api/deposit/request', methods=['POST'])
+def deposit_request():
+    user_id = str(request.form.get('user_id'))
+    amount = float(request.form.get('amount', 0))
+    network = request.form.get('network', 'TRC20')
+    txid = request.form.get('txid', '')
     
     db = get_db()
-    
-    pending_with = db.execute("SELECT * FROM transactions WHERE user_id = ? AND type = 'WITHDRAWAL' AND status = 'PENDING'", (user_id,)).fetchone()
-    if pending_with:
-        db.close()
-        return jsonify({"status": "error", "message": "⚠️ Please wait for your pending withdrawal request to be processed before submitting a new one."})
-
-    active_inv = db.execute("SELECT * FROM investments WHERE user_id = ? AND status = 'ACTIVE'", (user_id,)).fetchone()
-    
-    if active_inv:
-        start_time = datetime.strptime(active_inv['start_date'], '%Y-%m-%d %H:%M:%S')
-        if datetime.now() < start_time + timedelta(days=INVESTMENT_DAYS):
-            db.close()
-            return jsonify({"status": "error", "message": "🔒 Withdrawal locked! Active investment must complete 7 days."})
-
-    user = get_user(user_id)
-    if not user or user['balance'] < amount:
-        db.close()
-        return jsonify({"status": "error", "message": "⚠️ Insufficient balance!"})
-    
-    db.execute('UPDATE users SET balance = balance - ? WHERE telegram_id = ?', (amount, user_id))
     cursor = db.cursor()
-    cursor.execute('INSERT INTO transactions (user_id, type, amount, status, txid, network, description) VALUES (?, ?, ?, ?, ?, ?, ?)',
-               (user_id, 'WITHDRAWAL', -amount, 'PENDING', 'N/A', 'TRC20', f'Withdrawal to {address}'))
+    cursor.execute('''
+        INSERT INTO transactions (user_id, type, amount, status, description, txid, network)
+        VALUES (?, 'DEPOSIT', ?, 'PENDING', ?, ?, ?)
+    ''', (user_id, amount, f"Deposit via {network}", txid, network))
     tx_id = cursor.lastrowid
     db.commit()
     db.close()
     
-    keyboard = {
-        "inline_keyboard": [
-            [{"text": "✅ Approve", "callback_data": f"approve_with_{tx_id}"},
-             {"text": "❌ Reject", "callback_data": f"reject_with_{tx_id}"}]
-        ]
-    }
-    admin_msg = f"📤 <b>NEW WITHDRAWAL REQUEST</b>\n\nUser ID: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nAddress: <code>{address}</code>"
-    send_telegram(ADMIN_ID, admin_msg, keyboard)
+    markup = telebot.types.InlineKeyboardMarkup()
+    btn_approve = telebot.types.InlineKeyboardButton("✅ Approve", callback_data=f"app_{tx_id}")
+    btn_cancel = telebot.types.InlineKeyboardButton("❌ Cancel", callback_data=f"canc_{tx_id}")
+    markup.add(btn_approve, btn_cancel)
     
-    return jsonify({"status": "success", "message": "✅ Withdrawal request submitted successfully!"})
+    admin_msg = f"🔔 <b>New Deposit Request</b>\nTxID: <code>{tx_id}</code>\nUser: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nNetwork: {network}\nTX: <code>{txid}</code>"
+    
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    requests.post(url, json={"chat_id": ADMIN_ID, "text": admin_msg, "parse_mode": "HTML", "reply_markup": markup.to_dict()})
+    
+    return jsonify({"status": "success", "message": "Deposit request submitted successfully. Awaiting confirmation."})
 
-# ============================================================
-# SUPPORT TICKET ENDPOINTS & INLINE REPLY SYSTEM
-# ============================================================
-@app.route('/api/support/send', methods=['POST'])
-def send_support():
-    data = request.json or request.form
-    user_id = str(data.get('user_id', 'Unknown'))
-    username = data.get('username', 'User')
+@app.route('/api/withdraw/request', methods=['POST'])
+def withdraw_request():
+    data = request.json
+    user_id = str(data.get('user_id'))
+    amount = float(data.get('amount', 0))
+    address = data.get('address', '')
     
-    subject = data.get('subject') or data.get('subject_field') or 'General Inquiry'
-    message = data.get('message') or data.get('message_detail') or data.get('text') or ''
+    user = get_user(user_id)
+    if user['balance'] < amount:
+        return jsonify({"status": "error", "message": "⚠️ Insufficient available balance!"})
     
-    if not message.strip():
-        return jsonify({"status": "error", "message": "⚠️ Please enter your message!"})
-        
     db = get_db()
-    
-    pending_ticket = db.execute("SELECT * FROM support_tickets WHERE user_id = ? AND status = 'PENDING'", (user_id,)).fetchone()
-    if pending_ticket:
-        db.close()
-        return jsonify({"status": "error", "message": "⚠️ You already have a pending support ticket. Please wait for a reply before submitting a new one."})
-
-    db.execute('INSERT INTO support_tickets (user_id, username, subject, message, status) VALUES (?, ?, ?, ?, ?)', 
-               (user_id, username, subject, message, 'PENDING'))
+    cursor = db.cursor()
+    cursor.execute('''
+        INSERT INTO transactions (user_id, type, amount, status, description, network)
+        VALUES (?, 'WITHDRAWAL', ?, 'PENDING', ?, ?)
+    ''', (user_id, -amount, f"Withdrawal to {address[:8]}...", "TRC20"))
+    tx_id = cursor.lastrowid
     db.commit()
     db.close()
     
-    keyboard = {
-        "inline_keyboard": [
-            [{"text": "💬 Reply to Ticket", "callback_data": f"reply_ticket_{user_id}"}]
-        ]
-    }
+    markup = telebot.types.InlineKeyboardMarkup()
+    btn_approve = telebot.types.InlineKeyboardButton("✅ Approve", callback_data=f"app_{tx_id}")
+    btn_cancel = telebot.types.InlineKeyboardButton("❌ Cancel", callback_data=f"canc_{tx_id}")
+    markup.add(btn_approve, btn_cancel)
     
-    admin_msg = f"🛠️ <b>NEW SUPPORT TICKET</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nSubject: <b>{subject}</b>\nStatus: PENDING\n\nMessage:\n<i>{message}</i>"
-    send_telegram(ADMIN_ID, admin_msg, keyboard)
+    admin_msg = f"📤 <b>New Withdrawal Request</b>\nTxID: <code>{tx_id}</code>\nUser: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nAddress: <code>{address}</code>"
     
-    return jsonify({"status": "success", "message": "✅ Support message sent successfully! Admin will contact you soon."})
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    requests.post(url, json={"chat_id": ADMIN_ID, "text": admin_msg, "parse_mode": "HTML", "reply_markup": markup.to_dict()})
+    
+    return jsonify({"status": "success", "message": "Withdrawal request submitted successfully!"})
+
+@app.route('/api/support/send', methods=['POST'])
+def send_support_ticket():
+    data = request.json
+    user_id = str(data.get('user_id'))
+    username = data.get('username', 'User')
+    subject = data.get('subject', '')
+    message = data.get('message', '')
+    
+    db = get_db()
+    db.execute('''
+        INSERT INTO support_tickets (user_id, username, subject, message, status)
+        VALUES (?, ?, ?, ?, 'PENDING')
+    ''', (user_id, username, subject, message))
+    db.commit()
+    db.close()
+    
+    send_telegram(ADMIN_ID, f"🎫 <b>New Support Ticket</b>\nFrom: {username} (<code>{user_id}</code>)\nSubject: {subject}\nMessage: {message}")
+    
+    return jsonify({"status": "success", "message": "Support ticket sent successfully!"})
 
 @app.route('/api/support/tickets/<user_id>', methods=['GET'])
 def get_user_tickets(user_id):
     db = get_db()
-    db.row_factory = sqlite3.Row
-    cursor = db.cursor()
-    cursor.execute('SELECT id, subject, message, status, admin_reply, date FROM support_tickets WHERE user_id = ? ORDER BY id DESC', (str(user_id),))
-    rows = cursor.fetchall()
-    tickets = [dict(row) for row in rows]
+    tickets = db.execute("SELECT * FROM support_tickets WHERE user_id = ? ORDER BY date DESC", (str(user_id),)).fetchall()
     db.close()
-    
-    return jsonify({"status": "success", "tickets": tickets})
+    return jsonify({"status": "success", "tickets": [dict(t) for t in tickets]})
 
-# ============================================================
-# ADMIN & TRACKING ENDPOINTS
-# ============================================================
 @app.route('/api/admin/users', methods=['GET'])
-def admin_get_users():
+def admin_users():
     db = get_db()
-    users = db.execute('SELECT telegram_id, username, balance, active_deposit, referral_code, created_at, last_login FROM users ORDER BY created_at DESC').fetchall()
+    users = db.execute("SELECT telegram_id, username, balance, active_deposit, created_at FROM users ORDER BY created_at DESC LIMIT 50").fetchall()
     db.close()
     return jsonify({"status": "success", "users": [dict(u) for u in users]})
 
 @app.route('/api/admin/ranking', methods=['GET'])
-def admin_investment_ranking():
+def admin_ranking():
     db = get_db()
     ranking = db.execute('''
-        SELECT u.telegram_id, u.username, SUM(i.amount) as total_invested, COUNT(i.id) as total_plans
-        FROM investments i 
-        JOIN users u ON i.user_id = u.telegram_id 
-        GROUP BY i.user_id 
-        ORDER BY total_invested DESC
+        SELECT u.telegram_id, u.username, SUM(i.amount) as total_invested, COUNT(i.id) as total_plans 
+        FROM users u 
+        JOIN investments i ON u.telegram_id = i.user_id 
+        GROUP BY u.telegram_id 
+        ORDER BY total_invested DESC LIMIT 10
     ''').fetchall()
     db.close()
     return jsonify({"status": "success", "ranking": [dict(r) for r in ranking]})
 
-# ============================================================
-# TELEGRAM WEBHOOK
-# ============================================================
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    global admin_waiting_reply
-    update = request.json
-    
-    if update and "message" in update:
-        msg = update["message"]
-        chat_id = str(msg["chat"]["id"])
-        text = msg.get("text", "")
-        
-        if chat_id == str(ADMIN_ID) and chat_id in admin_waiting_reply:
-            user_id = admin_waiting_reply[chat_id]
-            reply_text = text
-            
-            del admin_waiting_reply[chat_id]
-            
-            db = get_db()
-            ticket = db.execute("SELECT * FROM support_tickets WHERE user_id = ? AND status = 'PENDING' ORDER BY id DESC LIMIT 1", (user_id,)).fetchone()
-            
-            if ticket:
-                ticket_id = ticket['id']
-                db.execute("UPDATE support_tickets SET status = 'COMPLETED', admin_reply = ? WHERE id = ?", (reply_text, ticket_id))
-                db.commit()
-            db.close()
-            
-            send_telegram(user_id, f"✅ <b>Support Ticket Resolved!</b>\n\n📩 <b>Admin Reply:</b>\n{reply_text}")
-            send_telegram(ADMIN_ID, f"✅ Reply successfully sent to user ID <code>{user_id}</code>, ticket status updated to <b>COMPLETED</b>.")
-            
-            return jsonify({"status": "ok"})
-            
-        if text.startswith("/start"):
-            chat_id = msg["chat"]["id"]
-            
-            photo_url = "https://cdn.phototourl.com/free/2026-08-08-ad52c07f-2e6f-4a25-b167-d67e4aa08fbb.png"
-            
-            caption_text = (
-                "🚀 **Welcome to CoreX Investment Platform!**\n\n"
-                "Secure, transparent, and automated USDT growth designed to maximize your digital assets. "
-                "Experience high-yield smart investment plans backed by professional, fast, and reliable 24/7 support. 💎\n\n"
-                "Tap the button below to open the app and start growing your portfolio today."
-            )
-            
-            url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendPhoto"
-            payload = {
-                "chat_id": chat_id,
-                "photo": photo_url,
-                "caption": caption_text,
-                "parse_mode": "Markdown"
-            }
-            try:
-                requests.post(url, json=payload, timeout=5)
-            except:
-                pass
-            return jsonify({"status": "ok"})
-
-    if update and "callback_query" in update:
-        query = update["callback_query"]
-        query_id = query["id"]
-        data = query["data"]
-        chat_id = str(query["message"]["chat"]["id"])
-        message_id = query["message"]["message_id"]
-        
-        requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": query_id})
-        
-        has_photo = "photo" in query["message"]
-        edit_method = "editMessageCaption" if has_photo else "editMessageText"
-        content_key = "caption" if has_photo else "text"
-
-        if data.startswith("reply_ticket_"):
-            user_id = data.split("_")[2]
-            admin_waiting_reply[chat_id] = user_id
-            
-            send_telegram(chat_id, f"✍️ Please type your reply message to this user (ID: <code>{user_id}</code>):")
-            return jsonify({"status": "ok"})
-
-        if data.startswith("approve_dep_"):
-            tx_id = data.split("_")[2]
-            db = get_db()
-            tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
-            
-            if tx:
-                user_id = tx['user_id']
-                amount = tx['amount']
-                
-                db.execute("UPDATE transactions SET status = 'COMPLETED' WHERE id = ?", (tx_id,))
-                db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
-                db.commit()
-                
-                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
-                    "chat_id": chat_id, "message_id": message_id,
-                    content_key: f"✅ <b>DEPOSIT APPROVED & CONFIRMED</b>\nUser: <code>{user_id}</code>\nAmount: +${amount} USDT\nStatus: Balance Updated!",
-                    "parse_mode": "HTML",
-                    "reply_markup": {"inline_keyboard": []}
-                })
-                
-                send_telegram(user_id, f"🎉 <b>Deposit Approved!</b>\n\nYour deposit of <b>${amount} USDT</b> has been credited to your balance successfully.")
-            db.close()
-            
-        elif data.startswith("reject_dep_"):
-            tx_id = data.split("_")[2]
-            db = get_db()
-            tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
-            
-            if tx:
-                user_id = tx['user_id']
-                amount = tx['amount']
-                
-                db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
-                db.commit()
-                
-                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
-                    "chat_id": chat_id, "message_id": message_id,
-                    content_key: f"❌ <b>DEPOSIT REJECTED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
-                    "parse_mode": "HTML",
-                    "reply_markup": {"inline_keyboard": []}
-                })
-                
-                send_telegram(user_id, f"❌ <b>Deposit Rejected</b>\n\nUnfortunately, your deposit request of <b>${amount} USDT</b> was rejected.\nPlease check your TXID or screenshot, or contact Support if you have any issues.")
-            db.close()
-
-        elif data.startswith("approve_with_"):
-            tx_id = data.split("_")[2]
-            db = get_db()
-            tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
-            
-            if tx:
-                user_id = tx['user_id']
-                amount = abs(float(tx['amount']))
-                
-                db.execute("UPDATE transactions SET status = 'COMPLETED' WHERE id = ?", (tx_id,))
-                db.commit()
-                
-                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
-                    "chat_id": chat_id, "message_id": message_id,
-                    content_key: f"✅ <b>WITHDRAWAL APPROVED & CONFIRMED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
-                    "parse_mode": "HTML",
-                    "reply_markup": {"inline_keyboard": []}
-                })
-                send_telegram(user_id, f"🎉 <b>Withdrawal Approved!</b>\n\nYour withdrawal of <b>${amount} USDT</b> has been successfully processed.")
-            db.close()
-
-        elif data.startswith("reject_with_"):
-            tx_id = data.split("_")[2]
-            db = get_db()
-            tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
-            
-            if tx:
-                user_id = tx['user_id']
-                amount = abs(float(tx['amount']))
-                
-                db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
-                db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
-                db.commit()
-                
-                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
-                    "chat_id": chat_id, "message_id": message_id,
-                    content_key: f"❌ <b>WITHDRAWAL REJECTED & REFUNDED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
-                    "parse_mode": "HTML",
-                    "reply_markup": {"inline_keyboard": []}
-                })
-                send_telegram(user_id, f"⚠️ <b>Withdrawal Rejected</b>\n\nYour withdrawal request of ${amount} USDT was rejected. The amount has been refunded to your balance.")
-            db.close()
-
-    return jsonify({"status": "ok"})
+def run_bot():
+    try:
+        bot.infinity_polling(skip_pending=True)
+    except Exception as e:
+        print(f"Bot polling error: {e}")
 
 if __name__ == '__main__':
+    # Start Telegram bot polling in a background thread so Flask can run concurrently
+    bot_thread = threading.Thread(target=run_bot, daemon=True)
+    bot_thread.start()
+    
     app.run(host='0.0.0.0', port=5000, debug=True)
