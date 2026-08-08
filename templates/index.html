@@ -389,13 +389,8 @@
             flex-shrink: 0;
             background: rgba(0, 210, 255, 0.15);
             border: 1px solid rgba(0, 210, 255, 0.3);
-            overflow: hidden;
-        }
-
-        .live-notif-icon img {
-            width: 18px;
-            height: 18px;
-            object-fit: contain;
+            color: var(--accent-cyan);
+            font-size: 14px;
         }
 
         .live-notif-content {
@@ -883,16 +878,14 @@
     };
 
     const dummyNames = [
-        "Asma", "Raxama", "Jamac", "Alex", "Farax", "Hoyo", "Faysal", "Aki", "Abdi",
-        "Mohamed", "Fatima", "Ali", "Khadija", "Hassan", "Amina", "Ibrahim", "Zainab",
-        "Yusuf", "Mariam", "Osman", "Safia", "Bilal", "Aisha", "Hamza", "Leyla",
-        "Omar", "Hinda", "Abdirahman", "Nasra", "Guled", "Sahra", "Liban", "Hodan",
-        "Mustafe", "Fardowso", "Barkhad", "Ikran", "Abdikadir", "Muna", "Nasteho",
-        "Zakariye", "Sumaya", "Mahad", "Yasmin", "Khalid", "Amal", "Nuur", "Farhia",
-        "Saciid", "Ubax", "Abdifatah", "Sagal", "Guled", "Najmo", "Ahmed", "Shukri",
-        "Abdirisaq", "Ruqiya", "Adan", "Lul", "Mukhtar", "Deeqa", "Bashir", "Siham",
-        "Dahir", "Fadumo", "Suleiman", "Bilan", "Abdishakur", "Naima", "Yahya", "Ilhaan",
-        "Mubarak", "Nimo", "Said", "Warsan", "Gelle", "Hodan", "Cabdalla", "Amran"
+        "Emma Smith", "Liam Johnson", "Olivia Brown", "Noah Williams", "Ava Jones",
+        "Sophia Davis", "Jackson Miller", "Isabella Wilson", "Aiden Moore", "Mia Taylor",
+        "Lucas Anderson", "Harper Thomas", "Ethan Jackson", "Evelyn White", "Mason Harris",
+        "Charlotte Martin", "Logan Thompson", "Amelia Garcia", "James Martinez", "Harper Robinson",
+        "Benjamin Clark", "Abigail Rodriguez", "Alexander Lewis", "Emily Lee", "Daniel Walker",
+        "Elizabeth Hall", "Henry Allen", "Sofia Young", "Theodore King", "Aria Wright",
+        "John Smith", "Michael Johnson", "David Brown", "Robert Williams", "William Jones",
+        "Joseph Davis", "Thomas Miller", "Charles Wilson", "Christopher Moore", "Daniel Taylor"
     ];
 
     let activeHistoryFilter = 'ALL';
@@ -961,7 +954,7 @@
         notifCard.className = 'live-notif-card';
         notifCard.innerHTML = `
             <div class="live-notif-icon">
-                <img src="${netInfo.icon}" alt="Network">
+                <i class="fa-solid fa-clock"></i>
             </div>
             <div class="live-notif-content">
                 <div class="notif-title">
