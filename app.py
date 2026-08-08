@@ -13,7 +13,7 @@ app.secret_key = os.getenv("SECRET_KEY", secrets.token_hex(32))
 # ============================================================
 # CONFIGURATION
 # ============================================================
-BOT_TOKEN = os.getenv("BOT_TOKEN", "8679853739:AAEcdk9DWC51lVO1EXvmamgyWSpkp2Vfdk0")
+BOT_TOKEN = os.getenv("BOT_TOKEN", "8641054545:AAE-ETeHuB3ki-pGG0FwysQOi73gSOtz_eE")
 ADMIN_ID = os.getenv("ADMIN_ID", "5738022147")
 TOTAL_PROFIT_RATE = 0.20   # 20% Total Return
 INVESTMENT_DAYS = 7
@@ -206,7 +206,6 @@ def get_user_data(user_id):
         "maalgashi": [dict(i) for i in investments]
     })
 
-# API-ga loogu talagalay Live Feed-ka iyo Toasts-ka (Real Activities)
 @app.route('/api/public/activities', methods=['GET'])
 def public_activities():
     db = get_db()
