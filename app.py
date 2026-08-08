@@ -15,6 +15,8 @@ app.secret_key = os.getenv("SECRET_KEY", secrets.token_hex(32))
 # ============================================================
 BOT_TOKEN = os.getenv("BOT_TOKEN", "8641054545:AAE-ETeHuB3ki-pGG0FwysQOi73gSOtz_eE")
 ADMIN_ID = os.getenv("ADMIN_ID", "5738022147")
+WEBAPP_URL = os.getenv("WEBAPP_URL", "https://my-miniapp-4uo7.onrender.com/")
+
 TOTAL_PROFIT_RATE = 0.20   # 20% Total Return
 INVESTMENT_DAYS = 7
 TOTAL_HOURS = INVESTMENT_DAYS * 24  # 168 Hours
@@ -440,10 +442,12 @@ def webhook():
     if update and "message" in update:
         msg = update["message"]
         chat_id = str(msg["chat"]["id"])
+        text = msg.get("text", "")
         
+        # Handle Admin replies
         if chat_id == str(ADMIN_ID) and chat_id in admin_waiting_reply:
             user_id = admin_waiting_reply[chat_id]
-            reply_text = msg.get("text", "")
+            reply_text = text
             
             del admin_waiting_reply[chat_id]
             
@@ -459,6 +463,16 @@ def webhook():
             send_telegram(user_id, f"✅ <b>Support Ticket Resolved!</b>\n\n📩 <b>Admin Reply:</b>\n{reply_text}")
             send_telegram(ADMIN_ID, f"✅ Reply successfully sent to user ID <code>{user_id}</code>, ticket status updated to <b>COMPLETED</b>.")
             
+            return jsonify({"status": "ok"})
+            
+        # Handle /start command for users to open the WebApp
+        if text.startswith("/start"):
+            keyboard = {
+                "inline_keyboard": [
+                    [{"text": "🚀 Open App", "web_app": {"url": WEBAPP_URL}}]
+                ]
+            }
+            send_telegram(chat_id, "🚀 <b>CoreX Investment Platform</b>\n\nSecure, transparent, and automated USDT growth. Click the button below to launch the app:", keyboard)
             return jsonify({"status": "ok"})
 
     if update and "callback_query" in update:
@@ -572,4 +586,4 @@ def webhook():
     return jsonify({"status": "ok"})
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port5000, debug=True)
