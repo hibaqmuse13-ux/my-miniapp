@@ -389,8 +389,13 @@
             flex-shrink: 0;
             background: rgba(0, 210, 255, 0.15);
             border: 1px solid rgba(0, 210, 255, 0.3);
-            color: var(--accent-cyan);
-            font-size: 14px;
+            overflow: hidden;
+        }
+
+        .live-notif-icon img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
         }
 
         .live-notif-content {
@@ -878,14 +883,20 @@
     };
 
     const dummyNames = [
-        "Emma Smith", "Liam Johnson", "Olivia Brown", "Noah Williams", "Ava Jones",
-        "Sophia Davis", "Jackson Miller", "Isabella Wilson", "Aiden Moore", "Mia Taylor",
-        "Lucas Anderson", "Harper Thomas", "Ethan Jackson", "Evelyn White", "Mason Harris",
-        "Charlotte Martin", "Logan Thompson", "Amelia Garcia", "James Martinez", "Harper Robinson",
-        "Benjamin Clark", "Abigail Rodriguez", "Alexander Lewis", "Emily Lee", "Daniel Walker",
-        "Elizabeth Hall", "Henry Allen", "Sofia Young", "Theodore King", "Aria Wright",
-        "John Smith", "Michael Johnson", "David Brown", "Robert Williams", "William Jones",
-        "Joseph Davis", "Thomas Miller", "Charles Wilson", "Christopher Moore", "Daniel Taylor"
+        "Asma", "Raxama", "Jamac", "Alex", "Farax", "Hoyo", "Faysal", "Aki", "Abdi",
+        "Mohamed", "Fatima", "Ali", "Khadija", "Hassan", "Amina", "Ibrahim", "Zainab",
+        "Yusuf", "Mariam", "Osman", "Safia", "Bilal", "Aisha", "Hamza", "Leyla",
+        "Omar", "Hinda", "Abdirahman", "Nasra", "Guled", "Sahra", "Liban", "Hodan",
+        "Mustafe", "Fardowso", "Barkhad", "Ikran", "Abdikadir", "Muna", "Nasteho",
+        "Zakariye", "Sumaya", "Mahad", "Yasmin", "Khalid", "Amal", "Nuur", "Farhia",
+        "Saciid", "Ubax", "Abdifatah", "Sagal", "Guled", "Najmo", "Ahmed", "Shukri",
+        "Abdirisaq", "Ruqiya", "Adan", "Lul", "Mukhtar", "Deeqa", "Bashir", "Siham",
+        "Dahir", "Fadumo", "Suleiman", "Bilan", "Abdishakur", "Naima", "Yahya", "Ilhaan",
+        "Mubarak", "Nimo", "Said", "Warsan", "Gelle", "Hodan", "Cabdalla", "Amran",
+        "Emily", "Michael", "Sophia", "William", "Emma", "James", "Olivia", "Alexander",
+        "Charlotte", "Benjamin", "Isabella", "Lucas", "Mia", "Henry", "Amelia", "Ethan",
+        "Harper", "Daniel", "Evelyn", "Matthew", "Chloe", "David", "Sofia", "Joseph",
+        "Grace", "Samuel", "Victoria", "Hannah", "Liam", "Ella", "Noah", "Aria", "Logan"
     ];
 
     let activeHistoryFilter = 'ALL';
@@ -931,6 +942,7 @@
 
         let amount = 0;
         let desc = '';
+        let iconHtml = '';
 
         if (type === 'INVEST') {
             const isVip = Math.random() > 0.7;
@@ -941,12 +953,15 @@
                 amount = stdAmounts[Math.floor(Math.random() * stdAmounts.length)];
                 desc = `invested $${amount} in Standard Plan (25% Daily)`;
             }
+            iconHtml = `<i class="fa-solid fa-chart-line" style="color: var(--accent-cyan); font-size: 14px;"></i>`;
         } else if (type === 'DEPOSIT') {
             amount = Math.floor(Math.random() * 200) + 10;
             desc = `successfully deposited $${amount} via ${netInfo.name}`;
+            iconHtml = `<img src="${netInfo.icon}" alt="Network">`;
         } else {
             amount = Math.floor(Math.random() * 150) + 20;
             desc = `withdrew $${amount} via ${netInfo.name}`;
+            iconHtml = `<img src="${netInfo.icon}" alt="Network">`;
         }
 
         const container = document.getElementById('live-notification-container');
@@ -954,7 +969,7 @@
         notifCard.className = 'live-notif-card';
         notifCard.innerHTML = `
             <div class="live-notif-icon">
-                <i class="fa-solid fa-clock"></i>
+                ${iconHtml}
             </div>
             <div class="live-notif-content">
                 <div class="notif-title">
