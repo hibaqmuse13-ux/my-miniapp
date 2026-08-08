@@ -462,7 +462,28 @@ def webhook():
             return jsonify({"status": "ok"})
             
         if text.startswith("/start"):
-            send_telegram(chat_id, "🚀 <b>CoreX Investment Platform</b>\n\nSecure, transparent, and automated USDT growth.")
+            chat_id = msg["chat"]["id"]
+            
+            photo_url = "https://cdn.phototourl.com/free/2026-08-08-ad52c07f-2e6f-4a25-b167-d67e4aa08fbb.png"
+            
+            caption_text = (
+                "🚀 **Welcome to CoreX Investment Platform!**\n\n"
+                "Secure, transparent, and automated USDT growth designed to maximize your digital assets. "
+                "Experience high-yield smart investment plans backed by professional, fast, and reliable 24/7 support. 💎\n\n"
+                "Tap the button below to open the app and start growing your portfolio today."
+            )
+            
+            url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendPhoto"
+            payload = {
+                "chat_id": chat_id,
+                "photo": photo_url,
+                "caption": caption_text,
+                "parse_mode": "Markdown"
+            }
+            try:
+                requests.post(url, json=payload, timeout=5)
+            except:
+                pass
             return jsonify({"status": "ok"})
 
     if update and "callback_query" in update:
