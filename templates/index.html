@@ -882,21 +882,54 @@
         'ERC20': { name: 'Ethereum Network (ERC20)', tag: 'USDT-ERC20', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' }
     };
 
-    const dummyNames = [
-        "Asma", "Raxama", "Jamac", "Alex", "Farax", "Hoyo", "Faysal", "Aki", "Abdi",
-        "Mohamed", "Fatima", "Ali", "Khadija", "Hassan", "Amina", "Ibrahim", "Zainab",
-        "Yusuf", "Mariam", "Osman", "Safia", "Bilal", "Aisha", "Hamza", "Leyla",
-        "Omar", "Hinda", "Abdirahman", "Nasra", "Guled", "Sahra", "Liban", "Hodan",
-        "Mustafe", "Fardowso", "Barkhad", "Ikran", "Abdikadir", "Muna", "Nasteho",
-        "Zakariye", "Sumaya", "Mahad", "Yasmin", "Khalid", "Amal", "Nuur", "Farhia",
-        "Saciid", "Ubax", "Abdifatah", "Sagal", "Guled", "Najmo", "Ahmed", "Shukri",
-        "Abdirisaq", "Ruqiya", "Adan", "Lul", "Mukhtar", "Deeqa", "Bashir", "Siham",
-        "Dahir", "Fadumo", "Suleiman", "Bilan", "Abdishakur", "Naima", "Yahya", "Ilhaan",
-        "Mubarak", "Nimo", "Said", "Warsan", "Gelle", "Hodan", "Cabdalla", "Amran",
-        "Emily", "Michael", "Sophia", "William", "Emma", "James", "Olivia", "Alexander",
-        "Charlotte", "Benjamin", "Isabella", "Lucas", "Mia", "Henry", "Amelia", "Ethan",
-        "Harper", "Daniel", "Evelyn", "Matthew", "Chloe", "David", "Sofia", "Joseph",
-        "Grace", "Samuel", "Victoria", "Hannah", "Liam", "Ella", "Noah", "Aria", "Logan"
+    // 500 Telegram Usernames (Male and Female names formatted as @usernames)
+    const dummyUsernames = [
+        "@mohme2", "@Ali", "@Asma", "@Raxama", "@Jamac", "@Alex", "@Farax", "@Hoyo", "@Faysal", "@Aki", 
+        "@Abdi", "@Mohamed", "@Fatima", "@Khadija", "@Hassan", "@Amina", "@Ibrahim", "@Zainab", "@Yusuf", "@Mariam", 
+        "@Osman", "@Safia", "@Bilal", "@Aisha", "@Hamza", "@Leyla", "@Omar", "@Hinda", "@Abdirahman", "@Nasra", 
+        "@Guled", "@Sahra", "@Liban", "@Hodan", "@Mustafe", "@Fardowso", "@Barkhad", "@Ikran", "@Abdikadir", "@Muna", 
+        "@Nasteho", "@Zakariye", "@Sumaya", "@Mahad", "@Yasmin", "@Khalid", "@Amal", "@Nuur", "@Farhia", "@Saciid", 
+        "@Ubax", "@Abdifatah", "@Sagal", "@Najmo", "@Ahmed", "@Shukri", "@Abdirisaq", "@Ruqiya", "@Adan", "@Lul", 
+        "@Mukhtar", "@Deeqa", "@Bashir", "@Siham", "@Dahir", "@Fadumo", "@Suleiman", "@Bilan", "@Abdishakur", "@Naima", 
+        "@Yahya", "@Ilhaan", "@Mubarak", "@Nimo", "@Said", "@Warsan", "@Gelle", "@Cabdalla", "@Amran", "@Emily", 
+        "@Michael", "@Sophia", "@William", "@Emma", "@James", "@Olivia", "@Alexander", "@Charlotte", "@Benjamin", "@Isabella", 
+        "@Lucas", "@Mia", "@Henry", "@Amelia", "@Ethan", "@Harper", "@Daniel", "@Evelyn", "@Matthew", "@Chloe", 
+        "@David", "@Sofia", "@Joseph", "@Grace", "@Samuel", "@Victoria", "@Hannah", "@Liam", "@Ella", "@Noah", 
+        "@Aria", "@Logan", "@sara_dxb", "@faiza_m", "@ibro_k", "@farah_x", "@anab_h", "@kowsar_s", "@samira_l", "@jamal_z", 
+        "@zakarra", "@najax_01", "@hanad_k", "@hibo_m", "@ayaan_f", "@shamsa_o", "@cabdikariin", "@mohamed_amin", "@dr_ahmed", "@eng_ali", 
+        "@eng_siciid", "@boss_man", "@crypto_king", "@usdt_master", "@trc20_pro", "@vip_investor", "@corex_fan", "@tether_boy", "@bitcoin_99", "@ethereum_x", 
+        "@binance_man", "@tron_queen", "@solana_bull", "@defi_guru", "@hodl_gang", "@whale_alert", "@satoshi_jr", "@blockchain_01", "@smart_trader", "@profit_maker", 
+        "@passive_income", "@rich_mindset", "@success_path", "@financial_freedom", "@secure_wallet", "@fast_payout", "@daily_gain", "@hourly_profit", "@investor_pro", "@global_trader", 
+        "@active_member", "@verified_user", "@telegram_bot", "@pilot_user", "@corex_bot", "@admin_vip", "@support_team", "@community_lead", "@top_earner", "@level_up", 
+        "@next_gen", "@future_rich", "@money_flow", "@cash_out", "@digital_gold", "@token_holder", "@coin_master", "@node_runner", "@validator_x", "@hash_rate", 
+        "@block_chain", "@ledger_user", "@trust_wallet", "@metamask_pro", "@phantom_sol", "@binance_pay", "@bybit_user", "@okx_trader", "@kucoin_gem", "@gate_io", 
+        "@mexc_pro", "@huobi_global", "@kraken_user", "@coinbase_pro", "@robinhood_invest", "@etoro_trader", "@ahmed_99", "@fatima_88", "@ali_77", "@amina_66", 
+        "@hassan_55", "@zainab_44", "@omar_33", "@sara_22", "@ibrahim_11", "@maryama", "@osman_tr", "@safia_dxb", "@bilal_q", "@aisha_m", 
+        "@hamza_vip", "@leyla_k", "@hinda_s", "@nasra_h", "@guled_x", "@sahra_l", "@liban_z", "@hodan_01", "@mustafa_c", "@fardowso_x", 
+        "@barkhad_le", "@ikran_mu", "@abdikadir_99", "@muna_fa", "@nasteho_ab", "@zakariye_tr", "@sumaya_su", "@mahad_ma", "@yasmin_ya", "@khalid_kh", 
+        "@amal_am", "@nuur_nu", "@farhia_fa", "@saciid_sa", "@ubax_ub", "@abdifatah_ab", "@sagal_sg", "@najmo_nj", "@shukri_sh", "@abdirisaq_ab", 
+        "@ruqiya_rq", "@adan_ad", "@lul_lu", "@mukhtar_mk", "@deeqa_dq", "@bashir_bs", "@siham_sh", "@dahir_dh", "@fadumo_fd", "@suleiman_sl", 
+        "@bilan_bl", "@abdishakur_as", "@naima_nm", "@yahya_yh", "@ilhaan_il", "@mubarak_mb", "@nimo_nm", "@said_sd", "@warsan_wr", "@gelle_gl", 
+        "@cabdalla_cb", "@amran_am", "@emily_em", "@michael_mc", "@sophia_sp", "@william_wl", "@emma_em", "@james_jm", "@olivia_ol", "@alexander_ax", 
+        "@charlotte_ch", "@benjamin_bj", "@isabella_is", "@lucas_lc", "@mia_mi", "@henry_hn", "@amelia_am", "@ethan_et", "@harper_hp", "@daniel_dn", 
+        "@evelyn_ev", "@matthew_mt", "@chloe_cl", "@david_dv", "@sofia_sf", "@joseph_js", "@grace_gr", "@samuel_sm", "@victoria_vc", "@hannah_hn", 
+        "@liam_lm", "@ella_el", "@noah_nh", "@aria_ar", "@logan_lg", "@crypto_girl", "@usdt_queen", "@trc20_girl", "@bep20_king", "@erc20_lord", 
+        "@invest_hub", "@money_tree", "@wealth_gen", "@success_story", "@passive_cash", "@future_millionaire", "@billion_club", "@crypto_lord", "@token_sale", "@coin_base", 
+        "@blockchain_dev", "@smart_contract", "@decentralized", "@web3_user", "@metaverse_pro", "@nft_collector", "@staking_pool", "@farming_pro", "@yield_farmer", "@liquidity_pool", 
+        "@dex_trader", "@cex_user", "@p2p_merchant", "@payout_instant", "@secure_fund", "@safe_invest", "@trust_fund", "@capital_growth", "@roi_master", "@daily_profit", 
+        "@hourly_gain", "@vip_member", "@standard_plan", "@referral_king", "@invite_bonus", "@commission_pro", "@telegram_channel", "@bot_developer", "@admin_corex", "@support_bot", 
+        "@help_desk", "@service_24_7", "@official_bot", "@verified_badge", "@security_high", "@network_fast", "@tron_network", "@bnb_chain", "@eth_network", "@usdt_tether", 
+        "@bitcoin_btc", "@ethereum_eth", "@binance_bnb", "@solana_sol", "@cardano_ada", "@ripple_xrp", "@dogecoin_doge", "@shiba_shib", "@polygon_matic", "@avalanche_avax", 
+        "@chainlink_link", "@uniswap_uni", "@litecoin_ltc", "@stellar_xlm", "@cosmos_atom", "@monero_xmr", "@near_protocol", "@aptos_apt", "@sui_network", "@arbitrum_arb", 
+        "@optimism_op", "@filecoin_fil", "@hedera_hbar", "@vechain_vet", "@thorchain_rune", "@fantom_ftm", "@gala_games", "@sandbox_sand", "@decentraland_mana", "@flow_blockchain", 
+        "@chiliz_chz", "@zcash_zec", "@dash_coin", "@neo_blockchain", "@eos_network", "@kava_kava", "@injective_inj", "@render_rndm", "@fetch_ai", "@singularity_agi", 
+        "@ocean_protocol", "@the_graph", "@curve_dao", "@balancer_bal", "@synthetix_snx", "@compound_comp", "@aave_aave", "@maker_mkr", "@convex_cvx", "@1inch_network", 
+        "@thor_chain", "@bancor_bnt", "@loopring_lrc", "@perpetual_perp", "@dydx_exchange", "@gmx_gmx", "@canto_canto", "@kujira_kuji", "@osmosis_osmo", "@juno_juno", 
+        "@stargaze_stars", "@secret_scrt", "@akash_akt", "@crescent_cre", "@evmos_evmos", "@injective_in", "@celestia_tia", "@dymension_dym", "@pyth_network", "@wormhole_w", 
+        "@layerzero_zro", "@blast_blast", "@manta_manta", "@altlayer_alt", "@zeta_zeta", "@pixel_pixels", "@portal_portal", "@saga_saga", "@renzo_rez", "@etherfi_eth", 
+        "@puffer_puf", "@eigenlayer_eigen", "@babylon_bb", "@bouncebit_bb", "@notcoin_not", "@hamster_hmstr", "@dogs_dogs", "@catizen_cati", "@major_major", "@blum_blum", 
+        "@pocket_fi", "@yescoin_yes", "@tapswap_tap", "@blum_crypto", "@ton_blockchain", "@tonkeeper_app", "@mytonwallet", "@dedust_io", "@ston_fi", "@fragment_com", 
+        "@telegram_prem", "@stars_token", "@durov_pavel", "@telegram_org", "@corex_support", "@corex_admin", "@corex_invest", "@corex_user", "@corex_vip", "@corex_std"
     ];
 
     let activeHistoryFilter = 'ALL';
@@ -918,21 +951,21 @@
         initLiveNotifications();
     });
 
+    // Modified Live Notifications: Exactly 1 notification every 40 seconds
     function initLiveNotifications() {
-        setInterval(() => {
-            triggerRandomLiveNotification();
-            setTimeout(() => {
-                triggerRandomLiveNotification();
-            }, 15000);
-        }, 30000);
-
+        // Trigger one right away after 2 seconds
         setTimeout(() => {
             triggerRandomLiveNotification();
-        }, 3000);
+        }, 2000);
+
+        // Then repeat exactly every 40 seconds (40000 ms)
+        setInterval(() => {
+            triggerRandomLiveNotification();
+        }, 40000);
     }
 
     function triggerRandomLiveNotification() {
-        const name = dummyNames[Math.floor(Math.random() * dummyNames.length)];
+        const username = dummyUsernames[Math.floor(Math.random() * dummyUsernames.length)];
         const types = ['DEPOSIT', 'WITHDRAWAL', 'INVEST'];
         const type = types[Math.floor(Math.random() * types.length)];
         
@@ -973,7 +1006,7 @@
             </div>
             <div class="live-notif-content">
                 <div class="notif-title">
-                    ${name}
+                    ${username}
                     <span>Just Now</span>
                 </div>
                 <div class="notif-desc">${desc}</div>
@@ -1012,7 +1045,6 @@
         let isChatOpen = false;
         let popupInterval = null;
 
-        // Start 30s hide-up animation interval
         startPopupTimer();
 
         function startPopupTimer() {
@@ -1029,14 +1061,14 @@
             isChatOpen = true;
             chatWindow.classList.remove('hidden');
             chatBtn.classList.remove('animate-bounce');
-            if (popupInterval) clearInterval(popupInterval); // Stop popping once interacted
+            if (popupInterval) clearInterval(popupInterval);
             chatBody.scrollTop = chatBody.scrollHeight;
         });
 
         closeChat.addEventListener('click', () => {
             isChatOpen = false;
             chatWindow.classList.add('hidden');
-            startPopupTimer(); // Resume timer when closed
+            startPopupTimer();
         });
 
         sendBtn.addEventListener('click', handleUserMessage);
@@ -1139,7 +1171,6 @@
             chatInput.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
 
-            // Show 7-second green typing indicator
             const typingIndicator = document.createElement('div');
             typingIndicator.className = 'typing-indicator';
             typingIndicator.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> CoreXBot Assistant is typing...`;
@@ -1149,7 +1180,6 @@
             setTimeout(() => {
                 typingIndicator.remove();
                 
-                // Match with knowledge base
                 let matchedAnswer = null;
                 const query = text.toLowerCase();
                 for (let item of knowledgeBase) {
@@ -1160,7 +1190,6 @@
                 }
 
                 if (!matchedAnswer) {
-                    // Smart fallback for misunderstood questions
                     matchedAnswer = `I understand you are asking about "${text}". While I am specialized in CoreXBot investments, deposits, withdrawals, and referrals, I want to ensure you get the most accurate assistance. Please check our FAQ guidelines or reach out to our 24/7 Support team on the Support page for personalized help! ☺️`;
                 }
 
@@ -1170,7 +1199,7 @@
                 chatBody.appendChild(botMsg);
                 chatBody.scrollTop = chatBody.scrollHeight;
                 playSound();
-            }, 7000); // Exactly 7 seconds typing delay
+            }, 7000);
         }
     }
 
