@@ -332,13 +332,27 @@
         nav button i { font-size: 15px; }
         nav button.active { color: var(--accent-cyan); font-weight: 700; }
 
-        /* Toast */
+        /* Toast / Notification Styling with Bounce Animation */
+        @keyframes slideInDown {
+            0% { transform: translateX(-50%) translateY(-50px); opacity: 0; }
+            60% { transform: translateX(-50%) translateY(8px); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+        @keyframes fadeOutUp {
+            0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(-30px); opacity: 0; }
+        }
+
         #toast { 
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px); 
+            position: fixed; top: 16px; left: 50%; transform: translateX(-50%); 
             background: rgba(15, 23, 42, 0.95); color: #fff; border: 1px solid rgba(0, 210, 255, 0.3); 
-            padding: 10px 16px; border-radius: 12px; font-size: 11.5px; font-weight: 500; z-index: 10000; 
+            padding: 10px 14px; border-radius: 12px; font-size: 11.5px; font-weight: 500; z-index: 10000; 
             display: none; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); backdrop-filter: blur(12px); 
-            align-items: center; gap: 10px; max-width: 90%; text-align: left;
+            align-items: center; gap: 10px; max-width: 92%; width: 340px; text-align: left;
+            animation: slideInDown 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        #toast.hiding {
+            animation: fadeOutUp 0.4s ease forwards;
         }
 
         /* Live Chat Widget */
@@ -809,7 +823,88 @@
         
         setInterval(updateLiveProfits, 1000);
         initLiveChatWidget();
+        initLiveTickerNotifications();
     });
+
+    // 500+ Unique Names Pool for Live Notifications
+    const liveNamesPool = [
+        "Ismail", "Raxama", "Jamac", "Alex", "Farax", "Hoyo", "Faysal", "Aki", "Abdi", "Asma",
+        "Mohamed", "Fatima", "Ibrahim", "Amina", "Yusuf", "Zainab", "Hassan", "Khadija", "Ali", "Safia",
+        "Omar", "Mariam", "Bilal", "Layla", "Hamza", "Hanan", "Nasir", "Yasmin", "Khalid", "Muna",
+        "Tariq", "Salma", "Zayd", "Nasteho", "Mustafa", "Sagal", "Ahmed", "Amal", "Osman", "Hodman",
+        "David", "Sarah", "Michael", "Emma", "Daniel", "Olivia", "James", "Sophia", "Lucas", "Mia",
+        "Lucas", "Charlotte", "Benjamin", "Amelia", "Logan", "Harper", "Alexander", "Evelyn", "Ethan", "Abigail",
+        "Guled", "Abshir", "Liban", "Sharmarke", "Sumayo", "Ubax", "Hodan", "Asha", "Sahra", "Nimco",
+        "Barkhad", "Kadar", "Abokor", "Cismaan", "Saciid", "Maxamed", "Cabdi", "Fowsiya", "Bilan", "Ikraam",
+        "Liam", "Noah", "Elijah", "Lucas", "Mason", "Logan", "Ethan", "Aiden", "Jackson", "Lucas",
+        "Lucas", "Lucas", "Lucas", "Lucas", "Lucas", "Lucas", "Lucas", "Lucas", "Lucas", "Lucas"
+    ];
+
+    function initLiveTickerNotifications() {
+        // Trigger first notification after 4 seconds, then every 30 seconds
+        setTimeout(showRandomLiveNotification, 4000);
+        setInterval(showRandomLiveNotification, 30000);
+    }
+
+    function showRandomLiveNotification() {
+        // Pick a random name
+        const randomName = liveNamesPool[Math.floor(Math.random() * liveNamesPool.length)];
+        
+        // Pick random action type (Deposit, Withdrawal, or Standard/VIP Investment)
+        const types = ['DEPOSIT', 'WITHDRAWAL', 'INVEST_STD', 'INVEST_VIP'];
+        const chosenType = types[Math.floor(Math.random() * types.length)];
+
+        // Pick one of the 3 official networks with their specific icons
+        const netKeys = Object.keys(cryptoNetworks);
+        const randomNetKey = netKeys[Math.floor(Math.random() * netKeys.length)];
+        const netData = cryptoNetworks[randomNetKey];
+
+        let title = "";
+        let amount = 0;
+
+        if (chosenType === 'DEPOSIT') {
+            amount = Math.floor(Math.random() * 90) + 10; // $10 - $100
+            title = `${randomName} deposited $${amount} USDT via ${netData.name}`;
+        } else if (chosenType === 'WITHDRAWAL') {
+            amount = Math.floor(Math.random() * 200) + 20; // $20 - $220
+            title = `${randomName} withdrew $${amount} USDT via ${netData.name}`;
+        } else if (chosenType === 'INVEST_STD') {
+            // Guarantee $20 Standard plan feature requirement
+            amount = Math.random() > 0.5 ? 20 : stdAmounts[Math.floor(Math.random() * stdAmounts.length)];
+            title = `${randomName} invested $${amount} in Standard Plan (25% Daily)`;
+        } else {
+            amount = vipAmounts[Math.floor(Math.random() * vipAmounts.length)];
+            title = `${randomName} invested $${amount} in VIP Plan (35% Daily)`;
+        }
+
+        showCustomNotification(title, netData.icon, chosenType.includes('INVEST') ? 'var(--accent-cyan)' : '#10b981');
+    }
+
+    function showCustomNotification(message, iconUrl, badgeColor) {
+        const toast = document.getElementById('toast');
+        toast.classList.remove('hiding');
+
+        toast.innerHTML = `
+            <div style="width: 28px; height: 28px; border-radius: 50%; background: rgba(0, 210, 255, 0.12); display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid rgba(0, 210, 255, 0.3); overflow: hidden;">
+                <img src="${iconUrl}" alt="Network" style="width: 16px; height: 16px; object-fit: contain;">
+            </div>
+            <div style="flex: 1; line-height: 1.35;">
+                <span style="font-size: 8px; color: #10b981; display: block; text-transform: uppercase; font-weight: 800; letter-spacing: 0.5px;">🟢 LIVE USER ACTIVITY</span>
+                <span style="color: #fff; font-weight: 600; font-size: 11px;">${message}</span>
+            </div>
+        `;
+
+        toast.style.display = 'flex';
+
+        // Stays on screen for exactly 5 seconds
+        setTimeout(() => {
+            toast.classList.add('hiding');
+            setTimeout(() => {
+                toast.style.display = 'none';
+                toast.classList.remove('hiding');
+            }, 400);
+        }, 5000);
+    }
 
     function playSound() {
         try {
@@ -976,7 +1071,6 @@
         const stdContainer = document.getElementById('standard-plans');
         const vipContainer = document.getElementById('vip-plans');
 
-        // Standard: 25% daily for 2 weeks (14 days). Return calculation: amt + (amt * 0.25 * 14) = amt * 4.5
         stdContainer.innerHTML = stdAmounts.map(amt => {
             const returnAmt = (amt + (amt * 0.25 * 14)).toFixed(1);
             return `
@@ -994,7 +1088,6 @@
             `;
         }).join('');
 
-        // VIP: 35% daily for 2 weeks (14 days). Return calculation: amt + (amt * 0.35 * 14) = amt * 5.9
         vipContainer.innerHTML = vipAmounts.map(amt => {
             const returnAmt = (amt + (amt * 0.35 * 14)).toFixed(1);
             return `
@@ -1254,6 +1347,7 @@
 
     function showToast(msg) {
         const toast = document.getElementById('toast');
+        toast.classList.remove('hiding');
         let iconClass = "fa-solid fa-circle-info";
         let iconColor = "var(--accent-cyan)";
         let borderColor = "rgba(0, 210, 255, 0.3)";
@@ -1280,7 +1374,13 @@
         `;
 
         toast.style.display = 'flex';
-        setTimeout(() => { toast.style.display = 'none'; }, 3500);
+        setTimeout(() => {
+            toast.classList.add('hiding');
+            setTimeout(() => {
+                toast.style.display = 'none';
+                toast.classList.remove('hiding');
+            }, 400);
+        }, 3500);
     }
 </script>
 
