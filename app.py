@@ -465,9 +465,14 @@ def webhook():
             
             return jsonify({"status": "ok"})
             
-        # Handle /start command for users to open the WebApp (Badhankii dusha sare laga saaray)
+        # Handle /start command for users to open the WebApp
         if text.startswith("/start"):
-            send_telegram(chat_id, "🚀 <b>CoreX Investment Platform</b>\n\nSecure, transparent, and automated USDT growth. Click the menu button below to launch the app:")
+            keyboard = {
+                "inline_keyboard": [
+                    [{"text": "🚀 Open App", "web_app": {"url": WEBAPP_URL}}]
+                ]
+            }
+            send_telegram(chat_id, "🚀 <b>CoreX Investment Platform</b>\n\nSecure, transparent, and automated USDT growth. Click the button below to launch the app:", keyboard)
             return jsonify({"status": "ok"})
 
     if update and "callback_query" in update:
