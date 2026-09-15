@@ -191,9 +191,45 @@
         .rules-banner p { margin-bottom: 3px; }
         .rules-banner b { color: #fef08a; font-weight: 600; }
 
-        /* Quick Buttons */
-        .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-        .quick button { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; font-size: 12px; font-weight: 600; color: #fff; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; backdrop-filter: blur(10px); }
+        /* Quick Buttons - Modernized Deposit & Withdrawal Buttons */
+        .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+        .quick button { 
+            background: var(--card-bg); 
+            border: 1px solid var(--card-border); 
+            border-radius: 16px; 
+            padding: 16px 14px; 
+            font-size: 14px; 
+            font-weight: 700; 
+            color: #fff; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            cursor: pointer; 
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .quick button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(0, 210, 255, 0.2);
+            border-color: rgba(0, 210, 255, 0.4);
+        }
+        .quick button:active {
+            transform: scale(0.96);
+        }
+        .quick button i {
+            font-size: 22px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .quick button:nth-child(2) i {
+            background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
         /* Pages */
         .page { display: none; }
@@ -287,23 +323,57 @@
         button.primary { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--primary-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
         button.success { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--success-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
 
-        .history-tabs { display: flex; gap: 5px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 3px; }
-        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-sub); padding: 5px 10px; border-radius: 14px; font-size: 10px; font-weight: 600; cursor: pointer; white-space: nowrap; }
-        .tab-btn.active { background: var(--primary-gradient); color: #fff; border-color: transparent; }
+        /* History Section - Modernized Big Professional Tabs & Cards */
+        .history-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
+        .tab-btn { 
+            background: rgba(255, 255, 255, 0.03); 
+            border: 1px solid var(--card-border); 
+            color: var(--text-sub); 
+            padding: 12px 10px; 
+            border-radius: 12px; 
+            font-size: 11px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            text-align: center;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .tab-btn.active { 
+            background: var(--primary-gradient); 
+            color: #fff; 
+            border-color: transparent; 
+            box-shadow: 0 6px 18px rgba(0, 114, 255, 0.35);
+        }
 
-        .tx-card { background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
-        .tx-icon { width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
-        .tx-icon.DEPOSIT { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-        .tx-icon.WITHDRAWAL { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-        .tx-icon.INVESTMENT { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
-        .tx-details { flex: 1; margin-left: 8px; }
-        .tx-details h5 { font-size: 11px; font-weight: 700; color: #fff; }
-        .tx-details p { font-size: 9px; color: var(--text-sub); margin-top: 1px; }
+        .tx-card { 
+            background: rgba(15, 23, 42, 0.75); 
+            border: 1px solid var(--card-border); 
+            border-radius: 14px; 
+            padding: 14px; 
+            margin-bottom: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .tx-card:hover {
+            border-color: rgba(0, 210, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .tx-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .tx-icon.DEPOSIT { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .tx-icon.WITHDRAWAL { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .tx-icon.INVESTMENT { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); border: 1px solid rgba(0, 210, 255, 0.3); }
+        .tx-details { flex: 1; margin-left: 12px; }
+        .tx-details h5 { font-size: 12.5px; font-weight: 700; color: #fff; letter-spacing: 0.3px; }
+        .tx-details p { font-size: 10px; color: var(--text-sub); margin-top: 3px; }
         .tx-amount { text-align: right; }
-        .tx-amount h5 { font-size: 12px; font-weight: 800; }
-        .status-badge { font-size: 8px; font-weight: 700; padding: 2px 4px; border-radius: 3px; text-transform: uppercase; display: inline-block; margin-top: 2px; }
-        .status-completed { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-        .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+        .tx-amount h5 { font-size: 14px; font-weight: 800; letter-spacing: -0.3px; }
+        .status-badge { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 6px; text-transform: uppercase; display: inline-block; margin-top: 4px; letter-spacing: 0.5px; }
+        .status-completed { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
 
         .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
         .stat-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; text-align: center; }
@@ -564,13 +634,13 @@
     <p>• <b>Withdrawals:</b> Withdrawals are <b>strictly locked</b> and only allowed after your active investment plan fully completes the <b>2-week duration</b>.</p>
 </div>
 
-<!-- Quick Actions -->
+<!-- Quick Actions (Modernized Big Professional Deposit & Withdrawal Buttons) -->
 <div class="quick">
     <button onclick="playSound(); openPage('deposit')">
         <i class="fa-solid fa-wallet"></i> Deposit
     </button>
     <button onclick="playSound(); openPage('withdraw')">
-        <i class="fa-solid fa-arrow-up"></i> Withdraw
+        <i class="fa-solid fa-arrow-up-from-bracket"></i> Withdraw
     </button>
 </div>
 
@@ -678,16 +748,16 @@
     </div>
 </section>
 
-<!-- History Page -->
+<!-- History Page (Modernized Big Professional Buttons & Cards) -->
 <section id="history" class="page">
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
         <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> Transaction History</h3>
         
         <div class="history-tabs">
-            <button class="tab-btn active" onclick="filterHistory('ALL', this)">All Activity</button>
-            <button class="tab-btn" onclick="filterHistory('DEPOSIT', this)">Deposits</button>
-            <button class="tab-btn" onclick="filterHistory('WITHDRAWAL', this)">Withdrawals</button>
-            <button class="tab-btn" onclick="filterHistory('INVESTMENT', this)">Investments</button>
+            <button class="tab-btn active" onclick="filterHistory('ALL', this)"><i class="fa-solid fa-list-ul"></i> All Activity</button>
+            <button class="tab-btn" onclick="filterHistory('DEPOSIT', this)"><i class="fa-solid fa-arrow-down-long"></i> Deposits</button>
+            <button class="tab-btn" onclick="filterHistory('WITHDRAWAL', this)"><i class="fa-solid fa-arrow-up-long"></i> Withdrawals</button>
+            <button class="tab-btn" onclick="filterHistory('INVESTMENT', this)"><i class="fa-solid fa-chart-line"></i> Investments</button>
         </div>
 
         <div id="history-container"></div>
@@ -1213,7 +1283,6 @@
         document.getElementById('profile-id').textContent = tgUser.id;
         document.getElementById('ref-link').value = `https://t.me/CoreXBot?start=ref_${tgUser.id}`;
 
-        // Sawirka Profile-ka Telegram-ka soo jiido (Haddii uu leeyahay)
         if (tgUser.photo_url) {
             const avatarHtml = `<img src="${tgUser.photo_url}" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover;">`;
             document.getElementById('header-avatar').innerHTML = avatarHtml;
@@ -1441,7 +1510,7 @@
         }
 
         if (txs.length === 0) {
-            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 16px 0;">No transaction records found.</p>`;
+            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 20px 0;">No transaction records found.</p>`;
             return;
         }
 
@@ -1449,7 +1518,7 @@
             <div class="tx-card">
                 <div style="display: flex; align-items: center;">
                     <div class="tx-icon ${tx.type}">
-                        <i class="fa-solid ${tx.type === 'DEPOSIT' ? 'fa-arrow-down' : tx.type === 'WITHDRAWAL' ? 'fa-arrow-up' : 'fa-chart-line'}"></i>
+                        <i class="fa-solid ${tx.type === 'DEPOSIT' ? 'fa-arrow-down-long' : tx.type === 'WITHDRAWAL' ? 'fa-arrow-up-long' : 'fa-chart-line'}"></i>
                     </div>
                     <div class="tx-details">
                         <h5>${tx.description || tx.type}</h5>
