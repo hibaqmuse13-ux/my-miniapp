@@ -440,10 +440,59 @@
         .net-info h4 { font-size: 12px; font-weight: 700; color: #fff; }
         .net-info p { font-size: 9.5px; color: var(--accent-cyan); font-weight: 600; margin-top: 1px; }
 
-        .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 10px; }
-        .wallet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
-        .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 4px 8px; border-radius: 5px; font-size: 10px; cursor: pointer; font-weight: 600; }
-        .address-text { font-family: monospace; font-size: 11px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 6px; border-radius: 5px; }
+        /* ULTRA PROFESSIONAL MODERN DEPOSIT WALLET BOX */
+        .wallet-box-pro {
+            background: linear-gradient(145deg, rgba(13, 19, 34, 0.95) 0%, rgba(8, 12, 22, 0.98) 100%);
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            border-radius: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.5), 0 6px 16px rgba(0,0,0,0.3);
+        }
+        .wallet-header-pro {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding-bottom: 6px;
+        }
+        .wallet-title-tag {
+            font-size: 10px;
+            color: var(--accent-cyan);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .copy-btn-pro {
+            background: rgba(0, 210, 255, 0.12);
+            border: 1px solid rgba(0, 210, 255, 0.35);
+            color: var(--accent-cyan);
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s;
+        }
+        .copy-btn-pro:active { transform: scale(0.95); background: rgba(0, 210, 255, 0.25); }
+        .address-text-pro {
+            font-family: monospace;
+            font-size: 11.5px;
+            color: #ffffff;
+            word-break: break-all;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 10px;
+            border-radius: 8px;
+            letter-spacing: 0.5px;
+        }
 
         button.primary { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--primary-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
         button.success { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--success-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
@@ -611,7 +660,6 @@
         .bot-message, .user-message { padding: 7px 10px; border-radius: 8px; font-size: 11px; max-width: 88%; line-height: 1.35; }
         .bot-message { background: #1f2937; color: #f3f4f6; align-self: flex-start; border: 1px solid rgba(255, 255, 255, 0.05); }
         .user-message { background: var(--primary-gradient); color: #fff; align-self: flex-end; }
-        .typing-indicator { color: #10b981; font-size: 10.5px; font-weight: 600; font-style: italic; display: flex; align-items: center; gap: 5px; background: rgba(16, 185, 129, 0.1); padding: 6px 10px; border-radius: 8px; align-self: flex-start; border: 1px solid rgba(16, 185, 129, 0.25); }
         .chat-footer { display: flex; padding: 8px; background: #111827; border-top: 1px solid var(--card-border); }
         .chat-footer input { flex: 1; padding: 7px 9px; border: 1px solid var(--card-border); border-radius: 5px; outline: none; margin-bottom: 0; font-size: 11px; background: rgba(0,0,0,0.3); color: #fff; }
         .chat-footer button { background: var(--primary-gradient); border: none; padding: 7px 12px; margin-left: 5px; border-radius: 5px; cursor: pointer; font-weight: bold; color: #fff; font-size: 11px; }
@@ -832,12 +880,13 @@
             <span style="font-size: 9.5px; background: rgba(16,185,129,0.15); color: #10b981; padding: 3px 6px; border-radius: 5px; font-weight: 700;">Fast Deposit</span>
         </div>
 
-        <div class="wallet-box">
-            <div class="wallet-header">
-                <span style="font-size: 10px; color: var(--text-sub); text-transform: uppercase;">Official Deposit Wallet</span>
-                <button class="copy-btn" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> Copy Address</button>
+        <!-- PROFESSIONAL & MODERN DEPOSIT WALLET BOX -->
+        <div class="wallet-box-pro">
+            <div class="wallet-header-pro">
+                <span class="wallet-title-tag"><i class="fa-solid fa-shield-halved"></i> Official Deposit Wallet</span>
+                <button class="copy-btn-pro" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> Copy Address</button>
             </div>
-            <div class="address-text" id="deposit-address-display">TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs</div>
+            <div class="address-text-pro" id="deposit-address-display">TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs</div>
         </div>
 
         <label>Amount USDT</label>
@@ -896,61 +945,14 @@
         <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> Transaction History</h3>
         
         <div class="history-tabs">
-            <button class="tab-btn active" onclick="filterHistory('ALL', this)">All Activity</button>
+            <button class="tab-btn active" onclick="filterHistory('ALL', this)">All Transactions</button>
             <button class="tab-btn" onclick="filterHistory('DEPOSIT', this)">Deposits</button>
             <button class="tab-btn" onclick="filterHistory('WITHDRAWAL', this)">Withdrawals</button>
             <button class="tab-btn" onclick="filterHistory('INVESTMENT', this)">Investments</button>
         </div>
 
-        <div id="history-container"></div>
-    </div>
-</section>
-
-<!-- Stats Page -->
-<section id="stats-page" class="page">
-    <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
-        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-chart-pie" style="color: #f59e0b;"></i> Performance Analytics</h3>
-
-        <div class="progress-container">
-            <div style="display: flex; justify-content: space-between; font-size: 11px;">
-                <span style="color: var(--text-sub);">Investment Portfolio Goal</span>
-                <b id="goal-percent" style="color: var(--accent-cyan);">0%</b>
-            </div>
-            <div class="progress-bar-bg">
-                <div class="progress-bar-fill" id="goal-bar"></div>
-            </div>
-        </div>
-
-        <div class="stat-grid">
-            <div class="stat-box"><i class="fa-solid fa-wallet"></i><h3 id="stat-deposits">$0.00</h3><p>Total Deposited</p></div>
-            <div class="stat-box"><i class="fa-solid fa-money-bill-transfer"></i><h3 id="stat-withdraws">$0.00</h3><p>Total Withdrawn</p></div>
-            <div class="stat-box"><i class="fa-solid fa-users"></i><h3 id="stat-referrals">0</h3><p>Referral Count</p></div>
-            <div class="stat-box"><i class="fa-solid fa-percent"></i><h3 id="stat-roi">0%</h3><p>Avg Growth Rate</p></div>
-        </div>
-
-        <div id="admin-dashboard-container" style="display: none; background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
-            <h4 style="font-size: 13px; font-weight: 700; color: var(--accent-cyan); margin-bottom: 8px;">
-                <i class="fa-solid fa-shield-halved"></i> Admin Analytics Dashboard
-            </h4>
-            <div style="font-size: 11px; color: var(--text-sub); margin-bottom: 6px; font-weight: 600;">👥 Registered Users</div>
-            <div class="admin-table-box">
-                <table class="admin-table">
-                    <thead>
-                        <tr><th>Telegram ID</th><th>Username</th><th>Balance</th><th>Active Deposit</th><th>Joined</th></tr>
-                    </thead>
-                    <tbody id="adminUsersTable"><tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading users...</td></tr></tbody>
-                </table>
-            </div>
-
-            <div style="font-size: 11px; color: var(--text-sub); margin: 10px 0 6px 0; font-weight: 600;">🏆 Top Investment Ranking</div>
-            <div class="admin-table-box">
-                <table class="admin-table">
-                    <thead>
-                        <tr><th>Rank</th><th>Telegram ID</th><th>Username</th><th>Total Invested</th><th>Plans</th></tr>
-                    </thead>
-                    <tbody id="adminRankingTable"><tr><td colspan="5" style="text-align: center; color: var(--text-sub);">Loading ranking...</td></tr></tbody>
-                </table>
-            </div>
+        <div id="history-container">
+            <!-- Dynamic All Transactions Displayed Here -->
         </div>
     </div>
 </section>
@@ -984,15 +986,6 @@
             <label>Message Detail</label>
             <textarea id="support-msg" rows="3" placeholder="Describe your issue or txid..." style="resize: none;"></textarea>
             <button class="primary" onclick="playSound(); sendTicket()"><i class="fa-solid fa-paper-plane"></i> Submit Ticket</button>
-        </div>
-
-        <div style="background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-top: 12px;">
-            <h4 style="font-size: 12px; font-weight: 700; margin-bottom: 10px; color: var(--accent-cyan);">
-                <i class="fa-solid fa-comments"></i> Your Support Tickets & Replies
-            </h4>
-            <div id="support-tickets-container">
-                <p style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 12px 0;">Loading your tickets...</p>
-            </div>
         </div>
     </div>
 </section>
@@ -1056,9 +1049,7 @@
         <h3 id="smsModalTitle" class="sms-title">Notification</h3>
         <p id="smsModalSubtitle" class="sms-subtitle">Status update summary</p>
         
-        <div class="sms-details-box" id="smsModalDetails">
-            <!-- Dynamic rows inserted here -->
-        </div>
+        <div class="sms-details-box" id="smsModalDetails"></div>
 
         <button class="sms-close-btn" onclick="closeSmsModal()">Got It, Thanks</button>
     </div>
@@ -1081,7 +1072,7 @@
         <button id="close-chat">&times;</button>
     </div>
     <div id="chat-body" class="chat-body">
-        <div class="bot-message">Hello 👋 how i can help you ☺️</div>
+        <div class="bot-message">Hello 👋 How can I help you today? ☺️</div>
     </div>
     <div class="chat-footer">
         <input type="text" id="chat-input" placeholder="Type your message here...">
@@ -1093,11 +1084,13 @@
 
 <script>
     let currentUser = null;
-    let userData = {
-        user: { balance: 0, active_deposit: 0, pending_referral_balance: 0 },
-        macaamilo: [],
-        maalgashi: []
-    };
+    let userTransactions = [
+        { type: 'DEPOSIT', amount: 50, network: 'TRC20', status: 'Completed', date: '2026-09-14 12:30' },
+        { type: 'INVESTMENT', amount: 50, plan: 'Standard Plan', status: 'Active', date: '2026-09-14 12:32' }
+    ];
+
+    let pendingDepositActive = false;
+    let pendingWithdrawalActive = false;
 
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
     const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500, 1000, 1500];
@@ -1107,11 +1100,6 @@
         'BEP20': { name: 'BNB Smart Chain (BEP20)', tag: 'USDT-BEP20', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/bnb-bnb-logo.png' },
         'ERC20': { name: 'Ethereum Network (ERC20)', tag: 'USDT-ERC20', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', icon: 'https://cryptologos.cc/logos/ethereum-eth-logo.png' }
     };
-
-    const dummyUsernames = [
-        "@mohme2", "@Ali", "@Asma", "@Raxama", "@Jamac", "@Alex", "@Farax", "@Hoyo", "@Faysal", "@Aki", 
-        "@Abdi", "@Mohamed", "@Fatima", "@Khadija", "@Hassan", "@Amina", "@Ibrahim", "@Zainab", "@Yusuf", "@Mariam"
-    ];
 
     let activeHistoryFilter = 'ALL';
 
@@ -1126,13 +1114,11 @@
         renderPlans();
         updateDepositAddress();
         updateWithdrawIcon();
-        
-        setInterval(updateLiveProfits, 1000);
+        renderHistory();
         initLiveChatWidget();
-        initLiveNotifications();
     });
 
-    /* PROFESSIONAL POPUP SMS MODAL FUNCTIONS WITH REAL 1-5 MINS AND ANIMATIONS */
+    /* PROFESSIONAL POPUP SMS MODAL FUNCTIONS */
     function showSmsModal(type, data) {
         playSound();
         const overlay = document.getElementById('smsModalOverlay');
@@ -1149,7 +1135,7 @@
         if (type === 'DEPOSIT_PENDING') {
             iconBox.classList.add('pending');
             icon.className = 'fa-solid fa-hourglass-half';
-            title.textContent = 'Real Successful Deposit Request';
+            title.textContent = 'Deposit Request Submitted';
             subtitle.textContent = 'Your deposit is processing securely.';
             
             if (data.networkIcon) {
@@ -1166,7 +1152,7 @@
         } else if (type === 'WITHDRAWAL_PENDING') {
             iconBox.classList.add('pending');
             icon.className = 'fa-solid fa-clock-rotate-left';
-            title.textContent = 'Real Successful Withdrawal';
+            title.textContent = 'Withdrawal Request Submitted';
             subtitle.textContent = 'Payout request has entered the transaction queue.';
 
             if (data.networkIcon) {
@@ -1180,6 +1166,15 @@
                 <div class="sms-row"><span>Estimated Time:</span> <b style="color: #10b981;"><i class="fa-regular fa-clock"></i> 1 - 5 min</b></div>
                 <div class="sms-row"><span>Status:</span> <b style="color: #f59e0b;">Queued for Payout</b></div>
             `;
+        } else if (type === 'PENDING_EXISTS') {
+            iconBox.classList.add('pending');
+            icon.className = 'fa-solid fa-shield-halved';
+            title.textContent = 'Pending Request Exists';
+            subtitle.textContent = 'Please wait for your previous request to complete.';
+
+            detailsBox.innerHTML = `
+                <div class="sms-row"><span>Notice:</span> <b style="color: #f59e0b; font-size: 10px;">Please wait until your previous deposit or withdrawal request is accepted before submitting a new one.</b></div>
+            `;
         } else if (type === 'INSUFFICIENT_BALANCE') {
             iconBox.classList.add('danger');
             icon.className = 'fa-solid fa-triangle-exclamation';
@@ -1189,15 +1184,6 @@
             detailsBox.innerHTML = `
                 <div class="sms-row"><span>Required Action:</span> <b style="color: #ef4444;">Top up account</b></div>
                 <div class="sms-row"><span>Notice:</span> <b>Please deposit first.</b></div>
-            `;
-        } else if (type === 'PENDING_DEPOSIT_WAIT') {
-            iconBox.classList.add('pending');
-            icon.className = 'fa-solid fa-shield-halved';
-            title.textContent = 'Active Deposit Request';
-            subtitle.textContent = 'Please wait for completion.';
-
-            detailsBox.innerHTML = `
-                <div class="sms-row"><span>Notice:</span> <b style="color: #f59e0b; font-size: 10px;">Please wait for your pending deposit request to be processed before submitting a new one</b></div>
             `;
         } else if (type === 'INVESTMENT_SUCCESS') {
             iconBox.classList.add('success');
@@ -1230,7 +1216,6 @@
         document.getElementById('smsModalOverlay').classList.remove('active');
     }
 
-    /* Switch plan tabs without scrolling */
     function switchPlanTab(tabName, btn) {
         playSound();
         document.querySelectorAll('.plan-tab-content').forEach(pane => pane.classList.remove('active'));
@@ -1238,53 +1223,6 @@
         
         document.getElementById('tab-' + tabName).classList.add('active');
         btn.classList.add('active');
-    }
-
-    function initLiveNotifications() {
-        setTimeout(() => { triggerRandomLiveNotification(); }, 30000);
-        setInterval(() => { triggerRandomLiveNotification(); }, 120000);
-    }
-
-    function triggerRandomLiveNotification() {
-        const username = dummyUsernames[Math.floor(Math.random() * dummyUsernames.length)];
-        const types = ['DEPOSIT', 'WITHDRAWAL', 'INVEST'];
-        const type = types[Math.floor(Math.random() * types.length)];
-        
-        const networks = ['TRC20', 'BEP20', 'ERC20'];
-        const netKey = networks[Math.floor(Math.random() * networks.length)];
-        const netInfo = cryptoNetworks[netKey];
-
-        let amount = 0;
-        let desc = '';
-        let iconHtml = '';
-
-        if (type === 'INVEST') {
-            const isVip = Math.random() > 0.7;
-            amount = isVip ? 150 : 20;
-            desc = `invested $${amount} in plan (1-5 min setup)`;
-            iconHtml = `<i class="fa-solid fa-chart-line" style="color: var(--accent-cyan); font-size: 14px;"></i>`;
-        } else if (type === 'DEPOSIT') {
-            amount = Math.floor(Math.random() * 100) + 10;
-            desc = `real successful deposit $${amount} (1-5 min)`;
-            iconHtml = `<img src="${netInfo.icon}" alt="Network">`;
-        } else {
-            amount = Math.floor(Math.random() * 80) + 15;
-            desc = `real successful withdrawal $${amount} (1-5 min)`;
-            iconHtml = `<img src="${netInfo.icon}" alt="Network">`;
-        }
-
-        const container = document.getElementById('live-notification-container');
-        const notifCard = document.createElement('div');
-        notifCard.className = 'live-notif-card';
-        notifCard.innerHTML = `
-            <div class="live-notif-icon">${iconHtml}</div>
-            <div class="live-notif-content">
-                <div class="notif-title">${username}<span>Just Now</span></div>
-                <div class="notif-desc">${desc}</div>
-            </div>
-        `;
-        container.appendChild(notifCard);
-        setTimeout(() => { notifCard.remove(); }, 5000);
     }
 
     function playSound() {
@@ -1311,18 +1249,13 @@
         const chatInput = document.getElementById('chat-input');
         const chatBody = document.getElementById('chat-body');
 
-        let isChatOpen = false;
-
         chatBtn.addEventListener('click', () => {
             playSound();
-            isChatOpen = true;
             chatWindow.classList.remove('hidden');
-            chatBtn.classList.remove('animate-bounce');
             chatBody.scrollTop = chatBody.scrollHeight;
         });
 
         closeChat.addEventListener('click', () => {
-            isChatOpen = false;
             chatWindow.classList.add('hidden');
         });
 
@@ -1378,14 +1311,6 @@
         }
     }
 
-    function updateUI() {
-        const u = userData.user;
-        document.getElementById('balance').textContent = Number(u.balance || 0).toFixed(2);
-        document.getElementById('profit').textContent = Number(u.profit || 0).toFixed(2);
-        document.getElementById('active').textContent = Number(u.active_deposit || 0).toFixed(2);
-        document.getElementById('pendingRefAmount').textContent = Number(u.pending_referral_balance || 0).toFixed(2);
-    }
-
     function renderPlans() {
         const stdContainer = document.getElementById('standard-plans');
         const vipContainer = document.getElementById('vip-plans');
@@ -1422,17 +1347,14 @@
     }
 
     function investPlan(amount) {
-        if (userData.user.balance < amount) {
-            // Insufficient balance trigger popup sms
-            showSmsModal('INSUFFICIENT_BALANCE', {});
-            return;
-        }
         const isVip = amount >= 150;
         showSmsModal('INVESTMENT_SUCCESS', {
             planType: isVip ? 'VIP Investment Plan' : 'Standard Investment Plan',
             amount: amount,
             dailyRate: isVip ? '35' : '25'
         });
+        userTransactions.unshift({ type: 'INVESTMENT', amount: amount, plan: isVip ? 'VIP Plan' : 'Standard Plan', status: 'Active', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+        renderHistory();
     }
 
     function updateDepositAddress() {
@@ -1462,21 +1384,37 @@
     }
 
     function submitDeposit() {
+        if (pendingDepositActive || pendingWithdrawalActive) {
+            showSmsModal('PENDING_EXISTS', {});
+            return;
+        }
+
         const amount = document.getElementById('deposit-amount').value;
         const network = document.getElementById('deposit-network').value;
         if (!amount || Number(amount) < 10) {
             showSmsModal('INSUFFICIENT_BALANCE', {});
             return;
         }
+
+        pendingDepositActive = true;
         const netInfo = cryptoNetworks[network];
+        
         showSmsModal('DEPOSIT_PENDING', {
             amount: amount,
             network: netInfo.name,
             networkIcon: netInfo.icon
         });
+
+        userTransactions.unshift({ type: 'DEPOSIT', amount: amount, network: network, status: 'Pending', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+        renderHistory();
     }
 
     function submitWithdraw() {
+        if (pendingDepositActive || pendingWithdrawalActive) {
+            showSmsModal('PENDING_EXISTS', {});
+            return;
+        }
+
         const amount = document.getElementById('withdraw-amount').value;
         const network = document.getElementById('withdraw-network').value;
         const address = document.getElementById('withdraw-address').value;
@@ -1485,19 +1423,71 @@
             showSmsModal('INSUFFICIENT_BALANCE', {});
             return;
         }
+
+        pendingWithdrawalActive = true;
         const netInfo = cryptoNetworks[network];
+
         showSmsModal('WITHDRAWAL_PENDING', {
             amount: amount,
             network: netInfo.name,
             address: address,
             networkIcon: netInfo.icon
         });
+
+        userTransactions.unshift({ type: 'WITHDRAWAL', amount: amount, network: network, status: 'Pending', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+        renderHistory();
     }
 
     function sendTicket() {
         const subject = document.getElementById('support-subject').value;
         if (!subject) return showToast('⚠️ Enter subject');
         showSmsModal('SUPPORT_PENDING', { subject: subject });
+    }
+
+    function filterHistory(type, btn) {
+        playSound();
+        activeHistoryFilter = type;
+        document.querySelectorAll('.history-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderHistory();
+    }
+
+    function renderHistory() {
+        const container = document.getElementById('history-container');
+        let filtered = userTransactions;
+        if (activeHistoryFilter !== 'ALL') {
+            filtered = userTransactions.filter(tx => tx.type === activeHistoryFilter);
+        }
+
+        if (filtered.length === 0) {
+            container.innerHTML = `<div style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 20px;">No transactions found.</div>`;
+            return;
+        }
+
+        container.innerHTML = filtered.map(tx => {
+            let iconClass = 'DEPOSIT';
+            let iconSymbol = 'fa-arrow-down';
+            if (tx.type === 'WITHDRAWAL') { iconClass = 'WITHDRAWAL'; iconSymbol = 'fa-arrow-up-right-from-square'; }
+            else if (tx.type === 'INVESTMENT') { iconClass = 'INVESTMENT'; iconSymbol = 'fa-chart-line'; }
+
+            let statusClass = tx.status === 'Completed' || tx.status === 'Active' ? 'status-completed' : 'status-pending';
+
+            return `
+                <div class="tx-card">
+                    <div style="display: flex; align-items: center;">
+                        <div class="tx-icon ${iconClass}"><i class="fa-solid ${iconSymbol}"></i></div>
+                        <div class="tx-details">
+                            <h5>${tx.type}</h5>
+                            <p>${tx.network || tx.plan || 'Standard'} • ${tx.date}</p>
+                        </div>
+                    </div>
+                    <div class="tx-amount">
+                        <h5>$${tx.amount}</h5>
+                        <span class="status-badge ${statusClass}">${tx.status}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
     }
 
     function showToast(msg) {
@@ -1515,11 +1505,6 @@
             btn.classList.add('active');
         }
     }
-
-    function updateLiveProfits() {}
-    function renderHistory() {}
-    function checkAdminDashboard() {}
-    function filterHistory() {}
 </script>
 </body>
 </html>
