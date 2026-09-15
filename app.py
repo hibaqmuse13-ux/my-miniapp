@@ -28,7 +28,7 @@ admin_waiting_reply = {}
 # SQLITE DATABASE
 # ============================================================
 def get_db():
-    db = sqlite3.connect('usdtpilot.db', timeout=10)
+    db = sqlite3.connect('usdtpilot.db', timeout=15)
     db.row_factory = sqlite3.Row
     return db
 
@@ -253,7 +253,7 @@ def request_deposit():
     }
     
     txid_display = txid if txid else 'N/A (See Screenshot)'
-    admin_msg = f"📥 <b>NEW DEPOSIT REQUEST</b>\n\nUser: {username}\nID: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nNetwork: {network}\nTXID: <code>{txid_display}</code>"
+    admin_msg = f"📥 <b>NEW DEPOSIT REQUEST</b>\n\nUser: @{username}\nID: <code>{user_id}</code>\nAmount: <b>${amount} USDT</b>\nNetwork: {network}\nTXID: <code>{txid_display}</code>"
     
     if screenshot:
         url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendPhoto"
@@ -463,9 +463,7 @@ def webhook():
             
         if text.startswith("/start"):
             chat_id = msg["chat"]["id"]
-            
             photo_url = "https://cdn.phototourl.com/free/2026-08-08-ad52c07f-2e6f-4a25-b167-d67e4aa08fbb.png"
-            
             caption_text = (
                 "🚀 **Welcome to CoreX Investment Platform!**\n\n"
                 "Secure, transparent, and automated USDT growth designed to maximize your digital assets. "
@@ -493,7 +491,11 @@ def webhook():
         chat_id = str(query["message"]["chat"]["id"])
         message_id = query["message"]["message_id"]
         
-        requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": query_id})
+        # Si degdeg ah ugu jawaab callback-ka si uusan badhanka u xannibmin (Timeout)
+        try:
+            requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": query_id}, timeout=3)
+        except:
+            pass
         
         has_photo = "photo" in query["message"]
         edit_method = "editMessageCaption" if has_photo else "editMessageText"
@@ -502,7 +504,6 @@ def webhook():
         if data.startswith("reply_ticket_"):
             user_id = data.split("_")[2]
             admin_waiting_reply[chat_id] = user_id
-            
             send_telegram(chat_id, f"✍️ Please type your reply message to this user (ID: <code>{user_id}</code>):")
             return jsonify({"status": "ok"})
 
@@ -519,12 +520,15 @@ def webhook():
                 db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
                 db.commit()
                 
-                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
-                    "chat_id": chat_id, "message_id": message_id,
-                    content_key: f"✅ <b>DEPOSIT APPROVED & CONFIRMED</b>\nUser: <code>{user_id}</code>\nAmount: +${amount} USDT\nStatus: Balance Updated!",
-                    "parse_mode": "HTML",
-                    "reply_markup": {"inline_keyboard": []}
-                })
+                try:
+                    requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
+                        "chat_id": chat_id, "message_id": message_id,
+                        content_key: f"✅ <b>DEPOSIT APPROVED & CONFIRMED</b>\nUser: <code>{user_id}</code>\nAmount: +${amount} USDT\nStatus: Balance Updated!",
+                        "parse_mode": "HTML",
+                        "reply_markup": {"inline_keyboard": []}
+                    }, timeout=5)
+                except:
+                    pass
                 
                 send_telegram(user_id, f"🎉 <b>Deposit Approved!</b>\n\nYour deposit of <b>${amount} USDT</b> has been credited to your balance successfully.")
             db.close()
@@ -541,12 +545,15 @@ def webhook():
                 db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
                 db.commit()
                 
-                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
-                    "chat_id": chat_id, "message_id": message_id,
-                    content_key: f"❌ <b>DEPOSIT REJECTED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
-                    "parse_mode": "HTML",
-                    "reply_markup": {"inline_keyboard": []}
-                })
+                try:
+                    requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
+                        "chat_id": chat_id, "message_id": message_id,
+                        content_key: f"❌ <b>DEPOSIT REJECTED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
+                        "parse_mode": "HTML",
+                        "reply_markup": {"inline_keyboard": []}
+                    }, timeout=5)
+                except:
+                    pass
                 
                 send_telegram(user_id, f"❌ <b>Deposit Rejected</b>\n\nUnfortunately, your deposit request of <b>${amount} USDT</b> was rejected.\nPlease check your TXID or screenshot, or contact Support if you have any issues.")
             db.close()
@@ -563,12 +570,16 @@ def webhook():
                 db.execute("UPDATE transactions SET status = 'COMPLETED' WHERE id = ?", (tx_id,))
                 db.commit()
                 
-                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
-                    "chat_id": chat_id, "message_id": message_id,
-                    content_key: f"✅ <b>WITHDRAWAL APPROVED & CONFIRMED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
-                    "parse_mode": "HTML",
-                    "reply_markup": {"inline_keyboard": []}
-                })
+                try:
+                    requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
+                        "chat_id": chat_id, "message_id": message_id,
+                        content_key: f"✅ <b>WITHDRAWAL APPROVED & CONFIRMED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
+                        "parse_mode": "HTML",
+                        "reply_markup": {"inline_keyboard": []}
+                    }, timeout=5)
+                except:
+                    pass
+                
                 send_telegram(user_id, f"🎉 <b>Withdrawal Approved!</b>\n\nYour withdrawal of <b>${amount} USDT</b> has been successfully processed.")
             db.close()
 
@@ -585,12 +596,16 @@ def webhook():
                 db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
                 db.commit()
                 
-                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
-                    "chat_id": chat_id, "message_id": message_id,
-                    content_key: f"❌ <b>WITHDRAWAL REJECTED & REFUNDED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
-                    "parse_mode": "HTML",
-                    "reply_markup": {"inline_keyboard": []}
-                })
+                try:
+                    requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
+                        "chat_id": chat_id, "message_id": message_id,
+                        content_key: f"❌ <b>WITHDRAWAL REJECTED & REFUNDED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
+                        "parse_mode": "HTML",
+                        "reply_markup": {"inline_keyboard": []}
+                    }, timeout=5)
+                except:
+                    pass
+                
                 send_telegram(user_id, f"⚠️ <b>Withdrawal Rejected</b>\n\nYour withdrawal request of ${amount} USDT was rejected. The amount has been refunded to your balance.")
             db.close()
 
