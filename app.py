@@ -429,12 +429,19 @@ def admin_investment_ranking():
     return jsonify({"status": "success", "ranking": [dict(r) for r in ranking]})
 
 # ============================================================
-# TELEGRAM WEBHOOK
+# TELEGRAM WEBHOOK (Fixed with /webhook and /webhook/)
 # ============================================================
 @app.route('/webhook', methods=['POST'])
+@app.route('/webhook/', methods=['POST'])
 def webhook():
+    print("WEBHOOK RECEIVED SUCCESSFULLY")
     global admin_waiting_reply
+    
+    if not request.is_json:
+        return jsonify({"status": "error", "message": "Invalid JSON"}), 400
+        
     update = request.json
+    print("DATA RECEIVED:", update)
     
     if update and "message" in update:
         msg = update["message"]
@@ -491,7 +498,6 @@ def webhook():
         chat_id = str(query["message"]["chat"]["id"])
         message_id = query["message"]["message_id"]
         
-        # Si degdeg ah ugu jawaab callback-ka si uusan badhanka u xannibmin (Timeout)
         try:
             requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": query_id}, timeout=3)
         except:
