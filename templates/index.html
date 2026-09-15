@@ -180,7 +180,7 @@
         .pending-balance-card .balance-amount { font-size: 15px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; }
         .pending-balance-card .card-subtitle { font-size: 7.5px; color: #fbbf24; font-weight: 600; display: inline-block; margin-top: 0px; }
 
-        /* Professional Rules & Policy Card */
+        /* Professional Rules & Policy Page / Card Styles */
         .policy-container {
             background: linear-gradient(145deg, rgba(15, 23, 42, 0.9) 0%, rgba(10, 15, 30, 0.95) 100%);
             border: 1px solid rgba(245, 158, 11, 0.3);
@@ -675,36 +675,6 @@
     </div>
 </div>
 
-<!-- Professional Rules & Policy Card -->
-<div class="policy-container">
-    <div class="policy-header">
-        <div class="policy-header-icon">
-            <i class="fa-solid fa-shield-halved"></i>
-        </div>
-        <h3>Investment & Referral Guidelines</h3>
-    </div>
-    <div class="policy-body">
-        <div class="policy-item">
-            <i class="fa-solid fa-circle-check"></i>
-            <div class="policy-text">
-                <b>Profits:</b> Standard plans earn 25% daily. VIP plans earn 35% daily credited hourly.
-            </div>
-        </div>
-        <div class="policy-item">
-            <i class="fa-solid fa-circle-check"></i>
-            <div class="policy-text">
-                <b>Referral Bonus:</b> Invite friends and instantly earn <b>3.50 USDT</b> when your referral makes their first successful deposit. You can withdraw referral balance once it reaches <b>150$</b>.
-            </div>
-        </div>
-        <div class="policy-item">
-            <i class="fa-solid fa-circle-check"></i>
-            <div class="policy-text">
-                <b>Withdrawals:</b> Withdrawals are <b>strictly locked</b> and only allowed after your active investment plan fully completes the <b>2-week duration</b>.
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Professional & Modern Big Quick Action Buttons -->
 <div class="quick">
     <button class="action-btn-modern deposit-btn" onclick="playSound(); openPage('deposit')">
@@ -744,6 +714,38 @@
         <i class="fa-solid fa-crown"></i> VIP Plans ($150 - $1500 | 35% Daily | 2 Weeks)
     </div>
     <div id="vip-plans" class="plans-grid"></div>
+</section>
+
+<!-- Guidelines / Policy Page (NEW SECTION) -->
+<section id="guidelines" class="page">
+    <div class="policy-container" style="margin-bottom: 0;">
+        <div class="policy-header">
+            <div class="policy-header-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3>Investment & Referral Guidelines</h3>
+        </div>
+        <div class="policy-body">
+            <div class="policy-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <div class="policy-text">
+                    <b>Profits:</b> Standard plans earn 25% daily. VIP plans earn 35% daily credited hourly.
+                </div>
+            </div>
+            <div class="policy-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <div class="policy-text">
+                    <b>Referral Bonus:</b> Invite friends and instantly earn <b>3.50 USDT</b> when your referral makes their first successful deposit. You can withdraw referral balance once it reaches <b>150$</b>.
+                </div>
+            </div>
+            <div class="policy-item">
+                <i class="fa-solid fa-circle-check"></i>
+                <div class="policy-text">
+                    <b>Withdrawals:</b> Withdrawals are <b>strictly locked</b> and only allowed after your active investment plan fully completes the <b>2-week duration</b>.
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 
 <!-- Deposit Page -->
@@ -972,11 +974,11 @@
     </div>
 </section>
 
-<!-- Bottom Nav -->
+<!-- Bottom Nav (Added Guidelines Button) -->
 <nav id="main-nav">
     <button class="nav-btn active" onclick="playSound(); openPage('invest', this)"><i class="fa-solid fa-house"></i> Home</button>
+    <button class="nav-btn" onclick="playSound(); openPage('guidelines', this)"><i class="fa-solid fa-shield-halved"></i> Rules</button>
     <button class="nav-btn" onclick="playSound(); openPage('history', this)"><i class="fa-solid fa-receipt"></i> History</button>
-    <button class="nav-btn" onclick="playSound(); openPage('stats-page', this)"><i class="fa-solid fa-chart-pie"></i> Stats</button>
     <button class="nav-btn" onclick="playSound(); openPage('support', this)"><i class="fa-solid fa-headset"></i> Support</button>
     <button class="nav-btn" onclick="playSound(); openPage('profile', this)"><i class="fa-solid fa-user"></i> Profile</button>
 </nav>
