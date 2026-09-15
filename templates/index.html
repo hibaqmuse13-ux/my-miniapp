@@ -1750,6 +1750,9 @@
     }
 
     function openPage(pageId, btn) {
+        // Instantly scroll to top and clear scroll lag
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(pageId).classList.add('active');
 
