@@ -493,7 +493,11 @@ def webhook():
         chat_id = str(query["message"]["chat"]["id"])
         message_id = query["message"]["message_id"]
         
-        requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": query_id})
+        # Markiba u jawaab Telegram si badhanka uusan u dhicin ama uusan u galin 'loading' dheer
+        try:
+            requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": query_id}, timeout=3)
+        except:
+            pass
         
         has_photo = "photo" in query["message"]
         edit_method = "editMessageCaption" if has_photo else "editMessageText"
