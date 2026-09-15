@@ -289,6 +289,111 @@
         button.primary { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--primary-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
         button.success { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--success-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
 
+        /* Verification Flow Screen Styles */
+        #deposit-verification-view { display: none; text-align: center; padding: 10px 0; }
+        .verif-ring-box {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin: 15px auto 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .verif-ring-box::before, .verif-ring-box::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid rgba(0, 210, 255, 0.2);
+            animation: pulseRing 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+        .verif-ring-box::after { animation-delay: 1s; }
+        @keyframes pulseRing {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.45); opacity: 0; }
+        }
+        .verif-center-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--primary-gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: #fff;
+            box-shadow: 0 0 25px rgba(0, 210, 255, 0.5);
+            z-index: 2;
+        }
+        .verif-steps-track {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0;
+            position: relative;
+            padding: 0 10px;
+        }
+        .verif-step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            z-index: 2;
+        }
+        .verif-step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--card-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            color: var(--text-sub);
+            font-weight: 700;
+        }
+        .verif-step-item.completed .verif-step-circle {
+            background: rgba(16, 185, 129, 0.2);
+            border-color: #10b981;
+            color: #10b981;
+        }
+        .verif-step-item.active .verif-step-circle {
+            background: rgba(0, 210, 255, 0.2);
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+        }
+        .verif-step-label {
+            font-size: 9px;
+            color: var(--text-sub);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .verif-step-item.completed .verif-step-label { color: #10b981; }
+        .verif-step-item.active .verif-step-label { color: var(--accent-cyan); }
+
+        .verif-receipt-box {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 14px;
+            text-align: left;
+            margin-top: 15px;
+        }
+        .verif-receipt-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11.5px;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .verif-receipt-row:last-child { border-bottom: none; }
+        .verif-receipt-row span { color: var(--text-sub); }
+        .verif-receipt-row b { color: #fff; font-family: monospace; }
+
         /* History Section */
         .history-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 14px; }
         .tab-btn { 
@@ -683,44 +788,100 @@
 <!-- Deposit Page -->
 <section id="deposit" class="page">
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
-        <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-arrow-down" style="color: #10b981;"></i> Deposit USDT</h3>
         
-        <label>Select Deposit Network</label>
-        <select id="deposit-network" onchange="updateDepositAddress()">
-            <option value="TRC20">TRON Network (USDT-TRC20)</option>
-            <option value="BEP20">BNB Smart Chain (USDT-BEP20)</option>
-            <option value="ERC20">Ethereum Network (USDT-ERC20)</option>
-        </select>
+        <!-- Standard Deposit Form View -->
+        <div id="deposit-form-view">
+            <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-arrow-down" style="color: #10b981;"></i> Deposit USDT</h3>
+            
+            <label>Select Deposit Network</label>
+            <select id="deposit-network" onchange="updateDepositAddress()">
+                <option value="TRC20">TRON Network (USDT-TRC20)</option>
+                <option value="BEP20">BNB Smart Chain (USDT-BEP20)</option>
+                <option value="ERC20">Ethereum Network (USDT-ERC20)</option>
+            </select>
 
-        <div class="network-preview-card">
-            <div class="net-left">
-                <img id="deposit-net-icon" src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="Crypto Icon">
-                <div class="net-info">
-                    <h4 id="deposit-net-fullname">Tron TRC20</h4>
-                    <p id="deposit-net-tag">Tether USD (TRC20)</p>
+            <div class="network-preview-card">
+                <div class="net-left">
+                    <img id="deposit-net-icon" src="https://cryptologos.cc/logos/tron-trx-logo.png" alt="Crypto Icon">
+                    <div class="net-info">
+                        <h4 id="deposit-net-fullname">Tron TRC20</h4>
+                        <p id="deposit-net-tag">Tether USD (TRC20)</p>
+                    </div>
+                </div>
+                <span style="font-size: 9.5px; background: rgba(16,185,129,0.15); color: #10b981; padding: 3px 6px; border-radius: 5px; font-weight: 700;">Fast Deposit</span>
+            </div>
+
+            <div class="wallet-box">
+                <div class="wallet-header">
+                    <span style="font-size: 10px; color: var(--text-sub); text-transform: uppercase;">Official Deposit Wallet</span>
+                    <button class="copy-btn" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> Copy Address</button>
+                </div>
+                <div class="address-text" id="deposit-address-display">TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs</div>
+            </div>
+
+            <label>Amount USDT</label>
+            <input type="number" id="deposit-amount" placeholder="Min $10">
+
+            <label>Transaction Hash / TXID</label>
+            <input type="text" id="deposit-txid" placeholder="Paste TXID Hash Here">
+
+            <label>Or Upload Payment Screenshot</label>
+            <input type="file" id="deposit-screenshot" accept="image/*" style="width: 100%; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); padding: 8px; border-radius: 10px; color: #fff; font-size: 12px; margin-bottom: 12px;">
+
+            <button class="primary" onclick="playSound(); submitDeposit()">Submit Deposit</button>
+        </div>
+
+        <!-- Verification Flow View (Matches Reference Design) -->
+        <div id="deposit-verification-view">
+            <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 4px;">Verifying Payment</h3>
+            <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">Please wait while we verify your transaction</p>
+
+            <div class="verif-ring-box">
+                <div class="verif-center-icon">
+                    <i class="fa-solid fa-shield-halved"></i>
                 </div>
             </div>
-            <span style="font-size: 9.5px; background: rgba(16,185,129,0.15); color: #10b981; padding: 3px 6px; border-radius: 5px; font-weight: 700;">Fast Deposit</span>
-        </div>
 
-        <div class="wallet-box">
-            <div class="wallet-header">
-                <span style="font-size: 10px; color: var(--text-sub); text-transform: uppercase;">Official Deposit Wallet</span>
-                <button class="copy-btn" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> Copy Address</button>
+            <h4 id="verif-status-title" style="font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px;">Confirming your USDT payment...</h4>
+            <p id="verif-status-desc" style="font-size: 10.5px; color: var(--text-sub); margin-bottom: 15px;">Network validation in progress</p>
+
+            <div class="verif-steps-track">
+                <div class="verif-step-item completed" id="vstep-1">
+                    <div class="verif-step-circle"><i class="fa-solid fa-check"></i></div>
+                    <span class="verif-step-label">Payment Sent</span>
+                </div>
+                <div class="verif-step-item active" id="vstep-2">
+                    <div class="verif-step-circle"><i class="fa-solid fa-rotate fa-spin"></i></div>
+                    <span class="verif-step-label">Verifying</span>
+                </div>
+                <div class="verif-step-item" id="vstep-3">
+                    <div class="verif-step-circle">3</div>
+                    <span class="verif-step-label">Confirmation</span>
+                </div>
             </div>
-            <div class="address-text" id="deposit-address-display">TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs</div>
+
+            <div class="verif-receipt-box">
+                <div class="verif-receipt-row">
+                    <span>Amount</span>
+                    <b id="verif-receipt-amount">$0.00 USD</b>
+                </div>
+                <div class="verif-receipt-row">
+                    <span>Network</span>
+                    <b id="verif-receipt-net">TRC20</b>
+                </div>
+                <div class="verif-receipt-row">
+                    <span>Reference ID</span>
+                    <b id="verif-receipt-txid">NP2026...</b>
+                </div>
+                <div class="verif-receipt-row">
+                    <span>Time</span>
+                    <b id="verif-receipt-time">Just now</b>
+                </div>
+            </div>
+
+            <button class="primary" style="margin-top: 16px;" onclick="playSound(); resetDepositForm()">Back to Deposit</button>
         </div>
 
-        <label>Amount USDT</label>
-        <input type="number" id="deposit-amount" placeholder="Min $10">
-
-        <label>Transaction Hash / TXID</label>
-        <input type="text" id="deposit-txid" placeholder="Paste TXID Hash Here">
-
-        <label>Or Upload Payment Screenshot</label>
-        <input type="file" id="deposit-screenshot" accept="image/*" style="width: 100%; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); padding: 8px; border-radius: 10px; color: #fff; font-size: 12px; margin-bottom: 12px;">
-
-        <button class="primary" onclick="playSound(); submitDeposit()">Submit Deposit</button>
     </div>
 </section>
 
@@ -1479,6 +1640,15 @@
             const data = await res.json();
             showToast(data.message);
             if (data.status === 'success') {
+                // Switch view to verification progress flow screen matching user reference
+                document.getElementById('deposit-form-view').style.display = 'none';
+                document.getElementById('deposit-verification-view').style.display = 'block';
+
+                document.getElementById('verif-receipt-amount').textContent = `$${Number(amount).toFixed(2)} USD`;
+                document.getElementById('verif-receipt-net').textContent = network;
+                document.getElementById('verif-receipt-txid').textContent = txid ? (txid.substring(0, 10) + '...') : `NP${Date.now().toString().substring(4)}`;
+                document.getElementById('verif-receipt-time').textContent = 'Just now';
+
                 document.getElementById('deposit-amount').value = '';
                 document.getElementById('deposit-txid').value = '';
                 document.getElementById('deposit-screenshot').value = '';
@@ -1487,6 +1657,11 @@
         } catch (e) {
             showToast('⚠️ Deposit submission failed!');
         }
+    }
+
+    function resetDepositForm() {
+        document.getElementById('deposit-verification-view').style.display = 'none';
+        document.getElementById('deposit-form-view').style.display = 'block';
     }
 
     function updateWithdrawIcon() {
@@ -1697,7 +1872,6 @@
     }
 
     function openPage(pageId, btn) {
-        // Instantly jump to top and eliminate page scrolling/lag
         window.scrollTo({ top: 0, behavior: 'instant' });
         
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
