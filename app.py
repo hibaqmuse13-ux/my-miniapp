@@ -434,14 +434,12 @@ def admin_investment_ranking():
 @app.route('/webhook', methods=['POST'])
 @app.route('/webhook/', methods=['POST'])
 def webhook():
-    print("WEBHOOK RECEIVED SUCCESSFULLY")
     global admin_waiting_reply
     
     if not request.is_json:
         return jsonify({"status": "error", "message": "Invalid JSON"}), 400
         
     update = request.json
-    print("DATA RECEIVED:", update)
     
     if update and "message" in update:
         msg = update["message"]
@@ -519,8 +517,13 @@ def webhook():
             tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
             
             if tx:
-                user_id = tx['user_id']
-                amount = tx['amount']
+                user_id = str(tx['user_id'])
+                amount = float(tx['amount'])
+                
+                usr = db.execute("SELECT * FROM users WHERE telegram_id = ?", (user_id,)).fetchone()
+                if not usr:
+                    db.execute("INSERT INTO users (telegram_id, username, balance) VALUES (?, ?, ?)", (user_id, 'User', 0))
+                    db.commit()
                 
                 db.execute("UPDATE transactions SET status = 'COMPLETED' WHERE id = ?", (tx_id,))
                 db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
@@ -537,6 +540,8 @@ def webhook():
                     pass
                 
                 send_telegram(user_id, f"🎉 <b>Deposit Approved!</b>\n\nYour deposit of <b>${amount} USDT</b> has been credited to your balance successfully.")
+            else:
+                send_telegram(chat_id, "⚠️ Transaction not found or already processed (Database might have restarted). Please submit a new deposit.")
             db.close()
             
         elif data.startswith("reject_dep_"):
@@ -545,8 +550,8 @@ def webhook():
             tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
             
             if tx:
-                user_id = tx['user_id']
-                amount = tx['amount']
+                user_id = str(tx['user_id'])
+                amount = float(tx['amount'])
                 
                 db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
                 db.commit()
@@ -561,7 +566,7 @@ def webhook():
                 except:
                     pass
                 
-                send_telegram(user_id, f"❌ <b>Deposit Rejected</b>\n\nUnfortunately, your deposit request of <b>${amount} USDT</b> was rejected.\nPlease check your TXID or screenshot, or contact Support if you have any issues.")
+                send_telegram(user_id, f"❌ <b>Deposit Rejected</b>\n\nUnfortunately, your deposit request of <b>${amount} USDT</b> was rejected.")
             db.close()
 
         elif data.startswith("approve_with_"):
@@ -570,7 +575,7 @@ def webhook():
             tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
             
             if tx:
-                user_id = tx['user_id']
+                user_id = str(tx['user_id'])
                 amount = abs(float(tx['amount']))
                 
                 db.execute("UPDATE transactions SET status = 'COMPLETED' WHERE id = ?", (tx_id,))
@@ -595,9 +600,14 @@ def webhook():
             tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
             
             if tx:
-                user_id = tx['user_id']
+                user_id = str(tx['user_id'])
                 amount = abs(float(tx['amount']))
                 
+                usr = db.execute("SELECT * FROM users WHERE telegram_id = ?", (user_id,)).fetchone()
+                if not usr:
+                    db.execute("INSERT INTO users (telegram_id, username, balance) VALUES (?, ?, ?)", (user_id, 'User', 0))
+                    db.commit()
+
                 db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
                 db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
                 db.commit()
