@@ -45,88 +45,17 @@
         .verified { font-size: 9.5px; font-weight: 600; color: #10b981; background: rgba(16, 185, 129, 0.12); padding: 5px 10px; border-radius: 20px; border: 1px solid rgba(16, 185, 129, 0.25); display: flex; align-items: center; gap: 4px; }
 
         /* Market Ticker Styles */
-        .market-ticker-container {
-            width: 100%;
-            overflow: hidden;
-            white-space: nowrap;
-            background: var(--card-bg);
-            padding: 6px 0;
-            border-radius: 10px;
-            box-sizing: border-box;
-            margin-bottom: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-        }
+        .market-ticker-container { width: 100%; overflow: hidden; white-space: nowrap; background: var(--card-bg); padding: 6px 0; border-radius: 10px; box-sizing: border-box; margin-bottom: 6px; border: 1px solid rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); }
+        .market-ticker-track { display: inline-block; white-space: nowrap; animation: scrollRightToLeft 18s linear infinite; }
+        .market-ticker-track span { display: inline-block; padding: 0 16px; color: var(--text-white); font-size: 11px; }
+        @keyframes scrollRightToLeft { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
 
-        .market-ticker-track {
-            display: inline-block;
-            white-space: nowrap;
-            animation: scrollRightToLeft 18s linear infinite;
-        }
-
-        .market-ticker-track span {
-            display: inline-block;
-            padding: 0 16px;
-            color: var(--text-white);
-            font-size: 11px;
-        }
-
-        @keyframes scrollRightToLeft {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        /* LIVE MARKET PRICES SECTION */
-        .market-section {
-            background: rgba(15, 22, 36, 0.85);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            padding: 6px 8px;
-            margin-bottom: 6px;
-            backdrop-filter: blur(10px);
-        }
-
-        .market-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 4px;
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--text-sub);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .market-header .live-badge {
-            background-color: rgba(14, 203, 129, 0.12);
-            color: #0ecb81;
-            padding: 1px 5px;
-            border-radius: 3px;
-            font-size: 8.5px;
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            border: 1px solid rgba(14, 203, 129, 0.2);
-        }
-
-        .crypto-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 4px;
-        }
-
-        .crypto-item {
-            background: rgba(21, 28, 44, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.03);
-            border-radius: 6px;
-            padding: 4px 5px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
+        /* Live Market Prices Section */
+        .market-section { background: rgba(15, 22, 36, 0.85); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 6px 8px; margin-bottom: 6px; backdrop-filter: blur(10px); }
+        .market-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; font-size: 10px; font-weight: 700; color: var(--text-sub); letter-spacing: 0.5px; text-transform: uppercase; }
+        .market-header .live-badge { background-color: rgba(14, 203, 129, 0.12); color: #0ecb81; padding: 1px 5px; border-radius: 3px; font-size: 8.5px; display: flex; align-items: center; gap: 3px; border: 1px solid rgba(14, 203, 129, 0.2); }
+        .crypto-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+        .crypto-item { background: rgba(21, 28, 44, 0.5); border: 1px solid rgba(255, 255, 255, 0.03); border-radius: 6px; padding: 4px 5px; display: flex; flex-direction: column; align-items: center; text-align: center; }
         .crypto-info { display: flex; flex-direction: column; align-items: center; width: 100%; }
         .crypto-symbol { font-weight: 700; font-size: 10px; color: #ffffff; }
         .crypto-price-box { text-align: center; width: 100%; margin-top: 2px; }
@@ -136,16 +65,7 @@
         .crypto-change.down { color: #f6465d; }
 
         /* Balance Card */
-        .balance-card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--card-border); 
-            border-radius: 16px; 
-            padding: 16px 14px; 
-            text-align: center; 
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4); 
-            margin-bottom: 6px; 
-        }
+        .balance-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px 14px; text-align: center; backdrop-filter: blur(10px); box-shadow: 0 8px 22px rgba(0, 0, 0, 0.4); margin-bottom: 6px; }
         .balance-card p { font-size: 13px; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; font-weight: 700; }
         .balance-card h1 { font-size: 44px; font-weight: 800; letter-spacing: -0.5px; margin: 4px 0; color: #ffffff; }
         span.badge-usdt { font-size: 11px; font-weight: 700; color: #00d2ff; background: rgba(0, 210, 255, 0.12); padding: 4px 10px; border-radius: 6px; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 6px; border: 1px solid rgba(0, 210, 255, 0.25); }
@@ -158,161 +78,33 @@
         .stats b { font-size: 14px; color: #fff; font-weight: 800; display: block; margin-top: 2px; }
 
         /* Pending Referral Balance Card */
-        .pending-balance-card { 
-            background: linear-gradient(135deg, rgba(42, 34, 14, 0.9) 0%, rgba(20, 16, 6, 0.94) 100%); 
-            border: 1px solid rgba(245, 158, 11, 0.35); 
-            border-radius: 10px; 
-            padding: 8px 10px; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            margin-bottom: 6px; 
-        }
-        .pending-balance-card .card-icon { 
-            width: 28px; height: 28px; border-radius: 6px; 
-            background: rgba(245, 158, 11, 0.18); 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 12px; color: #fbbf24; 
-            border: 1px solid rgba(245, 158, 11, 0.4); flex-shrink: 0; 
-        }
+        .pending-balance-card { background: linear-gradient(135deg, rgba(42, 34, 14, 0.9) 0%, rgba(20, 16, 6, 0.94) 100%); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 10px; padding: 8px 10px; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+        .pending-balance-card .card-icon { width: 28px; height: 28px; border-radius: 6px; background: rgba(245, 158, 11, 0.18); display: flex; align-items: center; justify-content: center; font-size: 12px; color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); flex-shrink: 0; }
         .pending-balance-card .card-info { flex: 1; }
         .pending-balance-card .card-info h3 { font-size: 9px; color: #fde68a; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0px; font-weight: 700; }
         .pending-balance-card .balance-amount { font-size: 15px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; }
         .pending-balance-card .card-subtitle { font-size: 7.5px; color: #fbbf24; font-weight: 600; display: inline-block; margin-top: 0px; }
 
-        /* Professional Rules & Policy Page / Card Styles */
-        .policy-container {
-            background: linear-gradient(145deg, rgba(15, 23, 42, 0.9) 0%, rgba(10, 15, 30, 0.95) 100%);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 14px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(12px);
-        }
-        .policy-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 10px;
-        }
-        .policy-header-icon {
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
-            background: rgba(245, 158, 11, 0.15);
-            border: 1px solid rgba(245, 158, 11, 0.35);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fbbf24;
-            font-size: 15px;
-        }
-        .policy-header h3 {
-            font-size: 13px;
-            font-weight: 800;
-            color: #fef08a;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-        .policy-body {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .policy-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            padding: 10px 12px;
-            border-radius: 10px;
-        }
-        .policy-item i {
-            color: #fbbf24;
-            font-size: 13px;
-            margin-top: 2px;
-            flex-shrink: 0;
-        }
-        .policy-text {
-            font-size: 11px;
-            color: #cbd5e1;
-            line-height: 1.45;
-        }
-        .policy-text b {
-            color: #ffffff;
-            font-weight: 700;
-        }
+        /* Professional Rules & Policy Page */
+        .policy-container { background: linear-gradient(145deg, rgba(15, 23, 42, 0.9) 0%, rgba(10, 15, 30, 0.95) 100%); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 16px; padding: 16px; margin-bottom: 14px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); backdrop-filter: blur(12px); }
+        .policy-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 10px; }
+        .policy-header-icon { width: 34px; height: 34px; border-radius: 10px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.35); display: flex; align-items: center; justify-content: center; color: #fbbf24; font-size: 15px; }
+        .policy-header h3 { font-size: 13px; font-weight: 800; color: #fef08a; text-transform: uppercase; letter-spacing: 0.8px; }
+        .policy-body { display: flex; flex-direction: column; gap: 10px; }
+        .policy-item { display: flex; align-items: flex-start; gap: 10px; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.04); padding: 10px 12px; border-radius: 10px; }
+        .policy-item i { color: #fbbf24; font-size: 13px; margin-top: 2px; flex-shrink: 0; }
+        .policy-text { font-size: 11px; color: #cbd5e1; line-height: 1.45; }
+        .policy-text b { color: #ffffff; font-weight: 700; }
 
         /* Professional & Modern Big Action Buttons */
-        .quick { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: 12px; 
-            margin-bottom: 14px; 
-        }
-        .action-btn-modern {
-            position: relative;
-            border: none;
-            border-radius: 16px;
-            padding: 16px 12px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: #fff;
-            overflow: hidden;
-            backdrop-filter: blur(12px);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-        .action-btn-modern:active {
-            transform: scale(0.96);
-        }
-        .action-btn-modern.deposit-btn {
-            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35);
-            border: 1px solid rgba(16, 185, 129, 0.4);
-        }
-        .action-btn-modern.deposit-btn:hover {
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.5);
-        }
-        .action-btn-modern.withdraw-btn {
-            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
-            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35);
-            border: 1px solid rgba(239, 68, 68, 0.4);
-        }
-        .action-btn-modern.withdraw-btn:hover {
-            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.5);
-        }
-        .btn-icon-wrapper {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            color: #fff;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
-        }
-        .action-btn-modern span {
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-        }
-        .action-btn-modern small {
-            font-size: 9px;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
+        .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
+        .action-btn-modern { position: relative; border: none; border-radius: 16px; padding: 16px 12px; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: #fff; overflow: hidden; backdrop-filter: blur(12px); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .action-btn-modern:active { transform: scale(0.96); }
+        .action-btn-modern.deposit-btn { background: linear-gradient(135deg, #059669 0%, #10b981 100%); box-shadow: 0 8px 20px rgba(16, 185, 129, 0.35); border: 1px solid rgba(16, 185, 129, 0.4); }
+        .action-btn-modern.withdraw-btn { background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.35); border: 1px solid rgba(239, 68, 68, 0.4); }
+        .btn-icon-wrapper { width: 38px; height: 38px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center; font-size: 16px; color: #fff; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15); }
+        .action-btn-modern span { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; }
+        .action-btn-modern small { font-size: 9px; color: rgba(255, 255, 255, 0.85); font-weight: 600; letter-spacing: 0.3px; }
 
         /* Pages */
         .page { display: none; }
@@ -323,42 +115,10 @@
         .section-header.vip { color: #f59e0b; }
 
         /* PLAN SELECTOR TABS */
-        .plan-category-tabs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 12px;
-            background: rgba(15, 22, 36, 0.85);
-            padding: 5px;
-            border-radius: 12px;
-            border: 1px solid var(--card-border);
-        }
-        .plan-tab-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-sub);
-            padding: 10px 6px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            transition: all 0.25s ease;
-            text-transform: uppercase;
-        }
-        .plan-tab-btn.active.std-tab {
-            background: var(--primary-gradient);
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(0, 114, 255, 0.35);
-        }
-        .plan-tab-btn.active.vip-tab {
-            background: var(--vip-gradient);
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.35);
-        }
+        .plan-category-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; background: rgba(15, 22, 36, 0.85); padding: 5px; border-radius: 12px; border: 1px solid var(--card-border); }
+        .plan-tab-btn { background: transparent; border: none; color: var(--text-sub); padding: 10px 6px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: all 0.25s ease; text-transform: uppercase; }
+        .plan-tab-btn.active.std-tab { background: var(--primary-gradient); color: #fff; box-shadow: 0 4px 15px rgba(0, 114, 255, 0.35); }
+        .plan-tab-btn.active.vip-tab { background: var(--vip-gradient); color: #fff; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.35); }
 
         .plan-tab-content { display: none; }
         .plan-tab-content.active { display: block; animation: fadeInPane 0.3s ease; }
@@ -366,32 +126,8 @@
 
         /* PLANS GRID */
         .plans-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
-        
-        .plan-card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--card-border); 
-            border-radius: 14px; 
-            padding: 10px 8px; 
-            text-align: center; 
-            position: relative; 
-            backdrop-filter: blur(10px);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            min-height: 175px;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
-        }
-        .plan-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 20px rgba(0, 210, 255, 0.15);
-        }
-        .plan-card.vip-card { 
-            border-color: rgba(245, 158, 11, 0.35); 
-            background: linear-gradient(145deg, rgba(30, 25, 15, 0.85) 0%, rgba(21, 28, 44, 0.85) 100%); 
-        }
-        .plan-card.vip-card:hover {
-            box-shadow: 0 10px 20px rgba(245, 158, 11, 0.2);
-        }
+        .plan-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 10px 8px; text-align: center; position: relative; backdrop-filter: blur(10px); display: flex; flex-direction: column; justify-content: space-between; min-height: 175px; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .plan-card.vip-card { border-color: rgba(245, 158, 11, 0.35); background: linear-gradient(145deg, rgba(30, 25, 15, 0.85) 0%, rgba(21, 28, 44, 0.85) 100%); }
 
         .plan-badge { position: absolute; top: 6px; right: 6px; font-size: 8px; font-weight: 800; padding: 2px 5px; border-radius: 4px; text-transform: uppercase; }
         .badge-std { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
@@ -399,38 +135,14 @@
 
         .plan-title { font-size: 18px; font-weight: 900; margin: 2px 0; color: #ffffff; letter-spacing: 0.5px; }
         .plan-rate { font-size: 11px; font-weight: 800; color: #10b981; margin-bottom: 4px; }
-
-        .plan-info { 
-            font-size: 9px; 
-            color: #e2e8f0; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 2px; 
-            margin-bottom: 6px; 
-            text-align: left; 
-            background: rgba(0, 0, 0, 0.35); 
-            padding: 5px 6px; 
-            border-radius: 6px; 
-            border: 1px solid rgba(255, 255, 255, 0.04);
-        }
+        .plan-info { font-size: 9px; color: #e2e8f0; display: flex; flex-direction: column; gap: 2px; margin-bottom: 6px; text-align: left; background: rgba(0, 0, 0, 0.35); padding: 5px 6px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.04); }
         .plan-info span { font-weight: 600; display: flex; align-items: center; gap: 4px; }
 
-        .plan-btn { 
-            width: 100%; 
-            padding: 7px; 
-            border-radius: 7px; 
-            border: none; 
-            font-size: 10.5px; 
-            font-weight: 800; 
-            cursor: pointer; 
-            color: #fff; 
-            transition: transform 0.15s ease, filter 0.2s ease;
-        }
-        .plan-btn:active { transform: scale(0.95); }
+        .plan-btn { width: 100%; padding: 7px; border-radius: 7px; border: none; font-size: 10.5px; font-weight: 800; cursor: pointer; color: #fff; }
         .btn-std { background: var(--primary-gradient); box-shadow: 0 4px 12px rgba(0, 114, 255, 0.3); }
         .btn-vip { background: var(--vip-gradient); box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); }
 
-        /* Forms & Other UI */
+        /* Forms */
         label { display: block; font-size: 10px; color: var(--text-sub); text-transform: uppercase; margin-bottom: 3px; font-weight: 600; }
         select, input, textarea { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); background: rgba(9, 13, 22, 0.7); color: #fff; font-size: 12px; outline: none; margin-bottom: 10px; }
         
@@ -441,65 +153,66 @@
         .net-info p { font-size: 9.5px; color: var(--accent-cyan); font-weight: 600; margin-top: 1px; }
 
         /* WALLET BOX PRO */
-        .wallet-box-pro {
-            background: linear-gradient(145deg, rgba(13, 19, 34, 0.95) 0%, rgba(8, 12, 22, 0.98) 100%);
-            border: 1px solid rgba(0, 210, 255, 0.25);
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 12px;
-            box-shadow: inset 0 2px 6px rgba(0,0,0,0.5), 0 6px 16px rgba(0,0,0,0.3);
-        }
-        .wallet-header-pro {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-            padding-bottom: 6px;
-        }
-        .wallet-title-tag {
-            font-size: 10px;
-            color: var(--accent-cyan);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        .copy-btn-pro {
-            background: rgba(0, 210, 255, 0.12);
-            border: 1px solid rgba(0, 210, 255, 0.35);
-            color: var(--accent-cyan);
-            padding: 5px 10px;
-            border-radius: 6px;
-            font-size: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            transition: all 0.2s;
-        }
-        .copy-btn-pro:active { transform: scale(0.95); background: rgba(0, 210, 255, 0.25); }
-        .address-text-pro {
-            font-family: monospace;
-            font-size: 11.5px;
-            color: #ffffff;
-            word-break: break-all;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 10px;
-            border-radius: 8px;
-            letter-spacing: 0.5px;
-        }
+        .wallet-box-pro { background: linear-gradient(145deg, rgba(13, 19, 34, 0.95) 0%, rgba(8, 12, 22, 0.98) 100%); border: 1px solid rgba(0, 210, 255, 0.25); border-radius: 14px; padding: 14px; margin-bottom: 12px; }
+        .wallet-header-pro { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.06); padding-bottom: 6px; }
+        .wallet-title-tag { font-size: 10px; color: var(--accent-cyan); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; display: flex; align-items: center; gap: 5px; }
+        .copy-btn-pro { background: rgba(0, 210, 255, 0.12); border: 1px solid rgba(0, 210, 255, 0.35); color: var(--accent-cyan); padding: 5px 10px; border-radius: 6px; font-size: 10px; cursor: pointer; font-weight: 700; display: flex; align-items: center; gap: 5px; }
+        .address-text-pro { font-family: monospace; font-size: 11.5px; color: #ffffff; word-break: break-all; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px; border-radius: 8px; }
 
         button.primary { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--primary-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
         button.success { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--success-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
 
-        .history-tabs { display: flex; gap: 5px; margin-bottom: 12px; overflow-x: auto; padding-bottom: 3px; }
-        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--card-border); color: var(--text-sub); padding: 5px 10px; border-radius: 14px; font-size: 10px; font-weight: 600; cursor: pointer; white-space: nowrap; }
-        .tab-btn.active { background: var(--primary-gradient); color: #fff; border-color: transparent; }
+        /* RE-STYLED LARGE, BEAUTIFUL HISTORY ACTION BUTTONS */
+        .history-action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .history-big-btn {
+            background: rgba(21, 28, 44, 0.85);
+            border: 1px solid var(--card-border);
+            border-radius: 14px;
+            padding: 14px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            color: var(--text-sub);
+        }
+        .history-big-btn i {
+            font-size: 20px;
+            color: var(--accent-cyan);
+            margin-bottom: 2px;
+            transition: transform 0.2s;
+        }
+        .history-big-btn span {
+            font-size: 11.5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #fff;
+        }
+        .history-big-btn:hover {
+            border-color: rgba(0, 210, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 210, 255, 0.15);
+        }
+        .history-big-btn.active {
+            background: var(--primary-gradient);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 6px 20px rgba(0, 114, 255, 0.35);
+        }
+        .history-big-btn.active i {
+            color: #fff;
+            transform: scale(1.1);
+        }
+        .history-big-btn.btn-all { grid-column: span 2; }
 
         .tx-card { background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 6px; display: flex; align-items: center; justify-content: space-between; }
         .tx-icon { width: 30px; height: 30px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
@@ -512,10 +225,11 @@
         .tx-details p { font-size: 9px; color: var(--text-sub); margin-top: 1px; }
         .tx-amount { text-align: right; }
         .tx-amount h5 { font-size: 12px; font-weight: 800; }
-        .status-badge { font-size: 8px; font-weight: 700; padding: 2px 4px; border-radius: 3px; text-transform: uppercase; display: inline-block; margin-top: 2px; }
-        .status-completed, .status-approved, .status-active { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-        .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
-        .status-rejected { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+        
+        .status-badge { font-size: 8.5px; font-weight: 700; padding: 3px 6px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-top: 2px; }
+        .status-approved, .status-completed, .status-active { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+        .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+        .status-rejected { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
 
         .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px; text-decoration: none; color: #fff; }
         .support-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--accent-cyan); }
@@ -527,95 +241,36 @@
         nav button.active { color: var(--accent-cyan); font-weight: 700; }
 
         /* Toast */
-        #toast { 
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px); 
-            background: rgba(15, 23, 42, 0.95); color: #fff; border: 1px solid rgba(0, 210, 255, 0.3); 
-            padding: 10px 16px; border-radius: 12px; font-size: 11.5px; font-weight: 500; z-index: 10000; 
-            display: none; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); backdrop-filter: blur(12px); 
-            align-items: center; gap: 10px; max-width: 90%; text-align: left;
-        }
+        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(15, 23, 42, 0.95); color: #fff; border: 1px solid rgba(0, 210, 255, 0.3); padding: 10px 16px; border-radius: 12px; font-size: 11.5px; font-weight: 500; z-index: 10000; display: none; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); backdrop-filter: blur(12px); align-items: center; gap: 10px; max-width: 90%; }
 
-        /* PROFESSIONAL POPUP SMS MODAL STYLES WITH ANIMATIONS */
-        .sms-modal-overlay {
-            position: fixed; inset: 0; background: rgba(5, 8, 15, 0.85); backdrop-filter: blur(8px);
-            z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 16px;
-            opacity: 0; visibility: hidden; transition: all 0.3s ease;
-        }
+        /* POPUP SMS MODAL STYLES */
+        .sms-modal-overlay { position: fixed; inset: 0; background: rgba(5, 8, 15, 0.85); backdrop-filter: blur(8px); z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; visibility: hidden; transition: all 0.3s ease; }
         .sms-modal-overlay.active { opacity: 1; visibility: visible; }
-        .sms-modal-card {
-            background: linear-gradient(145deg, #111827 0%, #0d1322 100%);
-            border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 20px; width: 100%; max-width: 340px;
-            padding: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.7);
-            transform: scale(0.7) translateY(30px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
+        .sms-modal-card { background: linear-gradient(145deg, #111827 0%, #0d1322 100%); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 20px; width: 100%; max-width: 340px; padding: 20px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.7); transform: scale(0.7) translateY(30px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .sms-modal-overlay.active .sms-modal-card { transform: scale(1) translateY(0); }
         
-        .sms-icon-box {
-            width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center;
-            font-size: 28px; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-            animation: pulseIcon 2s infinite ease-in-out;
-        }
-        @keyframes pulseIcon {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-        }
+        .sms-icon-box { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; font-size: 28px; position: relative; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
         .sms-icon-box.success { background: rgba(16, 185, 129, 0.18); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.5); }
         .sms-icon-box.pending { background: rgba(245, 158, 11, 0.18); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.5); }
         .sms-icon-box.danger { background: rgba(239, 68, 68, 0.18); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.5); }
         
-        .sms-network-badge {
-            position: absolute; bottom: -2px; right: -2px; width: 24px; height: 24px; border-radius: 50%;
-            background: #fff; padding: 2px; border: 2px solid #111827; object-fit: contain;
-        }
+        .sms-network-badge { position: absolute; bottom: -2px; right: -2px; width: 24px; height: 24px; border-radius: 50%; background: #fff; padding: 2px; border: 2px solid #111827; object-fit: contain; }
         .sms-title { font-size: 17px; font-weight: 800; color: #fff; margin-bottom: 4px; }
         .sms-subtitle { font-size: 11.5px; color: var(--text-sub); margin-bottom: 14px; }
-        
-        .sms-details-box {
-            background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px;
-            padding: 12px; margin-bottom: 16px; text-align: left; display: flex; flex-direction: column; gap: 8px;
-        }
+        .sms-details-box { background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 12px; padding: 12px; margin-bottom: 16px; text-align: left; display: flex; flex-direction: column; gap: 8px; }
         .sms-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
         .sms-row span { color: var(--text-sub); font-weight: 600; }
         .sms-row b { color: #fff; font-weight: 700; }
-        
-        .sms-close-btn {
-            width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--primary-gradient);
-            color: #fff; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px;
-            box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4); transition: transform 0.2s;
-        }
-        .sms-close-btn:active { transform: scale(0.96); }
+        .sms-close-btn { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--primary-gradient); color: #fff; font-size: 12px; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4); }
 
-        /* Live Chat Widget Styles */
-        .chat-widget-btn {
-            position: fixed; bottom: 75px; right: 14px; background: var(--primary-gradient); color: #fff;
-            width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 18px; cursor: pointer; box-shadow: 0 5px 16px rgba(0, 210, 255, 0.4); z-index: 10000;
-            border: 2px solid rgba(255, 255, 255, 0.2); transition: transform 0.25s ease, opacity 0.5s ease;
-        }
-        @keyframes chatBounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.18); box-shadow: 0 0 20px rgba(0, 210, 255, 0.8); }
-        }
-        .chat-widget-btn.animate-bounce { animation: chatBounce 1.2s infinite ease-in-out; }
-
-        .chat-window {
-            position: fixed; bottom: 130px; right: 14px; width: 290px; height: 380px;
-            background: #111827; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.6);
-            display: flex; flex-direction: column; z-index: 10000; overflow: hidden; border: 1px solid rgba(0, 210, 255, 0.25);
-            animation: fadeInWindow 0.3s ease forwards;
-        }
-        @keyframes fadeInWindow {
-            from { opacity: 0; transform: translateY(15px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
+        /* Live Chat Widget */
+        .chat-widget-btn { position: fixed; bottom: 75px; right: 14px; background: var(--primary-gradient); color: #fff; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; cursor: pointer; box-shadow: 0 5px 16px rgba(0, 210, 255, 0.4); z-index: 10000; border: 2px solid rgba(255, 255, 255, 0.2); }
+        .chat-window { position: fixed; bottom: 130px; right: 14px; width: 290px; height: 380px; background: #111827; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.6); display: flex; flex-direction: column; z-index: 10000; overflow: hidden; border: 1px solid rgba(0, 210, 255, 0.25); }
         .chat-window.hidden { display: none; }
-        .chat-header { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); color: #fff; padding: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 11px; border-bottom: 1px solid var(--card-border); }
-        .chat-header .bot-title-info { display: flex; align-items: center; gap: 5px; }
-        .chat-header .online-dot { width: 6px; height: 6px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 5px #10b981; }
-        .chat-header button { background: none; border: none; color: var(--text-sub); font-size: 16px; cursor: pointer; }
+        .chat-header { background: #1f2937; color: #fff; padding: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 11px; }
         .chat-body { flex: 1; padding: 8px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; background: rgba(9, 13, 22, 0.95); }
         .bot-message, .user-message { padding: 7px 10px; border-radius: 8px; font-size: 11px; max-width: 88%; line-height: 1.35; }
-        .bot-message { background: #1f2937; color: #f3f4f6; align-self: flex-start; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .bot-message { background: #1f2937; color: #f3f4f6; align-self: flex-start; }
         .user-message { background: var(--primary-gradient); color: #fff; align-self: flex-end; }
         .chat-footer { display: flex; padding: 8px; background: #111827; border-top: 1px solid var(--card-border); }
         .chat-footer input { flex: 1; padding: 7px 9px; border: 1px solid var(--card-border); border-radius: 5px; outline: none; margin-bottom: 0; font-size: 11px; background: rgba(0,0,0,0.3); color: #fff; }
@@ -638,17 +293,13 @@
 <!-- Header -->
 <header>
     <div class="profile">
-        <div class="avatar" id="header-avatar">
-            <i class="fa-solid fa-user"></i>
-        </div>
+        <div class="avatar" id="header-avatar"><i class="fa-solid fa-user"></i></div>
         <div>
             <h3 id="username">User</h3>
             <small id="userid">ID: 000000</small>
         </div>
     </div>
-    <div class="verified">
-        <i class="fa-solid fa-circle-check"></i> Verified
-    </div>
+    <div class="verified"><i class="fa-solid fa-circle-check"></i> Verified</div>
 </header>
 
 <!-- MARKET TICKER -->
@@ -723,16 +374,12 @@
 <!-- Quick Action Buttons -->
 <div class="quick">
     <button class="action-btn-modern deposit-btn" onclick="playSound(); openPage('deposit')">
-        <div class="btn-icon-wrapper">
-            <i class="fa-solid fa-wallet"></i>
-        </div>
+        <div class="btn-icon-wrapper"><i class="fa-solid fa-wallet"></i></div>
         <span>Deposit USDT</span>
         <small>Instant Funding</small>
     </button>
     <button class="action-btn-modern withdraw-btn" onclick="playSound(); openPage('withdraw')">
-        <div class="btn-icon-wrapper">
-            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-        </div>
+        <div class="btn-icon-wrapper"><i class="fa-solid fa-arrow-up-right-from-square"></i></div>
         <span>Withdraw</span>
         <small>Secure Payout</small>
     </button>
@@ -744,7 +391,7 @@
         <i class="fa-solid fa-chart-line"></i> Active Investments & Live Profit
     </div>
     <div id="live-investments-container">
-        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 16px; text-align: center; color: var(--text-sub); font-size: 11.5px; backdrop-filter: blur(10px);">
+        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 16px; text-align: center; color: var(--text-sub); font-size: 11.5px;">
             <i class="fa-solid fa-chart-line" style="font-size: 20px; color: var(--accent-cyan); margin-bottom: 6px; display: block;"></i>
             <b>No Active Portfolios</b><br>Deploy an investment plan below to begin earning live hourly profits.
         </div>
@@ -754,7 +401,6 @@
         <i class="fa-solid fa-layer-group"></i> Choose Investment Plan
     </div>
 
-    <!-- Tab Buttons -->
     <div class="plan-category-tabs">
         <button class="plan-tab-btn std-tab active" onclick="switchPlanTab('standard', this)">
             <i class="fa-solid fa-bolt"></i> Standard Plans
@@ -764,19 +410,13 @@
         </button>
     </div>
 
-    <!-- Standard Plans -->
     <div id="tab-standard" class="plan-tab-content active">
-        <div style="font-size: 10px; color: var(--text-sub); margin-bottom: 8px; font-weight: 600;">
-            Standard Plans ($10 - $100 | 25% Daily | 2 Weeks)
-        </div>
+        <div style="font-size: 10px; color: var(--text-sub); margin-bottom: 8px; font-weight: 600;">Standard Plans ($10 - $100 | 25% Daily | 2 Weeks)</div>
         <div id="standard-plans" class="plans-grid"></div>
     </div>
 
-    <!-- VIP Plans -->
     <div id="tab-vip" class="plan-tab-content">
-        <div style="font-size: 10px; color: #fde68a; margin-bottom: 8px; font-weight: 600;">
-            VIP Plans ($150 - $1500 | 35% Daily | 2 Weeks)
-        </div>
+        <div style="font-size: 10px; color: #fde68a; margin-bottom: 8px; font-weight: 600;">VIP Plans ($150 - $1500 | 35% Daily | 2 Weeks)</div>
         <div id="vip-plans" class="plans-grid"></div>
     </div>
 </section>
@@ -785,29 +425,21 @@
 <section id="guidelines" class="page">
     <div class="policy-container" style="margin-bottom: 0;">
         <div class="policy-header">
-            <div class="policy-header-icon">
-                <i class="fa-solid fa-shield-halved"></i>
-            </div>
+            <div class="policy-header-icon"><i class="fa-solid fa-shield-halved"></i></div>
             <h3>Investment & Referral Guidelines</h3>
         </div>
         <div class="policy-body">
             <div class="policy-item">
                 <i class="fa-solid fa-circle-check"></i>
-                <div class="policy-text">
-                    <b>Profits:</b> Standard plans earn 25% daily. VIP plans earn 35% daily credited hourly.
-                </div>
+                <div class="policy-text"><b>Profits:</b> Standard plans earn 25% daily. VIP plans earn 35% daily credited hourly.</div>
             </div>
             <div class="policy-item">
                 <i class="fa-solid fa-circle-check"></i>
-                <div class="policy-text">
-                    <b>Referral Bonus:</b> Invite friends and instantly earn <b>3.50 USDT</b> when your referral makes their first successful deposit.
-                </div>
+                <div class="policy-text"><b>Referral Bonus:</b> Invite friends and instantly earn <b>3.50 USDT</b> when your referral makes their first successful deposit.</div>
             </div>
             <div class="policy-item">
                 <i class="fa-solid fa-circle-check"></i>
-                <div class="policy-text">
-                    <b>Withdrawals:</b> Withdrawals are <b>strictly locked</b> and only allowed after your active investment plan fully completes the <b>2-week duration</b>.
-                </div>
+                <div class="policy-text"><b>Withdrawals:</b> Withdrawals are <b>strictly locked</b> and only allowed after your active investment plan fully completes the <b>2-week duration</b>.</div>
             </div>
         </div>
     </div>
@@ -849,9 +481,6 @@
 
         <label>Transaction Hash / TXID</label>
         <input type="text" id="deposit-txid" placeholder="Paste TXID Hash Here">
-
-        <label>Or Upload Payment Screenshot</label>
-        <input type="file" id="deposit-screenshot" accept="image/*" style="width: 100%; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); padding: 8px; border-radius: 10px; color: #fff; font-size: 12px; margin-bottom: 12px;">
 
         <button class="primary" onclick="playSound(); submitDeposit()">Submit Deposit</button>
     </div>
@@ -899,12 +528,28 @@
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; padding: 16px;">
         <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 12px;"><i class="fa-solid fa-clock-rotate-left" style="color: var(--accent-cyan);"></i> Transaction History</h3>
         
-        <div class="history-tabs">
-            <button class="tab-btn active" onclick="filterHistory('ALL', this)">All Transactions</button>
-            <button class="tab-btn" onclick="filterHistory('DEPOSIT', this)">Deposits</button>
-            <button class="tab-btn" onclick="filterHistory('WITHDRAWAL', this)">Withdrawals</button>
-            <button class="tab-btn" onclick="filterHistory('INVESTMENT', this)">Investments</button>
-            <button class="tab-btn" onclick="filterHistory('SUPPORT', this)">Support Tickets</button>
+        <!-- LARGE, BEAUTIFUL HISTORY ACTION BUTTONS -->
+        <div class="history-action-grid">
+            <button class="history-big-btn btn-all active" onclick="filterHistory('ALL', this)">
+                <i class="fa-solid fa-list-check"></i>
+                <span>All Transactions</span>
+            </button>
+            <button class="history-big-btn" onclick="filterHistory('DEPOSIT', this)">
+                <i class="fa-solid fa-arrow-down-long"></i>
+                <span>Deposits</span>
+            </button>
+            <button class="history-big-btn" onclick="filterHistory('WITHDRAWAL', this)">
+                <i class="fa-solid fa-arrow-up-long"></i>
+                <span>Withdrawals</span>
+            </button>
+            <button class="history-big-btn" onclick="filterHistory('INVESTMENT', this)">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Investments</span>
+            </button>
+            <button class="history-big-btn" onclick="filterHistory('SUPPORT', this)">
+                <i class="fa-solid fa-headset"></i>
+                <span>Support</span>
+            </button>
         </div>
 
         <div id="history-container"></div>
@@ -993,7 +638,7 @@
 
 </div>
 
-<!-- PROFESSIONAL POPUP SMS MODAL CONTAINER -->
+<!-- POPUP SMS MODAL CONTAINER -->
 <div id="smsModalOverlay" class="sms-modal-overlay">
     <div class="sms-modal-card">
         <div id="smsModalIconBox" class="sms-icon-box success">
@@ -1002,9 +647,7 @@
         </div>
         <h3 id="smsModalTitle" class="sms-title">Notification</h3>
         <p id="smsModalSubtitle" class="sms-subtitle">Status update summary</p>
-        
         <div class="sms-details-box" id="smsModalDetails"></div>
-
         <button class="sms-close-btn" onclick="closeSmsModal()">Got It, Thanks</button>
     </div>
 </div>
@@ -1016,11 +659,8 @@
 
 <div id="chat-window" class="chat-window hidden">
     <div class="chat-header">
-        <div class="bot-title-info">
-            <span class="online-dot"></span>
-            <span>CoreXBot Assistant</span>
-        </div>
-        <button id="close-chat">&times;</button>
+        <span>CoreXBot Assistant</span>
+        <button id="close-chat" style="background:none; border:none; color:#fff; font-size:16px; cursor:pointer;">&times;</button>
     </div>
     <div id="chat-body" class="chat-body">
         <div class="bot-message">Hello 👋 How can I help you today? ☺️</div>
@@ -1035,8 +675,11 @@
 
 <script>
     let currentUser = null;
-    let userBalance = 0.00; // Real balance tracker starting at 0
-    let userTransactions = [];
+    let userBalance = 0.00;
+    let userTransactions = [
+        { id: 'tx_1', type: 'DEPOSIT', amount: 50, network: 'TRC20', status: 'Pending', date: '2026-09-15 12:00' },
+        { id: 'tx_2', type: 'WITHDRAWAL', amount: 25, network: 'BEP20', status: 'Pending', date: '2026-09-15 13:30' }
+    ];
 
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
     const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500, 1000, 1500];
@@ -1063,13 +706,39 @@
         renderHistory();
         updateBalanceUI();
         initLiveChatWidget();
+        
+        // Simulating Real-time Telegram Bot status webhook response (Approved / Rejected)
+        simulateRealtimeStatusWebhook();
     });
 
     function updateBalanceUI() {
         document.getElementById('balance').textContent = userBalance.toFixed(2);
     }
 
-    /* POPUP SMS MODAL FUNCTIONS */
+    // REAL-TIME STATUS SYNC SIMULATION (Approved / Rejected & Telegram notification)
+    function simulateRealtimeStatusWebhook() {
+        setTimeout(() => {
+            // Automatically update transaction status from Pending to Approved / Rejected in real-time
+            if (userTransactions.length > 0) {
+                userTransactions[0].status = 'Approved'; // Deposit approved
+                userBalance += userTransactions[0].amount;
+                updateBalanceUI();
+                renderHistory();
+
+                // Send Telegram Notification popup simulation
+                showSmsModal('STATUS_UPDATE', {
+                    title: 'Deposit Approved! 🎉',
+                    subtitle: 'Your transaction has been verified and credited.',
+                    amount: userTransactions[0].amount,
+                    network: userTransactions[0].network,
+                    status: 'Approved',
+                    color: '#10b981',
+                    iconClass: 'fa-circle-check'
+                });
+            }
+        }, 6000); // Triggers after 6 seconds to mimic real Telegram bot callback
+    }
+
     function showSmsModal(type, data) {
         playSound();
         const overlay = document.getElementById('smsModalOverlay');
@@ -1083,74 +752,33 @@
         netLogo.style.display = 'none';
         iconBox.className = 'sms-icon-box';
 
-        if (type === 'DEPOSIT_PENDING') {
-            iconBox.classList.add('pending');
-            icon.className = 'fa-solid fa-hourglass-half';
-            title.textContent = 'Deposit Request Submitted';
-            subtitle.textContent = 'Your deposit is processing securely.';
-            
-            if (data.networkIcon) {
-                netLogo.src = data.networkIcon;
-                netLogo.style.display = 'block';
-            }
+        if (type === 'STATUS_UPDATE') {
+            iconBox.classList.add('success');
+            icon.className = `fa-solid ${data.iconClass}`;
+            title.textContent = data.title;
+            subtitle.textContent = data.subtitle;
 
             detailsBox.innerHTML = `
-                <div class="sms-row"><span>Time:</span> <b>${data.date}</b></div>
                 <div class="sms-row"><span>Amount:</span> <b>$${data.amount} USDT</b></div>
                 <div class="sms-row"><span>Network:</span> <b>${data.network}</b></div>
-                <div class="sms-row"><span>Status:</span> <b style="color: #f59e0b;">Pending Review</b></div>
-            `;
-        } else if (type === 'WITHDRAWAL_PENDING') {
-            iconBox.classList.add('pending');
-            icon.className = 'fa-solid fa-clock-rotate-left';
-            title.textContent = 'Withdrawal Request Submitted';
-            subtitle.textContent = 'Payout request has entered queue.';
-
-            if (data.networkIcon) {
-                netLogo.src = data.networkIcon;
-                netLogo.style.display = 'block';
-            }
-
-            detailsBox.innerHTML = `
-                <div class="sms-row"><span>Time:</span> <b>${data.date}</b></div>
-                <div class="sms-row"><span>Amount:</span> <b>$${data.amount} USDT</b></div>
-                <div class="sms-row"><span>Network:</span> <b>${data.network}</b></div>
-                <div class="sms-row"><span>Status:</span> <b style="color: #f59e0b;">Pending Processing</b></div>
+                <div class="sms-row"><span>Status:</span> <b style="color: ${data.color};">${data.status}</b></div>
             `;
         } else if (type === 'INSUFFICIENT_BALANCE') {
             iconBox.classList.add('danger');
             icon.className = 'fa-solid fa-triangle-exclamation';
             title.textContent = 'Insufficient Balance!';
-            subtitle.textContent = 'Haddaa lacag kugu filan ma jirto.';
-
-            detailsBox.innerHTML = `
-                <div class="sms-row"><span>Notice:</span> <b style="color: #ef4444;">Fadlan Account-kaaga lacag ku shub (Deposit) inta aadan iibsan karin!</b></div>
-            `;
-        } else if (type === 'INVESTMENT_SUCCESS') {
+            subtitle.textContent = 'You do not have enough funds.';
+            detailsBox.innerHTML = `<div class="sms-row"><span>Notice:</span> <b style="color: #ef4444;">Please deposit funds to continue!</b></div>`;
+        } else if (type === 'SUCCESS_NOTICE') {
             iconBox.classList.add('success');
-            icon.className = 'fa-solid fa-circle-check';
-            title.textContent = 'Investment Deployed!';
-            subtitle.textContent = 'Your portfolio is successfully active.';
-
+            icon.className = 'fa-solid fa-check';
+            title.textContent = data.title;
+            subtitle.textContent = data.subtitle;
             detailsBox.innerHTML = `
                 <div class="sms-row"><span>Time:</span> <b>${data.date}</b></div>
-                <div class="sms-row"><span>Plan Type:</span> <b style="color: var(--accent-cyan);">${data.planType}</b></div>
-                <div class="sms-row"><span>Invested:</span> <b>$${data.amount} USDT</b></div>
-                <div class="sms-row"><span>Status:</span> <b style="color: #10b981;">Active</b></div>
-            `;
-        } else if (type === 'SUPPORT_PENDING') {
-            iconBox.classList.add('pending');
-            icon.className = 'fa-solid fa-headset';
-            title.textContent = 'Ticket Submitted';
-            subtitle.textContent = 'Support team will reply soon.';
-
-            detailsBox.innerHTML = `
-                <div class="sms-row"><span>Time:</span> <b>${data.date}</b></div>
-                <div class="sms-row"><span>Subject:</span> <b>${data.subject}</b></div>
-                <div class="sms-row"><span>Status:</span> <b style="color: #f59e0b;">Pending</b></div>
+                <div class="sms-row"><span>Status:</span> <b style="color: #10b981;">Pending Review</b></div>
             `;
         }
-
         overlay.classList.add('active');
     }
 
@@ -1162,7 +790,6 @@
         playSound();
         document.querySelectorAll('.plan-tab-content').forEach(pane => pane.classList.remove('active'));
         document.querySelectorAll('.plan-tab-btn').forEach(b => b.classList.remove('active'));
-        
         document.getElementById('tab-' + tabName).classList.add('active');
         btn.classList.add('active');
     }
@@ -1191,25 +818,14 @@
         const chatInput = document.getElementById('chat-input');
         const chatBody = document.getElementById('chat-body');
 
-        chatBtn.addEventListener('click', () => {
-            playSound();
-            chatWindow.classList.remove('hidden');
-            chatBody.scrollTop = chatBody.scrollHeight;
-        });
-
-        closeChat.addEventListener('click', () => {
-            chatWindow.classList.add('hidden');
-        });
-
+        chatBtn.addEventListener('click', () => { playSound(); chatWindow.classList.remove('hidden'); chatBody.scrollTop = chatBody.scrollHeight; });
+        closeChat.addEventListener('click', () => { chatWindow.classList.add('hidden'); });
         sendBtn.addEventListener('click', handleUserMessage);
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleUserMessage();
-        });
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUserMessage(); });
 
         function handleUserMessage() {
             const text = chatInput.value.trim();
             if (!text) return;
-
             playSound();
             const userMsg = document.createElement('div');
             userMsg.className = 'user-message';
@@ -1232,7 +848,6 @@
     async function initTelegramUser() {
         const tg = window.Telegram?.WebApp;
         if (tg) { tg.ready(); }
-
         const tgUser = tg?.initDataUnsafe?.user || { id: 5738022147, first_name: "Cali", username: "cali_hargeisa" };
         currentUser = tgUser;
 
@@ -1289,25 +904,17 @@
     }
 
     function investPlan(amount) {
-        // Requirement 1: Check if balance is sufficient
         if (userBalance < amount) {
             showSmsModal('INSUFFICIENT_BALANCE', {});
             return;
         }
-
         userBalance -= amount;
         updateBalanceUI();
-
         const isVip = amount >= 150;
         const nowStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
 
-        showSmsModal('INVESTMENT_SUCCESS', {
-            planType: isVip ? 'VIP Investment Plan' : 'Standard Investment Plan',
-            amount: amount,
-            date: nowStr
-        });
-
-        userTransactions.unshift({ type: 'INVESTMENT', amount: amount, plan: isVip ? 'VIP Plan' : 'Standard Plan', status: 'Active', date: nowStr });
+        showSmsModal('SUCCESS_NOTICE', { title: 'Investment Deployed!', subtitle: 'Your portfolio is successfully active.', date: nowStr });
+        userTransactions.unshift({ type: 'INVESTMENT', amount: amount, network: isVip ? 'VIP Plan' : 'Standard Plan', status: 'Active', date: nowStr });
         renderHistory();
     }
 
@@ -1341,25 +948,14 @@
         const amount = document.getElementById('deposit-amount').value;
         const network = document.getElementById('deposit-network').value;
         if (!amount || Number(amount) < 10) {
-            showToast('⚠️ Fadlan geli lacag sax ah (Min $10)');
+            showToast('⚠️ Please enter a valid amount (Min $10)');
             return;
         }
-
         const netInfo = cryptoNetworks[network];
         const nowStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
-        
-        // Simulating approval for testing or leaving as Pending real state
-        userBalance += Number(amount); // Automatically update real balance for demonstration
-        updateBalanceUI();
 
-        showSmsModal('DEPOSIT_PENDING', {
-            amount: amount,
-            network: netInfo.name,
-            networkIcon: netInfo.icon,
-            date: nowStr
-        });
-
-        userTransactions.unshift({ type: 'DEPOSIT', amount: amount, network: network, status: 'Approved', date: nowStr });
+        showSmsModal('SUCCESS_NOTICE', { title: 'Deposit Submitted', subtitle: 'Awaiting network confirmation.', date: nowStr });
+        userTransactions.unshift({ type: 'DEPOSIT', amount: Number(amount), network: network, status: 'Pending', date: nowStr });
         renderHistory();
     }
 
@@ -1369,49 +965,38 @@
         const address = document.getElementById('withdraw-address').value;
         
         if (!amount || Number(amount) < 10 || !address) {
-            showToast('⚠️ Fadlan buuxi xogta saxda ah');
+            showToast('⚠️ Please fill in all required fields');
             return;
         }
-
         if (userBalance < Number(amount)) {
             showSmsModal('INSUFFICIENT_BALANCE', {});
             return;
         }
-
         userBalance -= Number(amount);
         updateBalanceUI();
-
-        const netInfo = cryptoNetworks[network];
         const nowStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
 
-        showSmsModal('WITHDRAWAL_PENDING', {
-            amount: amount,
-            network: netInfo.name,
-            networkIcon: netInfo.icon,
-            date: nowStr
-        });
-
-        userTransactions.unshift({ type: 'WITHDRAWAL', amount: amount, network: network, status: 'Pending', date: nowStr });
+        showSmsModal('SUCCESS_NOTICE', { title: 'Withdrawal Submitted', subtitle: 'Payout request is in queue.', date: nowStr });
+        userTransactions.unshift({ type: 'WITHDRAWAL', amount: Number(amount), network: network, status: 'Pending', date: nowStr });
         renderHistory();
     }
 
     function sendTicket() {
         const subject = document.getElementById('support-subject').value;
         if (!subject) {
-            showToast('⚠️ Fadlan geli mowduuca (Subject)');
+            showToast('⚠️ Please enter a subject');
             return;
         }
         const nowStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
-        showSmsModal('SUPPORT_PENDING', { subject: subject, date: nowStr });
-
-        userTransactions.unshift({ type: 'SUPPORT', amount: 0, plan: subject, status: 'Pending', date: nowStr });
+        showSmsModal('SUCCESS_NOTICE', { title: 'Ticket Submitted', subtitle: 'Support team will reply soon.', date: nowStr });
+        userTransactions.unshift({ type: 'SUPPORT', amount: 0, network: subject, status: 'Pending', date: nowStr });
         renderHistory();
     }
 
     function filterHistory(type, btn) {
         playSound();
         activeHistoryFilter = type;
-        document.querySelectorAll('.history-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.history-action-grid button').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         renderHistory();
     }
@@ -1445,7 +1030,7 @@
                         <div class="tx-icon ${iconClass}"><i class="fa-solid ${iconSymbol}"></i></div>
                         <div class="tx-details">
                             <h5>${tx.type}</h5>
-                            <p>${tx.network || tx.plan || 'Standard'} • ${tx.date}</p>
+                            <p>${tx.network || 'Standard'} • ${tx.date}</p>
                         </div>
                     </div>
                     <div class="tx-amount">
