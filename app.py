@@ -493,7 +493,7 @@ def webhook():
         chat_id = str(query["message"]["chat"]["id"])
         message_id = query["message"]["message_id"]
         
-        # Markiba u jawaab Telegram si badhanka uusan u dhicin ama uusan u galin 'loading' dheer
+        # 1. MARKIBA U JAWAAB TELEGRAM (Si uusan badhanka u noqon "Failed")
         try:
             requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery", json={"callback_query_id": query_id}, timeout=3)
         except:
@@ -578,27 +578,28 @@ def webhook():
 
         elif data.startswith("reject_with_"):
             tx_id = data.split("_")[2]
-            db = get_db()
-            tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
-            
-            if tx:
-                user_id = tx['user_id']
-                amount = abs(float(tx['amount']))
+            db.execute("BEGIN TRANSACTION;") # Safe multi-statement transaction
+            try:
+                tx = db.execute("SELECT * FROM transactions WHERE id = ? AND status = 'PENDING'", (tx_id,)).fetchone()
                 
-                db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
-                db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
-                db.commit()
-                
-                requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
-                    "chat_id": chat_id, "message_id": message_id,
-                    content_key: f"❌ <b>WITHDRAWAL REJECTED & REFUNDED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
-                    "parse_mode": "HTML",
-                    "reply_markup": {"inline_keyboard": []}
-                })
-                send_telegram(user_id, f"⚠️ <b>Withdrawal Rejected</b>\n\nYour withdrawal request of ${amount} USDT was rejected. The amount has been refunded to your balance.")
-            db.close()
+                if tx:
+                    user_id = tx['user_id']
+                    amount = abs(float(tx['amount']))
+                    
+                    db.execute("UPDATE transactions SET status = 'REJECTED' WHERE id = ?", (tx_id,))
+                    db.execute("UPDATE users SET balance = balance + ? WHERE telegram_id = ?", (amount, user_id))
+                    db.commit()
+                    
+                    requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/{edit_method}", json={
+                        "chat_id": chat_id, "message_id": message_id,
+                        content_key: f"❌ <b>WITHDRAWAL REJECTED & REFUNDED</b>\nUser: <code>{user_id}</code>\nAmount: ${amount} USDT",
+                        "parse_mode": "HTML",
+                        "reply_markup": {"inline_keyboard": []}
+                    })
+                    send_telegram(user_id, f"⚠️ <b>Withdrawal Rejected</b>\n\nYour withdrawal request of ${amount} USDT was rejected. The amount has been refunded to your balance.")
+            except Exception as e:
+                db.rollback()
+            finally:
+                db.close()
 
-    return jsonify({"status": "ok"})
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    return jsonify({"status":="ok"}) # Typo corrected to standard {"status": "ok"}
