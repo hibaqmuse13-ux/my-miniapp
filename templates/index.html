@@ -338,6 +338,99 @@
             align-items: center; gap: 10px; max-width: 90%; text-align: left;
         }
 
+        /* PROFESSIONAL POPUP MODAL STYLES */
+        .custom-popup-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 8, 15, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .custom-popup-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .custom-popup-card {
+            background: linear-gradient(145deg, #131c2e 0%, #0b111c 100%);
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 340px;
+            padding: 24px 20px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+            transform: scale(0.85) translateY(20px);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .custom-popup-overlay.show .custom-popup-card {
+            transform: scale(1) translateY(0);
+        }
+        .custom-popup-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            margin: 0 auto 16px auto;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.3);
+            overflow: hidden;
+        }
+        .custom-popup-icon img {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+        }
+        .custom-popup-icon.success {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.3);
+        }
+        .custom-popup-icon.warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.3);
+        }
+        .custom-popup-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+        .custom-popup-msg {
+            font-size: 12px;
+            color: var(--text-sub);
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        .custom-popup-btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: var(--primary-gradient);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 16px rgba(0, 114, 255, 0.4);
+            transition: transform 0.15s ease;
+        }
+        .custom-popup-btn:active {
+            transform: scale(0.96);
+        }
+
         /* LIVE NOTIFICATION TOAST CONTAINER */
         #live-notification-container {
             position: fixed;
@@ -834,6 +927,19 @@
 
 </div>
 
+<!-- PROFESSIONAL POPUP MODAL HTML -->
+<div id="custom-popup-overlay" class="custom-popup-overlay">
+    <div class="custom-popup-card">
+        <div id="custom-popup-icon" class="custom-popup-icon success">
+            <img id="custom-popup-network-logo" src="https://cryptologos.cc/logos/tether-usdt-logo.png" alt="Logo" style="display: none;">
+            <i id="custom-popup-icon-i" class="fa-solid fa-check"></i>
+        </div>
+        <h3 id="custom-popup-title" class="custom-popup-title">Success</h3>
+        <p id="custom-popup-msg" class="custom-popup-msg">Action completed successfully.</p>
+        <button class="custom-popup-btn" onclick="closeCustomPopup()">OK</button>
+    </div>
+</div>
+
 <!-- LIVE NOTIFICATION TOAST CONTAINER -->
 <div id="live-notification-container"></div>
 
@@ -1027,6 +1133,44 @@
         } catch(e) {}
     }
 
+    // Professional Popup Modal Function with Network Logo Support
+    function showCustomPopup(title, message, type = 'success', networkLogoUrl = null) {
+        playSound();
+        const overlay = document.getElementById('custom-popup-overlay');
+        const iconBox = document.getElementById('custom-popup-icon');
+        const iconI = document.getElementById('custom-popup-icon-i');
+        const netLogoImg = document.getElementById('custom-popup-network-logo');
+        const titleEl = document.getElementById('custom-popup-title');
+        const msgEl = document.getElementById('custom-popup-msg');
+
+        titleEl.textContent = title;
+        msgEl.textContent = message;
+
+        iconBox.className = `custom-popup-icon ${type}`;
+
+        if (networkLogoUrl) {
+            netLogoImg.src = networkLogoUrl;
+            netLogoImg.style.display = 'block';
+            iconI.style.display = 'none';
+        } else {
+            netLogoImg.style.display = 'none';
+            iconI.style.display = 'block';
+            if (type === 'success') {
+                iconI.className = 'fa-solid fa-check';
+            } else {
+                iconI.className = 'fa-solid fa-triangle-exclamation';
+            }
+        }
+
+        overlay.classList.add('show');
+    }
+
+    function closeCustomPopup() {
+        playSound();
+        const overlay = document.getElementById('custom-popup-overlay');
+        overlay.classList.remove('show');
+    }
+
     function initLiveChatWidget() {
         const chatBtn = document.getElementById('chat-widget-btn');
         const chatWindow = document.getElementById('chat-window');
@@ -1213,7 +1357,6 @@
         document.getElementById('profile-id').textContent = tgUser.id;
         document.getElementById('ref-link').value = `https://t.me/CoreXBot?start=ref_${tgUser.id}`;
 
-        // Sawirka Profile-ka Telegram-ka soo jiido (Haddii uu leeyahay)
         if (tgUser.photo_url) {
             const avatarHtml = `<img src="${tgUser.photo_url}" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover;">`;
             document.getElementById('header-avatar').innerHTML = avatarHtml;
@@ -1326,12 +1469,12 @@
                 body: JSON.stringify({ user_id: currentUser.id, amount: amount })
             });
             const data = await res.json();
-            showToast(data.message);
+            showCustomPopup(data.status === 'success' ? 'Investment Successful' : 'Notice', data.message, data.status === 'success' ? 'success' : 'warning');
             if (data.status === 'success') {
                 fetchUserData(currentUser.id);
             }
         } catch (e) {
-            showToast('⚠️ Investment error occurred!');
+            showCustomPopup('Error', '⚠️ Investment error occurred!', 'warning');
         }
     }
 
@@ -1363,9 +1506,10 @@
         const screenshot = document.getElementById('deposit-screenshot').files[0];
 
         if (!amount || Number(amount) < 10) {
-            return showToast('⚠️ Minimum deposit is $10 USDT');
+            return showCustomPopup('Invalid Amount', '⚠️ Minimum deposit is $10 USDT', 'warning');
         }
 
+        const netInfo = cryptoNetworks[network];
         const formData = new FormData();
         formData.append('user_id', currentUser.id);
         formData.append('username', currentUser.username ? `@${currentUser.username}` : `User_${currentUser.id}`);
@@ -1381,15 +1525,18 @@
                 body: formData
             });
             const data = await res.json();
-            showToast(data.message);
+            
             if (data.status === 'success') {
+                showCustomPopup('Deposit Submitted', `Your $${amount} deposit via ${netInfo.name} has been successfully submitted for verification.`, 'success', netInfo.icon);
                 document.getElementById('deposit-amount').value = '';
                 document.getElementById('deposit-txid').value = '';
                 document.getElementById('deposit-screenshot').value = '';
                 fetchUserData(currentUser.id);
+            } else {
+                showCustomPopup('Notice', data.message, 'warning');
             }
         } catch (e) {
-            showToast('⚠️ Deposit submission failed!');
+            showCustomPopup('Error', '⚠️ Deposit submission failed!', 'warning');
         }
     }
 
@@ -1404,25 +1551,31 @@
     async function submitWithdraw() {
         const address = document.getElementById('withdraw-address').value;
         const amount = document.getElementById('withdraw-amount').value;
+        const network = document.getElementById('withdraw-network').value;
         
-        if (!address) return showToast('⚠️ Please provide a destination address!');
-        if (!amount || Number(amount) < 10) return showToast('⚠️ Minimum withdrawal is $10 USDT');
+        if (!address) return showCustomPopup('Missing Address', '⚠️ Please provide a destination address!', 'warning');
+        if (!amount || Number(amount) < 10) return showCustomPopup('Invalid Amount', '⚠️ Minimum withdrawal is $10 USDT', 'warning');
+
+        const netInfo = cryptoNetworks[network];
 
         try {
             const res = await fetch('/api/withdraw/request', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: currentUser.id, address: address, amount: amount })
+                body: JSON.stringify({ user_id: currentUser.id, address: address, amount: amount, network: network })
             });
             const data = await res.json();
-            showToast(data.message);
+
             if (data.status === 'success') {
+                showCustomPopup('Withdrawal Requested', `Your $${amount} payout via ${netInfo.name} has been successfully requested and is processing.`, 'success', netInfo.icon);
                 document.getElementById('withdraw-address').value = '';
                 document.getElementById('withdraw-amount').value = '';
                 fetchUserData(currentUser.id);
+            } else {
+                showCustomPopup('Notice', data.message, 'warning');
             }
         } catch (e) {
-            showToast('⚠️ Withdrawal request failed!');
+            showCustomPopup('Error', '⚠️ Withdrawal request failed!', 'warning');
         }
     }
 
@@ -1558,7 +1711,7 @@
         const subject = document.getElementById('support-subject').value;
         const message = document.getElementById('support-msg').value;
 
-        if (!subject || !message) return showToast('⚠️ Please fill in all support fields!');
+        if (!subject || !message) return showCustomPopup('Notice', '⚠️ Please fill in all support fields!', 'warning');
 
         try {
             const res = await fetch('/api/support/send', {
@@ -1567,14 +1720,14 @@
                 body: JSON.stringify({ user_id: currentUser.id, username: currentUser.username ? `@${currentUser.username}` : `User_${currentUser.id}`, subject: subject, message: message })
             });
             const data = await res.json();
-            showToast(data.message);
+            showCustomPopup(data.status === 'success' ? 'Ticket Sent' : 'Notice', data.message, data.status === 'success' ? 'success' : 'warning');
             if (data.status === 'success') {
                 document.getElementById('support-subject').value = '';
                 document.getElementById('support-msg').value = '';
                 loadUserTickets();
             }
         } catch (e) {
-            showToast('⚠️ Failed to send ticket!');
+            showCustomPopup('Error', '⚠️ Failed to send ticket!', 'warning');
         }
     }
 
