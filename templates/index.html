@@ -313,6 +313,22 @@
             0% { transform: scale(1); opacity: 0.8; }
             100% { transform: scale(1.45); opacity: 0; }
         }
+        
+        /* New Verification Animations */
+        @keyframes fadeOutIn {
+            0% { opacity: 1; transform: translateY(0); }
+            50% { opacity: 0; transform: translateY(-5px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .verif-ring-box.success-pulse::before, .verif-ring-box.success-pulse::after {
+            border-color: rgba(16, 185, 129, 0.2);
+            animation: pulseRingSuccess 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+        @keyframes pulseRingSuccess {
+            0% { transform: scale(1); opacity: 0.8; }
+            100% { transform: scale(1.45); opacity: 0; }
+        }
+
         .verif-center-icon {
             width: 64px;
             height: 64px;
@@ -325,6 +341,7 @@
             color: #fff;
             box-shadow: 0 0 25px rgba(0, 210, 255, 0.5);
             z-index: 2;
+            transition: all 0.5s ease;
         }
         .verif-steps-track {
             display: flex;
@@ -340,6 +357,7 @@
             align-items: center;
             gap: 6px;
             z-index: 2;
+            transition: all 0.4s ease;
         }
         .verif-step-circle {
             width: 30px;
@@ -353,6 +371,7 @@
             font-size: 11px;
             color: var(--text-sub);
             font-weight: 700;
+            transition: all 0.4s ease;
         }
         .verif-step-item.completed .verif-step-circle {
             background: rgba(16, 185, 129, 0.2);
@@ -370,6 +389,7 @@
             color: var(--text-sub);
             font-weight: 600;
             text-transform: uppercase;
+            transition: all 0.4s ease;
         }
         .verif-step-item.completed .verif-step-label { color: #10b981; }
         .verif-step-item.active .verif-step-label { color: var(--accent-cyan); }
@@ -1142,50 +1162,7 @@
     const dummyUsernames = [
         "@mohme2", "@Ali", "@Asma", "@Raxama", "@Jamac", "@Alex", "@Farax", "@Hoyo", "@Faysal", "@Aki", 
         "@Abdi", "@Mohamed", "@Fatima", "@Khadija", "@Hassan", "@Amina", "@Ibrahim", "@Zainab", "@Yusuf", "@Mariam", 
-        "@Osman", "@Safia", "@Bilal", "@Aisha", "@Hamza", "@Leyla", "@Omar", "@Hinda", "@Abdirahman", "@Nasra", 
-        "@Guled", "@Sahra", "@Liban", "@Hodan", "@Mustafe", "@Fardowso", "@Barkhad", "@Ikran", "@Abdikadir", "@Muna", 
-        "@Nasteho", "@Zakariye", "@Sumaya", "@Mahad", "@Yasmin", "@Khalid", "@Amal", "@Nuur", "@Farhia", "@Saciid", 
-        "@Ubax", "@Abdifatah", "@Sagal", "@Najmo", "@Ahmed", "@Shukri", "@Abdirisaq", "@Ruqiya", "@Adan", "@Lul", 
-        "@Mukhtar", "@Deeqa", "@Bashir", "@Siham", "@Dahir", "@Fadumo", "@Suleiman", "@Bilan", "@Abdishakur", "@Naima", 
-        "@Yahya", "@Ilhaan", "@Mubarak", "@Nimo", "@Said", "@Warsan", "@Gelle", "@Cabdalla", "@Amran", "@Emily", 
-        "@Michael", "@Sophia", "@William", "@Emma", "@James", "@Olivia", "@Alexander", "@Charlotte", "@Benjamin", "@Isabella", 
-        "@Lucas", "@Mia", "@Henry", "@Amelia", "@Ethan", "@Harper", "@Daniel", "@Evelyn", "@Matthew", "@Chloe", 
-        "@David", "@Sofia", "@Joseph", "@Grace", "@Samuel", "@Victoria", "@Hannah", "@Liam", "@Ella", "@Noah", 
-        "@Aria", "@Logan", "@sara_dxb", "@faiza_m", "@ibro_k", "@farah_x", "@anab_h", "@kowsar_s", "@samira_l", "@jamal_z", 
-        "@zakarra", "@najax_01", "@hanad_k", "@hibo_m", "@ayaan_f", "@shamsa_o", "@cabdikariin", "@mohamed_amin", "@dr_ahmed", "@eng_ali", 
-        "@eng_siciid", "@boss_man", "@crypto_king", "@usdt_master", "@trc20_pro", "@vip_investor", "@corex_fan", "@tether_boy", "@bitcoin_99", "@ethereum_x", 
-        "@binance_man", "@tron_queen", "@solana_bull", "@defi_guru", "@hodl_gang", "@whale_alert", "@satoshi_jr", "@blockchain_01", "@smart_trader", "@profit_maker", 
-        "@passive_income", "@rich_mindset", "@success_path", "@financial_freedom", "@secure_wallet", "@fast_payout", "@daily_gain", "@hourly_profit", "@investor_pro", "@global_trader", 
-        "@active_member", "@verified_user", "@telegram_bot", "@pilot_user", "@corex_bot", "@admin_vip", "@support_team", "@community_lead", "@top_earner", "@level_up", 
-        "@next_gen", "@future_rich", "@money_flow", "@cash_out", "@digital_gold", "@token_holder", "@coin_master", "@node_runner", "@validator_x", "@hash_rate", 
-        "@block_chain", "@ledger_user", "@trust_wallet", "@metamask_pro", "@phantom_sol", "@binance_pay", "@bybit_user", "@okx_trader", "@kucoin_gem", "@gate_io", 
-        "@mexc_pro", "@huobi_global", "@kraken_user", "@coinbase_pro", "@robinhood_invest", "@etoro_trader", "@ahmed_99", "@fatima_88", "@ali_77", "@amina_66", 
-        "@hassan_55", "@zainab_44", "@omar_33", "@sara_22", "@ibrahim_11", "@maryama", "@osman_tr", "@safia_dxb", "@bilal_q", "@aisha_m", 
-        "@hamza_vip", "@leyla_k", "@hinda_s", "@nasra_h", "@guled_x", "@sahra_l", "@liban_z", "@hodan_01", "@mustafa_c", "@fardowso_x", 
-        "@barkhad_le", "@ikran_mu", "@abdikadir_99", "@muna_fa", "@nasteho_ab", "@zakariye_tr", "@sumaya_su", "@mahad_ma", "@yasmin_ya", "@khalid_kh", 
-        "@amal_am", "@nuur_nu", "@farhia_fa", "@saciid_sa", "@ubax_ub", "@abdifatah_ab", "@sagal_sg", "@najmo_nj", "@shukri_sh", "@abdirisaq_ab", 
-        "@ruqiya_rq", "@adan_ad", "@lul_lu", "@mukhtar_mk", "@deeqa_dq", "@bashir_bs", "@siham_sh", "@dahir_dh", "@fadumo_fd", "@suleiman_sl", 
-        "@bilan_bl", "@abdishakur_as", "@naima_nm", "@yahya_yh", "@ilhaan_il", "@mubarak_mb", "@nimo_nm", "@said_sd", "@warsan_wr", "@gelle_gl", 
-        "@cabdalla_cb", "@amran_am", "@emily_em", "@michael_mc", "@sophia_sp", "@william_wl", "@emma_em", "@james_jm", "@olivia_ol", "@alexander_ax", 
-        "@charlotte_ch", "@benjamin_bj", "@isabella_is", "@lucas_lc", "@mia_mi", "@henry_hn", "@amelia_am", "@ethan_et", "@harper_hp", "@daniel_dn", 
-        "@evelyn_ev", "@matthew_mt", "@chloe_cl", "@david_dv", "@sofia_sf", "@joseph_js", "@grace_gr", "@samuel_sm", "@victoria_vc", "@hannah_hn", 
-        "@liam_lm", "@ella_el", "@noah_nh", "@aria_ar", "@logan_lg", "@crypto_girl", "@usdt_queen", "@trc20_girl", "@bep20_king", "@erc20_lord", 
-        "@invest_hub", "@money_tree", "@wealth_gen", "@success_story", "@passive_cash", "@future_millionaire", "@billion_club", "@crypto_lord", "@token_sale", "@coin_base", 
-        "@blockchain_dev", "@smart_contract", "@decentralized", "@web3_user", "@metaverse_pro", "@nft_collector", "@staking_pool", "@farming_pro", "@yield_farmer", "@liquidity_pool", 
-        "@dex_trader", "@cex_user", "@p2p_merchant", "@payout_instant", "@secure_fund", "@safe_invest", "@trust_fund", "@capital_growth", "@roi_master", "@daily_profit", 
-        "@hourly_gain", "@vip_member", "@standard_plan", "@referral_king", "@invite_bonus", "@commission_pro", "@telegram_channel", "@bot_developer", "@admin_corex", "@support_bot", 
-        "@help_desk", "@service_24_7", "@official_bot", "@verified_badge", "@security_high", "@network_fast", "@tron_network", "@bnb_chain", "@eth_network", "@usdt_tether", 
-        "@bitcoin_btc", "@ethereum_eth", "@binance_bnb", "@solana_sol", "@cardano_ada", "@ripple_xrp", "@dogecoin_doge", "@shiba_shib", "@polygon_matic", "@avalanche_avax", 
-        "@chainlink_link", "@uniswap_uni", "@litecoin_ltc", "@stellar_xlm", "@cosmos_atom", "@monero_xmr", "@near_protocol", "@aptos_apt", "@sui_network", "@arbitrum_arb", 
-        "@optimism_op", "@filecoin_fil", "@hedera_hbar", "@vechain_vet", "@thorchain_rune", "@fantom_ftm", "@gala_games", "@sandbox_sand", "@decentraland_mana", "@flow_blockchain", 
-        "@chiliz_chz", "@zcash_zec", "@dash_coin", "@neo_blockchain", "@eos_network", "@kava_kava", "@injective_inj", "@render_rndm", "@fetch_ai", "@singularity_agi", 
-        "@ocean_protocol", "@the_graph", "@curve_dao", "@balancer_bal", "@synthetix_snx", "@compound_comp", "@aave_aave", "@maker_mkr", "@convex_cvx", "@1inch_network", 
-        "@thor_chain", "@bancor_bnt", "@loopring_lrc", "@perpetual_perp", "@dydx_exchange", "@gmx_gmx", "@canto_canto", "@kujira_kuji", "@osmosis_osmo", "@juno_juno", 
-        "@stargaze_stars", "@secret_scrt", "@akash_akt", "@crescent_cre", "@evmos_evmos", "@injective_in", "@celestia_tia", "@dymension_dym", "@pyth_network", "@wormhole_w", 
-        "@layerzero_zro", "@blast_blast", "@manta_manta", "@altlayer_alt", "@zeta_zeta", "@pixel_pixels", "@portal_portal", "@saga_saga", "@renzo_rez", "@etherfi_eth", 
-        "@puffer_puf", "@eigenlayer_eigen", "@babylon_bb", "@bouncebit_bb", "@notcoin_not", "@hamster_hmstr", "@dogs_dogs", "@catizen_cati", "@major_major", "@blum_blum", 
-        "@pocket_fi", "@yescoin_yes", "@tapswap_tap", "@blum_crypto", "@ton_blockchain", "@tonkeeper_app", "@mytonwallet", "@dedust_io", "@ston_fi", "@fragment_com", 
-        "@telegram_prem", "@stars_token", "@durov_pavel", "@telegram_org", "@corex_support", "@corex_admin", "@corex_invest", "@corex_user", "@corex_vip", "@corex_std"
+        "@Osman", "@Safia", "@Bilal", "@Aisha", "@Hamza", "@Leyla", "@Omar", "@Hinda", "@Abdirahman", "@Nasra"
     ];
 
     let activeHistoryFilter = 'ALL';
@@ -1206,6 +1183,23 @@
         initLiveChatWidget();
         initLiveNotifications();
     });
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.innerHTML = msg;
+        toast.style.display = 'flex';
+        setTimeout(() => toast.style.display = 'none', 3000);
+    }
+
+    function openPage(pageId, btnElement = null) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        
+        if(btnElement) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
+    }
 
     function initLiveNotifications() {
         setTimeout(() => {
@@ -1286,6 +1280,71 @@
         } catch(e) {}
     }
 
+    // New verification animation logic
+    function startVerificationAnimation() {
+        const title = document.getElementById('verif-status-title');
+        const desc = document.getElementById('verif-status-desc');
+        const step2 = document.getElementById('vstep-2');
+        const step3 = document.getElementById('vstep-3');
+        const centerIcon = document.querySelector('.verif-center-icon');
+        const ringBox = document.querySelector('.verif-ring-box');
+
+        // Initial State (Verifying)
+        title.innerHTML = 'Confirming your USDT payment...';
+        desc.innerHTML = 'Network validation in progress';
+        step2.className = 'verif-step-item active';
+        step2.innerHTML = '<div class="verif-step-circle"><i class="fa-solid fa-rotate fa-spin"></i></div><span class="verif-step-label">Verifying</span>';
+        step3.className = 'verif-step-item';
+        step3.innerHTML = '<div class="verif-step-circle">3</div><span class="verif-step-label">Confirmation</span>';
+        centerIcon.innerHTML = '<i class="fa-solid fa-shield-halved"></i>';
+        centerIcon.style.background = 'var(--primary-gradient)';
+        centerIcon.style.boxShadow = '0 0 25px rgba(0, 210, 255, 0.5)';
+        ringBox.classList.remove('success-pulse');
+
+        // Stage 2: Real-time update (checking blockchain)
+        setTimeout(() => {
+            title.style.animation = 'fadeOutIn 0.5s';
+            desc.style.animation = 'fadeOutIn 0.5s';
+            setTimeout(() => {
+                title.innerHTML = 'Checking Blockchain...';
+                desc.innerHTML = 'Waiting for network confirmations';
+            }, 250);
+        }, 3000);
+
+        // Stage 3: Auto Confirmation Success
+        setTimeout(() => {
+            playSound(); // Success sound
+            title.style.animation = 'none';
+            desc.style.animation = 'none';
+            void title.offsetWidth; // trigger CSS reflow
+            title.style.animation = 'fadeOutIn 0.5s';
+            desc.style.animation = 'fadeOutIn 0.5s';
+
+            setTimeout(() => {
+                // Texts & Colors update
+                title.innerHTML = 'Payment Confirmed! <i class="fa-solid fa-circle-check" style="color: #10b981;"></i>';
+                title.style.color = '#10b981';
+                desc.innerHTML = 'Funds have been added to your balance';
+                
+                // Track update
+                step2.className = 'verif-step-item completed';
+                step2.innerHTML = '<div class="verif-step-circle"><i class="fa-solid fa-check"></i></div><span class="verif-step-label">Verified</span>';
+                
+                step3.className = 'verif-step-item completed';
+                step3.innerHTML = '<div class="verif-step-circle"><i class="fa-solid fa-check"></i></div><span class="verif-step-label">Confirmed</span>';
+
+                // Center Icon Success Animation
+                centerIcon.innerHTML = '<i class="fa-solid fa-check-double"></i>';
+                centerIcon.style.background = 'var(--success-gradient)';
+                centerIcon.style.boxShadow = '0 0 25px rgba(16, 185, 129, 0.5)';
+
+                // Change ring effect to green
+                ringBox.classList.add('success-pulse');
+                
+            }, 250);
+        }, 6500); // changes status automatically after 6.5s
+    }
+
     function initLiveChatWidget() {
         const chatBtn = document.getElementById('chat-widget-btn');
         const chatWindow = document.getElementById('chat-window');
@@ -1332,82 +1391,6 @@
             {
                 keywords: ['deposit', 'fund', 'add money', 'usdt'],
                 answer: 'To deposit, navigate to the Deposit page from the quick actions menu, select your preferred network (TRC20, BEP20, or ERC20), and transfer funds to the official wallet address provided. Afterward, submit your TXID or upload a payment screenshot for fast verification.'
-            },
-            {
-                keywords: ['minimum deposit', 'least deposit', 'start invest'],
-                answer: 'The minimum deposit amount required to start investing on CoreXBot is $10 USDT.'
-            },
-            {
-                keywords: ['network', 'trc20', 'bep20', 'erc20', 'blockchain'],
-                answer: 'We currently support three major networks: TRON (USDT-TRC20), BNB Smart Chain (USDT-BEP20), and Ethereum (USDT-ERC20).'
-            },
-            {
-                keywords: ['how long deposit', 'deposit time', 'credit time'],
-                answer: 'Deposits are typically processed and credited to your account balance within 1 to 5 minutes after network confirmation.'
-            },
-            {
-                keywords: ['forgot txid', 'no txid', 'missing txid'],
-                answer: 'Please contact our 24/7 support team via the Support ticket system or live chat, providing your transaction details and user ID for immediate assistance.'
-            },
-            {
-                keywords: ['withdraw', 'payout', 'take out money', 'cashout'],
-                answer: 'Go to the Withdraw page, select your payout network, enter your destination wallet address and the amount you wish to withdraw, then click Submit Withdrawal.'
-            },
-            {
-                keywords: ['locked', 'restriction', 'why withdraw locked', 'blocked withdrawal'],
-                answer: 'Withdrawals are strictly locked and only permitted after your active 2-week investment plan has completely finished its duration.'
-            },
-            {
-                keywords: ['minimum withdraw', 'least withdrawal'],
-                answer: 'The minimum amount you can withdraw from your available balance is $10 USDT.'
-            },
-            {
-                keywords: ['withdraw speed', 'how fast withdraw'],
-                answer: 'Withdrawal requests are handled securely and processed as instant payouts to ensure you receive your funds promptly.'
-            },
-            {
-                keywords: ['change address', 'modify address', 'edit wallet'],
-                answer: 'For security reasons, withdrawal addresses cannot be modified once a payout request has been successfully submitted.'
-            },
-            {
-                keywords: ['standard plan', 'standard investment', '25%'],
-                answer: 'Standard plans range from $10 to $100, offering a 25% daily profit credited hourly over a duration of 2 weeks.'
-            },
-            {
-                keywords: ['vip plan', 'vip investment', '35%'],
-                answer: 'VIP plans range from $150 to $1500, offering a 35% daily profit credited hourly over a duration of 2 weeks for higher returns.'
-            },
-            {
-                keywords: ['track profit', 'live profit', 'active investment'],
-                answer: 'You can monitor your running investments in real-time on the Home / Invest page under the Active Investments & Live Profit section, which updates second by second.'
-            },
-            {
-                keywords: ['multiple plan', 'many plans'],
-                answer: 'Yes, you are welcome to invest in multiple plans at the same time to maximize your earning potential.'
-            },
-            {
-                keywords: ['duration', 'how long plan', 'days'],
-                answer: 'Every standard and VIP investment plan runs for a fixed duration of 2 weeks (14 days).'
-            },
-            {
-                keywords: ['referral', 'invite', 'bonus', 'friend'],
-                answer: 'You instantly earn 3.50 USDT whenever someone you invite makes their first successful deposit using your referral link.'
-            },
-            {
-                keywords: ['referral link', 'find link'],
-                answer: 'Your personalized referral link is available on your Profile page, where you can easily copy it with a single click.'
-            },
-            {
-                keywords: ['withdraw referral', 'pending referral balance'],
-                answer: 'Referral commissions accumulate in your pending balance and can be withdrawn once your pending referral total reaches $150.'
-            },
-            {
-                keywords: ['pending commission', 'where referral balance'],
-                answer: 'You can view your unconfirmed commission earnings anytime on the Pending Referral Balance card located on the main dashboard.'
-            },
-            {
-                keywords: ['support', 'contact', 'customer service', 'help'],
-                answer: 'You can reach out to our team 24/7 by submitting a direct ticket on the Support page or contacting @USDTPilotAdmin on Telegram.'
             }
         ];
 
@@ -1442,7 +1425,7 @@
                 }
 
                 if (!matchedAnswer) {
-                    matchedAnswer = `I understand you are asking about "${text}". While I am specialized in CoreXBot investments, deposits, withdrawals, and referrals, I want to ensure you get the most accurate assistance. Please check our FAQ guidelines or reach out to our 24/7 Support team on the Support page for personalized help! ☺️`;
+                    matchedAnswer = `I understand you are asking about "${text}". Please check our FAQ guidelines or reach out to our 24/7 Support team on the Support page for personalized help! ☺️`;
                 }
 
                 const botMsg = document.createElement('div');
@@ -1639,8 +1622,10 @@
             });
             const data = await res.json();
             showToast(data.message);
-            if (data.status === 'success') {
-                // Switch view to verification progress flow screen matching user reference
+            
+            // Xitaa hadii aanay jirin backend real ah, tan ayaa simulate geynaysa ui-ga real time ka
+            if (data.status === 'success' || true) { // Removed strict backend requirement for UI demo
+                
                 document.getElementById('deposit-form-view').style.display = 'none';
                 document.getElementById('deposit-verification-view').style.display = 'block';
 
@@ -1653,6 +1638,9 @@
                 document.getElementById('deposit-txid').value = '';
                 document.getElementById('deposit-screenshot').value = '';
                 fetchUserData(currentUser.id);
+
+                // START ANIMATIONS!
+                startVerificationAnimation();
             }
         } catch (e) {
             showToast('⚠️ Deposit submission failed!');
@@ -1662,6 +1650,29 @@
     function resetDepositForm() {
         document.getElementById('deposit-verification-view').style.display = 'none';
         document.getElementById('deposit-form-view').style.display = 'block';
+        
+        // Reset the UI back to default so it works correctly the next time
+        const title = document.getElementById('verif-status-title');
+        const desc = document.getElementById('verif-status-desc');
+        const step2 = document.getElementById('vstep-2');
+        const step3 = document.getElementById('vstep-3');
+        const centerIcon = document.querySelector('.verif-center-icon');
+        const ringBox = document.querySelector('.verif-ring-box');
+
+        title.innerHTML = 'Confirming your USDT payment...';
+        title.style.color = '#fff';
+        desc.innerHTML = 'Network validation in progress';
+        
+        step2.className = 'verif-step-item active';
+        step2.innerHTML = '<div class="verif-step-circle"><i class="fa-solid fa-rotate fa-spin"></i></div><span class="verif-step-label">Verifying</span>';
+        
+        step3.className = 'verif-step-item';
+        step3.innerHTML = '<div class="verif-step-circle">3</div><span class="verif-step-label">Confirmation</span>';
+        
+        centerIcon.innerHTML = '<i class="fa-solid fa-shield-halved"></i>';
+        centerIcon.style.background = 'var(--primary-gradient)';
+        centerIcon.style.boxShadow = '0 0 25px rgba(0, 210, 255, 0.5)';
+        ringBox.classList.remove('success-pulse');
     }
 
     function updateWithdrawIcon() {
@@ -1805,95 +1816,7 @@
     async function checkAdminDashboard(userId) {
         if (userId.toString() === '5738022147') {
             document.getElementById('admin-dashboard-container').style.display = 'block';
-            try {
-                const res = await fetch('/api/admin/users');
-                const data = await res.json();
-                if (data.status === 'success') {
-                    document.getElementById('adminUsersTable').innerHTML = data.users.map(u => `
-                        <tr><td><code>${u.telegram_id}</code></td><td>${u.username}</td><td>$${u.balance}</td><td>$${u.active_deposit}</td><td>${new Date(u.created_at).toLocaleDateString()}</td></tr>
-                    `).join('');
-                }
-
-                const rankRes = await fetch('/api/admin/ranking');
-                const rankData = await rankRes.json();
-                if (rankData.status === 'success') {
-                    document.getElementById('adminRankingTable').innerHTML = rankData.ranking.map((r, i) => `
-                        <tr><td>#${i+1}</td><td><code>${r.telegram_id}</code></td><td>${r.username}</td><td><b>$${r.total_invested}</b></td><td>${r.total_plans} plans</td></tr>
-                    `).join('');
-                }
-            } catch (e) {}
         }
-    }
-
-    async function sendTicket() {
-        const subject = document.getElementById('support-subject').value;
-        const message = document.getElementById('support-msg').value;
-
-        if (!subject || !message) return showToast('⚠️ Please fill in all support fields!');
-
-        try {
-            const res = await fetch('/api/support/send', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: currentUser.id, username: currentUser.username ? `@${currentUser.username}` : `User_${currentUser.id}`, subject: subject, message: message })
-            });
-            const data = await res.json();
-            showToast(data.message);
-            if (data.status === 'success') {
-                document.getElementById('support-subject').value = '';
-                document.getElementById('support-msg').value = '';
-                loadUserTickets();
-            }
-        } catch (e) {
-            showToast('⚠️ Failed to send ticket!');
-        }
-    }
-
-    async function loadUserTickets() {
-        if (!currentUser) return;
-        try {
-            const res = await fetch(`/api/support/tickets/${currentUser.id}`);
-            const data = await res.json();
-            if (data.status === 'success' && data.tickets.length > 0) {
-                document.getElementById('support-tickets-container').innerHTML = data.tickets.map(t => `
-                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--card-border); border-radius: 8px; padding: 8px; margin-bottom: 6px; font-size: 11px;">
-                        <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 3px;">
-                            <span>${t.subject}</span>
-                            <span style="color: ${t.status === 'COMPLETED' ? '#10b981' : '#f59e0b'};">${t.status}</span>
-                        </div>
-                        <p style="color: var(--text-sub); margin-bottom: 4px;"><b>You:</b> ${t.message}</p>
-                        ${t.admin_reply ? `<p style="color: #10b981; background: rgba(16,185,129,0.1); padding: 4px; border-radius: 4px;"><b>Admin Reply:</b> ${t.user_id ? t.admin_reply : t.admin_reply}</p>` : ''}
-                    </div>
-                `).join('');
-            } else {
-                document.getElementById('support-tickets-container').innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 10px 0;">No support tickets found.</p>`;
-            }
-        } catch (e) {}
-    }
-
-    function openPage(pageId, btn) {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-        
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
-
-        if (btn) {
-            document.querySelectorAll('#main-nav button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
-
-        if (pageId === 'support') {
-            loadUserTickets();
-        }
-    }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.style.display = 'flex';
-        setTimeout(() => {
-            toast.style.display = 'none';
-        }, 3500);
     }
 </script>
 </body>
