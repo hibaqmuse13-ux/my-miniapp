@@ -220,20 +220,32 @@ def public_activities():
 
 @app.route('/api/deposit/request', methods=['POST'])
 def request_deposit():
-    user_id = request.form.get('user_id')
-    username = request.form.get('username', 'User')
-    network = request.form.get('network', 'TRC20')
-    txid = request.form.get('txid', '')
-    amount = float(request.form.get('amount', 0))
-    screenshot = request.files.get('screenshot')
+    if request.is_json:
+        data = request.json
+        user_id = str(data.get('user_id', ''))
+        username = data.get('username', 'User')
+        network = data.get('network', 'TRC20')
+        txid = data.get('txid', '')
+        amount = float(data.get('amount', 0))
+        screenshot = None
+    else:
+        user_id = str(request.form.get('user_id', ''))
+        username = request.form.get('username', 'User')
+        network = request.form.get('network', 'TRC20')
+        txid = request.form.get('txid', '')
+        amount = float(request.form.get('amount', 0))
+        screenshot = request.files.get('screenshot')
     
+    if not user_id or user_id == 'None' or user_id == 'undefined':
+        return jsonify({"status": "error", "message": "⚠️ User ID is missing! Please open from Telegram properly."})
+        
     if amount < 10:
         return jsonify({"status": "error", "message": "⚠️ Minimum deposit is $10 USDT"})
     if not txid and not screenshot:
         return jsonify({"status": "error", "message": "⚠️ Please enter TXID or upload a screenshot!"})
         
     db = get_db()
-    pending_dep = db.execute("SELECT * FROM transactions WHERE user_id = ? AND type = 'DEPOSIT' AND status = 'PENDING'", (str(user_id),)).fetchone()
+    pending_dep = db.execute("SELECT * FROM transactions WHERE user_id = ? AND type = 'DEPOSIT' AND status = 'PENDING'", (user_id,)).fetchone()
     if pending_dep:
         db.close()
         return jsonify({"status": "error", "message": "⚠️ Please wait for your pending deposit request to be processed before submitting a new one."})
