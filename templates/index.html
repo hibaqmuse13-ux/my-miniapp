@@ -92,7 +92,7 @@
         .pending-balance-card .balance-amount { font-size: 16px; font-weight: 800; color: #fff; margin: 0; letter-spacing: -0.5px; }
         .pending-balance-card .card-subtitle { font-size: 8px; color: #fbbf24; font-weight: 600; display: inline-block; margin-top: 1px; }
 
-        /* PROFESSIONAL & MASSIVE QUICK BUTTONS (DEPOSIT & WITHDRAW) */
+        /* QUICK BUTTONS */
         .quick { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px; }
         .quick button { 
             background: var(--card-bg); 
@@ -151,9 +151,6 @@
         .plan-title { font-size: 20px; font-weight: 900; margin: 4px 0; color: #ffffff; letter-spacing: 0.5px; }
         .plan-rate { font-size: 11.5px; font-weight: 800; color: #10b981; margin-bottom: 6px; }
 
-        .plan-info { font-size: 9.5px; color: #e2e8f0; display: flex; flex-direction: column; gap: 3px; margin-bottom: 8px; text-align: left; background: rgba(0, 0, 0, 0.35); padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.04); }
-        .plan-info span { font-weight: 600; display: flex; align-items: center; gap: 5px; }
-
         .plan-btn { width: 100%; padding: 8px; border-radius: 8px; border: none; font-size: 11px; font-weight: 800; cursor: pointer; color: #fff; transition: transform 0.15s ease, filter 0.2s ease; }
         .plan-btn:active { transform: scale(0.95); }
         .btn-std { background: var(--primary-gradient); box-shadow: 0 4px 12px rgba(0, 114, 255, 0.3); }
@@ -174,12 +171,14 @@
         .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 6px 10px; border-radius: 6px; font-size: 10.5px; cursor: pointer; font-weight: 600; }
         .address-text { font-family: monospace; font-size: 11.5px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 8px; border-radius: 6px; margin-bottom: 10px; }
         
-        #qrcode-container { display: flex; justify-content: center; align-items: center; background: #ffffff; padding: 12px; border-radius: 10px; width: fit-content; margin: 10px auto 6px auto; }
+        /* Mini Clean QR Code Container */
+        #qrcode-container { display: flex; justify-content: center; align-items: center; background: #ffffff; padding: 8px; border-radius: 8px; width: 100px; height: 100px; margin: 8px auto; }
+        #qrcode img { width: 84px !important; height: 84px !important; display: block; }
 
         button.primary { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--primary-gradient); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; }
         button.success { width: 100%; padding: 12px; border-radius: 10px; border: none; background: var(--success-gradient); color: #fff; font-size: 13px; font-weight: 700; cursor: pointer; }
 
-        /* PROFESSIONAL SEPARATE RULES & POLICY SECTION */
+        /* RULES & POLICY SECTION */
         .rules-policy-section {
             background: linear-gradient(145deg, rgba(20, 27, 45, 0.9) 0%, rgba(11, 16, 28, 0.95) 100%);
             border: 1px solid rgba(0, 210, 255, 0.25);
@@ -230,7 +229,6 @@
         .tx-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
         .tx-icon.DEPOSIT { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .tx-icon.WITHDRAWAL { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
-        .tx-icon.INVESTMENT { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
         .tx-details { flex: 1; margin-left: 10px; }
         .tx-details h5 { font-size: 11.5px; font-weight: 700; color: #fff; }
         .tx-details p { font-size: 9.5px; color: var(--text-sub); margin-top: 2px; }
@@ -253,11 +251,6 @@
         .support-card { background: rgba(15, 23, 42, 0.75); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; gap: 10px; text-decoration: none; color: #fff; }
         .support-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--accent-cyan); }
 
-        .admin-table-box { width: 100%; overflow-x: auto; margin-top: 8px; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 12px; font-size: 10.5px; text-align: left; }
-        .admin-table th, .admin-table td { padding: 6px 8px; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
-        .admin-table th { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); font-weight: 700; }
-
         /* Navigation */
         nav { position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: rgba(15, 22, 36, 0.95); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 16px 16px 0 0; }
         nav button { background: none; border: none; color: var(--text-sub); font-size: 10px; font-weight: 500; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; flex: 1; }
@@ -267,7 +260,7 @@
         /* Toast */
         #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-20px); background: rgba(15, 23, 42, 0.95); color: #fff; border: 1px solid rgba(0, 210, 255, 0.3); padding: 12px 18px; border-radius: 14px; font-size: 12px; font-weight: 500; z-index: 10000; display: none; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); backdrop-filter: blur(12px); align-items: center; gap: 10px; max-width: 90%; text-align: left; }
 
-        /* ULTRA-MODERN PROFESSIONAL POPUP MODAL STYLES */
+        /* POPUP MODAL STYLES */
         .custom-popup-overlay { position: fixed; inset: 0; background: rgba(5, 8, 15, 0.88); backdrop-filter: blur(10px); z-index: 999999; display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
         .custom-popup-overlay.show { opacity: 1; visibility: visible; }
         .custom-popup-card { background: linear-gradient(145deg, #131c2e 0%, #0b111c 100%); border: 1px solid rgba(0, 210, 255, 0.3); border-radius: 22px; width: 100%; max-width: 350px; padding: 26px 22px; text-align: center; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8); transform: scale(0.85) translateY(20px); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
@@ -278,41 +271,7 @@
         .custom-popup-icon.warning { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); box-shadow: 0 0 30px rgba(245, 158, 11, 0.35); }
         .custom-popup-title { font-size: 19px; font-weight: 800; color: #fff; margin-bottom: 8px; letter-spacing: 0.3px; }
         .custom-popup-msg { font-size: 12.5px; color: var(--text-sub); line-height: 1.5; margin-bottom: 22px; }
-        .custom-popup-btn { width: 100%; padding: 13px; border-radius: 12px; border: none; background: var(--primary-gradient); color: #fff; font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: 0 6px 18px rgba(0, 114, 255, 0.4); transition: transform 0.15s ease; }
-        .custom-popup-btn:active { transform: scale(0.96); }
-
-        /* LIVE NOTIFICATION TOAST CONTAINER */
-        #live-notification-container { position: fixed; bottom: 80px; left: 14px; z-index: 99999; display: flex; flex-direction: column; gap: 8px; pointer-events: none; max-width: calc(100% - 28px); }
-        .live-notif-card { background: rgba(15, 23, 42, 0.95); border: 1px solid rgba(0, 210, 255, 0.35); backdrop-filter: blur(14px); border-radius: 14px; padding: 12px 14px; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.6); pointer-events: auto; animation: slideInLeft 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, fadeOut 0.5s ease 4.5s forwards; max-width: 350px; }
-        @keyframes slideInLeft { 0% { transform: translateX(-120%); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
-        @keyframes fadeOut { 0% { opacity: 1; transform: translateX(0); } 100% { opacity: 0; transform: translateX(-20px); } }
-        .live-notif-icon { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); overflow: hidden; }
-        .live-notif-icon img { width: 18px; height: 18px; object-fit: contain; }
-        .live-notif-content { flex: 1; font-size: 11.5px; line-height: 1.35; }
-        .live-notif-content .notif-title { font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: space-between; }
-        .live-notif-content .notif-title span { font-size: 9px; color: var(--text-sub); font-weight: 500; }
-        .live-notif-content .notif-desc { color: #cbd5e1; margin-top: 2px; }
-
-        /* Live Chat Widget Styles */
-        .chat-widget-btn { position: fixed; bottom: 80px; right: 14px; background: var(--primary-gradient); color: #fff; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; cursor: pointer; box-shadow: 0 6px 18px rgba(0, 210, 255, 0.4); z-index: 10000; border: 2px solid rgba(255, 255, 255, 0.2); transition: transform 0.25s ease, opacity 0.5s ease; }
-        @keyframes chatBounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); box-shadow: 0 0 20px rgba(0, 210, 255, 0.8); } }
-        .chat-widget-btn.animate-bounce { animation: chatBounce 1.2s infinite ease-in-out; }
-
-        .chat-window { position: fixed; bottom: 138px; right: 14px; width: 300px; height: 390px; background: #111827; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; flex-direction: column; z-index: 10000; overflow: hidden; border: 1px solid rgba(0, 210, 255, 0.3); animation: fadeInWindow 0.3s ease forwards; }
-        @keyframes fadeInWindow { from { opacity: 0; transform: translateY(15px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .chat-window.hidden { display: none; }
-        .chat-header { background: linear-gradient(135deg, #1f2937 0%, #111827 100%); color: #fff; padding: 12px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 11.5px; border-bottom: 1px solid var(--card-border); }
-        .chat-header .bot-title-info { display: flex; align-items: center; gap: 6px; }
-        .chat-header .online-dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px #10b981; }
-        .chat-header button { background: none; border: none; color: var(--text-sub); font-size: 18px; cursor: pointer; }
-        .chat-body { flex: 1; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: rgba(9, 13, 22, 0.95); }
-        .bot-message, .user-message { padding: 8px 12px; border-radius: 10px; font-size: 11.5px; max-width: 88%; line-height: 1.4; }
-        .bot-message { background: #1f2937; color: #f3f4f6; align-self: flex-start; border: 1px solid rgba(255, 255, 255, 0.05); }
-        .user-message { background: var(--primary-gradient); color: #fff; align-self: flex-end; }
-        .typing-indicator { color: #10b981; font-size: 11px; font-weight: 600; font-style: italic; display: flex; align-items: center; gap: 6px; background: rgba(16, 185, 129, 0.1); padding: 8px 12px; border-radius: 10px; align-self: flex-start; border: 1px solid rgba(16, 185, 129, 0.25); }
-        .chat-footer { display: flex; padding: 10px; background: #111827; border-top: 1px solid var(--card-border); }
-        .chat-footer input { flex: 1; padding: 8px 10px; border: 1px solid var(--card-border); border-radius: 8px; outline: none; margin-bottom: 0; font-size: 11.5px; background: rgba(0,0,0,0.3); color: #fff; }
-        .chat-footer button { background: var(--primary-gradient); border: none; padding: 8px 14px; margin-left: 6px; border-radius: 8px; cursor: pointer; font-weight: bold; color: #fff; font-size: 11.5px; }
+        .custom-popup-btn { width: 100%; padding: 13px; border-radius: 12px; border: none; background: var(--primary-gradient); color: #fff; font-size: 13.5px; font-weight: 700; cursor: pointer; box-shadow: 0 6px 18px rgba(0, 114, 255, 0.4); }
     </style>
 </head>
 
@@ -413,7 +372,7 @@
     </div>
 </div>
 
-<!-- PROFESSIONAL MASSIVE QUICK BUTTONS (DEPOSIT & WITHDRAW) -->
+<!-- QUICK BUTTONS -->
 <div class="quick">
     <button class="deposit-btn" onclick="playSound(); openPage('deposit')">
         <i class="fa-solid fa-wallet"></i> Deposit USDT
@@ -476,7 +435,7 @@
             </div>
             <div class="address-text" id="deposit-address-display">TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs</div>
             
-            <!-- QR CODE DISPLAY CONTAINER (Always ready & toggleable / visible) -->
+            <!-- MINI CLEAN QR CODE CONTAINER -->
             <div id="qrcode-container">
                 <div id="qrcode"></div>
             </div>
@@ -495,7 +454,6 @@
         <button class="primary" onclick="playSound(); submitDeposit()">Submit Deposit (Pending)</button>
     </div>
 
-    <!-- SEPARATE RULES & POLICY SECTION FOR DEPOSIT -->
     <div class="rules-policy-section">
         <h4><i class="fa-solid fa-shield-halved"></i> Deposit Rules & Policy</h4>
         <div class="rules-policy-item">
@@ -504,11 +462,11 @@
         </div>
         <div class="rules-policy-item">
             <i class="fa-solid fa-circle-check"></i>
-            <div><b>Pending System:</b> Hal mar kaliya ayaad samayn kartaa hal codsi oo pending ah (Deposit ama Withdrawal). Waa inuu kan hore dhammaadaa intaan mid cusub la dirin.</div>
+            <div><b>Single Pending Request:</b> Only one pending request (Deposit or Withdrawal) is allowed at a time. Please wait until the previous one is resolved.</div>
         </div>
         <div class="rules-policy-item">
             <i class="fa-solid fa-circle-check"></i>
-            <div><b>Verification Time:</b> Fariintaadu si toos ah ayay ugu dhaceysaa Telegram-ka Admin-ka, waxaana la hubinayaa 1 ilaa 5 daqiiqo gudahood.</div>
+            <div><b>Processing Time:</b> Your transaction notification is sent directly to the Telegram bot and will be verified within <b>1 to 5 minutes</b>.</div>
         </div>
     </div>
 </section>
@@ -549,12 +507,11 @@
         <button class="success" onclick="playSound(); submitWithdraw()">Submit Withdrawal (Pending)</button>
     </div>
 
-    <!-- SEPARATE RULES & POLICY SECTION FOR WITHDRAWAL -->
     <div class="rules-policy-section">
         <h4><i class="fa-solid fa-scale-balanced"></i> Withdrawal Rules & Policy</h4>
         <div class="rules-policy-item">
             <i class="fa-solid fa-circle-check"></i>
-            <div><b>Single Pending Rule:</b> Qofku ma samayn karo laba codsi isku mar (Deposit & Withdrawal pending ah). Waa inuu sugaa inta mid laga xallinayo.</div>
+            <div><b>Single Pending Rule:</b> You cannot submit multiple simultaneous pending requests. Please wait until your active request is processed (1-5 min).</div>
         </div>
         <div class="rules-policy-item">
             <i class="fa-solid fa-circle-check"></i>
@@ -572,7 +529,6 @@
             <button class="tab-btn active" onclick="filterHistory('ALL', this)">All Activity</button>
             <button class="tab-btn" onclick="filterHistory('DEPOSIT', this)">Deposits</button>
             <button class="tab-btn" onclick="filterHistory('WITHDRAWAL', this)">Withdrawals</button>
-            <button class="tab-btn" onclick="filterHistory('INVESTMENT', this)">Investments</button>
         </div>
 
         <div id="history-container"></div>
@@ -627,16 +583,16 @@
     </div>
 </section>
 
-<!-- Profile Page -->
+<!-- Profile Page (Clean & Private) -->
 <section id="profile" class="page">
     <div class="card" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 18px; padding: 16px;">
         <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px; border-bottom: 1px solid var(--card-border); padding-bottom: 14px;">
-            <div id="profile-page-avatar" style="width: 52px; height: 52px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3);">
+            <div style="width: 52px; height: 52px; border-radius: 50%; background: var(--primary-gradient); display: flex; align-items: center; justify-content: center; font-size: 20px; color: #fff; overflow: hidden; box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3);">
                 <i class="fa-solid fa-user"></i>
             </div>
             <div>
-                <h3 id="profile-fullname" style="font-size: 17px; font-weight: 800;">Loading...</h3>
-                <small id="profile-username" style="color: var(--accent-cyan); font-weight: 600; font-size: 11.5px;">@username</small>
+                <h3 id="profile-fullname" style="font-size: 17px; font-weight: 800;">User Account</h3>
+                <small id="profile-username" style="color: var(--accent-cyan); font-weight: 600; font-size: 11.5px;">Secure Client</small>
             </div>
         </div>
 
@@ -786,7 +742,6 @@
         document.getElementById('userid').textContent = `ID: ${tgUser.id}`;
         document.getElementById('profile-fullname').textContent = fullName;
         document.getElementById('profile-username').textContent = username;
-        document.getElementById('profile-id').textContent = tgUser.id;
         document.getElementById('ref-link').value = `https://t.me/CoreXBot?start=ref_${tgUser.id}`;
     }
 
@@ -828,7 +783,7 @@
         const qrContainer = document.getElementById('qrcode');
         qrContainer.innerHTML = "";
         try {
-            new QRCode(qrContainer, { text: text, width: 128, height: 128, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
+            new QRCode(qrContainer, { text: text, width: 84, height: 84, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QRCode.CorrectLevel.H });
         } catch(e) {}
     }
 
@@ -842,7 +797,6 @@
         showToast('✅ Referral link copied!');
     }
 
-    // Checking if user has any PENDING transaction (Deposit or Withdrawal)
     function hasPendingTransaction() {
         const txs = userData.macaamilo || [];
         return txs.some(t => t.status === 'PENDING');
@@ -850,7 +804,7 @@
 
     async function submitDeposit() {
         if (hasPendingTransaction()) {
-            return showCustomPopup('Pending Request Exists', '⚠️ Waxaad horey u leedahay codsi ku jira (Pending). Fadlan sug inta laga xallinayo kahaysan inaad codsi cusub dirto.', 'warning');
+            return showCustomPopup('Pending Request Exists', '⚠️ You already have a pending request. Please wait 1 to 5 minutes for it to be processed.', 'warning');
         }
 
         const amount = document.getElementById('deposit-amount').value;
@@ -859,17 +813,15 @@
         const network = document.getElementById('deposit-network').value;
 
         if (!amount || Number(amount) < 10) {
-            return showCustomPopup('Invalid Amount', '⚠️ Fadlan geli lacag aan ka yarayn $10 USDT', 'warning');
+            return showCustomPopup('Invalid Amount', '⚠️ Minimum deposit amount is $10 USDT', 'warning');
         }
 
-        // Shuruudda: Transaction ID ama Screenshot waa inuu jiraa midkood
         if (!txid && !screenshot) {
-            return showCustomPopup('Missing Details', '⚠️ Fadlan gali Transaction ID ama geli Screenshot-ka lacag bixinta!', 'warning');
+            return showCustomPopup('Missing Details', '⚠️ Please provide either a Transaction ID or a payment screenshot!', 'warning');
         }
 
         const netInfo = cryptoNetworks[network];
 
-        // Ku darista xogta PENDING ah ee macaamilka
         const newTx = {
             type: 'DEPOSIT',
             amount: Number(amount),
@@ -881,12 +833,10 @@
         userData.macaamilo.unshift(newTx);
         renderHistory();
 
-        // Halkan waxaa toos loogu diri karaa xogta Telegram (Webhook/Bot API integration)
-        sendToTelegramBot(`📥 *NEW DEPOSIT PENDING*\n\n👤 User: @${currentUser?.username || currentUser?.id}\n💵 Amount: $${amount}\n🌐 Network: ${netInfo.name}\n🔑 TXID: ${txid || 'N/A'}\n📌 Status: PENDING`);
+        sendToTelegramBot(`📥 *NEW DEPOSIT PENDING*\n\n👤 User: @${currentUser?.username || currentUser?.id}\n💵 Amount: $${amount}\n🌐 Network: ${netInfo.name}\n🔑 TXID: ${txid || 'N/A'}\n📌 Status: PENDING (Processing in 1-5 mins)`);
 
-        showCustomPopup('Deposit Pending', `Lacagtaada $${amount} ah waxaa loo diray Telegram-ka si loo hubiyo (PENDING).`, 'success', netInfo.icon);
+        showCustomPopup('Deposit Pending', `Your deposit of $${amount} is pending verification. Please wait 1 to 5 minutes.`, 'success', netInfo.icon);
         
-        // Nadiifi foomka
         document.getElementById('deposit-amount').value = '';
         document.getElementById('deposit-txid').value = '';
         document.getElementById('deposit-screenshot').value = '';
@@ -902,15 +852,15 @@
 
     async function submitWithdraw() {
         if (hasPendingTransaction()) {
-            return showCustomPopup('Pending Request Exists', '⚠️ Waxaad horey u leedahay codsi kale oo PENDING ah. Laba codsi oo isku mar ah laguma oggola support-ka.', 'warning');
+            return showCustomPopup('Pending Request Exists', '⚠️ You already have an active pending request. Please wait 1 to 5 minutes.', 'warning');
         }
 
         const address = document.getElementById('withdraw-address').value.trim();
         const amount = document.getElementById('withdraw-amount').value;
         const network = document.getElementById('withdraw-network').value;
         
-        if (!address) return showCustomPopup('Missing Address', '⚠️ Fadlan gali cinwaankaaga jeebka (Wallet Address)!', 'warning');
-        if (!amount || Number(amount) < 10) return showCustomPopup('Invalid Amount', '⚠️ Ugu yaraan waa inaad la baxdaa $10 USDT', 'warning');
+        if (!address) return showCustomPopup('Missing Address', '⚠️ Please enter your destination wallet address!', 'warning');
+        if (!amount || Number(amount) < 10) return showCustomPopup('Invalid Amount', '⚠️ Minimum withdrawal amount is $10 USDT', 'warning');
 
         const netInfo = cryptoNetworks[network];
 
@@ -925,18 +875,16 @@
         userData.macaamilo.unshift(newTx);
         renderHistory();
 
-        sendToTelegramBot(`📤 *NEW WITHDRAWAL PENDING*\n\n👤 User: @${currentUser?.username || currentUser?.id}\n💵 Amount: $${amount}\n🌐 Network: ${netInfo.name}\n📍 Address: ${address}\n📌 Status: PENDING`);
+        sendToTelegramBot(`📤 *NEW WITHDRAWAL PENDING*\n\n👤 User: @${currentUser?.username || currentUser?.id}\n💵 Amount: $${amount}\n🌐 Network: ${netInfo.name}\n📍 Address: ${address}\n📌 Status: PENDING (Processing in 1-5 mins)`);
 
-        showCustomPopup('Withdrawal Pending', `Codsigaaga $${amount} waxaa loo diray maamulka si loo xaqiijiyo (PENDING).`, 'warning', netInfo.icon);
+        showCustomPopup('Withdrawal Pending', `Your withdrawal request of $${amount} has been submitted. Please wait 1 to 5 minutes.`, 'warning', netInfo.icon);
         
         document.getElementById('withdraw-address').value = '';
         document.getElementById('withdraw-amount').value = '';
     }
 
-    // Shaqada u direysa fariimaha Telegram Bot
     function sendToTelegramBot(text) {
-        // Halkan waxaad ku xiri kartaa Backend API-gaaga ama Telegram Bot Webhook
-        console.log("Telegram Notification Sent:", text);
+        console.log("Telegram Bot Notification Sent:", text);
     }
 
     function filterHistory(type, btn) {
@@ -952,14 +900,14 @@
         if (activeHistoryFilter !== 'ALL') txs = txs.filter(t => t.type === activeHistoryFilter);
 
         if (txs.length === 0) {
-            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11.5px; padding: 16px 0;">Ma jiraan wax taariikh ah oo la helay.</p>`;
+            container.innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11.5px; padding: 16px 0;">No transaction history found.</p>`;
             return;
         }
 
         container.innerHTML = txs.map(tx => `
             <div class="tx-card">
                 <div style="display: flex; align-items: center;">
-                    <div class="tx-icon ${tx.type}"><i class="fa-solid ${tx.type === 'DEPOSIT' ? 'fa-arrow-down' : tx.type === 'WITHDRAWAL' ? 'fa-arrow-up' : 'fa-chart-line'}"></i></div>
+                    <div class="tx-icon ${tx.type}"><i class="fa-solid ${tx.type === 'DEPOSIT' ? 'fa-arrow-down' : 'fa-arrow-up'}"></i></div>
                     <div class="tx-details">
                         <h5>${tx.description || tx.type}</h5>
                         <p>${new Date(tx.date).toLocaleString()}</p>
