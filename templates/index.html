@@ -6,6 +6,8 @@
     <title>CoreXBot - Secure Investment Platform</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
     
     <style>
         :root {
@@ -279,10 +281,22 @@
         .net-info h4 { font-size: 12px; font-weight: 700; color: #fff; }
         .net-info p { font-size: 9.5px; color: var(--accent-cyan); font-weight: 600; margin-top: 1px; }
 
-        .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 10px; }
+        .wallet-box { background: rgba(9, 13, 22, 0.85); border: 1px solid var(--card-border); border-radius: 10px; padding: 10px; margin-bottom: 10px; text-align: center; }
         .wallet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; }
         .copy-btn { background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); color: var(--accent-cyan); padding: 4px 8px; border-radius: 5px; font-size: 10px; cursor: pointer; font-weight: 600; }
-        .address-text { font-family: monospace; font-size: 11px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 6px; border-radius: 5px; }
+        .address-text { font-family: monospace; font-size: 11px; color: #fff; word-break: break-all; background: rgba(255,255,255,0.03); padding: 6px; border-radius: 5px; margin-bottom: 10px; }
+        
+        /* QR Code Container Styling */
+        #qrcode-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 8px;
+            width: fit-content;
+            margin: 10px auto 5px auto;
+        }
 
         button.primary { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--primary-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
         button.success { width: 100%; padding: 10px; border-radius: 8px; border: none; background: var(--success-gradient); color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
@@ -719,6 +733,12 @@
                 <button class="copy-btn" onclick="copyAddress()"><i class="fa-regular fa-copy"></i> Copy Address</button>
             </div>
             <div class="address-text" id="deposit-address-display">TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs</div>
+            
+            <!-- QR CODE DISPLAY CONTAINER -->
+            <div id="qrcode-container">
+                <div id="qrcode"></div>
+            </div>
+            <span style="font-size: 9px; color: var(--text-sub); display: block; margin-top: 4px;">Scan QR to pay</span>
         </div>
 
         <label>Amount USDT</label>
@@ -976,6 +996,7 @@
     };
 
     let activeInvestmentsList = [];
+    let qrcodeObj = null; // QR Code instance
 
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
     const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500, 1000, 1500];
@@ -1133,7 +1154,6 @@
         } catch(e) {}
     }
 
-    // Professional Popup Modal Function with Network Logo Support
     function showCustomPopup(title, message, type = 'success', networkLogoUrl = null) {
         playSound();
         const overlay = document.getElementById('custom-popup-overlay');
@@ -1485,6 +1505,27 @@
         document.getElementById('deposit-net-fullname').textContent = info.name;
         document.getElementById('deposit-net-tag').textContent = info.tag;
         document.getElementById('deposit-address-display').textContent = info.address;
+
+        // Generate or update QR Code based on the selected wallet address
+        generateQRCode(info.address);
+    }
+
+    function generateQRCode(text) {
+        const qrContainer = document.getElementById('qrcode');
+        qrContainer.innerHTML = ""; // Clear existing QR code if any
+        
+        try {
+            qrcodeObj = new QRCode(qrContainer, {
+                text: text,
+                width: 128,
+                height: 128,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        } catch(e) {
+            console.error("QR Code generation error:", e);
+        }
     }
 
     function copyAddress() {
@@ -1729,51 +1770,6 @@
         } catch (e) {
             showCustomPopup('Error', '⚠️ Failed to send ticket!', 'warning');
         }
-    }
-
-    async function loadUserTickets() {
-        if (!currentUser) return;
-        try {
-            const res = await fetch(`/api/support/tickets/${currentUser.id}`);
-            const data = await res.json();
-            if (data.status === 'success' && data.tickets.length > 0) {
-                document.getElementById('support-tickets-container').innerHTML = data.tickets.map(t => `
-                    <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--card-border); border-radius: 8px; padding: 8px; margin-bottom: 6px; font-size: 11px;">
-                        <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 3px;">
-                            <span>${t.subject}</span>
-                            <span style="color: ${t.status === 'COMPLETED' ? '#10b981' : '#f59e0b'};">${t.status}</span>
-                        </div>
-                        <p style="color: var(--text-sub); margin-bottom: 4px;"><b>You:</b> ${t.message}</p>
-                        ${t.admin_reply ? `<p style="color: #10b981; background: rgba(16,185,129,0.1); padding: 4px; border-radius: 4px;"><b>Admin Reply:</b> ${t.user_id ? t.admin_reply : t.admin_reply}</p>` : ''}
-                    </div>
-                `).join('');
-            } else {
-                document.getElementById('support-tickets-container').innerHTML = `<p style="text-align: center; color: var(--text-sub); font-size: 11px; padding: 10px 0;">No support tickets found.</p>`;
-            }
-        } catch (e) {}
-    }
-
-    function openPage(pageId, btn) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-        document.getElementById(pageId).classList.add('active');
-
-        if (btn) {
-            document.querySelectorAll('#main-nav button').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
-
-        if (pageId === 'support') {
-            loadUserTickets();
-        }
-    }
-
-    function showToast(msg) {
-        const toast = document.getElementById('toast');
-        toast.textContent = msg;
-        toast.style.display = 'flex';
-        setTimeout(() => {
-            toast.style.display = 'none';
-        }, 3500);
     }
 </script>
 </body>
