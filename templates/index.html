@@ -322,7 +322,7 @@
         .section-header.standard { color: var(--accent-cyan); }
         .section-header.vip { color: #f59e0b; }
 
-        /* PLAN SELECTOR TABS (NO SCROLL SOLUTION) */
+        /* PLAN SELECTOR TABS */
         .plan-category-tabs {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -440,7 +440,7 @@
         .net-info h4 { font-size: 12px; font-weight: 700; color: #fff; }
         .net-info p { font-size: 9.5px; color: var(--accent-cyan); font-weight: 600; margin-top: 1px; }
 
-        /* ULTRA PROFESSIONAL MODERN DEPOSIT WALLET BOX */
+        /* WALLET BOX PRO */
         .wallet-box-pro {
             background: linear-gradient(145deg, rgba(13, 19, 34, 0.95) 0%, rgba(8, 12, 22, 0.98) 100%);
             border: 1px solid rgba(0, 210, 255, 0.25);
@@ -506,32 +506,19 @@
         .tx-icon.DEPOSIT { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .tx-icon.WITHDRAWAL { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
         .tx-icon.INVESTMENT { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); }
+        .tx-icon.SUPPORT { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
         .tx-details { flex: 1; margin-left: 8px; }
         .tx-details h5 { font-size: 11px; font-weight: 700; color: #fff; }
         .tx-details p { font-size: 9px; color: var(--text-sub); margin-top: 1px; }
         .tx-amount { text-align: right; }
         .tx-amount h5 { font-size: 12px; font-weight: 800; }
         .status-badge { font-size: 8px; font-weight: 700; padding: 2px 4px; border-radius: 3px; text-transform: uppercase; display: inline-block; margin-top: 2px; }
-        .status-completed { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+        .status-completed, .status-approved, .status-active { background: rgba(16, 185, 129, 0.15); color: #10b981; }
         .status-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
-
-        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-        .stat-box { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 10px; text-align: center; }
-        .stat-box i { font-size: 14px; color: var(--accent-cyan); margin-bottom: 3px; }
-        .stat-box h3 { font-size: 15px; font-weight: 800; color: #fff; margin: 2px 0; }
-        .stat-box p { font-size: 9.5px; color: var(--text-sub); }
-
-        .progress-container { background: rgba(9, 13, 22, 0.8); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 12px; }
-        .progress-bar-bg { width: 100%; height: 5px; background: rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden; margin-top: 6px; }
-        .progress-bar-fill { height: 100%; background: var(--primary-gradient); width: 0%; transition: width 0.5s ease; }
+        .status-rejected { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
 
         .support-card { background: rgba(15, 23, 42, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 8px; text-decoration: none; color: #fff; }
         .support-icon { width: 36px; height: 36px; border-radius: 8px; background: rgba(0, 210, 255, 0.1); display: flex; align-items: center; justify-content: center; font-size: 16px; color: var(--accent-cyan); }
-
-        .admin-table-box { width: 100%; overflow-x: auto; margin-top: 6px; }
-        .admin-table { width: 100%; border-collapse: collapse; margin-bottom: 10px; font-size: 10px; text-align: left; }
-        .admin-table th, .admin-table td { padding: 5px 7px; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
-        .admin-table th { background: rgba(0, 210, 255, 0.15); color: var(--accent-cyan); font-weight: 700; }
 
         /* Navigation */
         nav { position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: rgba(15, 22, 36, 0.92); backdrop-filter: blur(15px); border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; align-items: center; max-width: 480px; margin: 0 auto; z-index: 100; border-radius: 14px 14px 0 0; }
@@ -597,36 +584,6 @@
             box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4); transition: transform 0.2s;
         }
         .sms-close-btn:active { transform: scale(0.96); }
-
-        /* LIVE NOTIFICATION TOAST CONTAINER */
-        #live-notification-container {
-            position: fixed; bottom: 75px; left: 12px; z-index: 99999;
-            display: flex; flex-direction: column; gap: 8px; pointer-events: none; max-width: calc(100% - 24px);
-        }
-        .live-notif-card {
-            background: rgba(15, 23, 42, 0.92); border: 1px solid rgba(0, 210, 255, 0.3); backdrop-filter: blur(12px);
-            border-radius: 12px; padding: 10px 12px; display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); pointer-events: auto;
-            animation: slideInLeft 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards, fadeOut 0.5s ease 4.5s forwards;
-            max-width: 340px;
-        }
-        @keyframes slideInLeft {
-            0% { transform: translateX(-120%); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
-        @keyframes fadeOut {
-            0% { opacity: 1; transform: translateX(0); }
-            100% { opacity: 0; transform: translateX(-20px); }
-        }
-        .live-notif-icon {
-            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; background: rgba(0, 210, 255, 0.15); border: 1px solid rgba(0, 210, 255, 0.3); overflow: hidden;
-        }
-        .live-notif-icon img { width: 18px; height: 18px; object-fit: contain; }
-        .live-notif-content { flex: 1; font-size: 11px; line-height: 1.35; }
-        .live-notif-content .notif-title { font-weight: 700; color: #fff; display: flex; align-items: center; justify-content: space-between; }
-        .live-notif-content .notif-title span { font-size: 8.5px; color: var(--text-sub); font-weight: 500; }
-        .live-notif-content .notif-desc { color: #cbd5e1; margin-top: 1px; }
 
         /* Live Chat Widget Styles */
         .chat-widget-btn {
@@ -694,7 +651,7 @@
     </div>
 </header>
 
-<!-- MARKET TICKER CONTAINER -->
+<!-- MARKET TICKER -->
 <div class="market-ticker-container">
     <div class="market-ticker-track">
         <span><b>BTC:</b> $65,007 (+2.4%)</span>
@@ -704,7 +661,7 @@
     </div>
 </div>
 
-<!-- LIVE MARKET PRICES SECTION -->
+<!-- LIVE MARKET PRICES -->
 <div class="market-section">
     <div class="market-header">
         <span>Market Trends</span>
@@ -763,7 +720,7 @@
     </div>
 </div>
 
-<!-- Professional & Modern Big Quick Action Buttons -->
+<!-- Quick Action Buttons -->
 <div class="quick">
     <button class="action-btn-modern deposit-btn" onclick="playSound(); openPage('deposit')">
         <div class="btn-icon-wrapper">
@@ -793,7 +750,6 @@
         </div>
     </div>
 
-    <!-- MODERN TABBED PLANS (NO SCROLL SOLUTION) -->
     <div class="section-header standard" style="margin-top: 14px;">
         <i class="fa-solid fa-layer-group"></i> Choose Investment Plan
     </div>
@@ -808,7 +764,7 @@
         </button>
     </div>
 
-    <!-- Standard Plan Content Tab -->
+    <!-- Standard Plans -->
     <div id="tab-standard" class="plan-tab-content active">
         <div style="font-size: 10px; color: var(--text-sub); margin-bottom: 8px; font-weight: 600;">
             Standard Plans ($10 - $100 | 25% Daily | 2 Weeks)
@@ -816,7 +772,7 @@
         <div id="standard-plans" class="plans-grid"></div>
     </div>
 
-    <!-- VIP Plan Content Tab -->
+    <!-- VIP Plans -->
     <div id="tab-vip" class="plan-tab-content">
         <div style="font-size: 10px; color: #fde68a; margin-bottom: 8px; font-weight: 600;">
             VIP Plans ($150 - $1500 | 35% Daily | 2 Weeks)
@@ -825,7 +781,7 @@
     </div>
 </section>
 
-<!-- Guidelines / Policy Page -->
+<!-- Guidelines Page -->
 <section id="guidelines" class="page">
     <div class="policy-container" style="margin-bottom: 0;">
         <div class="policy-header">
@@ -844,7 +800,7 @@
             <div class="policy-item">
                 <i class="fa-solid fa-circle-check"></i>
                 <div class="policy-text">
-                    <b>Referral Bonus:</b> Invite friends and instantly earn <b>3.50 USDT</b> when your referral makes their first successful deposit. You can withdraw referral balance once it reaches <b>150$</b>.
+                    <b>Referral Bonus:</b> Invite friends and instantly earn <b>3.50 USDT</b> when your referral makes their first successful deposit.
                 </div>
             </div>
             <div class="policy-item">
@@ -880,7 +836,6 @@
             <span style="font-size: 9.5px; background: rgba(16,185,129,0.15); color: #10b981; padding: 3px 6px; border-radius: 5px; font-weight: 700;">Fast Deposit</span>
         </div>
 
-        <!-- PROFESSIONAL & MODERN DEPOSIT WALLET BOX -->
         <div class="wallet-box-pro">
             <div class="wallet-header-pro">
                 <span class="wallet-title-tag"><i class="fa-solid fa-shield-halved"></i> Official Deposit Wallet</span>
@@ -949,11 +904,10 @@
             <button class="tab-btn" onclick="filterHistory('DEPOSIT', this)">Deposits</button>
             <button class="tab-btn" onclick="filterHistory('WITHDRAWAL', this)">Withdrawals</button>
             <button class="tab-btn" onclick="filterHistory('INVESTMENT', this)">Investments</button>
+            <button class="tab-btn" onclick="filterHistory('SUPPORT', this)">Support Tickets</button>
         </div>
 
-        <div id="history-container">
-            <!-- Dynamic All Transactions Displayed Here -->
-        </div>
+        <div id="history-container"></div>
     </div>
 </section>
 
@@ -1019,7 +973,7 @@
         </div>
 
         <div style="margin-top: 16px; background: rgba(9, 13, 22, 0.7); border: 1px solid var(--card-border); border-radius: 12px; padding: 12px;">
-            <label style="margin-bottom: 5px;"><i class="fa-solid fa-link"></i> Your Referral Link (Bonus: 3.5$ per invite | Payout at 150$)</label>
+            <label style="margin-bottom: 5px;"><i class="fa-solid fa-link"></i> Your Referral Link</label>
             <div style="display: flex; gap: 6px;">
                 <input type="text" id="ref-link" value="https://t.me/CoreXBot?start=ref_000000" readonly style="margin-bottom: 0; font-size: 11px; font-family: monospace; background: rgba(0,0,0,0.3);">
                 <button class="copy-btn" onclick="copyRefLink()" style="padding: 0 12px; border-radius: 8px; font-weight: 700;"><i class="fa-regular fa-copy"></i> Copy</button>
@@ -1039,7 +993,7 @@
 
 </div>
 
-<!-- PROFESSIONAL POPUP SMS MODAL HTML CONTAINER -->
+<!-- PROFESSIONAL POPUP SMS MODAL CONTAINER -->
 <div id="smsModalOverlay" class="sms-modal-overlay">
     <div class="sms-modal-card">
         <div id="smsModalIconBox" class="sms-icon-box success">
@@ -1055,10 +1009,7 @@
     </div>
 </div>
 
-<!-- LIVE NOTIFICATION TOAST CONTAINER -->
-<div id="live-notification-container"></div>
-
-<!-- LIVE CHAT WIDGET HTML -->
+<!-- LIVE CHAT WIDGET -->
 <div id="chat-widget-btn" class="chat-widget-btn" title="CoreXBot Assistant">
     <i class="fa-solid fa-robot"></i>
 </div>
@@ -1084,13 +1035,8 @@
 
 <script>
     let currentUser = null;
-    let userTransactions = [
-        { type: 'DEPOSIT', amount: 50, network: 'TRC20', status: 'Completed', date: '2026-09-14 12:30' },
-        { type: 'INVESTMENT', amount: 50, plan: 'Standard Plan', status: 'Active', date: '2026-09-14 12:32' }
-    ];
-
-    let pendingDepositActive = false;
-    let pendingWithdrawalActive = false;
+    let userBalance = 0.00; // Real balance tracker starting at 0
+    let userTransactions = [];
 
     const stdAmounts = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
     const vipAmounts = [150, 200, 250, 300, 350, 400, 450, 500, 1000, 1500];
@@ -1115,10 +1061,15 @@
         updateDepositAddress();
         updateWithdrawIcon();
         renderHistory();
+        updateBalanceUI();
         initLiveChatWidget();
     });
 
-    /* PROFESSIONAL POPUP SMS MODAL FUNCTIONS */
+    function updateBalanceUI() {
+        document.getElementById('balance').textContent = userBalance.toFixed(2);
+    }
+
+    /* POPUP SMS MODAL FUNCTIONS */
     function showSmsModal(type, data) {
         playSound();
         const overlay = document.getElementById('smsModalOverlay');
@@ -1144,16 +1095,16 @@
             }
 
             detailsBox.innerHTML = `
+                <div class="sms-row"><span>Time:</span> <b>${data.date}</b></div>
                 <div class="sms-row"><span>Amount:</span> <b>$${data.amount} USDT</b></div>
                 <div class="sms-row"><span>Network:</span> <b>${data.network}</b></div>
-                <div class="sms-row"><span>Estimated Time:</span> <b style="color: #10b981;"><i class="fa-regular fa-clock"></i> 1 - 5 min</b></div>
-                <div class="sms-row"><span>Status:</span> <b style="color: #f59e0b;">Pending Processing...</b></div>
+                <div class="sms-row"><span>Status:</span> <b style="color: #f59e0b;">Pending Review</b></div>
             `;
         } else if (type === 'WITHDRAWAL_PENDING') {
             iconBox.classList.add('pending');
             icon.className = 'fa-solid fa-clock-rotate-left';
             title.textContent = 'Withdrawal Request Submitted';
-            subtitle.textContent = 'Payout request has entered the transaction queue.';
+            subtitle.textContent = 'Payout request has entered queue.';
 
             if (data.networkIcon) {
                 netLogo.src = data.networkIcon;
@@ -1161,51 +1112,42 @@
             }
 
             detailsBox.innerHTML = `
+                <div class="sms-row"><span>Time:</span> <b>${data.date}</b></div>
                 <div class="sms-row"><span>Amount:</span> <b>$${data.amount} USDT</b></div>
                 <div class="sms-row"><span>Network:</span> <b>${data.network}</b></div>
-                <div class="sms-row"><span>Estimated Time:</span> <b style="color: #10b981;"><i class="fa-regular fa-clock"></i> 1 - 5 min</b></div>
-                <div class="sms-row"><span>Status:</span> <b style="color: #f59e0b;">Queued for Payout</b></div>
-            `;
-        } else if (type === 'PENDING_EXISTS') {
-            iconBox.classList.add('pending');
-            icon.className = 'fa-solid fa-shield-halved';
-            title.textContent = 'Pending Request Exists';
-            subtitle.textContent = 'Please wait for your previous request to complete.';
-
-            detailsBox.innerHTML = `
-                <div class="sms-row"><span>Notice:</span> <b style="color: #f59e0b; font-size: 10px;">Please wait until your previous deposit or withdrawal request is accepted before submitting a new one.</b></div>
+                <div class="sms-row"><span>Status:</span> <b style="color: #f59e0b;">Pending Processing</b></div>
             `;
         } else if (type === 'INSUFFICIENT_BALANCE') {
             iconBox.classList.add('danger');
             icon.className = 'fa-solid fa-triangle-exclamation';
             title.textContent = 'Insufficient Balance!';
-            subtitle.textContent = 'Please deposit funds first to proceed.';
+            subtitle.textContent = 'Haddaa lacag kugu filan ma jirto.';
 
             detailsBox.innerHTML = `
-                <div class="sms-row"><span>Required Action:</span> <b style="color: #ef4444;">Top up account</b></div>
-                <div class="sms-row"><span>Notice:</span> <b>Please deposit first.</b></div>
+                <div class="sms-row"><span>Notice:</span> <b style="color: #ef4444;">Fadlan Account-kaaga lacag ku shub (Deposit) inta aadan iibsan karin!</b></div>
             `;
         } else if (type === 'INVESTMENT_SUCCESS') {
             iconBox.classList.add('success');
             icon.className = 'fa-solid fa-circle-check';
             title.textContent = 'Investment Deployed!';
-            subtitle.textContent = 'Your portfolio is actively generating live profits.';
+            subtitle.textContent = 'Your portfolio is successfully active.';
 
             detailsBox.innerHTML = `
+                <div class="sms-row"><span>Time:</span> <b>${data.date}</b></div>
                 <div class="sms-row"><span>Plan Type:</span> <b style="color: var(--accent-cyan);">${data.planType}</b></div>
                 <div class="sms-row"><span>Invested:</span> <b>$${data.amount} USDT</b></div>
-                <div class="sms-row"><span>Daily Return:</span> <b style="color: #10b981;">${data.dailyRate}% Daily</b></div>
-                <div class="sms-row"><span>Duration:</span> <b>14 Days (Hourly Credit)</b></div>
+                <div class="sms-row"><span>Status:</span> <b style="color: #10b981;">Active</b></div>
             `;
         } else if (type === 'SUPPORT_PENDING') {
             iconBox.classList.add('pending');
             icon.className = 'fa-solid fa-headset';
             title.textContent = 'Ticket Submitted';
-            subtitle.textContent = 'Our support team will respond shortly.';
+            subtitle.textContent = 'Support team will reply soon.';
 
             detailsBox.innerHTML = `
+                <div class="sms-row"><span>Time:</span> <b>${data.date}</b></div>
                 <div class="sms-row"><span>Subject:</span> <b>${data.subject}</b></div>
-                <div class="sms-row"><span>Status:</span> <b style="color: #f59e0b;">Pending Admin Review</b></div>
+                <div class="sms-row"><span>Status:</span> <b style="color: #f59e0b;">Pending</b></div>
             `;
         }
 
@@ -1279,7 +1221,7 @@
             setTimeout(() => {
                 const botMsg = document.createElement('div');
                 botMsg.className = 'bot-message';
-                botMsg.textContent = "Thank you for contacting CoreXBot support! Transactions take 1-5 min to process successfully. ☺️";
+                botMsg.textContent = "Thank you for contacting CoreXBot support! ☺️";
                 chatBody.appendChild(botMsg);
                 chatBody.scrollTop = chatBody.scrollHeight;
                 playSound();
@@ -1347,13 +1289,25 @@
     }
 
     function investPlan(amount) {
+        // Requirement 1: Check if balance is sufficient
+        if (userBalance < amount) {
+            showSmsModal('INSUFFICIENT_BALANCE', {});
+            return;
+        }
+
+        userBalance -= amount;
+        updateBalanceUI();
+
         const isVip = amount >= 150;
+        const nowStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
+
         showSmsModal('INVESTMENT_SUCCESS', {
             planType: isVip ? 'VIP Investment Plan' : 'Standard Investment Plan',
             amount: amount,
-            dailyRate: isVip ? '35' : '25'
+            date: nowStr
         });
-        userTransactions.unshift({ type: 'INVESTMENT', amount: amount, plan: isVip ? 'VIP Plan' : 'Standard Plan', status: 'Active', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+
+        userTransactions.unshift({ type: 'INVESTMENT', amount: amount, plan: isVip ? 'VIP Plan' : 'Standard Plan', status: 'Active', date: nowStr });
         renderHistory();
     }
 
@@ -1384,64 +1338,74 @@
     }
 
     function submitDeposit() {
-        if (pendingDepositActive || pendingWithdrawalActive) {
-            showSmsModal('PENDING_EXISTS', {});
-            return;
-        }
-
         const amount = document.getElementById('deposit-amount').value;
         const network = document.getElementById('deposit-network').value;
         if (!amount || Number(amount) < 10) {
-            showSmsModal('INSUFFICIENT_BALANCE', {});
+            showToast('⚠️ Fadlan geli lacag sax ah (Min $10)');
             return;
         }
 
-        pendingDepositActive = true;
         const netInfo = cryptoNetworks[network];
+        const nowStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
         
+        // Simulating approval for testing or leaving as Pending real state
+        userBalance += Number(amount); // Automatically update real balance for demonstration
+        updateBalanceUI();
+
         showSmsModal('DEPOSIT_PENDING', {
             amount: amount,
             network: netInfo.name,
-            networkIcon: netInfo.icon
+            networkIcon: netInfo.icon,
+            date: nowStr
         });
 
-        userTransactions.unshift({ type: 'DEPOSIT', amount: amount, network: network, status: 'Pending', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+        userTransactions.unshift({ type: 'DEPOSIT', amount: amount, network: network, status: 'Approved', date: nowStr });
         renderHistory();
     }
 
     function submitWithdraw() {
-        if (pendingDepositActive || pendingWithdrawalActive) {
-            showSmsModal('PENDING_EXISTS', {});
-            return;
-        }
-
         const amount = document.getElementById('withdraw-amount').value;
         const network = document.getElementById('withdraw-network').value;
         const address = document.getElementById('withdraw-address').value;
         
         if (!amount || Number(amount) < 10 || !address) {
+            showToast('⚠️ Fadlan buuxi xogta saxda ah');
+            return;
+        }
+
+        if (userBalance < Number(amount)) {
             showSmsModal('INSUFFICIENT_BALANCE', {});
             return;
         }
 
-        pendingWithdrawalActive = true;
+        userBalance -= Number(amount);
+        updateBalanceUI();
+
         const netInfo = cryptoNetworks[network];
+        const nowStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
 
         showSmsModal('WITHDRAWAL_PENDING', {
             amount: amount,
             network: netInfo.name,
-            address: address,
-            networkIcon: netInfo.icon
+            networkIcon: netInfo.icon,
+            date: nowStr
         });
 
-        userTransactions.unshift({ type: 'WITHDRAWAL', amount: amount, network: network, status: 'Pending', date: new Date().toISOString().slice(0, 16).replace('T', ' ') });
+        userTransactions.unshift({ type: 'WITHDRAWAL', amount: amount, network: network, status: 'Pending', date: nowStr });
         renderHistory();
     }
 
     function sendTicket() {
         const subject = document.getElementById('support-subject').value;
-        if (!subject) return showToast('⚠️ Enter subject');
-        showSmsModal('SUPPORT_PENDING', { subject: subject });
+        if (!subject) {
+            showToast('⚠️ Fadlan geli mowduuca (Subject)');
+            return;
+        }
+        const nowStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
+        showSmsModal('SUPPORT_PENDING', { subject: subject, date: nowStr });
+
+        userTransactions.unshift({ type: 'SUPPORT', amount: 0, plan: subject, status: 'Pending', date: nowStr });
+        renderHistory();
     }
 
     function filterHistory(type, btn) {
@@ -1469,8 +1433,11 @@
             let iconSymbol = 'fa-arrow-down';
             if (tx.type === 'WITHDRAWAL') { iconClass = 'WITHDRAWAL'; iconSymbol = 'fa-arrow-up-right-from-square'; }
             else if (tx.type === 'INVESTMENT') { iconClass = 'INVESTMENT'; iconSymbol = 'fa-chart-line'; }
+            else if (tx.type === 'SUPPORT') { iconClass = 'SUPPORT'; iconSymbol = 'fa-headset'; }
 
-            let statusClass = tx.status === 'Completed' || tx.status === 'Active' ? 'status-completed' : 'status-pending';
+            let statusClass = 'status-pending';
+            if (tx.status === 'Approved' || tx.status === 'Completed' || tx.status === 'Active') statusClass = 'status-approved';
+            else if (tx.status === 'Rejected') statusClass = 'status-rejected';
 
             return `
                 <div class="tx-card">
@@ -1482,7 +1449,7 @@
                         </div>
                     </div>
                     <div class="tx-amount">
-                        <h5>$${tx.amount}</h5>
+                        <h5>${tx.amount > 0 ? '$' + tx.amount : 'Ticket'}</h5>
                         <span class="status-badge ${statusClass}">${tx.status}</span>
                     </div>
                 </div>
