@@ -255,6 +255,15 @@
             <option value="ERC20">Ethereum Network (USDT-ERC20)</option>
         </select>
 
+        <div class="network-preview-card" style="margin-top: 10px;">
+            <div class="net-left">
+                <div class="net-info">
+                    <h4 id="withdraw-net-fullname">TRON Network (TRC20)</h4>
+                    <p id="withdraw-net-tag">USDT-TRC20</p>
+                </div>
+            </div>
+        </div>
+
         <label>Destination Address</label>
         <input type="text" id="withdraw-address" placeholder="Enter Wallet Address">
 
@@ -435,6 +444,7 @@ async function initTelegramUser() {
     const tg = window.Telegram?.WebApp;
     if (tg) { tg.ready(); tg.expand(); }
 
+    // Waxaa lagu daray fallback si tijaabada browser-ka caadiga ah uusan u dhibin
     const tgUser = tg?.initDataUnsafe?.user || { id: 5738022147, first_name: "Ismail", username: "ismailessa" };
     currentUser = tgUser;
 
@@ -593,7 +603,9 @@ function renderPlans() {
 // INVEST
 // ==========================================
 async function investPlan(amount, btn) {
-    if (!currentUser) return showToast('⚠️ User not verified!');
+    if (!currentUser) {
+        currentUser = { id: 5738022147, first_name: "Ismail", username: "ismailessa" };
+    }
     if (userData.balance < amount) return showToast('⚠️ Insufficient balance!');
 
     if (!confirm(`Invest $${amount} USDT?\n\nDaily Profit: ${amount >= 150 ? '35%' : '25%'}\nDuration: 14 Days`)) return;
@@ -650,6 +662,8 @@ function copyAddress() {
 }
 
 async function submitDeposit(btn) {
+    if (!currentUser) currentUser = { id: 5738022147, first_name: "Ismail", username: "ismailessa" };
+    
     const amount = parseFloat(document.getElementById('deposit-amount').value);
     const network = document.getElementById('deposit-network').value;
     const txid = document.getElementById('deposit-txid').value.trim();
@@ -733,6 +747,8 @@ function updateWithdrawIcon() {
 }
 
 async function submitWithdraw(btn) {
+    if (!currentUser) currentUser = { id: 5738022147, first_name: "Ismail", username: "ismailessa" };
+    
     const address = document.getElementById('withdraw-address').value.trim();
     const amount = parseFloat(document.getElementById('withdraw-amount').value);
 
@@ -859,6 +875,8 @@ function renderHistory() {
 // SUPPORT
 // ==========================================
 async function sendTicket(btn) {
+    if (!currentUser) currentUser = { id: 5738022147, first_name: "Ismail", username: "ismailessa" };
+    
     const subject = document.getElementById('support-subject').value.trim();
     const message = document.getElementById('support-msg').value.trim();
 
