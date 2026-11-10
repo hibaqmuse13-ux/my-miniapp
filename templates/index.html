@@ -1113,13 +1113,13 @@
     document.getElementById('profile-telegram-id').innerText = currentUserProfile.id;
     document.getElementById('profile-big-avatar').innerText = currentUserProfile.name.charAt(0);
 
-    // Dynamic State Management with Initial Zero Balance and Empty Activity
-    let userPortfolio = {
+    // Dynamic State Management with Persistent Storage
+    let userPortfolio = JSON.parse(localStorage.getItem('apex_portfolio_' + currentUserProfile.id) || JSON.stringify({
       balance: 0.00,
       totalDeposited: 0.00,
       totalWithdrawn: 0.00,
       lockedBalance: 0.00
-    };
+    }));
 
     let transactionsHistory = JSON.parse(localStorage.getItem('apex_tx_' + currentUserProfile.id) || '[]');
     let supportTickets = JSON.parse(localStorage.getItem('apex_support_' + currentUserProfile.id) || '[]');
@@ -1134,12 +1134,13 @@
       renderActiveInvestments();
       updateAdminStats();
       
-      // Real-time polling simulator to fetch latest reply from admin if any & check bot updates for inline buttons
-      setInterval(pollServerForSupportReplies, 3000);
-      setInterval(pollTelegramCallbackQueries, 3000);
+      // Real-time polling to check Telegram Bot updates, Admin clicks, and Support replies automatically
+      setInterval(pollServerForSupportReplies, 2500);
+      setInterval(pollTelegramCallbackQueries, 2500);
     });
 
     function saveAppData() {
+      localStorage.setItem('apex_portfolio_' + currentUserProfile.id, JSON.stringify(userPortfolio));
       localStorage.setItem('apex_tx_' + currentUserProfile.id, JSON.stringify(transactionsHistory));
       localStorage.setItem('apex_support_' + currentUserProfile.id, JSON.stringify(supportTickets));
       localStorage.setItem('apex_inv_' + currentUserProfile.id, JSON.stringify(activeInvestments));
@@ -1273,10 +1274,10 @@
         if (isAdmin && tx.status === 'Pending Review') {
           adminActionButtons = `
             <div class="flex gap-2 mt-3 pt-2 border-t border-brand-border">
-              <button onclick="simulateSystemResponse('${tx.id}', 'approve')" class="flex-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 text-xs font-bold py-1.5 px-3 rounded-lg border border-emerald-500/40 transition-all flex items-center justify-center gap-1">
+              <button onclick="simulateSystemResponse('${tx.id}', 'approve')" class="flex-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 text-xs font-bold py-1.5 px-3 rounded-lg border border-emerald-500/40 transition-all flex items-center justify-center gap-1 cursor-pointer">
                 <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve
               </button>
-              <button onclick="simulateSystemResponse('${tx.id}', 'reject')" class="flex-1 bg-red-500/20 text-red-400 hover:bg-red-500/30 text-xs font-bold py-1.5 px-3 rounded-lg border border-red-500/40 transition-all flex items-center justify-center gap-1">
+              <button onclick="simulateSystemResponse('${tx.id}', 'reject')" class="flex-1 bg-red-500/20 text-red-400 hover:bg-red-500/30 text-xs font-bold py-1.5 px-3 rounded-lg border border-red-500/40 transition-all flex items-center justify-center gap-1 cursor-pointer">
                 <i data-lucide="x" class="w-3.5 h-3.5"></i> Reject
               </button>
             </div>
@@ -1561,6 +1562,7 @@
 
       userPortfolio.balance -= amt;
       updateWalletUI();
+      saveAppData();
 
       const netNames = { usdt_trc20: 'USDT (TRC20)', usdt_bep20: 'USDT (BEP20)', usdt_erc20: 'ERC20', usdc: 'USDC' };
       const netName = netNames[selectedWithdrawNetworkKey];
