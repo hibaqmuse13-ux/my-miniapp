@@ -5,6 +5,7 @@ import requests
 
 app = Flask(__name__)
 
+# Xogtaaga saxda ah ee Bot-ka iyo Admin-ka
 BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw"
 ADMIN_CHAT_ID = 5738022147
 
@@ -51,6 +52,7 @@ def init_db():
 
 init_db()
 
+# --- HELPER: SEND TELEGRAM NOTIFICATION ---
 def send_telegram_alert(text, reply_markup=None):
     try:
         url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
@@ -61,10 +63,12 @@ def send_telegram_alert(text, reply_markup=None):
         }
         if reply_markup:
             payload["reply_markup"] = reply_markup
-        requests.post(url, json=payload)
+        response = requests.post(url, json=payload)
+        print("Telegram Response:", response.text) # Si aad logs-ka uga aragto haddii ay fariintu tagto
     except Exception as e:
         print("Telegram alert error:", e)
 
+# --- FLASK ROUTES ---
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -111,6 +115,7 @@ def handle_transaction():
     tx_id = cursor.lastrowid
     conn.close()
 
+    # Send Telegram Notification to Admin with Approve/Reject buttons
     keyboard = {
         "inline_keyboard": [
             [
@@ -119,7 +124,7 @@ def handle_transaction():
             ]
         ]
     }
-    msg = (f"🚨 *NEW {t_type.toUpperCase()} REQUEST*\n\n"
+    msg = (f"🚨 *NEW {t_type.upper()} REQUEST*\n\n"
            f"👤 User ID: `{user_id}`\n"
            f"💰 Amount: *{amount}*\n"
            f"🌐 Network: `{network}`\n"
@@ -147,6 +152,7 @@ def handle_ticket():
     ticket_id = cursor.lastrowid
     conn.close()
 
+    # Send Support Ticket Notification to Admin
     msg = (f"🎫 *NEW SUPPORT TICKET #{ticket_id}*\n\n"
            f"👤 User ID: `{user_id}`\n"
            f"📂 Category: *{category}*\n"
