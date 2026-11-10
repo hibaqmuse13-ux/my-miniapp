@@ -1484,7 +1484,7 @@
       renderHistory();
       closeModal('invest-modal');
 
-      triggerAdminBotNotification(`🚀 *NEW INVESTMENT DEPLOYED*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n📦 Plan: *${currentPlan.title}*`);
+      triggerAdminBotNotification(`🚀 *NEW INVESTMENT DEPLOYED*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n🆔 ID: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n📦 Plan: *${currentPlan.title}*`);
       showNotificationPopup('Investment Successful! 🚀', `Successfully deployed $${amt.toFixed(2)} into ${currentPlan.title}. Balance deducted automatically.`, 'emerald', 'check-circle');
     }
 
@@ -1509,9 +1509,9 @@
       const networkName = cryptoWallets[selectedDepositNetworkKey].name;
       let proofRef = '';
       if (hash && hash.length >= 5) {
-        proofRef = 'TxID: ' + hash.substring(0, 8) + '...' + hash.substring(hash.length - 6);
+        proofRef = 'TxID: ' + hash;
       } else {
-        proofRef = 'Screenshot: ' + uploadedScreenshotData;
+        proofRef = 'Screenshot Attached: ' + uploadedScreenshotData;
       }
 
       depAmtInput.value = '';
@@ -1540,7 +1540,8 @@
       saveAppData();
       renderHistory();
 
-      triggerAdminBotNotificationWithKeyboard(`🚨 *NEW DEPOSIT REQUEST*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *+$${depAmt.toFixed(2)}*\n🌐 Network: \`${networkName}\`\n🔗 Ref/TxID: \`${proofRef}\`\n⚡ Status: *Pending Review*`, txId);
+      // Professional formatted notification for admin
+      triggerAdminBotNotificationWithKeyboard(`📥 *NEW PROFESSIONAL DEPOSIT REQUEST*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n🆔 ID: \`${currentUserProfile.id}\`\n💰 Amount: *+$${depAmt.toFixed(2)}*\n🌐 Network: \`${networkName}\`\n🔗 Proof: \`${proofRef}\`\n⚡ Status: *Pending Review*`, txId);
 
       triggerRealtimeVerification('Verifying Deposit', 'Confirming your USDT payment on blockchain...', txObj);
     }
@@ -1566,7 +1567,6 @@
 
       const netNames = { usdt_trc20: 'USDT (TRC20)', usdt_bep20: 'USDT (BEP20)', usdt_erc20: 'ERC20', usdc: 'USDC' };
       const netName = netNames[selectedWithdrawNetworkKey];
-      const shortAddr = 'To: ' + addr.substring(0, 6) + '...' + addr.substring(addr.length - 4);
 
       document.getElementById('withdraw-amount').value = '';
       document.getElementById('withdraw-address').value = '';
@@ -1578,7 +1578,7 @@
         type: 'withdraw',
         title: 'USDT Withdrawal',
         network: netName,
-        ref: shortAddr,
+        ref: addr,
         rawAmount: amt,
         amount: `-$${amt.toFixed(2)}`,
         status: 'Pending Review',
@@ -1591,7 +1591,8 @@
       saveAppData();
       renderHistory();
 
-      triggerAdminBotNotificationWithKeyboard(`🚨 *NEW WITHDRAWAL REQUEST*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n🌐 Network: \`${netName}\`\n🔗 Address: \`${shortAddr}\`\n⚡ Status: *Pending Review*`, txId);
+      // Professional formatted notification for withdrawal with explicit address and network
+      triggerAdminBotNotificationWithKeyboard(`📤 *NEW PROFESSIONAL WITHDRAWAL REQUEST*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n🆔 ID: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n🌐 Network: \`${netName}\`\n📍 Destination Address:\n\`${addr}\`\n⚡ Status: *Pending Review*`, txId);
 
       triggerRealtimeVerification('Processing Withdrawal', 'Validating recipient payout address...', txObj);
     }
@@ -1693,7 +1694,7 @@
           userPortfolio.totalWithdrawn += targetTx.rawAmount;
         }
         updateWalletUI();
-        triggerAdminBotNotification(`✅ *TRANSACTION APPROVED*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Completed Successfully*`);
+        triggerAdminBotNotification(`✅ *TRANSACTION APPROVED*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Completed Successfully*`);
         showNotificationPopup('Transaction Approved! 🎉', `Your ${targetTx.type} of ${targetTx.amount} has been successfully verified and credited.`, 'emerald', 'check-circle');
       } else {
         targetTx.status = 'Rejected';
@@ -1701,7 +1702,7 @@
           userPortfolio.balance += targetTx.rawAmount;
           updateWalletUI();
         }
-        triggerAdminBotNotification(`❌ *TRANSACTION REJECTED*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Declined*`);
+        triggerAdminBotNotification(`❌ *TRANSACTION REJECTED*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Declined*`);
         showNotificationPopup('Transaction Declined ❌', `Your ${targetTx.type} of ${targetTx.amount} was declined by support / gateway.`, 'red', 'alert-circle');
       }
       saveAppData();
@@ -1765,7 +1766,7 @@
 
       // Send Professional notification with Inline Reply Keyboard button to Admin Telegram
       triggerAdminBotNotificationWithSupportKeyboard(
-        `🎫 *NEW SUPPORT TICKET ${ticketBadge}*\n\n👤 User: ${currentUserProfile.name} (\`${currentUserProfile.username}\`)\n🆔 ID: \`${currentUserProfile.id}\`\n📂 Category: *${category}*\n💬 Message: _${message}_`, 
+        `🎫 *NEW PROFESSIONAL SUPPORT TICKET ${ticketBadge}*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n🆔 ID: \`${currentUserProfile.id}\`\n📂 Category: *${category}*\n💬 Message: _${message}_`, 
         ticketId
       );
 
