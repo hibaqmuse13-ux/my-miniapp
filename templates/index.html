@@ -1126,6 +1126,7 @@
     let activeInvestments = JSON.parse(localStorage.getItem('apex_inv_' + currentUserProfile.id) || '[]');
 
     let uploadedScreenshotData = null;
+    let uploadedScreenshotFileObj = null; // 1. Variable to hold the actual image file object for admin photo upload
 
     window.addEventListener('DOMContentLoaded', () => {
       updateWalletUI();
@@ -1207,6 +1208,7 @@
       const file = event.target.files[0];
       if (file) {
         uploadedScreenshotData = file.name;
+        uploadedScreenshotFileObj = file; // 1. Save file reference for direct photo sending to Admin Telegram
         document.getElementById('upload-placeholder-content').classList.add('hidden');
         document.getElementById('upload-preview-container').classList.remove('hidden');
         document.getElementById('uploaded-file-name').innerText = file.name;
@@ -1516,7 +1518,11 @@
 
       depAmtInput.value = '';
       hashInput.value = '';
+      
+      const fileToUpload = uploadedScreenshotFileObj; // capture reference before clearing
       uploadedScreenshotData = null;
+      uploadedScreenshotFileObj = null;
+
       document.getElementById('upload-placeholder-content').classList.remove('hidden');
       document.getElementById('upload-preview-container').classList.add('hidden');
       backToWalletOverview();
@@ -1540,8 +1546,24 @@
       saveAppData();
       renderHistory();
 
-      // Professional formatted notification for admin
-      triggerAdminBotNotificationWithKeyboard(`📥 *NEW PROFESSIONAL DEPOSIT REQUEST*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n🆔 ID: \`${currentUserProfile.id}\`\n💰 Amount: *+$${depAmt.toFixed(2)}*\n🌐 Network: \`${networkName}\`\n🔗 Proof: \`${proofRef}\`\n⚡ Status: *Pending Review*`, txId);
+      // 2. Professional formatted professional notification message for Deposit
+      const professionalDepositText = `📥 *NEW PROFESSIONAL DEPOSIT REQUEST*\n\n` +
+                                      `━━━━━━━━━━━━━━━━━━━━━━\n` +
+                                      `👤 *Investor Name:* ${currentUserProfile.name}\n` +
+                                      `🔖 *Username:* \`${currentUserProfile.username}\`\n` +
+                                      `🆔 *Telegram ID:* \`${currentUserProfile.id}\`\n` +
+                                      `💰 *Amount:* \`+$${depAmt.toFixed(2)} USDT\`\n` +
+                                      `🌐 *Network:* \`${networkName}\`\n` +
+                                      `🔗 *Reference/TxID:* \`${proofRef}\`\n` +
+                                      `⚡ *Status:* 🟡 *Pending Review*\n` +
+                                      `━━━━━━━━━━━━━━━━━━━━━━`;
+
+      // 1. If screenshot file was uploaded, send photo directly to admin with caption; otherwise send standard message
+      if (fileToUpload) {
+        sendAdminBotPhotoWithKeyboard(fileToUpload, professionalDepositText, txId);
+      } else {
+        triggerAdminBotNotificationWithKeyboard(professionalDepositText, txId);
+      }
 
       triggerRealtimeVerification('Verifying Deposit', 'Confirming your USDT payment on blockchain...', txObj);
     }
@@ -1591,8 +1613,19 @@
       saveAppData();
       renderHistory();
 
-      // Professional formatted notification for withdrawal with explicit address and network
-      triggerAdminBotNotificationWithKeyboard(`📤 *NEW PROFESSIONAL WITHDRAWAL REQUEST*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n🆔 ID: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n🌐 Network: \`${netName}\`\n📍 Destination Address:\n\`${addr}\`\n⚡ Status: *Pending Review*`, txId);
+      // 2. Professional formatted professional notification message for Withdrawal
+      const professionalWithdrawalText = `📤 *NEW PROFESSIONAL WITHDRAWAL REQUEST*\n\n` +
+                                         `━━━━━━━━━━━━━━━━━━━━━━\n` +
+                                         `👤 *Investor Name:* ${currentUserProfile.name}\n` +
+                                         `🔖 *Username:* \`${currentUserProfile.username}\`\n` +
+                                         `🆔 *Telegram ID:* \`${currentUserProfile.id}\`\n` +
+                                         `💰 *Amount:* \`-$${amt.toFixed(2)} USDT\`\n` +
+                                         `🌐 *Network:* \`${netName}\`\n` +
+                                         `📍 *Destination Address:*\n\`${addr}\`\n` +
+                                         `⚡ *Status:* 🟡 *Pending Review*\n` +
+                                         `━━━━━━━━━━━━━━━━━━━━━━`;
+
+      triggerAdminBotNotificationWithKeyboard(professionalWithdrawalText, txId);
 
       triggerRealtimeVerification('Processing Withdrawal', 'Validating recipient payout address...', txObj);
     }
@@ -1637,6 +1670,31 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       }).catch(err => console.log('Telegram dispatch notice:', err));
+    }
+
+    // 1. Function to send deposit photo directly to admin telegram chat using FormData
+    function sendAdminBotPhotoWithKeyboard(photoFile, captionText, txId) {
+      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
+      const ADMIN_CHAT_ID = "5738022147";
+
+      const formData = new FormData();
+      formData.append('chat_id', ADMIN_CHAT_ID);
+      formData.append('photo', photoFile);
+      formData.append('caption', captionText);
+      formData.append('parse_mode', 'Markdown');
+      formData.append('reply_markup', JSON.stringify({
+        inline_keyboard: [
+          [
+            { text: "✅ Approve", callback_data: `approve_${txId}` },
+            { text: "❌ Reject", callback_data: `reject_${txId}` }
+          ]
+        ]
+      }));
+
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+        method: 'POST',
+        body: formData
+      }).catch(err => console.log('Telegram photo dispatch notice:', err));
     }
 
     function triggerRealtimeVerification(title, desc, txDetails) {
@@ -1816,7 +1874,7 @@
         saveAppData();
         renderSupportTickets();
         
-        // Trigger automated bot message to user with mention username automatically
+        // 3. Automated support reply goes directly to user interface via local storage sync
         triggerAdminBotNotification(`💬 *SUPPORT REPLY SENT TO ${currentUserProfile.username}*\n\nTicket: *${targetTicket.id}*\nReply: _${replyText}_`);
         showNotificationPopup('Reply Sent ✨', `Response successfully delivered to ${currentUserProfile.username}.`, 'emerald', 'check-circle');
       }
@@ -1902,7 +1960,7 @@
     // -------------------------------------------------------------------------
 
     function calculateWithdrawFee() {
-      const amt = parseFloat(document.getElementById('withdraw-amount').value) || 0;
+      const amt = parseFloat(document.getElementById('withdraw-amount.value') || document.getElementById('withdraw-amount').value) || 0;
       document.getElementById('net-receive-text').innerText = `$${amt.toFixed(2)}`;
     }
 
