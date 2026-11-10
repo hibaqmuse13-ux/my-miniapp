@@ -1287,7 +1287,7 @@
         }
 
         const itemHtml = `
-          <div class="glass-card rounded-2xl p-4 border border-brand-border space-y-2.5">
+          <div class="glass-card rounded-2xl p-4 border border-brand-border space-y-2.5" id="tx-card-${tx.id}">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-${tx.color}-500/10 text-${tx.color}-400 flex items-center justify-center shrink-0">
@@ -1779,7 +1779,14 @@
         }
         updateWalletUI();
         triggerAdminBotNotification(`✅ *TRANSACTION APPROVED*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Completed Successfully*`);
-        showNotificationPopup('Transaction Approved! 🎉', `Your ${targetTx.type} of ${targetTx.amount} has been successfully verified and credited.`, 'emerald', 'check-circle');
+        
+        // Target specific user popup notification message based on transaction type (Deposit or Withdrawal)
+        if (targetTx.type === 'deposit') {
+          showNotificationPopup('Deposit Successful! 🎉💵', `Your deposit of ${targetTx.amount} has been successfully completed!`, 'emerald', 'check-circle');
+        } else {
+          showNotificationPopup('Withdrawal Successful! 🎉💵', `Your withdrawal of ${targetTx.amount} has been successfully completed!`, 'emerald', 'check-circle');
+        }
+
       } else {
         targetTx.status = 'Rejected';
         targetTx.rejectReason = customReason || 'Transaction rejected by finance department.';
@@ -1788,7 +1795,13 @@
           updateWalletUI();
         }
         triggerAdminBotNotification(`❌ *TRANSACTION REJECTED*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n💰 Amount: *${targetTx.amount}*\n🛑 *Reason:* ${targetTx.rejectReason}\n⚡ Status: *Declined*`);
-        showNotificationPopup('Transaction Declined ❌', `Your ${targetTx.type} was rejected. Reason: ${targetTx.rejectReason}`, 'red', 'alert-circle');
+        
+        // Target specific user rejection popup notification message
+        if (targetTx.type === 'deposit') {
+          showNotificationPopup('Deposit Rejected ❌', `Your deposit was rejected. Reason: ${targetTx.rejectReason}`, 'red', 'alert-circle');
+        } else {
+          showNotificationPopup('Withdrawal Rejected ❌', `Your withdrawal was rejected. Reason: ${targetTx.rejectReason}`, 'red', 'alert-circle');
+        }
       }
       saveAppData();
       renderHistory();
@@ -1917,6 +1930,7 @@
         try {
           const parsed = JSON.parse(stored);
           let updated = false;
+          parsed.files = parsed.forEach ? parsed : [];
           parsed.forEach(st => {
             const localMatch = supportTickets.find(lt => lt.id === st.id);
             if (localMatch && (!localMatch.reply && st.reply || localMatch.status !== st.status)) {
