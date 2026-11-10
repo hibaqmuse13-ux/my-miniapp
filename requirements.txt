@@ -1,4 +1,3 @@
-Flask
-requests
-APScheduler
+flask
+python-telegram-bot
 gunicorn
