@@ -1,7 +1,7 @@
 import os
 import sqlite3
 from flask import Flask, render_template, request, jsonify
-from telegram import Bot, InlineKeyboardButton, InlineKeyboardMarkup
+import requests
 
 app = Flask(__name__)
 
@@ -36,12 +36,35 @@ def init_db():
             time TEXT
         )
     ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS tickets (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id TEXT,
+            category TEXT,
+            message TEXT,
+            status TEXT,
+            date TEXT
+        )
+    ''')
     conn.commit()
     conn.close()
 
 init_db()
 
-# --- FLASK ROUTES ---
+def send_telegram_alert(text, reply_markup=None):
+    try:
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+        payload = {
+            "chat_id": ADMIN_CHAT_ID,
+            "text": text,
+            "parse_mode": "Markdown"
+        }
+        if reply_markup:
+            payload["reply_markup"] = reply_markup
+        requests.post(url, json=payload)
+    except Exception as e:
+        print("Telegram alert error:", e)
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -68,7 +91,7 @@ def get_user(user_id):
 @app.route('/api/transaction', methods=['POST'])
 def handle_transaction():
     data = request.json
-    user_id = data.get('userId')
+    user_id = str(data.get('userId', '5738022147'))
     t_type = data.get('type')
     title = data.get('title')
     network = data.get('network')
@@ -88,36 +111,49 @@ def handle_transaction():
     tx_id = cursor.lastrowid
     conn.close()
 
-    # Ogeysiis toos ah oo Telegram Admin-ka (Adiga) loo dirayo iyadoo la adeegsanayo requests ama bot sync
-    try:
-        import requests
-        keyboard = {
-            "inline_keyboard": [
-                [
-                    {"text": "✅ Approve", "callback_data": f"app_{tx_id}"},
-                    {"text": "❌ Reject", "callback_data": f"rej_{tx_id}"}
-                ]
+    keyboard = {
+        "inline_keyboard": [
+            [
+                {"text": "✅ Approve", "callback_data": f"app_{tx_id}"},
+                {"text": "❌ Reject", "callback_data": f"rej_{tx_id}"}
             ]
-        }
-        msg = (f"🚨 *NEW {t_type.toUpperCase()} REQUEST*\n\n"
-               f"👤 User ID: `{user_id}`\n"
-               f"💰 Amount: *{amount}*\n"
-               f"🌐 Network: `{network}`\n"
-               f"🔗 Ref/TxID: `{ref}`\n"
-               f"⚡ Status: *Pending Review*")
-        
-        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-        payload = {
-            "chat_id": ADMIN_CHAT_ID,
-            "text": msg,
-            "parse_mode": "Markdown",
-            "reply_markup": keyboard
-        }
-        requests.post(url, json=payload)
-    except Exception as e:
-        print("Telegram alert error:", e)
-
+        ]
+    }
+    msg = (f"🚨 *NEW {t_type.toUpperCase()} REQUEST*\n\n"
+           f"👤 User ID: `{user_id}`\n"
+           f"💰 Amount: *{amount}*\n"
+           f"🌐 Network: `{network}`\n"
+           f"🔗 Ref/TxID: `{ref}`\n"
+           f"⚡ Status: *Pending Review*")
+    
+    send_telegram_alert(msg, keyboard)
     return jsonify({"success": True, "txId": tx_id})
+
+@app.route('/api/ticket', methods=['POST'])
+def handle_ticket():
+    data = request.json
+    user_id = str(data.get('userId', '5738022147'))
+    category = data.get('category')
+    message = data.get('message')
+    date_str = data.get('date')
+
+    conn = sqlite3.connect('apexinvest.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        INSERT INTO tickets (user_id, category, message, status, date)
+        VALUES (?, ?, ?, 'Pending', ?)
+    ''', (user_id, category, message, date_str))
+    conn.commit()
+    ticket_id = cursor.lastrowid
+    conn.close()
+
+    msg = (f"🎫 *NEW SUPPORT TICKET #{ticket_id}*\n\n"
+           f"👤 User ID: `{user_id}`\n"
+           f"📂 Category: *{category}*\n"
+           f"💬 Message: _{message}_")
+    
+    send_telegram_alert(msg)
+    return jsonify({"success": True, "ticketId": ticket_id})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
