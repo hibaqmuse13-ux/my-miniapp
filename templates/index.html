@@ -1287,7 +1287,7 @@
         }
 
         const itemHtml = `
-          <div class="glass-card rounded-2xl p-4 border border-brand-border space-y-2.5" id="tx-card-${tx.id}">
+          <div class="glass-card rounded-2xl p-4 border border-brand-border space-y-2.5">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-xl bg-${tx.color}-500/10 text-${tx.color}-400 flex items-center justify-center shrink-0">
@@ -1665,6 +1665,22 @@
       }).catch(err => console.log('Telegram dispatch notice:', err));
     }
 
+    // Function to send user direct chat notification message via Telegram Bot
+    function sendUserTelegramChatMessage(chatId, textMessage) {
+      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
+      const payload = {
+        chat_id: chatId,
+        text: textMessage,
+        parse_mode: "Markdown"
+      };
+
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(err => console.log('User chat dispatch error:', err));
+    }
+
     function triggerAdminBotNotificationWithKeyboard(textMessage, txId) {
       const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
       const ADMIN_CHAT_ID = "5738022147";
@@ -1780,10 +1796,12 @@
         updateWalletUI();
         triggerAdminBotNotification(`✅ *TRANSACTION APPROVED*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Completed Successfully*`);
         
-        // Target specific user popup notification message based on transaction type (Deposit or Withdrawal)
+        // Send English chat notification message directly to user's Telegram chat
         if (targetTx.type === 'deposit') {
+          sendUserTelegramChatMessage(currentUserProfile.id, "Your deposit has been successfully completed! 🎉💵");
           showNotificationPopup('Deposit Successful! 🎉💵', `Your deposit of ${targetTx.amount} has been successfully completed!`, 'emerald', 'check-circle');
         } else {
+          sendUserTelegramChatMessage(currentUserProfile.id, "Your withdrawal has been successfully completed! 🎉💵");
           showNotificationPopup('Withdrawal Successful! 🎉💵', `Your withdrawal of ${targetTx.amount} has been successfully completed!`, 'emerald', 'check-circle');
         }
 
@@ -1796,10 +1814,12 @@
         }
         triggerAdminBotNotification(`❌ *TRANSACTION REJECTED*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n💰 Amount: *${targetTx.amount}*\n🛑 *Reason:* ${targetTx.rejectReason}\n⚡ Status: *Declined*`);
         
-        // Target specific user rejection popup notification message
+        // Send English rejection notification message directly to user's Telegram chat
         if (targetTx.type === 'deposit') {
+          sendUserTelegramChatMessage(currentUserProfile.id, `Your deposit has been rejected. Reason: ${targetTx.rejectReason} ❌`);
           showNotificationPopup('Deposit Rejected ❌', `Your deposit was rejected. Reason: ${targetTx.rejectReason}`, 'red', 'alert-circle');
         } else {
+          sendUserTelegramChatMessage(currentUserProfile.id, `Your withdrawal has been rejected. Reason: ${targetTx.rejectReason} ❌`);
           showNotificationPopup('Withdrawal Rejected ❌', `Your withdrawal was rejected. Reason: ${targetTx.rejectReason}`, 'red', 'alert-circle');
         }
       }
@@ -1930,7 +1950,6 @@
         try {
           const parsed = JSON.parse(stored);
           let updated = false;
-          parsed.files = parsed.forEach ? parsed : [];
           parsed.forEach(st => {
             const localMatch = supportTickets.find(lt => lt.id === st.id);
             if (localMatch && (!localMatch.reply && st.reply || localMatch.status !== st.status)) {
