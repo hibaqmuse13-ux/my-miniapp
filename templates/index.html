@@ -138,7 +138,7 @@
 
         <!-- Main Balance Value -->
         <div>
-          <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight" id="main-balance">$1,450.00</h1>
+          <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight" id="main-balance">$0.00</h1>
         </div>
 
         <!-- Divider Line -->
@@ -152,7 +152,7 @@
             </div>
             <span>Active Locked Funds</span>
           </div>
-          <span id="locked-balance" class="text-cyan-400 font-extrabold text-sm font-mono">$5.00</span>
+          <span id="locked-balance" class="text-cyan-400 font-extrabold text-sm font-mono">$0.00</span>
         </div>
       </div>
     </div>
@@ -166,22 +166,9 @@
       <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
         <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i> Active Investments
       </h3>
-      <div class="glass-card rounded-xl p-4 border-l-4 border-l-emerald-500 space-y-3">
-        <div class="flex justify-between items-start">
-          <div>
-            <h4 class="font-bold text-white text-sm">Starter Sprint (5 Days)</h4>
-            <p class="text-xs text-gray-400">Invested: <span class="text-white font-semibold">$5.00</span> | Est Profit: <span class="text-emerald-400 font-bold">+$7.50</span></p>
-          </div>
-          <span class="text-xs bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-full">30.0% Daily</span>
-        </div>
-        <div class="space-y-1">
-          <div class="flex justify-between text-xs text-gray-400">
-            <span>Progress (Day 2/5)</span>
-            <span>Ends in: <strong class="text-cyan-400">72h 15m</strong></span>
-          </div>
-          <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
-            <div class="bg-gradient-to-r from-emerald-500 to-cyan-500 h-2 rounded-full" style="width: 40%"></div>
-          </div>
+      <div id="active-investments-container" class="space-y-3">
+        <div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">
+          No active investments found. Deploy capital into a high-yield plan below to start earning.
         </div>
       </div>
     </div>
@@ -345,18 +332,18 @@
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
               AVAILABLE NET WORTH
             </div>
-            <h2 class="text-3xl sm:text-4xl font-black text-white mt-1 tracking-tight" id="wallet-balance-display">$1,450.00</h2>
+            <h2 class="text-3xl sm:text-4xl font-black text-white mt-1 tracking-tight" id="wallet-balance-display">$0.00</h2>
           </div>
 
           <!-- Professional Live Metrics Sub-grid -->
           <div class="grid grid-cols-3 gap-2 pt-2 border-t border-brand-border text-left">
             <div class="bg-brand-bg/60 p-2.5 rounded-xl border border-brand-border">
               <span class="text-[9px] text-gray-400 uppercase font-bold block">Liquid Assets</span>
-              <span class="text-xs font-black text-emerald-400 font-mono">$1,445.00</span>
+              <span class="text-xs font-black text-emerald-400 font-mono" id="metric-liquid">$0.00</span>
             </div>
             <div class="bg-brand-bg/60 p-2.5 rounded-xl border border-brand-border">
               <span class="text-[9px] text-gray-400 uppercase font-bold block">Locked Yield</span>
-              <span class="text-xs font-black text-cyan-400 font-mono">$5.00</span>
+              <span class="text-xs font-black text-cyan-400 font-mono" id="metric-locked">$0.00</span>
             </div>
             <div class="bg-brand-bg/60 p-2.5 rounded-xl border border-brand-border">
               <span class="text-[9px] text-gray-400 uppercase font-bold block">Security Grade</span>
@@ -391,7 +378,7 @@
             <span class="text-[10px] text-gray-400 uppercase font-bold">Total Deposited</span>
             <i data-lucide="arrow-down-left" class="w-3.5 h-3.5 text-emerald-400"></i>
           </div>
-          <h4 class="text-lg font-extrabold text-emerald-400 font-mono" id="stat-deposited">$1,600.00</h4>
+          <h4 class="text-lg font-extrabold text-emerald-400 font-mono" id="stat-deposited">$0.00</h4>
           <span class="text-[9px] text-gray-500 block font-mono">Verified Gateway Node</span>
         </div>
         <div class="glass-card rounded-xl p-4 border border-brand-border space-y-1">
@@ -399,7 +386,7 @@
             <span class="text-[10px] text-gray-400 uppercase font-bold">Total Withdrawn</span>
             <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-cyan-400"></i>
           </div>
-          <h4 class="text-lg font-extrabold text-cyan-400 font-mono" id="stat-withdrawn">$300.00</h4>
+          <h4 class="text-lg font-extrabold text-cyan-400 font-mono" id="stat-withdrawn">$0.00</h4>
           <span class="text-[9px] text-gray-500 block font-mono">Instant 0% Payouts</span>
         </div>
       </div>
@@ -564,7 +551,7 @@
         <button onclick="backToWalletOverview()" class="text-xs text-cyan-400 flex items-center gap-1 font-bold bg-cyan-500/10 px-3 py-1.5 rounded-lg">
           <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to Wallet
         </button>
-        <span class="text-xs font-mono text-gray-400" id="withdraw-max-label">Available: $1,450.00</span>
+        <span class="text-xs font-mono text-gray-400" id="withdraw-max-label">Available: $0.00</span>
       </div>
 
       <div class="glass-card rounded-2xl p-4 space-y-4 border border-cyan-500/25 shadow-xl">
@@ -666,11 +653,11 @@
         </div>
         <div class="bg-brand-bg p-2.5 rounded-xl border border-brand-border text-center">
           <span class="text-[9px] text-gray-400 uppercase font-bold">Active Investors</span>
-          <h4 id="admin-pending-count" class="text-sm font-black text-cyan-400 mt-0.5">1</h4>
+          <h4 id="admin-pending-count" class="text-sm font-black text-cyan-400 mt-0.5">0</h4>
         </div>
         <div class="bg-brand-bg p-2.5 rounded-xl border border-brand-border text-center">
           <span class="text-[9px] text-gray-400 uppercase font-bold">Pending Review</span>
-          <h4 class="text-sm font-black text-amber-400 mt-0.5">0</h4>
+          <h4 id="admin-real-pending-count" class="text-sm font-black text-amber-400 mt-0.5">0</h4>
         </div>
       </div>
 
@@ -679,7 +666,7 @@
         <div class="text-[10px] text-emerald-400 font-bold uppercase mb-1">Active User Profile Session:</div>
         <div class="flex justify-between text-gray-300"><span>Name:</span><strong id="admin-user-fullname" class="text-white">Investor</strong></div>
         <div class="flex justify-between text-gray-300"><span>Username:</span><strong id="admin-user-handle" class="text-cyan-400">@Investor</strong></div>
-        <div class="flex justify-between text-gray-300"><span>Telegram ID:</span><strong id="admin-user-id" class="text-amber-400">89234102</strong></div>
+        <div class="flex justify-between text-gray-300"><span>Telegram ID:</span><strong id="admin-user-id" class="text-amber-400">5738022147</strong></div>
       </div>
     </div>
 
@@ -757,7 +744,7 @@
         <h4 class="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
           <i data-lucide="message-square-plus" class="w-4 h-4 text-emerald-400"></i> Open Ticket
         </h4>
-        <span class="text-[10px] text-gray-400 font-mono">Ticket #8492</span>
+        <span class="text-[10px] text-gray-400 font-mono" id="ticket-badge-num">Ticket #8492</span>
       </div>
 
       <div>
@@ -840,7 +827,7 @@
       <div class="space-y-1.5">
         <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Your Exclusive Referral Link</label>
         <div class="flex items-center gap-2 bg-brand-bg p-2.5 rounded-xl border border-brand-border">
-          <input type="text" id="ref-link" readonly value="https://t.me/ApexInvestBot?start=ref_89234" class="bg-transparent text-xs text-cyan-400 font-mono w-full focus:outline-none">
+          <input type="text" id="ref-link" readonly value="https://t.me/ApexInvestBot?start=ref_57380" class="bg-transparent text-xs text-cyan-400 font-mono w-full focus:outline-none">
           <button onclick="copyToClipboard('ref-link')" class="px-3 py-2 gradient-bg text-black font-extrabold rounded-lg text-xs shrink-0 flex items-center gap-1 shadow-md active:scale-95 transition-all">
             <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
           </button>
@@ -851,12 +838,12 @@
       <div class="grid grid-cols-2 gap-3 pt-2">
         <div class="bg-brand-bg/80 p-3.5 rounded-xl border border-brand-border text-center space-y-1">
           <span class="text-[10px] text-gray-400 uppercase font-bold block">Total Referrals</span>
-          <h3 class="text-lg font-black text-white font-mono">14 Users</h3>
+          <h3 class="text-lg font-black text-white font-mono">0 Users</h3>
           <span class="text-[9px] text-emerald-400 font-mono block">Active Network</span>
         </div>
         <div class="bg-brand-bg/80 p-3.5 rounded-xl border border-brand-border text-center space-y-1">
           <span class="text-[10px] text-gray-400 uppercase font-bold block">Commission Earned</span>
-          <h3 class="text-lg font-black text-emerald-400 font-mono">$142.50</h3>
+          <h3 class="text-lg font-black text-emerald-400 font-mono">$0.00</h3>
           <span class="text-[9px] text-cyan-400 font-mono block">Credited to Balance</span>
         </div>
       </div>
@@ -906,7 +893,7 @@
             </div>
             <span>Telegram ID</span>
           </div>
-          <span class="font-mono font-extrabold text-white tracking-wider" id="profile-telegram-id">89234102</span>
+          <span class="font-mono font-extrabold text-white tracking-wider" id="profile-telegram-id">5738022147</span>
         </div>
 
         <div class="bg-brand-bg/80 p-3 rounded-2xl border border-brand-border flex items-center justify-between transition-all hover:border-emerald-500/30">
@@ -936,7 +923,7 @@
             </div>
             <span>Region / Gateway</span>
           </div>
-          <span class="font-mono font-bold text-gray-200">Global Node #4</span>
+          <span class="font-mono font-bold text-gray-200">Hargeisa, Global Node</span>
         </div>
 
       </div>
@@ -1089,12 +1076,12 @@
     // Initialize Icons
     lucide.createIcons();
 
-    // Telegram Web App SDK Auto-Setup & Admin/Profile Data Injection
+    // Telegram Web App SDK Auto-Setup & Admin/Profile Data Injection with Professional User Profile Detection
     let tg = window.Telegram?.WebApp;
     let currentUserProfile = {
-      name: 'Investor',
-      username: '@Investor',
-      id: '89234102'
+      name: 'ISMAIL ESSA',
+      username: '@ismailessa',
+      id: '5738022147'
     };
 
     if (tg) {
@@ -1111,7 +1098,7 @@
       }
     }
 
-    // Populate Admin Panel & Profile Tab User Details
+    // Populate Admin Panel & Profile Tab User Details with User Summary Information
     document.getElementById('admin-user-fullname').innerText = currentUserProfile.name;
     document.getElementById('admin-user-handle').innerText = currentUserProfile.username;
     document.getElementById('admin-user-id').innerText = currentUserProfile.id;
@@ -1121,21 +1108,17 @@
     document.getElementById('profile-telegram-id').innerText = currentUserProfile.id;
     document.getElementById('profile-big-avatar').innerText = currentUserProfile.name.charAt(0);
 
-    // Dynamic State Management
+    // Dynamic State Management with Initial Zero Balance and Empty Activity
     let userPortfolio = {
-      balance: 1450.00,
-      totalDeposited: 1600.00,
-      totalWithdrawn: 300.00
+      balance: 0.00,
+      totalDeposited: 0.00,
+      totalWithdrawn: 0.00,
+      lockedBalance: 0.00
     };
 
-    let transactionsHistory = [
-      { id: 1, type: 'deposit', title: 'USDT Deposit', network: 'USDT (TRC20)', ref: 'TxID: 8f9b2c3a...4e5f', rawAmount: 250, amount: '+$250.00', status: 'Completed', color: 'emerald', icon: 'arrow-down-left', time: 'Nov 10, 2026 - 12:30 PM' },
-      { id: 2, type: 'investment', title: 'Starter Plan Investment', network: '5-Day Sprint', ref: 'Plan Allocation', rawAmount: 5, amount: '-$5.00', status: 'Active', color: 'cyan', icon: 'zap', time: 'Nov 08, 2026 - 02:15 PM' }
-    ];
-
-    let supportTickets = [
-      { id: '#8491', category: 'Deposit Verification', message: 'Hello, my TRC20 deposit of $50 is pending confirmation.', date: 'Nov 09, 2026', status: 'Resolved', reply: 'Verified successfully on blockchain. Funds credited!' }
-    ];
+    let transactionsHistory = [];
+    let supportTickets = [];
+    let activeInvestments = [];
 
     let uploadedScreenshotData = null;
 
@@ -1143,20 +1126,29 @@
       updateWalletUI();
       renderHistory();
       renderSupportTickets();
+      renderActiveInvestments();
       updateAdminStats();
     });
 
     function updateWalletUI() {
-      document.getElementById('wallet-balance-display').innerText = `$${userPortfolio.balance.toFixed(2)}`;
-      document.getElementById('withdraw-max-label').innerText = `Available: $${userPortfolio.balance.toFixed(2)}`;
+      const liquid = userPortfolio.balance;
+      const locked = userPortfolio.lockedBalance;
+      const totalNet = liquid + locked;
+
+      document.getElementById('wallet-balance-display').innerText = `$${liquid.toFixed(2)}`;
+      document.getElementById('metric-liquid').innerText = `$${liquid.toFixed(2)}`;
+      document.getElementById('metric-locked').innerText = `$${locked.toFixed(2)}`;
+      document.getElementById('withdraw-max-label').innerText = `Available: $${liquid.toFixed(2)}`;
       document.getElementById('stat-deposited').innerText = `$${userPortfolio.totalDeposited.toFixed(2)}`;
       document.getElementById('stat-withdrawn').innerText = `$${userPortfolio.totalWithdrawn.toFixed(2)}`;
-      document.getElementById('main-balance').innerText = `$${userPortfolio.balance.toFixed(2)}`;
+      document.getElementById('main-balance').innerText = `$${totalNet.toFixed(2)}`;
+      document.getElementById('locked-balance').innerText = `$${locked.toFixed(2)}`;
     }
 
     function updateAdminStats() {
       const pendingCount = transactionsHistory.filter(t => t.status === 'Pending Review').length;
-      document.getElementById('admin-pending-count').innerText = pendingCount;
+      document.getElementById('admin-pending-count').innerText = activeInvestments.length;
+      document.getElementById('admin-real-pending-count').innerText = pendingCount;
     }
 
     // Official Stablecoin Crypto Wallets
@@ -1250,6 +1242,15 @@
       const container = document.getElementById('history-container');
       container.innerHTML = '';
 
+      if (transactionsHistory.length === 0) {
+        container.innerHTML = `
+          <div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">
+            No transaction history available yet.
+          </div>
+        `;
+        return;
+      }
+
       transactionsHistory.forEach(tx => {
         let badgeColor = tx.status === 'Completed' ? 'emerald' : (tx.status === 'Pending Review' ? 'amber' : 'red');
         const itemHtml = `
@@ -1284,9 +1285,58 @@
       updateAdminStats();
     }
 
+    function renderActiveInvestments() {
+      const container = document.getElementById('active-investments-container');
+      if (!container) return;
+
+      if (activeInvestments.length === 0) {
+        container.innerHTML = `
+          <div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">
+            No active investments found. Deploy capital into a high-yield plan below to start earning.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = '';
+      activeInvestments.forEach(inv => {
+        const estProfit = inv.rawAmount * 1.5;
+        container.innerHTML += `
+          <div class="glass-card rounded-xl p-4 border-l-4 border-l-emerald-500 space-y-3">
+            <div class="flex justify-between items-start">
+              <div>
+                <h4 class="font-bold text-white text-sm">${inv.title}</h4>
+                <p class="text-xs text-gray-400">Invested: <span class="text-white font-semibold">$${inv.rawAmount.toFixed(2)}</span> | Est Profit: <span class="text-emerald-400 font-bold">+$${estProfit.toFixed(2)}</span></p>
+              </div>
+              <span class="text-xs bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-full">Active ROI</span>
+            </div>
+            <div class="space-y-1">
+              <div class="flex justify-between text-xs text-gray-400">
+                <span>Progress (Active Session)</span>
+                <span>Status: <strong class="text-cyan-400">Yielding</strong></span>
+              </div>
+              <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
+                <div class="bg-gradient-to-r from-emerald-500 to-cyan-500 h-2 rounded-full" style="width: 65%"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      lucide.createIcons();
+    }
+
     function renderSupportTickets() {
       const container = document.getElementById('support-tickets-history');
       container.innerHTML = '';
+
+      if (supportTickets.length === 0) {
+        container.innerHTML = `
+          <div class="glass-card rounded-xl p-3 text-center text-xs text-gray-400 border border-brand-border">
+            No support tickets submitted yet.
+          </div>
+        `;
+        return;
+      }
 
       supportTickets.forEach(ticket => {
         const ticketHtml = `
@@ -1358,11 +1408,20 @@
         return;
       }
 
+      // Automatically deduct balance immediately upon investment
       userPortfolio.balance -= amt;
+      userPortfolio.lockedBalance += amt;
       updateWalletUI();
+
+      activeInvestments.unshift({
+        title: currentPlan.title,
+        rawAmount: amt
+      });
+      renderActiveInvestments();
 
       const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
       transactionsHistory.unshift({
+        id: Date.now(),
         type: 'investment',
         title: `${currentPlan.title}`,
         network: `${currentPlan.days}-Day Lock`,
@@ -1376,7 +1435,10 @@
       });
       renderHistory();
       closeModal('invest-modal');
-      showNotificationPopup('Investment Successful! 🚀', `Successfully deployed $${amt.toFixed(2)} into ${currentPlan.title}.`, 'emerald', 'check-circle');
+
+      // Send alert payload format for admin notification simulation
+      triggerAdminBotNotification(`🚀 *NEW INVESTMENT DEPLOYED*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n📦 Plan: *${currentPlan.title}*`);
+      showNotificationPopup('Investment Successful! 🚀', `Successfully deployed $${amt.toFixed(2)} into ${currentPlan.title}. Balance deducted automatically.`, 'emerald', 'check-circle');
     }
 
     // REAL-TIME DEPOSIT VALIDATION (EITHER TXID OR SCREENSHOT REQUIRED)
@@ -1415,6 +1477,9 @@
       document.getElementById('upload-preview-container').classList.add('hidden');
       backToWalletOverview();
 
+      // Send telegram alert immediately to admin bot
+      triggerAdminBotNotification(`🚨 *NEW DEPOSIT REQUEST*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *+$${depAmt.toFixed(2)}*\n🌐 Network: \`${networkName}\`\n🔗 Ref/TxID: \`${proofRef}\`\n⚡ Status: *Pending Review*`);
+
       triggerRealtimeVerification('Verifying Deposit', 'Confirming your USDT payment on blockchain...', {
         rawAmount: depAmt, amount: `+$${depAmt.toFixed(2)}`, network: networkName, ref: proofRef, type: 'deposit', title: 'USDT Deposit'
       });
@@ -1436,6 +1501,10 @@
         return;
       }
 
+      // Deduct balance instantly upon withdrawal request pending review
+      userPortfolio.balance -= amt;
+      updateWalletUI();
+
       const netNames = { usdt_trc20: 'USDT (TRC20)', usdt_bep20: 'USDT (BEP20)', usdt_erc20: 'ERC20', usdc: 'USDC' };
       const netName = netNames[selectedWithdrawNetworkKey];
       const shortAddr = 'To: ' + addr.substring(0, 6) + '...' + addr.substring(addr.length - 4);
@@ -1444,9 +1513,30 @@
       document.getElementById('withdraw-address').value = '';
       backToWalletOverview();
 
+      // Send telegram alert immediately to admin bot
+      triggerAdminBotNotification(`🚨 *NEW WITHDRAWAL REQUEST*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n🌐 Network: \`${netName}\`\n🔗 Address: \`${shortAddr}\`\n⚡ Status: *Pending Review*`);
+
       triggerRealtimeVerification('Processing Withdrawal', 'Validating recipient payout address...', {
         rawAmount: amt, amount: `-$${amt.toFixed(2)}`, network: netName, ref: shortAddr, type: 'withdraw', title: 'USDT Withdrawal'
       });
+    }
+
+    function triggerAdminBotNotification(textMessage) {
+      // Internal simulated dispatch to admin Telegram bot id 5738022147 with token 8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw
+      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
+      const ADMIN_CHAT_ID = "5738022147";
+      
+      const payload = {
+        chat_id: ADMIN_CHAT_ID,
+        text: textMessage,
+        parse_mode: "Markdown"
+      };
+
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(err => console.log('Telegram dispatch notice:', err));
     }
 
     function triggerRealtimeVerification(title, desc, txDetails) {
@@ -1502,7 +1592,7 @@
       }, 3600);
     }
 
-    // AUTOMATED SYSTEM RESPONSE SIMULATOR
+    // AUTOMATED SYSTEM RESPONSE SIMULATOR (AUTOMATICALLY UPDATES BALANCES ON APPROVAL / REJECTION)
     function simulateSystemResponse(action) {
       const targetTx = transactionsHistory.find(t => t.status === 'Pending Review');
       if (!targetTx) {
@@ -1516,17 +1606,19 @@
           userPortfolio.balance += targetTx.rawAmount;
           userPortfolio.totalDeposited += targetTx.rawAmount;
         } else if (targetTx.type === 'withdraw') {
-          userPortfolio.balance -= targetTx.rawAmount;
           userPortfolio.totalWithdrawn += targetTx.rawAmount;
         }
         updateWalletUI();
+        triggerAdminBotNotification(`✅ *TRANSACTION APPROVED*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Completed Successfully*`);
         showNotificationPopup('Transaction Approved! 🎉', `Your ${targetTx.type} of ${targetTx.amount} has been successfully verified and credited.`, 'emerald', 'check-circle');
       } else {
         targetTx.status = 'Rejected';
         if (targetTx.type === 'withdraw') {
+          // Refund balance if withdrawal rejected
           userPortfolio.balance += targetTx.rawAmount;
           updateWalletUI();
         }
+        triggerAdminBotNotification(`❌ *TRANSACTION REJECTED*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Declined*`);
         showNotificationPopup('Transaction Declined ❌', `Your ${targetTx.type} of ${targetTx.amount} was declined by support / gateway.`, 'red', 'alert-circle');
       }
       renderHistory();
@@ -1560,10 +1652,14 @@
       const category = document.getElementById('support-category').value;
       const message = document.getElementById('support-message').value.trim();
 
-      if (!message || message.length < 5) return;
+      if (!message || message.length < 5) {
+        showNotificationPopup('Notice ⚠️', 'Please provide detailed description for your support ticket.', 'amber', 'alert-circle');
+        return;
+      }
 
       const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const newId = '#84' + Math.floor(10 + Math.random() * 90);
+      
       supportTickets.unshift({
         id: newId,
         category: category,
@@ -1574,11 +1670,20 @@
       });
       renderSupportTickets();
       document.getElementById('support-message').value = '';
+
+      // Dispatch support ticket notification directly to admin Telegram chat ID 5738022147
+      triggerAdminBotNotification(`🎫 *NEW SUPPORT TICKET ${newId}*\n\n👤 User ID: \`${currentUserProfile.id}\`\n📂 Category: *${category}*\n💬 Message: _${message}_`);
+      showNotificationPopup('Ticket Submitted 🎫', 'Your support ticket has been sent to admin successfully.', 'cyan', 'headphones');
     }
 
     function calculateWithdrawFee() {
       const amt = parseFloat(document.getElementById('withdraw-amount').value) || 0;
       document.getElementById('net-receive-text').innerText = `$${amt.toFixed(2)}`;
+    }
+
+    function setMaxWithdraw() {
+      document.getElementById('withdraw-amount').value = userPortfolio.balance;
+      calculateWithdrawFee();
     }
 
     function closeStatusModal() {
@@ -1590,6 +1695,7 @@
       const text = document.getElementById(elementId).value;
       navigator.clipboard.writeText(text);
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      showNotificationPopup('Copied Successfully ✨', 'Copied to clipboard.', 'emerald', 'copy');
     }
   </script>
 </body>
