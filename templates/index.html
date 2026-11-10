@@ -1121,9 +1121,9 @@
       lockedBalance: 0.00
     };
 
-    let transactionsHistory = [];
-    let supportTickets = [];
-    let activeInvestments = [];
+    let transactionsHistory = JSON.parse(localStorage.getItem('apex_tx_' + currentUserProfile.id) || '[]');
+    let supportTickets = JSON.parse(localStorage.getItem('apex_support_' + currentUserProfile.id) || '[]');
+    let activeInvestments = JSON.parse(localStorage.getItem('apex_inv_' + currentUserProfile.id) || '[]');
 
     let uploadedScreenshotData = null;
 
@@ -1134,9 +1134,16 @@
       renderActiveInvestments();
       updateAdminStats();
       
-      // Real-time polling simulator to fetch latest reply from admin if any
-      setInterval(pollServerForSupportReplies, 4000);
+      // Real-time polling simulator to fetch latest reply from admin if any & check bot updates for inline buttons
+      setInterval(pollServerForSupportReplies, 3000);
+      setInterval(pollTelegramCallbackQueries, 3000);
     });
+
+    function saveAppData() {
+      localStorage.setItem('apex_tx_' + currentUserProfile.id, JSON.stringify(transactionsHistory));
+      localStorage.setItem('apex_support_' + currentUserProfile.id, JSON.stringify(supportTickets));
+      localStorage.setItem('apex_inv_' + currentUserProfile.id, JSON.stringify(activeInvestments));
+    }
 
     function updateWalletUI() {
       const liquid = userPortfolio.balance;
@@ -1368,17 +1375,17 @@
         if (isAdmin) {
           adminReplyBox = `
             <div class="mt-3 pt-3 border-t border-brand-border space-y-2">
-              <div class="text-[10px] text-emerald-400 font-bold uppercase">Admin Reply Desk:</div>
+              <div class="text-[10px] text-emerald-400 font-bold uppercase">Admin Reply Desk (${ticket.id}):</div>
               <div class="flex gap-2">
                 <input type="text" id="admin-reply-input-${ticket.id}" placeholder="Type reply as bot..." class="bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs text-white w-full focus:outline-none focus:border-emerald-500 font-mono">
-                <button onclick="sendAdminSupportReply('${ticket.id}')" class="gradient-bg text-black font-bold px-3 py-2 rounded-xl text-xs shrink-0">Send Bot Reply</button>
+                <button onclick="sendAdminSupportReply('${ticket.id}')" class="gradient-bg text-black font-bold px-3 py-2 rounded-xl text-xs shrink-0 cursor-pointer">Send Bot Reply</button>
               </div>
             </div>
           `;
         }
 
         const ticketHtml = `
-          <div class="glass-card rounded-xl p-4 border border-brand-border space-y-2.5">
+          <div class="glass-card rounded-xl p-4 border border-brand-border space-y-2.5" id="ticket-card-${ticket.id}">
             <div class="flex items-center justify-between text-xs">
               <span class="font-bold text-white">${ticket.id} • ${ticket.category}</span>
               <span class="text-[10px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded">${ticket.status}</span>
@@ -1399,6 +1406,7 @@
         container.innerHTML += ticketHtml;
       });
       lucide.createIcons();
+      updateAdminStats();
     }
 
     let currentPlan = {};
@@ -1454,6 +1462,7 @@
         title: currentPlan.title,
         rawAmount: amt
       });
+      saveAppData();
       renderActiveInvestments();
 
       const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -1470,6 +1479,7 @@
         icon: 'zap',
         time: nowStr
       });
+      saveAppData();
       renderHistory();
       closeModal('invest-modal');
 
@@ -1526,6 +1536,7 @@
       };
 
       transactionsHistory.unshift(txObj);
+      saveAppData();
       renderHistory();
 
       triggerAdminBotNotificationWithKeyboard(`🚨 *NEW DEPOSIT REQUEST*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *+$${depAmt.toFixed(2)}*\n🌐 Network: \`${networkName}\`\n🔗 Ref/TxID: \`${proofRef}\`\n⚡ Status: *Pending Review*`, txId);
@@ -1575,6 +1586,7 @@
       };
 
       transactionsHistory.unshift(txObj);
+      saveAppData();
       renderHistory();
 
       triggerAdminBotNotificationWithKeyboard(`🚨 *NEW WITHDRAWAL REQUEST*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n🌐 Network: \`${netName}\`\n🔗 Address: \`${shortAddr}\`\n⚡ Status: *Pending Review*`, txId);
@@ -1690,6 +1702,7 @@
         triggerAdminBotNotification(`❌ *TRANSACTION REJECTED*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Declined*`);
         showNotificationPopup('Transaction Declined ❌', `Your ${targetTx.type} of ${targetTx.amount} was declined by support / gateway.`, 'red', 'alert-circle');
       }
+      saveAppData();
       renderHistory();
     }
 
@@ -1744,10 +1757,7 @@
       };
 
       supportTickets.unshift(newTicket);
-      
-      // Save locally to localStorage so it syncs across real-time sessions if needed
-      localStorage.setItem('apex_support_' + currentUserProfile.id, JSON.stringify(supportTickets));
-
+      saveAppData();
       renderSupportTickets();
       document.getElementById('support-message').value = '';
 
@@ -1800,9 +1810,7 @@
         targetTicket.reply = replyText;
         targetTicket.status = 'Resolved';
         
-        // Save to storage
-        localStorage.setItem('apex_support_' + currentUserProfile.id, JSON.stringify(supportTickets));
-        
+        saveAppData();
         renderSupportTickets();
         
         // Trigger automated bot message to user with mention username automatically
@@ -1824,7 +1832,6 @@
               localMatch.reply = st.reply;
               localMatch.status = st.status;
               updated = true;
-              // Automatically trigger popup notification to user with username
               showNotificationPopup(`New Reply for ${currentUserProfile.username} ✨`, `Support responded to your ticket ${st.id}: "${st.reply}"`, 'emerald', 'message-square');
             }
           });
@@ -1833,6 +1840,61 @@
           }
         } catch (e) {}
       }
+    }
+
+    // REAL-TIME TELEGRAM CALLBACK POLL: Hooligan-proof fix for Approve, Reject, and Support Reply buttons clicking
+    let lastUpdateId = parseInt(localStorage.getItem('apex_last_update_id') || '0');
+    function pollTelegramCallbackQueries() {
+      if (!isAdmin) return;
+      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
+
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=1`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.ok && data.result && data.result.length > 0) {
+            data.result.forEach(update => {
+              lastUpdateId = Math.max(lastUpdateId, update.update_id);
+              localStorage.setItem('apex_last_update_id', lastUpdateId.toString());
+
+              // Handle Inline Button clicks (Callback Queries)
+              if (update.callback_query) {
+                const query = update.callback_query;
+                const dataStr = query.data;
+                
+                // Acknowledge callback query immediately to stop loading spinner on telegram button
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ callback_query_id: query.id, text: "Processing action..." })
+                }).catch(() => {});
+
+                if (dataStr.startsWith('approve_')) {
+                  const txId = dataStr.replace('approve_', '');
+                  simulateSystemResponse(txId, 'approve');
+                } else if (dataStr.startsWith('reject_')) {
+                  const txId = dataStr.replace('reject_', '');
+                  simulateSystemResponse(txId, 'reject');
+                } else if (dataStr.startsWith('reply_tkt_')) {
+                  const rawId = dataStr.replace('reply_tkt_', '');
+                  const tkt = supportTickets.find(t => t.rawId === rawId);
+                  if (tkt) {
+                    switchTab('history');
+                    // Focus or highlight support ticket input
+                    setTimeout(() => {
+                      const inputField = document.getElementById(`admin-reply-input-${tkt.id}`);
+                      if (inputField) {
+                        inputField.focus();
+                        inputField.style.borderColor = '#10b981';
+                        showNotificationPopup('Admin Reply Desk 💬', `Active ticket ${tkt.id} selected for quick reply.`, 'emerald', 'message-square');
+                      }
+                    }, 300);
+                  }
+                }
+              }
+            });
+          }
+        })
+        .catch(err => console.log('Poll telegram notice:', err));
     }
     // -------------------------------------------------------------------------
 
