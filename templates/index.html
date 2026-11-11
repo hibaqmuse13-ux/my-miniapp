@@ -1126,7 +1126,6 @@
     let activeInvestments = JSON.parse(localStorage.getItem('apex_inv_' + currentUserProfile.id) || '[]');
 
     let uploadedScreenshotData = null;
-    let uploadedScreenshotFileObj = null; // 1. Variable to hold the actual image file object for admin photo upload
 
     window.addEventListener('DOMContentLoaded', () => {
       updateWalletUI();
@@ -1208,7 +1207,6 @@
       const file = event.target.files[0];
       if (file) {
         uploadedScreenshotData = file.name;
-        uploadedScreenshotFileObj = file; // 1. Save file reference for direct photo sending to Admin Telegram
         document.getElementById('upload-placeholder-content').classList.add('hidden');
         document.getElementById('upload-preview-container').classList.remove('hidden');
         document.getElementById('uploaded-file-name').innerText = file.name;
@@ -1279,7 +1277,7 @@
               <button onclick="simulateSystemResponse('${tx.id}', 'approve')" class="flex-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 text-xs font-bold py-1.5 px-3 rounded-lg border border-emerald-500/40 transition-all flex items-center justify-center gap-1 cursor-pointer">
                 <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve
               </button>
-              <button onclick="promptRejectTx('${tx.id}')" class="flex-1 bg-red-500/20 text-red-400 hover:bg-red-500/30 text-xs font-bold py-1.5 px-3 rounded-lg border border-red-500/40 transition-all flex items-center justify-center gap-1 cursor-pointer">
+              <button onclick="simulateSystemResponse('${tx.id}', 'reject')" class="flex-1 bg-red-500/20 text-red-400 hover:bg-red-500/30 text-xs font-bold py-1.5 px-3 rounded-lg border border-red-500/40 transition-all flex items-center justify-center gap-1 cursor-pointer">
                 <i data-lucide="x" class="w-3.5 h-3.5"></i> Reject
               </button>
             </div>
@@ -1310,12 +1308,6 @@
               <span class="text-gray-400">Network: <strong class="text-white">${tx.network}</strong></span>
               <span class="text-cyan-400 truncate max-w-[180px]">${tx.ref}</span>
             </div>
-
-            ${tx.rejectReason ? `
-              <div class="p-2 bg-red-500/10 rounded-lg border border-red-500/20 text-[11px] text-red-300">
-                <strong>Rejection Reason (English):</strong> ${tx.rejectReason}
-              </div>
-            ` : ''}
 
             ${adminActionButtons}
           </div>
@@ -1381,24 +1373,13 @@
 
       supportTickets.forEach(ticket => {
         let adminReplyBox = '';
-        let userInfoBlock = '';
-
         if (isAdmin) {
-          userInfoBlock = `
-            <div class="p-2.5 bg-brand-bg rounded-xl border border-brand-border space-y-1 text-xs font-mono mb-2">
-              <div class="text-emerald-400 font-bold uppercase text-[10px]">👤 User Information:</div>
-              <div class="text-gray-300">Name: <strong class="text-white">${ticket.userName || 'Investor'}</strong></div>
-              <div class="text-gray-300">Username: <strong class="text-cyan-400">${ticket.userHandle || '@User'}</strong></div>
-              <div class="text-gray-300">Telegram ID: <strong class="text-amber-400">${ticket.userId || '5738022147'}</strong></div>
-            </div>
-          `;
-
           adminReplyBox = `
             <div class="mt-3 pt-3 border-t border-brand-border space-y-2">
               <div class="text-[10px] text-emerald-400 font-bold uppercase">Admin Reply Desk (${ticket.id}):</div>
               <div class="flex gap-2">
                 <input type="text" id="admin-reply-input-${ticket.id}" placeholder="Type reply as bot..." class="bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs text-white w-full focus:outline-none focus:border-emerald-500 font-mono">
-                <button onclick="sendAdminSupportReply('${ticket.id}')" class="gradient-bg text-black font-bold px-3 py-2 rounded-xl text-xs shrink-0 cursor-pointer">Send & Resolve</button>
+                <button onclick="sendAdminSupportReply('${ticket.id}')" class="gradient-bg text-black font-bold px-3 py-2 rounded-xl text-xs shrink-0 cursor-pointer">Send Bot Reply</button>
               </div>
             </div>
           `;
@@ -1406,16 +1387,15 @@
 
         const ticketHtml = `
           <div class="glass-card rounded-xl p-4 border border-brand-border space-y-2.5" id="ticket-card-${ticket.id}">
-            ${userInfoBlock}
             <div class="flex items-center justify-between text-xs">
               <span class="font-bold text-white">${ticket.id} • ${ticket.category}</span>
-              <span class="text-[10px] bg-${ticket.status === 'Resolved' ? 'emerald' : 'amber'}-500/10 text-${ticket.status === 'Resolved' ? 'emerald' : 'amber'}-400 font-bold px-2 py-0.5 rounded">${ticket.status}</span>
+              <span class="text-[10px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded">${ticket.status}</span>
             </div>
             <p class="text-xs text-gray-300 bg-brand-bg p-2.5 rounded-lg border border-brand-border">"${ticket.message}"</p>
             ${ticket.reply ? `
               <div class="p-2.5 bg-emerald-500/5 rounded-lg border border-emerald-500/20 text-[11px] space-y-1">
                 <div class="flex items-center gap-1.5 text-emerald-400 font-bold">
-                  <i data-lucide="bot" class="w-3.5 h-3.5"></i> Admin / ApexBot Reply (Resolved):
+                  <i data-lucide="bot" class="w-3.5 h-3.5"></i> ApexBot Official Reply:
                 </div>
                 <p class="text-gray-200">${ticket.reply}</p>
               </div>
@@ -1504,7 +1484,7 @@
       renderHistory();
       closeModal('invest-modal');
 
-      triggerAdminBotNotification(`🚀 *NEW INVESTMENT DEPLOYED*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n🆔 ID: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n📦 Plan: *${currentPlan.title}*`);
+      triggerAdminBotNotification(`🚀 *NEW INVESTMENT DEPLOYED*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n📦 Plan: *${currentPlan.title}*`);
       showNotificationPopup('Investment Successful! 🚀', `Successfully deployed $${amt.toFixed(2)} into ${currentPlan.title}. Balance deducted automatically.`, 'emerald', 'check-circle');
     }
 
@@ -1529,18 +1509,14 @@
       const networkName = cryptoWallets[selectedDepositNetworkKey].name;
       let proofRef = '';
       if (hash && hash.length >= 5) {
-        proofRef = 'TxID: ' + hash;
+        proofRef = 'TxID: ' + hash.substring(0, 8) + '...' + hash.substring(hash.length - 6);
       } else {
-        proofRef = 'Screenshot Attached: ' + uploadedScreenshotData;
+        proofRef = 'Screenshot: ' + uploadedScreenshotData;
       }
 
       depAmtInput.value = '';
       hashInput.value = '';
-      
-      const fileToUpload = uploadedScreenshotFileObj; // capture reference before clearing
       uploadedScreenshotData = null;
-      uploadedScreenshotFileObj = null;
-
       document.getElementById('upload-placeholder-content').classList.remove('hidden');
       document.getElementById('upload-preview-container').classList.add('hidden');
       backToWalletOverview();
@@ -1564,24 +1540,7 @@
       saveAppData();
       renderHistory();
 
-      // 2. Professional formatted professional notification message for Deposit
-      const professionalDepositText = `📥 *NEW PROFESSIONAL DEPOSIT REQUEST*\n\n` +
-                                      `━━━━━━━━━━━━━━━━━━━━━━\n` +
-                                      `👤 *Investor Name:* ${currentUserProfile.name}\n` +
-                                      `🔖 *Username:* \`${currentUserProfile.username}\`\n` +
-                                      `🆔 *Telegram ID:* \`${currentUserProfile.id}\`\n` +
-                                      `💰 *Amount:* \`+$${depAmt.toFixed(2)} USDT\`\n` +
-                                      `🌐 *Network:* \`${networkName}\`\n` +
-                                      `🔗 *Reference/TxID:* \`${proofRef}\`\n` +
-                                      `⚡ *Status:* 🟡 *Pending Review*\n` +
-                                      `━━━━━━━━━━━━━━━━━━━━━━`;
-
-      // 1. If screenshot file was uploaded, send photo directly to admin with caption; otherwise send standard message
-      if (fileToUpload) {
-        sendAdminBotPhotoWithKeyboard(fileToUpload, professionalDepositText, txId);
-      } else {
-        triggerAdminBotNotificationWithKeyboard(professionalDepositText, txId);
-      }
+      triggerAdminBotNotificationWithKeyboard(`🚨 *NEW DEPOSIT REQUEST*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *+$${depAmt.toFixed(2)}*\n🌐 Network: \`${networkName}\`\n🔗 Ref/TxID: \`${proofRef}\`\n⚡ Status: *Pending Review*`, txId);
 
       triggerRealtimeVerification('Verifying Deposit', 'Confirming your USDT payment on blockchain...', txObj);
     }
@@ -1607,6 +1566,7 @@
 
       const netNames = { usdt_trc20: 'USDT (TRC20)', usdt_bep20: 'USDT (BEP20)', usdt_erc20: 'ERC20', usdc: 'USDC' };
       const netName = netNames[selectedWithdrawNetworkKey];
+      const shortAddr = 'To: ' + addr.substring(0, 6) + '...' + addr.substring(addr.length - 4);
 
       document.getElementById('withdraw-amount').value = '';
       document.getElementById('withdraw-address').value = '';
@@ -1618,7 +1578,7 @@
         type: 'withdraw',
         title: 'USDT Withdrawal',
         network: netName,
-        ref: addr,
+        ref: shortAddr,
         rawAmount: amt,
         amount: `-$${amt.toFixed(2)}`,
         status: 'Pending Review',
@@ -1631,19 +1591,7 @@
       saveAppData();
       renderHistory();
 
-      // 2. Professional formatted professional notification message for Withdrawal
-      const professionalWithdrawalText = `📤 *NEW PROFESSIONAL WITHDRAWAL REQUEST*\n\n` +
-                                         `━━━━━━━━━━━━━━━━━━━━━━\n` +
-                                         `👤 *Investor Name:* ${currentUserProfile.name}\n` +
-                                         `🔖 *Username:* \`${currentUserProfile.username}\`\n` +
-                                         `🆔 *Telegram ID:* \`${currentUserProfile.id}\`\n` +
-                                         `💰 *Amount:* \`-$${amt.toFixed(2)} USDT\`\n` +
-                                         `🌐 *Network:* \`${netName}\`\n` +
-                                         `📍 *Destination Address:*\n\`${addr}\`\n` +
-                                         `⚡ *Status:* 🟡 *Pending Review*\n` +
-                                         `━━━━━━━━━━━━━━━━━━━━━━`;
-
-      triggerAdminBotNotificationWithKeyboard(professionalWithdrawalText, txId);
+      triggerAdminBotNotificationWithKeyboard(`🚨 *NEW WITHDRAWAL REQUEST*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n🌐 Network: \`${netName}\`\n🔗 Address: \`${shortAddr}\`\n⚡ Status: *Pending Review*`, txId);
 
       triggerRealtimeVerification('Processing Withdrawal', 'Validating recipient payout address...', txObj);
     }
@@ -1663,22 +1611,6 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       }).catch(err => console.log('Telegram dispatch notice:', err));
-    }
-
-    // Function to send user direct chat notification message via Telegram Bot
-    function sendUserTelegramChatMessage(chatId, textMessage) {
-      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
-      const payload = {
-        chat_id: chatId,
-        text: textMessage,
-        parse_mode: "Markdown"
-      };
-
-      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      }).catch(err => console.log('User chat dispatch error:', err));
     }
 
     function triggerAdminBotNotificationWithKeyboard(textMessage, txId) {
@@ -1704,31 +1636,6 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       }).catch(err => console.log('Telegram dispatch notice:', err));
-    }
-
-    // 1. Function to send deposit photo directly to admin telegram chat using FormData
-    function sendAdminBotPhotoWithKeyboard(photoFile, captionText, txId) {
-      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
-      const ADMIN_CHAT_ID = "5738022147";
-
-      const formData = new FormData();
-      formData.append('chat_id', ADMIN_CHAT_ID);
-      formData.append('photo', photoFile);
-      formData.append('caption', captionText);
-      formData.append('parse_mode', 'Markdown');
-      formData.append('reply_markup', JSON.stringify({
-        inline_keyboard: [
-          [
-            { text: "✅ Approve", callback_data: `approve_${txId}` },
-            { text: "❌ Reject", callback_data: `reject_${txId}` }
-          ]
-        ]
-      }));
-
-      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
-        method: 'POST',
-        body: formData
-      }).catch(err => console.log('Telegram photo dispatch notice:', err));
     }
 
     function triggerRealtimeVerification(title, desc, txDetails) {
@@ -1770,15 +1677,7 @@
       }, 3600);
     }
 
-    // Function to prompt Rejection reason in English
-    function promptRejectTx(txId) {
-      const reason = prompt("Enter Rejection Reason in English (e.g., Invalid Transaction Hash / Incorrect Network):");
-      if (reason !== null) {
-        simulateSystemResponse(txId, 'reject', reason.trim() || 'Transaction rejected due to verification mismatch.');
-      }
-    }
-
-    function simulateSystemResponse(txId, action, customReason = '') {
+    function simulateSystemResponse(txId, action) {
       const targetTx = transactionsHistory.find(t => t.id === txId);
       if (!targetTx || targetTx.status !== 'Pending Review') {
         showNotificationPopup('Notice ⚠️', 'Transaction already processed or not found!', 'amber', 'alert-circle');
@@ -1794,34 +1693,16 @@
           userPortfolio.totalWithdrawn += targetTx.rawAmount;
         }
         updateWalletUI();
-        triggerAdminBotNotification(`✅ *TRANSACTION APPROVED*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Completed Successfully*`);
-        
-        // Send English chat notification message directly to user's Telegram chat
-        if (targetTx.type === 'deposit') {
-          sendUserTelegramChatMessage(currentUserProfile.id, "Your deposit has been successfully completed! 🎉💵");
-          showNotificationPopup('Deposit Successful! 🎉💵', `Your deposit of ${targetTx.amount} has been successfully completed!`, 'emerald', 'check-circle');
-        } else {
-          sendUserTelegramChatMessage(currentUserProfile.id, "Your withdrawal has been successfully completed! 🎉💵");
-          showNotificationPopup('Withdrawal Successful! 🎉💵', `Your withdrawal of ${targetTx.amount} has been successfully completed!`, 'emerald', 'check-circle');
-        }
-
+        triggerAdminBotNotification(`✅ *TRANSACTION APPROVED*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Completed Successfully*`);
+        showNotificationPopup('Transaction Approved! 🎉', `Your ${targetTx.type} of ${targetTx.amount} has been successfully verified and credited.`, 'emerald', 'check-circle');
       } else {
         targetTx.status = 'Rejected';
-        targetTx.rejectReason = customReason || 'Transaction rejected by finance department.';
         if (targetTx.type === 'withdraw') {
           userPortfolio.balance += targetTx.rawAmount;
           updateWalletUI();
         }
-        triggerAdminBotNotification(`❌ *TRANSACTION REJECTED*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n💰 Amount: *${targetTx.amount}*\n🛑 *Reason:* ${targetTx.rejectReason}\n⚡ Status: *Declined*`);
-        
-        // Send English rejection notification message directly to user's Telegram chat
-        if (targetTx.type === 'deposit') {
-          sendUserTelegramChatMessage(currentUserProfile.id, `Your deposit has been rejected. Reason: ${targetTx.rejectReason} ❌`);
-          showNotificationPopup('Deposit Rejected ❌', `Your deposit was rejected. Reason: ${targetTx.rejectReason}`, 'red', 'alert-circle');
-        } else {
-          sendUserTelegramChatMessage(currentUserProfile.id, `Your withdrawal has been rejected. Reason: ${targetTx.rejectReason} ❌`);
-          showNotificationPopup('Withdrawal Rejected ❌', `Your withdrawal was rejected. Reason: ${targetTx.rejectReason}`, 'red', 'alert-circle');
-        }
+        triggerAdminBotNotification(`❌ *TRANSACTION REJECTED*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Declined*`);
+        showNotificationPopup('Transaction Declined ❌', `Your ${targetTx.type} of ${targetTx.amount} was declined by support / gateway.`, 'red', 'alert-circle');
       }
       saveAppData();
       renderHistory();
@@ -1874,10 +1755,7 @@
         message: message,
         date: nowStr,
         status: 'Pending',
-        reply: null,
-        userName: currentUserProfile.name,
-        userHandle: currentUserProfile.username,
-        userId: currentUserProfile.id
+        reply: null
       };
 
       supportTickets.unshift(newTicket);
@@ -1885,9 +1763,9 @@
       renderSupportTickets();
       document.getElementById('support-message').value = '';
 
-      // Send Professional notification with user info and inline button to Admin Telegram
+      // Send Professional notification with Inline Reply Keyboard button to Admin Telegram
       triggerAdminBotNotificationWithSupportKeyboard(
-        `🎫 *NEW PROFESSIONAL SUPPORT TICKET ${ticketBadge}*\n\n👤 User: *${currentUserProfile.name}* (\`${currentUserProfile.username}\`)\n🆔 ID: \`${currentUserProfile.id}\`\n📂 Category: *${category}*\n💬 Message: _${message}_`, 
+        `🎫 *NEW SUPPORT TICKET ${ticketBadge}*\n\n👤 User: ${currentUserProfile.name} (\`${currentUserProfile.username}\`)\n🆔 ID: \`${currentUserProfile.id}\`\n📂 Category: *${category}*\n💬 Message: _${message}_`, 
         ticketId
       );
 
@@ -1918,7 +1796,7 @@
       }).catch(err => console.log('Telegram dispatch notice:', err));
     }
 
-    // Admin On-Time Reply function -> Sets Resolved
+    // Admin On-Time Reply function
     function sendAdminSupportReply(ticketBadge) {
       const replyInput = document.getElementById(`admin-reply-input-${ticketBadge}`);
       if (!replyInput) return;
@@ -1937,9 +1815,9 @@
         saveAppData();
         renderSupportTickets();
         
-        // Automated support reply goes directly to user interface via local storage sync
-        triggerAdminBotNotification(`💬 *SUPPORT REPLY SENT TO ${targetTicket.userHandle}*\n\nTicket: *${targetTicket.id}*\nReply: _${replyText}_`);
-        showNotificationPopup('Reply Sent ✨', `Response successfully delivered to user and marked as Resolved.`, 'emerald', 'check-circle');
+        // Trigger automated bot message to user with mention username automatically
+        triggerAdminBotNotification(`💬 *SUPPORT REPLY SENT TO ${currentUserProfile.username}*\n\nTicket: *${targetTicket.id}*\nReply: _${replyText}_`);
+        showNotificationPopup('Reply Sent ✨', `Response successfully delivered to ${currentUserProfile.username}.`, 'emerald', 'check-circle');
       }
     }
 
@@ -1952,11 +1830,11 @@
           let updated = false;
           parsed.forEach(st => {
             const localMatch = supportTickets.find(lt => lt.id === st.id);
-            if (localMatch && (!localMatch.reply && st.reply || localMatch.status !== st.status)) {
+            if (localMatch && !localMatch.reply && st.reply) {
               localMatch.reply = st.reply;
               localMatch.status = st.status;
               updated = true;
-              showNotificationPopup(`Ticket Resolved ✨`, `Support responded to ticket ${st.id} and marked it Resolved: "${st.reply}"`, 'emerald', 'message-square');
+              showNotificationPopup(`New Reply for ${currentUserProfile.username} ✨`, `Support responded to your ticket ${st.id}: "${st.reply}"`, 'emerald', 'message-square');
             }
           });
           if (updated) {
@@ -1997,12 +1875,13 @@
                   simulateSystemResponse(txId, 'approve');
                 } else if (dataStr.startsWith('reject_')) {
                   const txId = dataStr.replace('reject_', '');
-                  promptRejectTx(txId);
+                  simulateSystemResponse(txId, 'reject');
                 } else if (dataStr.startsWith('reply_tkt_')) {
                   const rawId = dataStr.replace('reply_tkt_', '');
                   const tkt = supportTickets.find(t => t.rawId === rawId);
                   if (tkt) {
-                    switchTab('support');
+                    switchTab('history');
+                    // Focus or highlight support ticket input
                     setTimeout(() => {
                       const inputField = document.getElementById(`admin-reply-input-${tkt.id}`);
                       if (inputField) {
@@ -2022,7 +1901,7 @@
     // -------------------------------------------------------------------------
 
     function calculateWithdrawFee() {
-      const amt = parseFloat(document.getElementById('withdraw-amount.value') || document.getElementById('withdraw-amount').value) || 0;
+      const amt = parseFloat(document.getElementById('withdraw-amount').value) || 0;
       document.getElementById('net-receive-text').innerText = `$${amt.toFixed(2)}`;
     }
 
