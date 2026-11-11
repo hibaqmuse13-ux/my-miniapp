@@ -197,8 +197,8 @@ def telegram_polling():
                         
                         parts = data.split('_')
                         if len(parts) >= 3:
-                            action_type = parts[0]
-                            status_type = parts[1]
+                            action_type = parts[0] # 'dep' ama 'wth'
+                            status_type = parts[1] # 'ok' ama 'no'
                             tx_id = "_".join(parts[2:])
 
                             is_ok = (status_type == 'ok')
@@ -262,7 +262,6 @@ def telegram_polling():
             print("Polling Error:", e)
         time.sleep(1)
 
-# Start the polling thread
 threading.Thread(target=telegram_polling, daemon=True).start()
 
 if __name__ == '__main__':
