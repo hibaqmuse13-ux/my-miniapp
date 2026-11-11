@@ -9,13 +9,17 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          fontFamily: { 
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
           colors: {
             brand: {
               bg: '#080b11',
@@ -33,7 +37,6 @@
 
   <style>
     * { -webkit-tap-highlight-color: transparent; }
-    
     html { scroll-behavior: smooth; }
     
     body { 
@@ -70,11 +73,6 @@
       100% { opacity: 1; transform: scale(1) translateY(0); }
     }
     
-    @keyframes slideInRight {
-      from { opacity: 0; transform: translateX(100%); }
-      to { opacity: 1; transform: translateX(0); }
-    }
-
     @keyframes spinSlow {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
@@ -85,20 +83,38 @@
       100% { background-position: 1000px 0; }
     }
 
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateX(-50%) translateY(-150px) scale(0.9); }
-      to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-    }
-
     @keyframes progressBar {
       from { width: 100%; }
       to { width: 0%; }
     }
 
+    @keyframes checkmarkDraw {
+      0% { stroke-dashoffset: 50; }
+      100% { stroke-dashoffset: 0; }
+    }
+
+    @keyframes successPop {
+      0% { transform: scale(0); opacity: 0; }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes receiptShine {
+      0% { transform: translateX(-100%) skewX(-15deg); }
+      100% { transform: translateX(200%) skewX(-15deg); }
+    }
+
     .modal-animate-in { animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .spin-slow-anim { animation: spinSlow 2.5s linear infinite; }
+    .success-pop { animation: successPop 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .slide-up-fade { animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-    /* ============ PREMIUM TOAST NOTIFICATION ============ */
+    /* ============ PREMIUM TOAST ============ */
     #admin-notify-popup {
       position: fixed;
       top: 16px;
@@ -123,31 +139,19 @@
     .toast-container {
       background: linear-gradient(135deg, #0f1826 0%, #0a121c 100%);
       border: 1px solid rgba(16, 185, 129, 0.35);
-      box-shadow: 
-        0 20px 50px -10px rgba(0, 0, 0, 0.8),
-        0 0 40px -10px rgba(16, 185, 129, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(16, 185, 129, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
       border-radius: 18px;
       position: relative;
       overflow: hidden;
-    }
-
-    .toast-container::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.6), transparent);
     }
 
     .toast-progress {
       position: absolute;
       bottom: 0; left: 0; height: 3px;
       background: linear-gradient(90deg, #10b981, #06b6d4);
-      border-radius: 0 0 18px 18px;
       animation: progressBar 5.5s linear forwards;
     }
 
-    /* ============ LIVE PULSE DOT ============ */
     .live-dot {
       width: 8px; height: 8px; border-radius: 50%;
       background: #10b981;
@@ -161,7 +165,7 @@
       100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
 
-    button:active { transform: scale(0.97); transition: transform 0.1s; }
+    button:active { transform: scale(0.97); }
     button { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
     
     ::-webkit-scrollbar { width: 4px; }
@@ -174,16 +178,9 @@
       box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
     }
 
-    input, textarea, select { 
-      -webkit-user-select: text !important; 
-      user-select: text !important;
-    }
+    input, textarea, select { -webkit-user-select: text !important; user-select: text !important; }
 
-    .progress-bar {
-      position: relative;
-      overflow: hidden;
-    }
-    
+    .progress-bar { position: relative; overflow: hidden; }
     .progress-bar::after {
       content: '';
       position: absolute;
@@ -205,13 +202,11 @@
     }
 
     .network-card:hover { border-color: rgba(255, 255, 255, 0.15); transform: translateY(-1px); }
-
     .network-card.active {
       border-color: #10b981 !important;
       background: linear-gradient(145deg, rgba(16, 185, 129, 0.15) 0%, rgba(6, 182, 212, 0.08) 100%) !important;
       box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.4), 0 8px 24px rgba(16, 185, 129, 0.2);
     }
-
     .network-card.active .network-check { opacity: 1; transform: scale(1); }
 
     .network-check {
@@ -222,7 +217,7 @@
       background: linear-gradient(135deg, #10b981, #06b6d4);
       display: flex; align-items: center; justify-content: center;
       color: #000; opacity: 0; transform: scale(0.5);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all 0.25s;
       box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
       z-index: 5;
     }
@@ -233,7 +228,6 @@
       flex-shrink: 0; background: #0d1220; padding: 4px;
       border: 1px solid rgba(255,255,255,0.06);
     }
-
     .network-logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
 
     .network-logo-usdt { background: #26A17B15; border-color: #26A17B33; }
@@ -252,7 +246,6 @@
       padding: 3px; border-radius: 16px;
       box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
     }
-
     .qr-frame > div { background: #ffffff; border-radius: 13px; padding: 8px; }
 
     .step-badge {
@@ -326,27 +319,10 @@
       line-height: 1;
     }
 
-    .plan-stat-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 8px; margin: 14px 0;
-    }
-
-    .plan-stat-cell {
-      padding: 9px 10px; border-radius: 10px;
-      background: rgba(8, 11, 17, 0.7);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .plan-stat-label {
-      font-size: 8px; color: #6b7280;
-      text-transform: uppercase; letter-spacing: 0.06em;
-      font-weight: 800; display: block; margin-bottom: 2px;
-    }
-
-    .plan-stat-value {
-      font-size: 11px; font-weight: 800;
-      color: #ffffff; font-family: monospace;
-    }
+    .plan-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0; }
+    .plan-stat-cell { padding: 9px 10px; border-radius: 10px; background: rgba(8, 11, 17, 0.7); border: 1px solid rgba(255,255,255,0.05); }
+    .plan-stat-label { font-size: 8px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 800; display: block; margin-bottom: 2px; }
+    .plan-stat-value { font-size: 11px; font-weight: 800; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
 
     .plan-cta {
       width: 100%; padding: 11px; border-radius: 12px;
@@ -356,9 +332,7 @@
       box-shadow: 0 6px 20px -6px var(--accent);
       cursor: pointer; border: none;
     }
-
     .plan-cta:hover { filter: brightness(1.15); }
-    .plan-cta:active { transform: scale(0.97); }
 
     .plan-popular {
       position: absolute;
@@ -382,24 +356,18 @@
       font-size: 11px; font-weight: 900; letter-spacing: 0.03em;
       cursor: pointer; overflow: hidden; border: none;
     }
-
     .wallet-action-btn:hover { transform: translateY(-2px); }
-    .wallet-action-btn:active { transform: scale(0.97); }
 
     .wallet-action-btn.deposit {
       background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.4); color: #10b981;
       box-shadow: 0 4px 16px -4px rgba(16, 185, 129, 0.4);
     }
-
     .wallet-action-btn.withdraw {
       background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
-      border: 1px solid rgba(6, 182, 212, 0.4);
-      color: #06b6d4;
+      border: 1px solid rgba(6, 182, 212, 0.4); color: #06b6d4;
       box-shadow: 0 4px 16px -4px rgba(6, 182, 212, 0.4);
     }
-
     .wallet-action-btn-icon {
       width: 26px; height: 26px; border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
@@ -408,53 +376,32 @@
 
     /* ============ MODALS ============ */
     .modal-overlay {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       padding: 16px;
       z-index: 9998;
     }
-
     .modal-overlay.hidden { display: none; }
 
-    /* Fix for mobile keyboard pushing content */
     @media (max-width: 640px) {
       .modal-overlay { align-items: flex-start; padding-top: 40px; }
     }
 
-    /* Form inputs always above header */
-    #section-deposit, #section-withdraw {
-      position: relative;
-      z-index: 10;
-    }
+    #section-deposit, #section-withdraw { position: relative; z-index: 10; }
+    .input-safe { scroll-margin-top: 100px; scroll-margin-bottom: 300px; }
 
-    /* Smooth scroll for plan section */
-    #tab-dashboard { scroll-behavior: smooth; }
-
-    /* Prevent keyboard from hiding inputs */
-    .input-safe {
-      scroll-margin-top: 100px;
-      scroll-margin-bottom: 300px;
-    }
-
-    /* ============ INFO ROW ============ */
     .info-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
       padding: 10px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
     .info-row:last-child { border-bottom: none; }
     .info-label { font-size: 11px; color: #9ca3af; display: flex; align-items: center; gap: 8px; }
-    .info-value { font-size: 11px; font-weight: 800; color: #ffffff; font-family: monospace; }
+    .info-value { font-size: 11px; font-weight: 800; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
 
-    /* ============ METRIC CARD ============ */
     .metric-card {
       background: linear-gradient(145deg, rgba(17, 22, 34, 0.9) 0%, rgba(11, 16, 27, 0.9) 100%);
       border: 1px solid rgba(255, 255, 255, 0.06);
@@ -464,12 +411,281 @@
     }
     .metric-card:hover { border-color: rgba(16, 185, 129, 0.3); transform: translateY(-2px); }
     .metric-label { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; display: block; margin-bottom: 4px; }
-    .metric-value { font-size: 15px; font-weight: 900; color: #ffffff; font-family: monospace; }
+    .metric-value { font-size: 15px; font-weight: 900; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
+
+    /* ============ RECEIPT STYLES (PROFESSIONAL) ============ */
+    .receipt-container {
+      background: linear-gradient(145deg, #0f1826 0%, #0a121c 100%);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9);
+    }
+
+    .receipt-container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: var(--receipt-accent, linear-gradient(90deg, #10b981, #06b6d4));
+    }
+
+    .receipt-header {
+      padding: 24px 20px 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .receipt-header::before {
+      content: '';
+      position: absolute;
+      top: -50%; left: -50%;
+      width: 200%; height: 200%;
+      background: radial-gradient(circle, var(--receipt-glow, rgba(16, 185, 129, 0.15)) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .receipt-shine {
+      position: absolute;
+      top: 0; left: 0;
+      width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      animation: receiptShine 3s infinite;
+      pointer-events: none;
+    }
+
+    .receipt-logo {
+      width: 68px; height: 68px;
+      border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px;
+      background: #0d1220;
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 10px;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 1;
+    }
+
+    .receipt-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+    .receipt-amount {
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .receipt-status {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .receipt-status.pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .receipt-status.completed {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .receipt-status.rejected {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .receipt-status.active {
+      background: rgba(6, 182, 212, 0.15);
+      color: #06b6d4;
+      border: 1px solid rgba(6, 182, 212, 0.4);
+    }
+
+    .receipt-divider {
+      position: relative;
+      height: 20px;
+      margin: 0 20px;
+    }
+
+    .receipt-divider::before, .receipt-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%; width: 16px; height: 16px;
+      background: #080b11;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .receipt-divider::before { left: -28px; }
+    .receipt-divider::after { right: -28px; }
+
+    .receipt-divider-line {
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      height: 1px;
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 6px, transparent 6px, transparent 12px);
+      transform: translateY(-50%);
+    }
+
+    .receipt-body {
+      padding: 20px;
+      background: rgba(8, 11, 17, 0.4);
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 11px 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+      gap: 12px;
+    }
+
+    .receipt-row:last-child { border-bottom: none; }
+
+    .receipt-row-label {
+      font-size: 10px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .receipt-row-value {
+      font-size: 11px;
+      font-weight: 800;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      text-align: right;
+      word-break: break-all;
+    }
+
+    .receipt-footer {
+      padding: 16px 20px;
+      background: rgba(8, 11, 17, 0.7);
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .receipt-id {
+      font-size: 9px;
+      color: #4b5563;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+
+    .receipt-watermark {
+      font-size: 8px;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-weight: 800;
+    }
+
+    .receipt-btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .receipt-btn:hover { filter: brightness(1.15); }
+    .receipt-btn:active { transform: scale(0.97); }
+
+    /* History Card */
+    .history-tx-card {
+      position: relative;
+      border-radius: 16px;
+      padding: 14px;
+      background: linear-gradient(145deg, rgba(22, 28, 44, 0.9) 0%, rgba(15, 20, 32, 0.9) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+
+    .history-tx-card:hover {
+      border-color: rgba(16, 185, 129, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2);
+    }
+
+    .history-tx-logo {
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      background: #0d1220;
+      padding: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .history-tx-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+    /* Success animation */
+    .success-checkmark {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: block;
+      stroke-width: 3;
+      stroke: #10b981;
+      stroke-miterlimit: 10;
+      box-shadow: inset 0 0 0 6px rgba(16, 185, 129, 0.15);
+      margin: 0 auto;
+    }
+
+    .success-checkmark__circle {
+      stroke-dasharray: 166;
+      stroke-dashoffset: 166;
+      stroke-width: 3;
+      stroke-miterlimit: 10;
+      stroke: #10b981;
+      fill: none;
+      animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+
+    .success-checkmark__check {
+      transform-origin: 50% 50%;
+      stroke-dasharray: 48;
+      stroke-dashoffset: 48;
+      animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.5s forwards;
+    }
+
+    @keyframes stroke {
+      100% { stroke-dashoffset: 0; }
+    }
   </style>
 </head>
 <body class="font-sans antialiased pb-32">
 
-  <!-- Header - Compact, No balance card on scroll -->
   <header class="p-4 border-b border-brand-border bg-brand-bg/95 backdrop-blur-md sticky top-0 z-30">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2.5">
@@ -494,7 +710,6 @@
   <!-- DASHBOARD TAB -->
   <main id="tab-dashboard" class="tab-content active p-4 space-y-5">
     
-    <!-- MAIN BALANCE CARD (Only in dashboard, not sticky) -->
     <div class="relative overflow-hidden rounded-3xl p-5 bg-gradient-to-br from-[#111622] via-[#0d131f] to-[#080b11] border border-emerald-500/20 shadow-2xl">
       <div class="absolute -right-12 -top-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -left-12 -bottom-12 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -527,7 +742,6 @@
           <span id="locked-balance" class="text-cyan-400 font-extrabold text-sm font-mono">$0.00</span>
         </div>
 
-        <!-- Deposit/Withdraw Action Bar -->
         <div class="wallet-action-bar pt-2">
           <button onclick="openWalletAction('deposit')" class="wallet-action-btn deposit">
             <div class="wallet-action-btn-icon">
@@ -546,7 +760,6 @@
       </div>
     </div>
 
-    <!-- Active Investments -->
     <div>
       <div class="flex items-center justify-between mb-3">
         <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
@@ -561,7 +774,6 @@
       </div>
     </div>
 
-    <!-- Investment Plans -->
     <div id="investment-plans-section">
       <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
         <i data-lucide="zap" class="w-4 h-4 text-cyan-400"></i> Investment Plans
@@ -569,7 +781,6 @@
 
       <div class="space-y-4">
         
-        <!-- PLAN 1: STARTER -->
         <div class="plan-card plan-starter">
           <div class="flex justify-between items-start mb-3 relative z-10">
             <div class="flex items-center gap-3">
@@ -614,7 +825,6 @@
           </button>
         </div>
 
-        <!-- PLAN 2: SILVER -->
         <div class="plan-card plan-silver">
           <div class="flex justify-between items-start mb-3 relative z-10">
             <div class="flex items-center gap-3">
@@ -659,7 +869,6 @@
           </button>
         </div>
 
-        <!-- PLAN 3: GOLD -->
         <div class="plan-card plan-gold">
           <div class="plan-popular">POPULAR</div>
           <div class="flex justify-between items-start mb-3 relative z-10">
@@ -705,7 +914,6 @@
           </button>
         </div>
 
-        <!-- PLAN 4: VIP -->
         <div class="plan-card plan-vip">
           <div class="flex justify-between items-start mb-3 relative z-10">
             <div class="flex items-center gap-3">
@@ -758,7 +966,6 @@
   <main id="tab-wallet" class="tab-content p-4 space-y-4">
     
     <div id="wallet-overview" class="space-y-4">
-      <!-- Balance Overview -->
       <div class="glass-card rounded-3xl p-5 border border-emerald-500/30 relative overflow-hidden shadow-2xl bg-gradient-to-br from-[#111622] via-[#0b101b] to-[#080b11]">
         <div class="absolute -right-10 -top-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
         <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
@@ -795,7 +1002,6 @@
         </div>
       </div>
 
-      <!-- Account Metrics -->
       <div>
         <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center gap-2">
           <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 text-emerald-400"></i> Account Metrics
@@ -832,7 +1038,6 @@
         </div>
       </div>
 
-      <!-- Security & Compliance -->
       <div class="glass-card rounded-2xl p-4 space-y-2">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
@@ -859,7 +1064,6 @@
         </div>
       </div>
 
-      <!-- Supported Networks -->
       <div class="glass-card rounded-2xl p-4 space-y-3">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
@@ -900,7 +1104,6 @@
         </div>
       </div>
 
-      <!-- Performance Analytics -->
       <div class="glass-card rounded-2xl p-4 space-y-3">
         <h3 class="text-xs font-bold text-white flex items-center gap-1.5 pb-2 border-b border-brand-border">
           <i data-lucide="line-chart" class="w-4 h-4 text-purple-400"></i> Performance Analytics
@@ -922,64 +1125,17 @@
         </div>
       </div>
 
-      <!-- Quick Actions -->
-      <div class="glass-card rounded-2xl p-4 space-y-2">
-        <h3 class="text-xs font-bold text-white flex items-center gap-1.5 pb-2 border-b border-brand-border">
-          <i data-lucide="zap" class="w-4 h-4 text-amber-400"></i> Quick Actions
-        </h3>
-
-        <button onclick="switchTab('history')" class="w-full flex items-center justify-between p-3 rounded-xl bg-brand-bg hover:bg-emerald-500/5 border border-brand-border hover:border-emerald-500/30 transition-all">
-          <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center">
-              <i data-lucide="history" class="w-4 h-4 text-emerald-400"></i>
-            </div>
-            <div class="text-left">
-              <div class="text-[11px] font-bold text-white">Transaction History</div>
-              <div class="text-[9px] text-gray-400 font-mono">View all transactions</div>
-            </div>
-          </div>
-          <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
-        </button>
-
-        <button onclick="switchTab('support')" class="w-full flex items-center justify-between p-3 rounded-xl bg-brand-bg hover:bg-cyan-500/5 border border-brand-border hover:border-cyan-500/30 transition-all">
-          <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center">
-              <i data-lucide="headphones" class="w-4 h-4 text-cyan-400"></i>
-            </div>
-            <div class="text-left">
-              <div class="text-[11px] font-bold text-white">Support Center</div>
-              <div class="text-[9px] text-gray-400 font-mono">24/7 assistance</div>
-            </div>
-          </div>
-          <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
-        </button>
-
-        <button onclick="switchTab('referral')" class="w-full flex items-center justify-between p-3 rounded-xl bg-brand-bg hover:bg-purple-500/5 border border-brand-border hover:border-purple-500/30 transition-all">
-          <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
-              <i data-lucide="users" class="w-4 h-4 text-purple-400"></i>
-            </div>
-            <div class="text-left">
-              <div class="text-[11px] font-bold text-white">Referral Program</div>
-              <div class="text-[9px] text-gray-400 font-mono">Earn 8% commission</div>
-            </div>
-          </div>
-          <i data-lucide="chevron-right" class="w-4 h-4 text-gray-400"></i>
-        </button>
-      </div>
-
-      <!-- System Status -->
       <div class="glass-card rounded-2xl p-3 flex items-center justify-between border border-emerald-500/20 bg-emerald-500/5">
         <div class="flex items-center gap-2">
           <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
           <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">All Systems Operational</span>
         </div>
-        <span class="text-[9px] text-gray-400 font-mono">v2.4.1</span>
+        <span class="text-[9px] text-gray-400 font-mono">v2.5.0</span>
       </div>
 
     </div>
 
-    <!-- DEPOSIT SECTION - Fixed for visibility -->
+    <!-- DEPOSIT SECTION -->
     <div id="section-deposit" class="space-y-4 hidden">
       
       <div class="flex items-center justify-between">
@@ -1004,7 +1160,6 @@
         </div>
       </div>
 
-      <!-- STEP 1 -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <div class="flex items-center">
@@ -1071,7 +1226,6 @@
         </div>
       </div>
 
-      <!-- STEP 2 -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <div class="flex items-center">
@@ -1094,7 +1248,6 @@
         </div>
       </div>
 
-      <!-- STEP 3 -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <div class="flex items-center">
@@ -1147,7 +1300,6 @@
         </div>
       </div>
 
-      <!-- STEP 4 - PROOF OF PAYMENT (now visible) -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <div class="flex items-center">
@@ -1233,7 +1385,6 @@
         </div>
       </div>
 
-      <!-- STEP 1 -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <div class="flex items-center">
@@ -1300,7 +1451,6 @@
         </div>
       </div>
 
-      <!-- STEP 2 -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <div class="flex items-center">
@@ -1324,7 +1474,6 @@
         </div>
       </div>
 
-      <!-- STEP 3 -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <div class="flex items-center">
@@ -1352,7 +1501,6 @@
         </div>
       </div>
 
-      <!-- Summary -->
       <div class="glass-card rounded-2xl p-4 border border-cyan-500/20 space-y-2.5">
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-400">Amount</span>
@@ -1424,6 +1572,7 @@
       <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
         <i data-lucide="history" class="w-4 h-4 text-emerald-400"></i> Transaction History
       </h3>
+      <span class="text-[9px] text-gray-500 font-mono" id="history-count-badge">0 records</span>
     </div>
 
     <div id="history-container" class="space-y-3">
@@ -1701,7 +1850,7 @@
     </button>
   </nav>
 
-  <!-- INVEST MODAL (with high z-index) -->
+  <!-- INVEST MODAL -->
   <div id="invest-modal" class="modal-overlay hidden">
     <div class="glass-card rounded-2xl w-full max-w-sm p-5 space-y-4 relative border border-emerald-500/30 modal-animate-in">
       <button onclick="closeModal('invest-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-lg bg-white/5">
@@ -1731,65 +1880,46 @@
     </div>
   </div>
 
-  <!-- STATUS MODAL -->
-  <div id="status-modal" class="modal-overlay hidden">
-    <div id="status-modal-card" class="glass-card rounded-2xl w-full max-w-sm p-6 text-center space-y-5 border border-cyan-500/40 shadow-2xl relative">
+  <!-- ============================================ -->
+  <!-- SUCCESS ANIMATION MODAL (BEFORE RECEIPT) -->
+  <!-- ============================================ -->
+  <div id="success-modal" class="modal-overlay hidden">
+    <div class="glass-card rounded-2xl w-full max-w-sm p-8 text-center space-y-5 border border-emerald-500/40 shadow-2xl modal-animate-in">
+      <svg class="success-checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+        <circle class="success-checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
+        <path class="success-checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+      </svg>
       
-      <div id="modal-step-verifying" class="space-y-4 py-2">
-        <div class="relative w-20 h-20 mx-auto flex items-center justify-center">
-          <div class="absolute inset-0 rounded-full border-2 border-cyan-500/20 border-t-cyan-400 spin-slow-anim"></div>
-          <div class="w-14 h-14 bg-cyan-500/15 rounded-full flex items-center justify-center text-cyan-400 shadow-lg">
-            <i data-lucide="shield-check" class="w-7 h-7"></i>
-          </div>
-        </div>
-        <div>
-          <h3 id="verify-main-title" class="font-extrabold text-white text-lg">Verifying</h3>
-          <p id="verify-sub-desc" class="text-xs text-gray-400 mt-1">Please wait...</p>
-        </div>
+      <div class="space-y-2 slide-up-fade" style="animation-delay: 0.6s;">
+        <h3 id="success-main-title" class="font-black text-white text-xl tracking-tight">Success!</h3>
+        <p id="success-sub-desc" class="text-xs text-gray-400 leading-relaxed">Your transaction has been submitted successfully.</p>
+      </div>
 
-        <div class="flex items-center justify-center gap-3 pt-2">
-          <div class="flex flex-col items-center gap-1">
-            <div id="step-dot-1" class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-xs font-bold"><i data-lucide="check" class="w-3.5 h-3.5"></i></div>
-            <span class="text-[9px] text-gray-400 uppercase font-bold">Sent</span>
-          </div>
-          <div id="step-line-1" class="w-6 h-0.5 bg-cyan-500/40 transition-all duration-500"></div>
-          <div class="flex flex-col items-center gap-1">
-            <div id="step-dot-2" class="w-7 h-7 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-xs font-bold animate-pulse">2</div>
-            <span class="text-[9px] text-cyan-400 uppercase font-bold">Verifying</span>
-          </div>
-          <div id="step-line-2" class="w-6 h-0.5 bg-gray-700 transition-all duration-500"></div>
-          <div class="flex flex-col items-center gap-1">
-            <div id="step-dot-3" class="w-7 h-7 rounded-full bg-gray-800 text-gray-500 border border-gray-700 flex items-center justify-center text-xs font-bold">3</div>
-            <span class="text-[9px] text-gray-500 uppercase font-bold">Confirm</span>
-          </div>
+      <div class="p-3 bg-emerald-500/5 border border-emerald-500/20 rounded-xl slide-up-fade" style="animation-delay: 0.8s;">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-gray-400">Amount</span>
+          <span id="success-amount" class="text-emerald-400 font-black font-mono text-base">$0.00</span>
         </div>
       </div>
 
-      <div id="modal-step-success" class="space-y-4 hidden">
-        <div class="w-14 h-14 bg-amber-500/15 rounded-full flex items-center justify-center mx-auto text-amber-400 border border-amber-500/40 shadow-lg">
-          <i data-lucide="clock" class="w-8 h-8 animate-pulse"></i>
-        </div>
-        <div>
-          <h3 id="status-modal-title" class="font-extrabold text-white text-lg">Processing</h3>
-          <p id="status-modal-desc" class="text-xs text-gray-400 mt-1 leading-relaxed">Your request is pending network review.</p>
-        </div>
-
-        <div class="p-3.5 bg-brand-bg rounded-xl border border-brand-border text-left space-y-2 text-xs font-mono">
-          <div class="flex justify-between text-gray-400"><span>Amount:</span><span id="modal-res-amount" class="text-emerald-400 font-bold">$0.00</span></div>
-          <div class="flex justify-between text-gray-400"><span>Network:</span><span id="modal-res-network" class="text-cyan-400 font-bold">TRC20</span></div>
-          <div class="flex justify-between text-gray-400"><span>Ref:</span><span id="modal-res-ref" class="text-white truncate max-w-[140px]">--</span></div>
-          <div class="flex justify-between text-gray-400 border-t border-brand-border pt-1.5"><span>Status:</span><span class="text-amber-400 font-bold bg-amber-500/10 px-2 py-0.5 rounded">Pending</span></div>
-        </div>
-
-        <button onclick="closeStatusModal()" class="w-full gradient-bg text-black font-extrabold py-3 rounded-xl text-sm shadow-lg active:scale-95 transition-all">
-          View in History
-        </button>
-      </div>
-
+      <button onclick="openReceiptFromSuccess()" class="w-full gradient-bg text-black font-extrabold py-3 rounded-xl text-sm shadow-lg active:scale-95 transition-all slide-up-fade" style="animation-delay: 1s;">
+        View Receipt
+      </button>
     </div>
   </div>
 
-  <!-- PREMIUM TOAST NOTIFICATION -->
+  <!-- ============================================ -->
+  <!-- PROFESSIONAL RECEIPT MODAL -->
+  <!-- ============================================ -->
+  <div id="receipt-modal" class="modal-overlay hidden">
+    <div class="w-full max-w-sm modal-animate-in" style="max-height: 90vh; overflow-y: auto;">
+      <div id="receipt-content" class="receipt-container">
+        <!-- Content injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
   <div id="admin-notify-popup">
     <div class="toast-container">
       <div class="p-4 flex items-start gap-3.5">
@@ -1857,6 +1987,7 @@
     let supportTickets = JSON.parse(localStorage.getItem('apex_support_' + currentUserProfile.id) || '[]');
     let activeInvestments = JSON.parse(localStorage.getItem('apex_inv_' + currentUserProfile.id) || '[]');
     let uploadedScreenshotData = null;
+    let pendingReceiptTx = null;
 
     window.addEventListener('DOMContentLoaded', () => {
       updateWalletUI();
@@ -1956,10 +2087,10 @@
     }
 
     const cryptoWallets = {
-      usdt_trc20: { name: 'USDT (TRC20 - Tron)', address: 'TY9x8K2zXq2P1mN84jLpQvM902RzL1mN' },
-      usdt_bep20: { name: 'USDT (BEP20 - BNB Chain)', address: '0x89234b9A1F8203bC61204e9021mN84jL' },
-      usdt_erc20: { name: 'USDT (ERC20 - Ethereum)', address: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F' },
-      usdc: { name: 'USDC (USD Coin)', address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174' }
+      usdt_trc20: { name: 'USDT (TRC20 - Tron)', address: 'TY9x8K2zXq2P1mN84jLpQvM902RzL1mN', logo: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040', emoji: '₮', logoClass: 'network-logo-usdt', color: '#26A17B' },
+      usdt_bep20: { name: 'USDT (BEP20 - BNB Chain)', address: '0x89234b9A1F8203bC61204e9021mN84jL', logo: 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040', emoji: '⚡', logoClass: 'network-logo-bnb', color: '#F3BA2F' },
+      usdt_erc20: { name: 'USDT (ERC20 - Ethereum)', address: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', logo: 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040', emoji: 'Ξ', logoClass: 'network-logo-eth', color: '#627EEA' },
+      usdc: { name: 'USDC (USD Coin)', address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', logo: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040', emoji: '$', logoClass: 'network-logo-usdc', color: '#2775CA' }
     };
 
     let selectedDepositNetworkKey = 'usdt_trc20';
@@ -2055,54 +2186,354 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // ============================================================
+    // RECEIPT GENERATOR - PROFESSIONAL
+    // ============================================================
+    function generateReceiptHTML(tx) {
+      const isDeposit = tx.type === 'deposit';
+      const isWithdrawal = tx.type === 'withdraw';
+      const isInvestment = tx.type === 'investment';
+      
+      let accentGradient = 'linear-gradient(90deg, #10b981, #06b6d4)';
+      let glowColor = 'rgba(16, 185, 129, 0.15)';
+      let statusColor = '#f59e0b';
+      let statusClass = 'pending';
+      let statusLabel = 'PENDING';
+      let amountColor = '#10b981';
+      let amountPrefix = '+';
+      
+      if (isWithdrawal) {
+        accentGradient = 'linear-gradient(90deg, #06b6d4, #3b82f6)';
+        glowColor = 'rgba(6, 182, 212, 0.15)';
+        amountColor = '#06b6d4';
+        amountPrefix = '-';
+      } else if (isInvestment) {
+        accentGradient = 'linear-gradient(90deg, #a855f7, #6366f1)';
+        glowColor = 'rgba(168, 85, 247, 0.15)';
+        amountColor = '#a855f7';
+        amountPrefix = '-';
+      }
+      
+      if (tx.status === 'Completed') {
+        statusClass = 'completed';
+        statusLabel = 'COMPLETED';
+        statusColor = '#10b981';
+      } else if (tx.status === 'Rejected') {
+        statusClass = 'rejected';
+        statusLabel = 'REJECTED';
+        statusColor = '#ef4444';
+      } else if (tx.status === 'Active') {
+        statusClass = 'active';
+        statusLabel = 'ACTIVE';
+        statusColor = '#06b6d4';
+      }
+      
+      // Determine network info
+      let networkLogo = 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040';
+      let networkEmoji = '₮';
+      let networkName = tx.network || 'USDT';
+      
+      if (tx.network && tx.network.includes('BEP20')) {
+        networkLogo = 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040';
+        networkEmoji = '⚡';
+      } else if (tx.network && tx.network.includes('ERC20')) {
+        networkLogo = 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040';
+        networkEmoji = 'Ξ';
+      } else if (tx.network && tx.network.includes('USDC')) {
+        networkLogo = 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040';
+        networkEmoji = '$';
+      } else if (isInvestment) {
+        networkLogo = '';
+        networkEmoji = '📈';
+      }
+      
+      // Extract raw amount (strip formatting)
+      let rawAmount = tx.rawAmount || parseFloat((tx.amount || '0').replace(/[^0-9.]/g, '')) || 0;
+      
+      const receiptDate = tx.fullDate || new Date().toLocaleString('en-US', { 
+        month: 'short', day: 'numeric', year: 'numeric', 
+        hour: '2-digit', minute: '2-digit' 
+      });
+
+      const txFullId = tx.fullId || tx.id || 'TXN-' + Date.now();
+
+      const truncatedAddress = tx.fullAddress || tx.ref || '--';
+
+      // Admin action buttons for pending
+      let adminActionsHTML = '';
+      if (isAdmin && tx.status === 'Pending Review') {
+        adminActionsHTML = `
+          <div class="px-5 pb-3 flex gap-2">
+            <button onclick="simulateSystemResponse('${tx.id}', 'approve')" class="flex-1 bg-emerald-500/20 text-emerald-400 text-xs font-bold py-2.5 rounded-xl border border-emerald-500/40 flex items-center justify-center gap-1.5">
+              <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve
+            </button>
+            <button onclick="simulateSystemResponse('${tx.id}', 'reject')" class="flex-1 bg-red-500/20 text-red-400 text-xs font-bold py-2.5 rounded-xl border border-red-500/40 flex items-center justify-center gap-1.5">
+              <i data-lucide="x" class="w-3.5 h-3.5"></i> Reject
+            </button>
+          </div>
+        `;
+      }
+
+      return `
+        <div style="--receipt-accent: ${accentGradient}; --receipt-glow: ${glowColor};">
+          <!-- Close button -->
+          <button onclick="closeModal('receipt-modal')" class="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white active:scale-90 transition-all">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+          
+          <!-- Receipt Header -->
+          <div class="receipt-header">
+            <div class="receipt-shine"></div>
+            
+            <div class="receipt-logo" style="border-color: ${statusColor}40;">
+              ${networkLogo 
+                ? `<img src="${networkLogo}" alt="${networkName}" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'color:${statusColor};font-weight:900;font-size:28px\\'>${networkEmoji}</span>'">`
+                : `<span style="color:${statusColor};font-weight:900;font-size:28px;">${networkEmoji}</span>`
+              }
+            </div>
+            
+            <div class="receipt-amount" style="color: ${amountColor}">
+              ${amountPrefix}$${rawAmount.toFixed(2)}
+            </div>
+            
+            <div class="text-[10px] text-gray-500 font-mono uppercase tracking-widest mb-2">${isDeposit ? 'DEPOSIT AMOUNT' : isWithdrawal ? 'WITHDRAWAL AMOUNT' : 'INVESTMENT AMOUNT'}</div>
+            
+            <div class="receipt-status ${statusClass}">
+              <i data-lucide="${tx.status === 'Completed' ? 'check-circle-2' : tx.status === 'Rejected' ? 'x-circle' : 'clock'}" class="w-3 h-3"></i>
+              ${statusLabel}
+            </div>
+          </div>
+          
+          <!-- Divider -->
+          <div class="receipt-divider">
+            <div class="receipt-divider-line"></div>
+          </div>
+          
+          <!-- Receipt Body -->
+          <div class="receipt-body">
+            <div class="receipt-row">
+              <span class="receipt-row-label">Type</span>
+              <span class="receipt-row-value">${isDeposit ? 'Deposit' : isWithdrawal ? 'Withdrawal' : 'Investment'}</span>
+            </div>
+            
+            <div class="receipt-row">
+              <span class="receipt-row-label">Network</span>
+              <span class="receipt-row-value" style="color:${statusColor}">${tx.network || 'Plan Allocation'}</span>
+            </div>
+            
+            <div class="receipt-row">
+              <span class="receipt-row-label">${isDeposit ? 'Sender Address' : isWithdrawal ? 'Destination' : 'Plan'}</span>
+              <span class="receipt-row-value" style="font-size: 10px;">${truncatedAddress}</span>
+            </div>
+            
+            <div class="receipt-row">
+              <span class="receipt-row-label">Date & Time</span>
+              <span class="receipt-row-value" style="font-size: 10px;">${receiptDate}</span>
+            </div>
+            
+            <div class="receipt-row">
+              <span class="receipt-row-label">Network Fee</span>
+              <span class="receipt-row-value" style="color:#10b981;">$0.00 <span style="font-size:8px;background:rgba(16,185,129,0.15);padding:2px 5px;border-radius:4px;margin-left:3px;">FREE</span></span>
+            </div>
+            
+            <div class="receipt-row">
+              <span class="receipt-row-label">Transaction ID</span>
+              <span class="receipt-row-value" style="font-size: 9px; color:#06b6d4;">${txFullId}</span>
+            </div>
+            
+            <div class="receipt-row">
+              <span class="receipt-row-label">Status</span>
+              <span class="receipt-row-value" style="color:${statusColor}; text-transform: uppercase; letter-spacing: 0.05em;">${tx.status}</span>
+            </div>
+          </div>
+          
+          <!-- Footer -->
+          <div class="receipt-footer">
+            <div class="receipt-id">REF: APX-${Date.now().toString().slice(-8)}-${Math.random().toString(36).substring(2, 6).toUpperCase()}</div>
+            <div class="receipt-watermark">APEXINVEST · SECURE TRANSACTION RECEIPT</div>
+          </div>
+          
+          ${adminActionsHTML}
+          
+          <!-- Actions -->
+          <div class="px-5 pb-5 pt-2 flex flex-col gap-2">
+            <button onclick="shareReceiptImage()" class="receipt-btn" style="background: linear-gradient(135deg, #10b981, #06b6d4); color: #000;">
+              <i data-lucide="share-2" class="w-4 h-4"></i>
+              Share Receipt
+            </button>
+            <button onclick="copyReceiptText('${tx.id}')" class="receipt-btn" style="background: rgba(255,255,255,0.05); color: #ffffff; border: 1px solid rgba(255,255,255,0.1);">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+              Copy Receipt Details
+            </button>
+            <button onclick="closeModal('receipt-modal')" class="text-[10px] text-gray-500 hover:text-gray-300 font-mono uppercase tracking-widest py-2">
+              Close
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function openReceiptModal(txId) {
+      const tx = transactionsHistory.find(t => t.id === txId);
+      if (!tx) {
+        showNotificationPopup('Not Found ⚠️', 'Receipt not available', 'amber', 'alert-circle');
+        return;
+      }
+      
+      const receiptContent = document.getElementById('receipt-content');
+      receiptContent.innerHTML = generateReceiptHTML(tx);
+      
+      document.getElementById('receipt-modal').classList.remove('hidden');
+      lucide.createIcons();
+      
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    function openReceiptFromSuccess() {
+      closeModal('success-modal');
+      if (pendingReceiptTx) {
+        setTimeout(() => {
+          openReceiptModal(pendingReceiptTx);
+        }, 200);
+      }
+    }
+
+    function shareReceiptImage() {
+      showNotificationPopup('Shared ✨', 'Receipt link copied', 'emerald', 'share-2');
+    }
+
+    function copyReceiptText(txId) {
+      const tx = transactionsHistory.find(t => t.id === txId);
+      if (!tx) return;
+      
+      const text = `
+APEXINVEST RECEIPT
+================
+Type: ${tx.type === 'deposit' ? 'Deposit' : tx.type === 'withdraw' ? 'Withdrawal' : 'Investment'}
+Amount: ${tx.amount}
+Network: ${tx.network}
+Status: ${tx.status}
+Date: ${tx.time}
+Transaction ID: ${tx.id}
+================
+Institutional Crypto Yield
+      `.trim();
+      
+      navigator.clipboard.writeText(text);
+      showNotificationPopup('Copied ✨', 'Receipt details copied', 'emerald', 'copy');
+    }
+
+    // ============================================================
+    // HISTORY RENDERER - PROFESSIONAL
+    // ============================================================
     function renderHistory() {
       const container = document.getElementById('history-container');
+      const countBadge = document.getElementById('history-count-badge');
       container.innerHTML = '';
+      
+      if (countBadge) countBadge.innerText = `${transactionsHistory.length} ${transactionsHistory.length === 1 ? 'record' : 'records'}`;
 
       if (transactionsHistory.length === 0) {
-        container.innerHTML = `<div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">No transaction history available yet.</div>`;
+        container.innerHTML = `
+          <div class="glass-card rounded-2xl p-6 text-center border border-brand-border">
+            <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
+              <i data-lucide="receipt" class="w-7 h-7 text-emerald-400"></i>
+            </div>
+            <p class="text-sm font-bold text-white mb-1">No Transactions Yet</p>
+            <p class="text-[11px] text-gray-400 leading-relaxed">Your transaction history will appear here once you make your first deposit or withdrawal.</p>
+          </div>
+        `;
+        lucide.createIcons();
         return;
       }
 
       transactionsHistory.forEach(tx => {
-        let badgeColor = tx.status === 'Completed' ? 'emerald' : (tx.status === 'Pending Review' ? 'amber' : 'red');
-        let adminActionButtons = '';
-        if (isAdmin && tx.status === 'Pending Review') {
-          adminActionButtons = `
-            <div class="flex gap-2 mt-3 pt-2 border-t border-brand-border">
-              <button onclick="simulateSystemResponse('${tx.id}', 'approve')" class="flex-1 bg-emerald-500/20 text-emerald-400 text-xs font-bold py-1.5 px-3 rounded-lg border border-emerald-500/40 flex items-center justify-center gap-1">
-                <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve
-              </button>
-              <button onclick="simulateSystemResponse('${tx.id}', 'reject')" class="flex-1 bg-red-500/20 text-red-400 text-xs font-bold py-1.5 px-3 rounded-lg border border-red-500/40 flex items-center justify-center gap-1">
-                <i data-lucide="x" class="w-3.5 h-3.5"></i> Reject
-              </button>
-            </div>`;
+        let statusColor = 'amber';
+        let statusLabel = tx.status;
+        
+        if (tx.status === 'Completed') statusColor = 'emerald';
+        else if (tx.status === 'Rejected') statusColor = 'red';
+        else if (tx.status === 'Active') statusColor = 'cyan';
+        
+        // Determine network logo
+        let logoImg = 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040';
+        let logoEmoji = '₮';
+        let logoColor = '#26A17B';
+        let logoClass = 'network-logo-usdt';
+        
+        if (tx.network && tx.network.includes('BEP20')) {
+          logoImg = 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040';
+          logoEmoji = '⚡';
+          logoColor = '#F3BA2F';
+          logoClass = 'network-logo-bnb';
+        } else if (tx.network && tx.network.includes('ERC20')) {
+          logoImg = 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040';
+          logoEmoji = 'Ξ';
+          logoColor = '#627EEA';
+          logoClass = 'network-logo-eth';
+        } else if (tx.network && tx.network.includes('USDC')) {
+          logoImg = 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040';
+          logoEmoji = '$';
+          logoColor = '#2775CA';
+          logoClass = 'network-logo-usdc';
+        } else if (tx.type === 'investment') {
+          logoImg = '';
+          logoEmoji = '📈';
+          logoColor = '#a855f7';
+          logoClass = '';
         }
 
+        const isPositive = tx.amount.startsWith('+');
+        const amountColor = isPositive ? 'text-emerald-400' : (tx.type === 'withdraw' ? 'text-cyan-400' : 'text-purple-400');
+
+        // Direction label
+        let directionLabel = 'IN';
+        let directionColor = '#10b981';
+        if (tx.type === 'withdraw') { directionLabel = 'OUT'; directionColor = '#06b6d4'; }
+        if (tx.type === 'investment') { directionLabel = 'INV'; directionColor = '#a855f7'; }
+
         container.innerHTML += `
-          <div class="glass-card rounded-2xl p-4 border border-brand-border space-y-2.5">
-            <div class="flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-${tx.color}-500/10 text-${tx.color}-400 flex items-center justify-center shrink-0">
-                  <i data-lucide="${tx.icon}" class="w-5 h-5"></i>
+          <div class="history-tx-card" onclick="openReceiptModal('${tx.id}')">
+            <div class="flex items-start gap-3">
+              <div class="history-tx-logo ${logoClass}" style="width: 44px; height: 44px;">
+                ${logoImg 
+                  ? `<img src="${logoImg}" alt="${tx.network}" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'color:${logoColor};font-weight:900;font-size:20px\\'>${logoEmoji}</span>'">`
+                  : `<span style="color:${logoColor};font-weight:900;font-size:20px;">${logoEmoji}</span>`
+                }
+              </div>
+              
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                  <div class="flex items-center gap-1.5">
+                    <h4 class="text-xs font-black text-white truncate">${tx.title}</h4>
+                    <span class="text-[8px] font-black px-1.5 py-0.5 rounded" style="background: ${directionColor}20; color: ${directionColor};">${directionLabel}</span>
+                  </div>
+                  <span class="text-sm font-black font-mono ${amountColor}">${tx.amount}</span>
                 </div>
-                <div>
-                  <h4 class="text-xs font-bold text-white">${tx.title}</h4>
-                  <p class="text-[10px] text-gray-400 font-mono">${tx.time}</p>
+                
+                <div class="flex items-center justify-between mb-2">
+                  <p class="text-[10px] text-gray-500 font-mono">${tx.time}</p>
+                  <span class="text-[9px] font-bold px-2 py-0.5 rounded" style="background: rgba(var(--${statusColor}-500-rgb, 245, 158, 11), 0.15); color: ${tx.status === 'Completed' ? '#10b981' : tx.status === 'Rejected' ? '#ef4444' : tx.status === 'Active' ? '#06b6d4' : '#f59e0b'};">
+                    ${tx.status}
+                  </span>
+                </div>
+                
+                <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                  <div class="flex items-center gap-1.5 text-[9px] text-gray-400">
+                    <span class="opacity-60">ID:</span>
+                    <span class="font-mono text-cyan-400 truncate max-w-[100px]">${tx.id.slice(0, 12)}...</span>
+                  </div>
+                  <div class="flex items-center gap-1 text-[9px] text-emerald-400 font-bold">
+                    <i data-lucide="eye" class="w-3 h-3"></i>
+                    View Receipt
+                  </div>
                 </div>
               </div>
-              <div class="text-right">
-                <span class="text-sm font-extrabold text-${tx.color}-400 font-mono">${tx.amount}</span>
-                <div><span class="text-[9px] text-${badgeColor}-400 bg-${badgeColor}-500/10 px-2 py-0.5 rounded mt-0.5 inline-block font-bold">${tx.status}</span></div>
-              </div>
             </div>
-            <div class="pt-2 border-t border-brand-border flex items-center justify-between text-[11px] font-mono text-gray-300">
-              <span class="text-gray-400">Network: <strong class="text-white">${tx.network}</strong></span>
-              <span class="text-cyan-400 truncate max-w-[180px]">${tx.ref}</span>
-            </div>
-            ${adminActionButtons}
-          </div>`;
+          </div>
+        `;
       });
+      
       lucide.createIcons();
       updateAdminStats();
     }
@@ -2258,11 +2689,14 @@
       renderActiveInvestments();
 
       const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-      transactionsHistory.unshift({
-        id: 'inv_' + Date.now(), type: 'investment', title: currentPlan.title,
+      const invId = 'inv_' + Date.now();
+      const newTx = {
+        id: invId, type: 'investment', title: currentPlan.title,
         network: `${currentPlan.days}-Day Lock`, ref: 'Plan Allocation', rawAmount: amt,
-        amount: `-$${amt.toFixed(2)}`, status: 'Active', color: 'cyan', icon: 'zap', time: nowStr
-      });
+        amount: `-$${amt.toFixed(2)}`, status: 'Active', color: 'cyan', icon: 'zap', 
+        time: nowStr, fullDate: nowStr, fullId: invId.toUpperCase()
+      };
+      transactionsHistory.unshift(newTx);
       saveAppData();
       renderHistory();
       closeModal('invest-modal');
@@ -2304,11 +2738,17 @@
       backToWalletOverview();
 
       const txId = 'tx_' + Date.now();
+      const nowStr = new Date().toLocaleString('en-US', { 
+        month: 'short', day: 'numeric', year: 'numeric', 
+        hour: '2-digit', minute: '2-digit' 
+      });
+      
       const txObj = {
         id: txId, type: 'deposit', title: 'USDT Deposit', network: networkName,
         ref: proofRef, rawAmount: depAmt, amount: `+$${depAmt.toFixed(2)}`,
         status: 'Pending Review', color: 'emerald', icon: 'arrow-down-left',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        time: nowStr, fullDate: nowStr, fullId: 'DEP-' + txId.toUpperCase().slice(-12),
+        fullAddress: hash ? 'TxID: ' + hash : proofRef
       };
 
       transactionsHistory.unshift(txObj);
@@ -2316,7 +2756,10 @@
       renderHistory();
 
       triggerAdminBotNotificationWithKeyboard(`🚨 *DEPOSIT REQUEST*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *+$${depAmt.toFixed(2)}*\n🌐 Network: \`${networkName}\`\n🔗 Ref: \`${proofRef}\``, txId);
-      triggerRealtimeVerification('Verifying Deposit', 'Confirming blockchain transaction...', txObj);
+      
+      // Show success + receipt
+      pendingReceiptTx = txId;
+      showSuccessAndReceipt('Deposit Submitted!', 'Your deposit request is being verified', `+$${depAmt.toFixed(2)}`, txId);
     }
 
     function initiateWithdrawalProcess() {
@@ -2347,11 +2790,17 @@
       backToWalletOverview();
 
       const txId = 'tx_' + Date.now();
+      const nowStr = new Date().toLocaleString('en-US', { 
+        month: 'short', day: 'numeric', year: 'numeric', 
+        hour: '2-digit', minute: '2-digit' 
+      });
+      
       const txObj = {
         id: txId, type: 'withdraw', title: 'USDT Withdrawal', network: netName,
         ref: shortAddr, rawAmount: amt, amount: `-$${amt.toFixed(2)}`,
-        status: 'Pending Review', color: 'red', icon: 'arrow-up-right',
-        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        status: 'Pending Review', color: 'cyan', icon: 'arrow-up-right',
+        time: nowStr, fullDate: nowStr, fullId: 'WDR-' + txId.toUpperCase().slice(-12),
+        fullAddress: addr
       };
 
       transactionsHistory.unshift(txObj);
@@ -2359,7 +2808,28 @@
       renderHistory();
 
       triggerAdminBotNotificationWithKeyboard(`🚨 *WITHDRAWAL REQUEST*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n🌐 Network: \`${netName}\`\n🔗 Address: \`${shortAddr}\``, txId);
-      triggerRealtimeVerification('Processing Withdrawal', 'Validating payout address...', txObj);
+      
+      // Show success + receipt
+      pendingReceiptTx = txId;
+      showSuccessAndReceipt('Withdrawal Submitted!', 'Your withdrawal is being processed', `-$${amt.toFixed(2)}`, txId);
+    }
+
+    // Show success animation then receipt
+    function showSuccessAndReceipt(title, subtitle, amount, txId) {
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      
+      document.getElementById('success-main-title').innerText = title;
+      document.getElementById('success-sub-desc').innerText = subtitle;
+      document.getElementById('success-amount').innerText = amount;
+      
+      document.getElementById('success-modal').classList.remove('hidden');
+      
+      // Auto-show receipt after animation completes
+      setTimeout(() => {
+        if (!document.getElementById('success-modal').classList.contains('hidden')) {
+          openReceiptFromSuccess();
+        }
+      }, 3500);
     }
 
     function triggerAdminBotNotification(textMessage) {
@@ -2384,39 +2854,6 @@
           ]]}
         })
       }).catch(err => console.log('Telegram dispatch:', err));
-    }
-
-    function triggerRealtimeVerification(title, desc, txDetails) {
-      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      const modalEl = document.getElementById('status-modal');
-      const stepVerifying = document.getElementById('modal-step-verifying');
-      const stepSuccess = document.getElementById('modal-step-success');
-      document.getElementById('verify-main-title').innerText = title;
-      document.getElementById('verify-sub-desc').innerText = desc;
-      stepVerifying.classList.remove('hidden');
-      stepSuccess.classList.add('hidden');
-      modalEl.classList.remove('hidden');
-
-      setTimeout(() => {
-        document.getElementById('step-line-1').className = 'w-6 h-0.5 bg-emerald-500';
-        document.getElementById('step-dot-2').className = 'w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-xs font-bold';
-        document.getElementById('step-dot-2').innerHTML = '<i data-lucide="check" class="w-3.5 h-3.5"></i>';
-      }, 1200);
-
-      setTimeout(() => {
-        document.getElementById('step-line-2').className = 'w-6 h-0.5 bg-cyan-500';
-        document.getElementById('step-dot-3').className = 'w-7 h-7 rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 flex items-center justify-center text-xs font-bold animate-pulse';
-        lucide.createIcons();
-      }, 2400);
-
-      setTimeout(() => {
-        stepVerifying.classList.add('hidden');
-        stepSuccess.classList.remove('hidden');
-        document.getElementById('modal-res-amount').innerText = txDetails.amount;
-        document.getElementById('modal-res-network').innerText = txDetails.network;
-        document.getElementById('modal-res-ref').innerText = txDetails.ref;
-        lucide.createIcons();
-      }, 3600);
     }
 
     function simulateSystemResponse(txId, action) {
@@ -2448,6 +2885,11 @@
       }
       saveAppData();
       renderHistory();
+      
+      // Refresh receipt if open
+      if (!document.getElementById('receipt-modal').classList.contains('hidden')) {
+        openReceiptModal(txId);
+      }
     }
 
     function showNotificationPopup(title, desc, color, icon) {
@@ -2599,11 +3041,6 @@
       calculateWithdrawFee();
     }
 
-    function closeStatusModal() {
-      document.getElementById('status-modal').classList.add('hidden');
-      switchTab('history');
-    }
-
     function copyToClipboard(elementId) {
       const text = document.getElementById(elementId).value;
       navigator.clipboard.writeText(text);
@@ -2612,4 +3049,4 @@
     }
   </script>
 </body>
-            </html>
+        </html>
