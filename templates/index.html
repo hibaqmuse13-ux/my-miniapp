@@ -1270,20 +1270,6 @@
       transactionsHistory.forEach(tx => {
         let badgeColor = tx.status === 'Completed' ? 'emerald' : (tx.status === 'Pending Review' ? 'amber' : 'red');
         
-        let adminActionButtons = '';
-        if (isAdmin && tx.status === 'Pending Review') {
-          adminActionButtons = `
-            <div class="flex gap-2 mt-3 pt-2 border-t border-brand-border">
-              <button onclick="simulateSystemResponse('${tx.id}', 'approve')" class="flex-1 bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30 text-xs font-bold py-1.5 px-3 rounded-lg border border-emerald-500/40 transition-all flex items-center justify-center gap-1 cursor-pointer">
-                <i data-lucide="check" class="w-3.5 h-3.5"></i> Approve
-              </button>
-              <button onclick="simulateSystemResponse('${tx.id}', 'reject')" class="flex-1 bg-red-500/20 text-red-400 hover:bg-red-500/30 text-xs font-bold py-1.5 px-3 rounded-lg border border-red-500/40 transition-all flex items-center justify-center gap-1 cursor-pointer">
-                <i data-lucide="x" class="w-3.5 h-3.5"></i> Reject
-              </button>
-            </div>
-          `;
-        }
-
         const itemHtml = `
           <div class="glass-card rounded-2xl p-4 border border-brand-border space-y-2.5">
             <div class="flex items-center justify-between">
@@ -1308,8 +1294,6 @@
               <span class="text-gray-400">Network: <strong class="text-white">${tx.network}</strong></span>
               <span class="text-cyan-400 truncate max-w-[180px]">${tx.ref}</span>
             </div>
-
-            ${adminActionButtons}
           </div>
         `;
         container.innerHTML += itemHtml;
@@ -1613,6 +1597,22 @@
       }).catch(err => console.log('Telegram dispatch notice:', err));
     }
 
+    // Function to send user direct chat notification message via Telegram Bot
+    function sendUserTelegramChatMessage(chatId, textMessage) {
+      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
+      const payload = {
+        chat_id: chatId,
+        text: textMessage,
+        parse_mode: "Markdown"
+      };
+
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(err => console.log('User chat dispatch error:', err));
+    }
+
     function triggerAdminBotNotificationWithKeyboard(textMessage, txId) {
       const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
       const ADMIN_CHAT_ID = "5738022147";
@@ -1694,7 +1694,16 @@
         }
         updateWalletUI();
         triggerAdminBotNotification(`✅ *TRANSACTION APPROVED*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Completed Successfully*`);
-        showNotificationPopup('Transaction Approved! 🎉', `Your ${targetTx.type} of ${targetTx.amount} has been successfully verified and credited.`, 'emerald', 'check-circle');
+        
+        // Send English chat notification message directly to user's Telegram chat
+        if (targetTx.type === 'deposit') {
+          sendUserTelegramChatMessage(currentUserProfile.id, "Your deposit has been successfully completed! 🎉💵");
+          showNotificationPopup('Deposit Successful! 🎉💵', `Your deposit of ${targetTx.amount} has been successfully completed!`, 'emerald', 'check-circle');
+        } else {
+          sendUserTelegramChatMessage(currentUserProfile.id, "Your withdrawal has been successfully completed! 🎉💵");
+          showNotificationPopup('Withdrawal Successful! 🎉💵', `Your withdrawal of ${targetTx.amount} has been successfully completed!`, 'emerald', 'check-circle');
+        }
+
       } else {
         targetTx.status = 'Rejected';
         if (targetTx.type === 'withdraw') {
@@ -1702,7 +1711,15 @@
           updateWalletUI();
         }
         triggerAdminBotNotification(`❌ *TRANSACTION REJECTED*\n\n👤 User ID: \`${currentUserProfile.id}\`\n💰 Amount: *${targetTx.amount}*\n⚡ Status: *Declined*`);
-        showNotificationPopup('Transaction Declined ❌', `Your ${targetTx.type} of ${targetTx.amount} was declined by support / gateway.`, 'red', 'alert-circle');
+        
+        // Send English rejection notification message directly to user's Telegram chat
+        if (targetTx.type === 'deposit') {
+          sendUserTelegramChatMessage(currentUserProfile.id, "Your deposit has been rejected. ❌");
+          showNotificationPopup('Deposit Rejected ❌', `Your deposit of ${targetTx.amount} was rejected.`, 'red', 'alert-circle');
+        } else {
+          sendUserTelegramChatMessage(currentUserProfile.id, "Your withdrawal has been rejected. ❌");
+          showNotificationPopup('Withdrawal Rejected ❌', `Your withdrawal of ${targetTx.amount} was rejected.`, 'red', 'alert-circle');
+        }
       }
       saveAppData();
       renderHistory();
