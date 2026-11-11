@@ -1,275 +1,264 @@
 import os
-import sqlite3
-from flask import Flask, render_template, request, jsonify
-import requests
+import jwt
+import datetime
+import hmac
+import hashlib
+import json
 import threading
 import time
+import requests
+from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+from pymongo import MongoClient
+from urllib.parse import parse_qsl
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
+CORS(app)
 
-# Xogtaaga saxda ah ee Bot-ka iyo Admin-ka
-BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw"
-ADMIN_CHAT_ID = 5738022147
+# ==========================================
+# 1. DATABASE SETUP
+# ==========================================
+MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/apexinvest')
+try:
+    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
+    db = client.apexinvest
+    users_col = db.users
+    txs_col = db.transactions
+    client.server_info()
+    print("✅ MongoDB Connected")
+except Exception as e:
+    print("⚠️ MongoDB not connected. Using local memory.")
+    db = None
+    memory_users = {}
+    memory_txs = []
 
-# --- DATABASE SETUP ---
-def init_db():
-    conn = sqlite3.connect('apexinvest.db', check_same_thread=False)
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id TEXT PRIMARY KEY,
-            name TEXT,
-            username TEXT,
-            balance REAL DEFAULT 1450.00,
-            deposited REAL DEFAULT 1600.00,
-            withdrawn REAL DEFAULT 300.00
-        )
-    ''')
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS transactions (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id TEXT,
-            type TEXT,
-            title TEXT,
-            network TEXT,
-            ref TEXT,
-            rawAmount REAL,
-            amount TEXT,
-            status TEXT,
-            time TEXT
-        )
-    ''')
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS tickets (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            user_id TEXT,
-            category TEXT,
-            message TEXT,
-            status TEXT,
-            date TEXT,
-            reply TEXT
-        )
-    ''')
-    conn.commit()
-    conn.close()
+# ==========================================
+# 2. RATE LIMITING
+# ==========================================
+limiter = Limiter(get_remote_address, app=app, default_limits=["100 per 15 minutes"], storage_uri="memory://")
 
-init_db()
+# ==========================================
+# 3. HELPERS
+# ==========================================
+BOT_TOKEN = os.getenv('BOT_TOKEN', 'YOUR_BOT_TOKEN')
+ADMIN_ID = os.getenv('ADMIN_ID', '5738022147')
+JWT_SECRET = os.getenv('JWT_SECRET', 'super-secret')
 
-# --- HELPER: SEND TELEGRAM NOTIFICATION ---
-def send_telegram_alert(text, reply_markup=None):
+def verify_telegram_data(init_data):
     try:
-        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-        payload = {
-            "chat_id": ADMIN_CHAT_ID,
-            "text": text,
-            "parse_mode": "Markdown"
-        }
-        if reply_markup:
-            payload["reply_markup"] = reply_markup
-        response = requests.post(url, json=payload)
-        print("Telegram Response:", response.text)
-        return response.json()
-    except Exception as e:
-        print("Telegram alert error:", e)
-        return None
+        parsed_data = dict(parse_qsl(init_data))
+        if "hash" not in parsed_data: return False
+        hash_val = parsed_data.pop('hash')
+        data_check_string = "\n".join(f"{k}={v}" for k, v in sorted(parsed_data.items()))
+        secret_key = hmac.new(b"WebAppData", BOT_TOKEN.encode(), hashlib.sha256).digest()
+        calculated_hash = hmac.new(secret_key, data_check_string.encode(), hashlib.sha256).hexdigest()
+        return calculated_hash == hash_val
+    except Exception:
+        return False
 
-def answer_callback_query(callback_query_id, text):
-    try:
-        url = f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery"
-        requests.post(url, json={"callback_query_id": callback_query_id, "text": text})
-    except Exception as e:
-        print("Answer callback error:", e)
+def generate_token(user_id):
+    return jwt.encode({'id': user_id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=7)}, JWT_SECRET, algorithm='HS256')
 
-# --- FLASK ROUTES ---
+def auth_middleware(f):
+    def wrapper(*args, **kwargs):
+        token = request.headers.get('Authorization', '').replace('Bearer ', '')
+        if not token: return jsonify({'error': 'No token'}), 401
+        try:
+            data = jwt.decode(token, JWT_SECRET, algorithms=['HS256'])
+            request.user_id = data['id']
+        except:
+            return jsonify({'error': 'Invalid token'}), 401
+        return f(*args, **kwargs)
+    wrapper.__name__ = f.__name__
+    return wrapper
+
+# ==========================================
+# TELEGRAM BOT HELPERS
+# ==========================================
+def send_tg_message(chat_id, text, reply_markup=None):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    payload = {'chat_id': chat_id, 'text': text, 'parse_mode': 'Markdown'}
+    if reply_markup: payload['reply_markup'] = json.dumps(reply_markup)
+    requests.post(url, json=payload)
+
+def answer_callback(callback_id, text):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/answerCallbackQuery"
+    requests.post(url, json={'callback_query_id': callback_id, 'text': text})
+
+# ==========================================
+# 4. ROUTES
+# ==========================================
 @app.route('/')
-def index():
-    return render_template('index.html')
+def home(): return render_template('index.html')
 
-@app.route('/api/user/<user_id>', methods=['GET'])
-def get_user(user_id):
-    conn = sqlite3.connect('apexinvest.db')
-    cursor = conn.cursor()
-    cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,))
-    row = cursor.fetchone()
-    conn.close()
-    
-    if row:
-        return jsonify({
-            "id": row[0], "name": row[1], "username": row[2],
-            "balance": row[3], "deposited": row[4], "withdrawn": row[5]
-        })
+@app.route('/api/auth/login', methods=['POST'])
+def login():
+    init_data = request.json.get('initData')
+    if init_data == "demo":
+        user_id, name, username = "123456789", "Demo", "@demo"
     else:
-        return jsonify({
-            "id": user_id, "name": "Investor", "username": "@ismailessa",
-            "balance": 1450.00, "deposited": 1600.00, "withdrawn": 300.00
-        })
+        if not verify_telegram_data(init_data): return jsonify({'error': 'Invalid data'}), 401
+        parsed_data = dict(parse_qsl(init_data))
+        tg_user = json.loads(parsed_data['user'])
+        user_id, name, username = str(tg_user['id']), tg_user.get('first_name', ''), '@' + tg_user.get('username', 'User')
 
-@app.route('/api/transaction', methods=['POST'])
-def handle_transaction():
+    if db is not None:
+        user = users_col.find_one({'telegramId': user_id})
+        if not user:
+            users_col.insert_one({'telegramId': user_id, 'name': name, 'username': username, 'balance': 0, 'lockedBalance': 0, 'totalDeposited': 0, 'totalWithdrawn': 0})
+            user = users_col.find_one({'telegramId': user_id})
+    else:
+        if user_id not in memory_users:
+            memory_users[user_id] = {'telegramId': user_id, 'name': name, 'username': username, 'balance': 0, 'lockedBalance': 0, 'totalDeposited': 0, 'totalWithdrawn': 0}
+        user = memory_users[user_id]
+
+    return jsonify({'token': generate_token(user_id), 'user': user})
+
+@app.route('/api/deposit/request', methods=['POST'])
+@limiter.limit("5 per 15 minutes")
+@auth_middleware
+def deposit_request():
     data = request.json
-    user_id = str(data.get('userId', '5738022147'))
-    t_type = data.get('type')
-    title = data.get('title')
-    network = data.get('network')
-    ref = data.get('ref')
-    raw_amount = data.get('rawAmount')
-    amount = data.get('amount')
-    status = data.get('status', 'Pending Review')
-    time_str = data.get('time')
-
-    conn = sqlite3.connect('apexinvest.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-        INSERT INTO transactions (user_id, type, title, network, ref, rawAmount, amount, status, time)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    ''', (user_id, t_type, title, network, ref, raw_amount, amount, status, time_str))
-    conn.commit()
-    tx_id = cursor.lastrowid
-    conn.close()
-
-    # Send Telegram Notification to Admin with Approve/Reject buttons
-    keyboard = {
-        "inline_keyboard": [
-            [
-                {"text": "✅ Approve", "callback_data": f"app_{tx_id}"},
-                {"text": "❌ Reject", "callback_data": f"rej_{tx_id}"}
-            ]
-        ]
-    }
-    msg = (f"🚨 *NEW {t_type.upper()} REQUEST*\n\n"
-           f"👤 User ID: `{user_id}`\n"
-           f"💰 Amount: *{amount}*\n"
-           f"🌐 Network: `{network}`\n"
-           f"🔗 Ref/TxID: `{ref}`\n"
-           f"⚡ Status: *Pending Review*")
+    txid, amount, network = data.get('txid'), float(data.get('amount')), data.get('network')
     
-    send_telegram_alert(msg, keyboard)
-    return jsonify({"success": True, "txId": tx_id})
+    if db is not None:
+        if txs_col.find_one({'txid': txid}): return jsonify({'error': 'TxID used'}), 400
+        tx_id = txs_col.insert_one({'userId': request.user_id, 'txid': txid, 'amount': amount, 'network': network, 'status': 'Pending Review', 'type': 'deposit'}).inserted_id
+    else:
+        if any(t['txid'] == txid for t in memory_txs): return jsonify({'error': 'TxID used'}), 400
+        tx_id = str(len(memory_txs))
+        memory_txs.append({'id': tx_id, 'userId': request.user_id, 'txid': txid, 'amount': amount, 'status': 'Pending Review', 'type': 'deposit'})
 
-@app.route('/api/ticket', methods=['POST'])
-def handle_ticket():
+    msg = f"🚨 *NEW DEPOSIT*\n\n👤 User: `{request.user_id}`\n💰 Amount: *${amount}*\n🌐 Network: {network}\n🔗 TxID: `{txid}`"
+    buttons = {'inline_keyboard': [[
+        {'text': '✅ Approve', 'callback_data': f'dep_ok_{tx_id}'},
+        {'text': '❌ Reject', 'callback_data': f'dep_no_{tx_id}'}
+    ]]}
+    send_tg_message(ADMIN_ID, msg, buttons)
+    
+    return jsonify({'success': True, 'message': 'Pending Admin Approval'})
+
+@app.route('/api/withdraw/request', methods=['POST'])
+@auth_middleware
+def withdraw_request():
     data = request.json
-    user_id = str(data.get('userId', '5738022147'))
-    category = data.get('category')
-    message = data.get('message')
-    date_str = data.get('date')
+    amount, network, address = float(data.get('amount')), data.get('network'), data.get('address')
 
-    conn = sqlite3.connect('apexinvest.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-        INSERT INTO tickets (user_id, category, message, status, date, reply)
-        VALUES (?, ?, ?, 'Pending', ?, NULL)
-    ''', (user_id, category, message, date_str))
-    conn.commit()
-    ticket_id = cursor.lastrowid
-    conn.close()
+    if db is not None:
+        user = users_col.find_one({'telegramId': request.user_id})
+        if user['balance'] < amount: return jsonify({'error': 'Insufficient balance'}), 400
+        users_col.update_one({'telegramId': request.user_id}, {'$inc': {'balance': -amount}})
+        tx_id = txs_col.insert_one({'userId': request.user_id, 'amount': amount, 'network': network, 'address': address, 'status': 'Pending Review', 'type': 'withdraw'}).inserted_id
+    else:
+        user = memory_users[request.user_id]
+        if user['balance'] < amount: return jsonify({'error': 'Insufficient'}), 400
+        user['balance'] -= amount
+        tx_id = str(len(memory_txs))
+        memory_txs.append({'id': tx_id, 'userId': request.user_id, 'amount': amount, 'network': network, 'status': 'Pending Review', 'type': 'withdraw'})
 
-    # Send Support Ticket Notification to Admin with Reply Button
-    keyboard = {
-        "inline_keyboard": [
-            [
-                {"text": "💬 Reply to User", "callback_data": f"reply_tkt_{ticket_id}"}
-            ]
-        ]
-    }
-    msg = (f"🎫 *NEW SUPPORT TICKET #{ticket_id}*\n\n"
-           f"👤 User ID: `{user_id}`\n"
-           f"📂 Category: *{category}*\n"
-           f"💬 Message: _{message}_")
+    msg = f"🚨 *WITHDRAW REQUEST*\n\n👤 User: `{request.user_id}`\n💰 Amount: *-${amount}*\n🌐 Network: {network}\n🏦 Address: `{address}`"
+    buttons = {'inline_keyboard': [[
+        {'text': '✅ Approve', 'callback_data': f'wth_ok_{tx_id}'},
+        {'text': '❌ Reject', 'callback_data': f'wth_no_{tx_id}'}
+    ]]}
+    send_tg_message(ADMIN_ID, msg, buttons)
     
-    send_telegram_alert(msg, keyboard)
-    return jsonify({"success": True, "ticketId": ticket_id})
+    return jsonify({'success': True, 'message': 'Pending Admin Approval', 'new_balance': user['balance'] if db is None else user['balance'] - amount})
 
-
-# --- TELEGRAM BOT BACKGROUND POLLING (Si uu Admin-ku si toos ah ugu shaqeeyo badhamada) ---
-def process_telegram_updates():
-    last_update_id = 0
+# ==========================================
+# 5. TELEGRAM CALLBACK LISTENER (Polling)
+# ==========================================
+def telegram_polling():
+    print("🤖 Telegram bot polling started...")
+    offset = 0
     while True:
         try:
-            url = f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates?offset={last_update_id + 1}&timeout=30"
-            response = requests.get(url)
-            if response.status_code == 200:
-                data = response.json()
-                if data.get("ok") and data.get("result"):
-                    for update in data["result"]:
-                        last_update_id = update["update_id"]
+            url = f"https://api.telegram.org/bot{BOT_TOKEN}/getUpdates?offset={offset}&timeout=5"
+            res = requests.get(url).json()
+            if res.get('ok') and res['result']:
+                for update in res['result']:
+                    offset = update['update_id'] + 1
+                    
+                    # Jawaabta /start
+                    if 'message' in update and update['message'].get('text') == '/start':
+                        chat_id = update['message']['chat']['id']
+                        send_tg_message(chat_id, "👋 Ku soo dhawoow ApexInvest Bot!\n\nFadlan ka fur App-ka hoos si aad u bilowdo.")
+                    
+                    # Jawaabta Badhanada (Approve/Reject)
+                    if 'callback_query' in update:
+                        cq = update['callback_query']
+                        data = cq['data']
+                        cq_id = cq['id']
                         
-                        # Handle Inline Button Clicks (Approve, Reject, Reply)
-                        if "callback_query" in update:
-                            cq = update["callback_query"]
-                            cq_id = cq["id"]
-                            data_str = cq["data"]
-                            chat_id = cq["message"]["chat"]["id"]
+                        action, tx_id = data.split('_')[:3], data.split('_')[3]
+                        action_type = action[0]
+                        is_ok = action[1] == 'ok'
+
+                        if db is not None:
+                            from bson.objectid import ObjectId
+                            try: tx = txs_col.find_one({'_id': ObjectId(tx_id)})
+                            except: tx = None
+                        else:
+                            tx = next((t for t in memory_txs if t['id'] == tx_id), None)
+
+                        if not tx or tx['status'] != 'Pending Review':
+                            answer_callback(cq_id, "Already processed!")
+                            continue
+
+                        if action_type == 'dep' and is_ok:
+                            if db is not None:
+                                txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Completed'}})
+                                users_col.update_one({'telegramId': tx['userId']}, {'$inc': {'balance': tx['amount'], 'totalDeposited': tx['amount']}})
+                            else:
+                                tx['status'] = 'Completed'
+                                memory_users[tx['userId']]['balance'] += tx['amount']
                             
-                            conn = sqlite3.connect('apexinvest.db')
-                            cursor = conn.cursor()
+                            send_tg_message(tx['userId'], f"✅ *Deposit Approved!*\n💰 +${tx['amount']} added to balance.")
+                            answer_callback(cq_id, "✅ Deposit Approved")
 
-                            if data_str.startswith("app_") or data_str.startswith("rej_"):
-                                tx_id = data_str.split("_")[1]
-                                is_approve = data_str.startswith("app_")
-                                new_status = "Completed" if is_approve else "Rejected"
+                        elif action_type == 'dep' and not is_ok:
+                            if db is not None: txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Rejected'}})
+                            else: tx['status'] = 'Rejected'
+                            send_tg_message(tx['userId'], f"❌ *Deposit Rejected*\nYour deposit of ${tx['amount']} was rejected.")
+                            answer_callback(cq_id, "❌ Deposit Rejected")
 
-                                cursor.execute("SELECT user_id, type, amount, rawAmount FROM transactions WHERE id = ?", (tx_id,))
-                                tx = cursor.fetchone()
-                                if tx:
-                                    u_id, t_type, amount_str, raw_amt = tx
-                                    cursor.execute("UPDATE transactions SET status = ? WHERE id = ?", (new_status, tx_id))
-                                    
-                                    if is_approve and t_type == "deposit":
-                                        cursor.execute("UPDATE users SET balance = balance + ?, deposited = deposited + ? WHERE id = ?", (raw_amt, raw_amt, u_id))
-                                    elif not is_approve and t_type == "withdraw":
-                                        cursor.execute("UPDATE users SET balance = balance + ? WHERE id = ?", (raw_amt, u_id))
-                                    
-                                    conn.commit()
-                                    answer_callback_query(cq_id, f"Transaction {new_status}!")
-                                    send_telegram_alert(f"✅ *TRANSACTION #{tx_id}* waxaa loo bedelay: *{new_status}*")
-                                else:
-                                    answer_callback_query(cq_id, "Transaction not found!")
+                        elif action_type == 'wth' and is_ok:
+                            if db is not None:
+                                txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Completed'}})
+                                users_col.update_one({'telegramId': tx['userId']}, {'$inc': {'totalWithdrawn': tx['amount']}})
+                            else:
+                                tx['status'] = 'Completed'
+                                memory_users[tx['userId']]['totalWithdrawn'] = memory_users[tx['userId']].get('totalWithdrawn', 0) + tx['amount']
+                            
+                            send_tg_message(tx['userId'], f"✅ *Withdrawal Successful!*\n💰 -${tx['amount']} sent.")
+                            answer_callback(cq_id, "✅ Withdraw Approved")
 
-                            elif data_str.startswith("reply_tkt_"):
-                                tkt_id = data_str.split("_")[2]
-                                answer_callback_query(cq_id, f"Fadlan qor jawaabta Ticket #{tkt_id} adigoo isticmaalaya reply fariintan.")
-                                # Halkan waxaan ku kaydin karnaa state-ka in admin uu ku jiro replying
-                                send_telegram_alert(f"✍️ Fadlan ku qor fariintaada jawaabta ah ee ku socota Ticket #{tkt_id} adigoo **Reply** ku samaynaya fariintan ama soo dir fariin cusub.")
+                        elif action_type == 'wth' and not is_ok:
+                            if db is not None:
+                                txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Rejected'}})
+                                users_col.update_one({'telegramId': tx['userId']}, {'$inc': {'balance': tx['amount']}})
+                            else:
+                                tx['status'] = 'Rejected'
+                                memory_users[tx['userId']]['balance'] += tx['amount']
 
-                            conn.close()
-
-                        # Handle Admin Text Reply in Telegram Chat
-                        elif "message" in update and "reply_to_message" in update["message"]:
-                            msg = update["message"]
-                            if msg["from"]["id"] == ADMIN_CHAT_ID:
-                                replied_text = msg["reply_to_message"].get("text", "")
-                                answer_text = msg.text
-                                
-                                # Ka dhex raadi Ticket ID ama User ID fariintii la reply-gareeyay
-                                if "SUPPORT TICKET #" in replied_text:
-                                    try:
-                                        # Soo saar ticket id
-                                        import re
-                                        tkt_match = re.search(r"SUPPORT TICKET #(\d+)", replied_text)
-                                        if tkt_match:
-                                            tkt_id = tkt_match.group(1)
-                                            conn = sqlite3.connect('apexinvest.db')
-                                            cursor = conn.cursor()
-                                            cursor.execute("UPDATE tickets SET status = 'Resolved', reply = ? WHERE id = ?", (answer_text, tkt_id))
-                                            conn.commit()
-                                            
-                                            # Hel user_id si loogu diro ogeysiis
-                                            cursor.execute("SELECT user_id FROM tickets WHERE id = ?", (tkt_id,))
-                                            t_row = cursor.fetchone()
-                                            conn.close()
-                                            
-                                            send_telegram_alert(f"✨ Jawaabtiile waxaa loo diray si guul leh oo loo diiwaangeliyay Ticket #{tkt_id}!")
-                                    except Exception as e:
-                                        print("Error processing admin reply:", e)
-
+                            send_tg_message(tx['userId'], f"❌ *Withdrawal Rejected*\n${tx['amount']} has been refunded to your balance.")
+                            answer_callback(cq_id, "❌ Withdraw Rejected (Refunded)")
+                            
+                        requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageReplyMarkup", json={
+                            'chat_id': cq['message']['chat']['id'],
+                            'message_id': cq['message']['message_id'],
+                            'reply_markup': {'inline_keyboard': []}
+                        })
         except Exception as e:
-            print("Polling error:", e)
-            time.sleep(5)
+            print("Polling Error:", e)
+        time.sleep(1)
 
-# Bilow Telegram Polling Thread si uusan u xidhin Flask server-ka
-threading.Thread(target=process_telegram_updates, daemon=True).start()
+threading.Thread(target=telegram_polling, daemon=True).start()
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=int(os.getenv('PORT', 3000)))
