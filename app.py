@@ -11,7 +11,6 @@ from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from pymongo import MongoClient
 from urllib.parse import parse_qsl
 from dotenv import load_dotenv
 
@@ -21,21 +20,22 @@ app = Flask(__name__)
 CORS(app)
 
 # ==========================================
-# 1. DATABASE SETUP
+# 1. LOCAL DATABASE SETUP (JSON File)
 # ==========================================
-MONGO_URI = os.getenv('MONGO_URI', 'mongodb://localhost:27017/apexinvest')
-try:
-    client = MongoClient(MONGO_URI, serverSelectionTimeoutMS=5000)
-    db = client.apexinvest
-    users_col = db.users
-    txs_col = db.transactions
-    client.server_info()
-    print("✅ MongoDB Connected")
-except Exception as e:
-    print("⚠️ MongoDB not connected. Using local memory.")
-    db = None
-    memory_users = {}
-    memory_txs = []
+DB_FILE = 'database.json'
+
+def load_db():
+    if os.path.exists(DB_FILE):
+        with open(DB_FILE, 'r') as f:
+            return json.load(f)
+    return {'users': {}, 'transactions': {}}
+
+def save_db(data):
+    with open(DB_FILE, 'w') as f:
+        json.dump(data, f, indent=4)
+
+# Initialize DB
+db = load_db()
 
 # ==========================================
 # 2. RATE LIMITING
@@ -107,17 +107,11 @@ def login():
         tg_user = json.loads(parsed_data['user'])
         user_id, name, username = str(tg_user['id']), tg_user.get('first_name', ''), '@' + tg_user.get('username', 'User')
 
-    if db is not None:
-        user = users_col.find_one({'telegramId': user_id})
-        if not user:
-            users_col.insert_one({'telegramId': user_id, 'name': name, 'username': username, 'balance': 0, 'lockedBalance': 0, 'totalDeposited': 0, 'totalWithdrawn': 0})
-            user = users_col.find_one({'telegramId': user_id})
-    else:
-        if user_id not in memory_users:
-            memory_users[user_id] = {'telegramId': user_id, 'name': name, 'username': username, 'balance': 0, 'lockedBalance': 0, 'totalDeposited': 0, 'totalWithdrawn': 0}
-        user = memory_users[user_id]
+    if user_id not in db['users']:
+        db['users'][user_id] = {'telegramId': user_id, 'name': name, 'username': username, 'balance': 0, 'lockedBalance': 0, 'totalDeposited': 0, 'totalWithdrawn': 0}
+        save_db(db)
 
-    return jsonify({'token': generate_token(user_id), 'user': user})
+    return jsonify({'token': generate_token(user_id), 'user': db['users'][user_id]})
 
 @app.route('/api/deposit/request', methods=['POST'])
 @limiter.limit("5 per 15 minutes")
@@ -126,13 +120,17 @@ def deposit_request():
     data = request.json
     txid, amount, network = data.get('txid'), float(data.get('amount')), data.get('network')
     
-    if db is not None:
-        if txs_col.find_one({'txid': txid}): return jsonify({'error': 'TxID used'}), 400
-        tx_id = txs_col.insert_one({'userId': request.user_id, 'txid': txid, 'amount': amount, 'network': network, 'status': 'Pending Review', 'type': 'deposit'}).inserted_id
-    else:
-        if any(t['txid'] == txid for t in memory_txs): return jsonify({'error': 'TxID used'}), 400
-        tx_id = str(len(memory_txs))
-        memory_txs.append({'id': tx_id, 'userId': request.user_id, 'txid': txid, 'amount': amount, 'status': 'Pending Review', 'type': 'deposit'})
+    # Check if TxID already used
+    if any(t['txid'] == txid for t in db['transactions'].values()):
+        return jsonify({'error': 'TxID used'}), 400
+
+    # Create transaction
+    tx_id = str(int(time.time() * 1000)) # Unique ID
+    db['transactions'][tx_id] = {
+        'id': tx_id, 'userId': request.user_id, 'txid': txid, 
+        'amount': amount, 'network': network, 'status': 'Pending Review', 'type': 'deposit'
+    }
+    save_db(db)
 
     msg = f"🚨 *NEW DEPOSIT*\n\n👤 User: `{request.user_id}`\n💰 Amount: *${amount}*\n🌐 Network: {network}\n🔗 TxID: `{txid}`"
     buttons = {'inline_keyboard': [[
@@ -149,17 +147,20 @@ def withdraw_request():
     data = request.json
     amount, network, address = float(data.get('amount')), data.get('network'), data.get('address')
 
-    if db is not None:
-        user = users_col.find_one({'telegramId': request.user_id})
-        if user['balance'] < amount: return jsonify({'error': 'Insufficient balance'}), 400
-        users_col.update_one({'telegramId': request.user_id}, {'$inc': {'balance': -amount}})
-        tx_id = txs_col.insert_one({'userId': request.user_id, 'amount': amount, 'network': network, 'address': address, 'status': 'Pending Review', 'type': 'withdraw'}).inserted_id
-    else:
-        user = memory_users[request.user_id]
-        if user['balance'] < amount: return jsonify({'error': 'Insufficient'}), 400
-        user['balance'] -= amount
-        tx_id = str(len(memory_txs))
-        memory_txs.append({'id': tx_id, 'userId': request.user_id, 'amount': amount, 'network': network, 'status': 'Pending Review', 'type': 'withdraw'})
+    user = db['users'].get(request.user_id)
+    if not user or user['balance'] < amount: 
+        return jsonify({'error': 'Insufficient balance'}), 400
+        
+    # Deduct balance immediately
+    user['balance'] -= amount
+    db['users'][request.user_id] = user
+
+    tx_id = str(int(time.time() * 1000)) # Unique ID
+    db['transactions'][tx_id] = {
+        'id': tx_id, 'userId': request.user_id, 'amount': amount, 
+        'network': network, 'address': address, 'status': 'Pending Review', 'type': 'withdraw'
+    }
+    save_db(db)
 
     msg = f"🚨 *WITHDRAW REQUEST*\n\n👤 User: `{request.user_id}`\n💰 Amount: *-${amount}*\n🌐 Network: {network}\n🏦 Address: `{address}`"
     buttons = {'inline_keyboard': [[
@@ -168,7 +169,7 @@ def withdraw_request():
     ]]}
     send_tg_message(ADMIN_ID, msg, buttons)
     
-    return jsonify({'success': True, 'message': 'Pending Admin Approval', 'new_balance': user['balance'] if db is None else user['balance'] - amount})
+    return jsonify({'success': True, 'message': 'Pending Admin Approval', 'new_balance': user['balance']})
 
 # ==========================================
 # 5. TELEGRAM CALLBACK LISTENER (Polling)
@@ -184,12 +185,10 @@ def telegram_polling():
                 for update in res['result']:
                     offset = update['update_id'] + 1
                     
-                    # Jawaabta /start
                     if 'message' in update and update['message'].get('text') == '/start':
                         chat_id = update['message']['chat']['id']
                         send_tg_message(chat_id, "👋 Ku soo dhawoow ApexInvest Bot!\n\nFadlan ka fur App-ka hoos si aad u bilowdo.")
                     
-                    # Jawaabta Badhanada (Approve/Reject)
                     if 'callback_query' in update:
                         cq = update['callback_query']
                         data = cq['data']
@@ -197,59 +196,51 @@ def telegram_polling():
                         
                         parts = data.split('_')
                         if len(parts) >= 3:
-                            action_type = parts[0] # 'dep' ama 'wth'
-                            status_type = parts[1] # 'ok' ama 'no'
+                            action_type = parts[0]
+                            status_type = parts[1]
                             tx_id = "_".join(parts[2:])
-
                             is_ok = (status_type == 'ok')
 
-                            if db is not None:
-                                from bson.objectid import ObjectId
-                                try: tx = txs_col.find_one({'_id': ObjectId(tx_id)})
-                                except: tx = None
-                            else:
-                                tx = next((t for t in memory_txs if t['id'] == tx_id), None)
+                            tx = db['transactions'].get(tx_id)
 
                             if not tx or tx['status'] != 'Pending Review':
                                 answer_callback(cq_id, "Already processed!")
                                 continue
 
                             if action_type == 'dep' and is_ok:
-                                if db is not None:
-                                    txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Completed'}})
-                                    users_col.update_one({'telegramId': tx['userId']}, {'$inc': {'balance': tx['amount'], 'totalDeposited': tx['amount']}})
-                                else:
-                                    tx['status'] = 'Completed'
-                                    memory_users[tx['userId']]['balance'] += tx['amount']
-                                
+                                tx['status'] = 'Completed'
+                                user = db['users'].get(tx['userId'])
+                                if user:
+                                    user['balance'] += tx['amount']
+                                    user['totalDeposited'] = user.get('totalDeposited', 0) + tx['amount']
+                                    db['users'][tx['userId']] = user
+                                save_db(db)
                                 send_tg_message(tx['userId'], f"✅ *Deposit Approved!*\n💰 +${tx['amount']} added to balance.")
                                 answer_callback(cq_id, "✅ Deposit Approved")
 
                             elif action_type == 'dep' and not is_ok:
-                                if db is not None: txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Rejected'}})
-                                else: tx['status'] = 'Rejected'
+                                tx['status'] = 'Rejected'
+                                save_db(db)
                                 send_tg_message(tx['userId'], f"❌ *Deposit Rejected*\nYour deposit of ${tx['amount']} was rejected.")
                                 answer_callback(cq_id, "❌ Deposit Rejected")
 
                             elif action_type == 'wth' and is_ok:
-                                if db is not None:
-                                    txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Completed'}})
-                                    users_col.update_one({'telegramId': tx['userId']}, {'$inc': {'totalWithdrawn': tx['amount']}})
-                                else:
-                                    tx['status'] = 'Completed'
-                                    memory_users[tx['userId']]['totalWithdrawn'] = memory_users[tx['userId']].get('totalWithdrawn', 0) + tx['amount']
-                                
+                                tx['status'] = 'Completed'
+                                user = db['users'].get(tx['userId'])
+                                if user:
+                                    user['totalWithdrawn'] = user.get('totalWithdrawn', 0) + tx['amount']
+                                    db['users'][tx['userId']] = user
+                                save_db(db)
                                 send_tg_message(tx['userId'], f"✅ *Withdrawal Successful!*\n💰 -${tx['amount']} sent.")
                                 answer_callback(cq_id, "✅ Withdraw Approved")
 
                             elif action_type == 'wth' and not is_ok:
-                                if db is not None:
-                                    txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Rejected'}})
-                                    users_col.update_one({'telegramId': tx['userId']}, {'$inc': {'balance': tx['amount']}})
-                                else:
-                                    tx['status'] = 'Rejected'
-                                    memory_users[tx['userId']]['balance'] += tx['amount']
-
+                                tx['status'] = 'Rejected'
+                                user = db['users'].get(tx['userId'])
+                                if user:
+                                    user['balance'] += tx['amount'] # Refund
+                                    db['users'][tx['userId']] = user
+                                save_db(db)
                                 send_tg_message(tx['userId'], f"❌ *Withdrawal Rejected*\n${tx['amount']} has been refunded to your balance.")
                                 answer_callback(cq_id, "❌ Withdraw Rejected (Refunded)")
                                 
