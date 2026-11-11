@@ -8,7 +8,6 @@
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
 
@@ -74,39 +73,6 @@
       100% { opacity: 1; transform: scale(1) translateY(0); }
     }
 
-    /* ⚡ SLOW ELEGANT 3-STEP ANIMATIONS */
-    @keyframes stepIconPop {
-      0% { transform: scale(0.4) rotate(-15deg); opacity: 0; }
-      50% { transform: scale(1.08) rotate(3deg); }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
-    }
-
-    @keyframes ringExpand {
-      0% { transform: scale(0.6); opacity: 0.9; }
-      100% { transform: scale(2.5); opacity: 0; }
-    }
-
-    @keyframes checkBounce {
-      0% { transform: scale(0) rotate(-180deg); }
-      60% { transform: scale(1.1) rotate(0deg); }
-      100% { transform: scale(1) rotate(0deg); }
-    }
-
-    @keyframes particleFloat {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-100px) scale(0); opacity: 0; }
-    }
-
-    @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.5), 0 0 50px rgba(245, 158, 11, 0.25); }
-      50% { box-shadow: 0 0 45px rgba(245, 158, 11, 0.8), 0 0 90px rgba(245, 158, 11, 0.4); }
-    }
-
-    @keyframes receiptShine {
-      0% { transform: translateX(-100%) skewX(-15deg); }
-      100% { transform: translateX(200%) skewX(-15deg); }
-    }
-
     @keyframes shimmer {
       0% { background-position: -1000px 0; }
       100% { background-position: 1000px 0; }
@@ -124,171 +90,398 @@
 
     .modal-animate-in { animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-    /* ⚡ LARGER, MORE ELEGANT PROCESSING MODAL */
-    .processing-modal {
+    /* =================================================== */
+    /* ⚡ NEW PREMIUM PROCESSING ANIMATION                  */
+    /* =================================================== */
+    
+    @keyframes ringPulse {
+      0% { transform: scale(0.5); opacity: 0.9; }
+      80% { transform: scale(2.2); opacity: 0; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    @keyframes iconEnter {
+      0% { transform: scale(0.3) rotate(-30deg); opacity: 0; }
+      60% { transform: scale(1.08) rotate(4deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    @keyframes iconCheckBounce {
+      0% { transform: scale(0) rotate(-180deg); opacity: 0; }
+      60% { transform: scale(1.15) rotate(10deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    @keyframes iconGlow {
+      0%, 100% { filter: drop-shadow(0 0 12px currentColor); }
+      50% { filter: drop-shadow(0 0 24px currentColor); }
+    }
+
+    @keyframes scanLine {
+      0% { transform: translateY(-100%); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(400%); opacity: 0; }
+    }
+
+    @keyframes dotFill {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes progressFill {
+      from { width: var(--from-width); }
+      to { width: var(--to-width); }
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-80px) rotate(180deg); opacity: 0; }
+    }
+
+    @keyframes ambientRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Premium Processing Modal */
+    .processing-premium {
       background: 
-        radial-gradient(circle at top, rgba(16, 185, 129, 0.18), transparent 55%),
-        linear-gradient(145deg, #0f1826 0%, #080d16 100%);
-      border: 1px solid rgba(16, 185, 129, 0.4);
+        radial-gradient(ellipse at top, rgba(16, 185, 129, 0.15), transparent 60%),
+        linear-gradient(165deg, #0f1826 0%, #080d16 100%);
+      border: 1px solid rgba(16, 185, 129, 0.25);
       box-shadow: 
-        0 35px 90px -20px rgba(0, 0, 0, 0.95), 
-        0 0 100px -20px rgba(16, 185, 129, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        0 40px 100px -25px rgba(0, 0, 0, 0.95), 
+        0 0 100px -20px rgba(16, 185, 129, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      border-radius: 28px;
       position: relative;
       overflow: hidden;
+      padding: 32px 24px 24px;
     }
 
-    .processing-modal::before {
+    /* Top accent line */
+    .processing-premium::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
+      top: 0; left: 0; right: 0; height: 2px;
       background: linear-gradient(90deg, transparent, #10b981, #06b6d4, transparent);
-      animation: shimmer 2s infinite;
-      background-size: 1000px 100%;
+      animation: shimmer 2.5s infinite;
+      background-size: 200% 100%;
     }
 
-    .step-icon-container {
-      width: 120px;
-      height: 120px;
+    /* Ambient glow circle - rotates slowly */
+    .processing-ambient {
+      position: absolute;
+      top: -100px; left: 50%;
+      transform: translateX(-50%);
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, transparent, rgba(16, 185, 129, 0.12), transparent, rgba(6, 182, 212, 0.12), transparent);
+      animation: ambientRotate 8s linear infinite;
+      pointer-events: none;
+      filter: blur(30px);
+    }
+
+    /* Icon Container - bigger, with rings */
+    .processing-icon-wrapper {
+      width: 130px;
+      height: 130px;
       position: relative;
+      margin: 0 auto 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto;
     }
 
-    .step-ring {
+    .processing-ring {
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      border: 2px solid rgba(16, 185, 129, 0.35);
-      animation: ringExpand 2.5s infinite;
+      border: 1.5px solid;
+      animation: ringPulse 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
-    .step-ring:nth-child(2) { animation-delay: 0.8s; }
-    .step-ring:nth-child(3) { animation-delay: 1.6s; }
+    .processing-ring:nth-child(1) {
+      border-color: rgba(59, 130, 246, 0.5);
+      animation-delay: 0s;
+    }
+    .processing-ring:nth-child(2) {
+      border-color: rgba(59, 130, 246, 0.35);
+      animation-delay: 0.9s;
+    }
+    .processing-ring:nth-child(3) {
+      border-color: rgba(59, 130, 246, 0.2);
+      animation-delay: 1.8s;
+    }
 
-    .step-icon {
-      width: 96px;
-      height: 96px;
+    /* Dynamic color based on step */
+    .processing-premium[data-step="2"] .processing-ring:nth-child(1) { border-color: rgba(245, 158, 11, 0.5); }
+    .processing-premium[data-step="2"] .processing-ring:nth-child(2) { border-color: rgba(245, 158, 11, 0.35); }
+    .processing-premium[data-step="2"] .processing-ring:nth-child(3) { border-color: rgba(245, 158, 11, 0.2); }
+
+    .processing-premium[data-step="3"] .processing-ring:nth-child(1) { border-color: rgba(16, 185, 129, 0.6); }
+    .processing-premium[data-step="3"] .processing-ring:nth-child(2) { border-color: rgba(16, 185, 129, 0.4); }
+    .processing-premium[data-step="3"] .processing-ring:nth-child(3) { border-color: rgba(16, 185, 129, 0.25); }
+
+    .processing-icon {
+      width: 100px;
+      height: 100px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      color: #000;
-      box-shadow: 0 15px 40px -10px rgba(16, 185, 129, 0.7);
-      animation: stepIconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      background: linear-gradient(145deg, #3b82f6, #06b6d4);
+      color: #ffffff;
+      box-shadow: 
+        0 20px 50px -15px rgba(59, 130, 246, 0.7),
+        0 0 40px -10px rgba(59, 130, 246, 0.5),
+        inset 0 2px 0 rgba(255, 255, 255, 0.2);
+      animation: iconEnter 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       position: relative;
       z-index: 2;
+      transition: background 0.4s, box-shadow 0.4s;
     }
 
-    .step-icon svg {
+    .processing-icon svg {
       width: 44px;
       height: 44px;
+      stroke-width: 2.5;
     }
 
-    .step-icon.sent {
-      background: linear-gradient(135deg, #3b82f6, #06b6d4);
-      box-shadow: 0 15px 40px -10px rgba(59, 130, 246, 0.8);
+    .processing-icon.step-2 {
+      background: linear-gradient(145deg, #f59e0b, #f97316);
+      box-shadow: 
+        0 20px 50px -15px rgba(245, 158, 11, 0.8),
+        0 0 50px -10px rgba(245, 158, 11, 0.6),
+        inset 0 2px 0 rgba(255, 255, 255, 0.2);
+      animation: iconEnter 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, iconGlow 1.8s infinite;
     }
 
-    .step-icon.verifying {
-      background: linear-gradient(135deg, #f59e0b, #f97316);
-      box-shadow: 0 15px 40px -10px rgba(245, 158, 11, 0.8);
-      animation: stepIconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, glowPulse 1.5s infinite;
+    .processing-icon.step-3 {
+      background: linear-gradient(145deg, #10b981, #06b6d4);
+      box-shadow: 
+        0 20px 50px -15px rgba(16, 185, 129, 0.9),
+        0 0 60px -10px rgba(16, 185, 129, 0.6),
+        inset 0 2px 0 rgba(255, 255, 255, 0.2);
+      animation: iconCheckBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
-    .step-icon.confirmed {
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      box-shadow: 0 15px 40px -10px rgba(16, 185, 129, 0.9);
-      animation: checkBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-
-    .step-progress-track {
-      width: 100%;
-      height: 4px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 999px;
-      overflow: hidden;
-      margin: 10px 0;
-    }
-
-    .step-progress-bar {
-      height: 100%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #10b981, #06b6d4);
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.7);
-      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .step-dots {
+    /* Step indicator - horizontal */
+    .processing-steps {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      margin-top: 10px;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 18px;
     }
 
-    .step-dot {
+    .processing-step-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.15);
-      transition: all 0.4s;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    .step-dot.active {
+    .processing-step-dot.active {
+      width: 28px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, #3b82f6, #06b6d4);
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
+      animation: dotFill 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .processing-step-dot.completed {
       background: #10b981;
-      box-shadow: 0 0 14px #10b981;
-      transform: scale(1.4);
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
     }
 
-    .step-dot.completed { background: #10b981; }
+    .processing-premium[data-step="2"] .processing-step-dot.active {
+      background: linear-gradient(90deg, #f59e0b, #f97316);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+    }
 
-    .step-label {
-      font-size: 11px;
+    .processing-premium[data-step="3"] .processing-step-dot.active {
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
+    }
+
+    /* Status Badge */
+    .processing-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 10px;
       font-weight: 900;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      letter-spacing: 0.15em;
+      margin-bottom: 12px;
+      border: 1px solid;
+      transition: all 0.4s;
+      position: relative;
+      z-index: 1;
     }
 
-    .step-label.sent { color: #3b82f6; }
-    .step-label.verifying { color: #f59e0b; }
-    .step-label.confirmed { color: #10b981; }
+    .processing-badge[data-state="1"] {
+      background: rgba(59, 130, 246, 0.12);
+      border-color: rgba(59, 130, 246, 0.35);
+      color: #3b82f6;
+    }
 
+    .processing-badge[data-state="2"] {
+      background: rgba(245, 158, 11, 0.12);
+      border-color: rgba(245, 158, 11, 0.35);
+      color: #f59e0b;
+    }
+
+    .processing-badge[data-state="3"] {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: rgba(16, 185, 129, 0.35);
+      color: #10b981;
+    }
+
+    .processing-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* Title & subtitle */
     .processing-title {
       font-size: 22px;
       font-weight: 900;
       letter-spacing: -0.02em;
+      color: #ffffff;
       line-height: 1.2;
-      margin-top: 14px;
+      text-align: center;
+      margin-bottom: 6px;
+      position: relative;
+      z-index: 1;
     }
 
     .processing-subtitle {
-      font-size: 12px;
-      color: #6b7280;
-      margin-top: 6px;
+      font-size: 11px;
+      color: #9ca3af;
+      text-align: center;
       line-height: 1.5;
+      padding: 0 8px;
+      position: relative;
+      z-index: 1;
     }
 
-    .particle-container {
+    /* Progress bar */
+    .processing-progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 20px 0 16px;
+      position: relative;
+    }
+
+    .processing-progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #3b82f6, #06b6d4);
+      box-shadow: 0 0 14px rgba(59, 130, 246, 0.7);
+      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s, box-shadow 0.4s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .processing-progress-bar::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      animation: shimmer 1.5s infinite;
+      background-size: 200% 100%;
+    }
+
+    .processing-premium[data-step="2"] .processing-progress-bar {
+      background: linear-gradient(90deg, #f59e0b, #f97316);
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.7);
+    }
+
+    .processing-premium[data-step="3"] .processing-progress-bar {
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.8);
+    }
+
+    /* Amount card */
+    .processing-amount-card {
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .processing-amount-label {
+      font-size: 9px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 900;
+    }
+
+    .processing-amount-value {
+      font-size: 18px;
+      font-weight: 900;
+      font-family: 'JetBrains Mono', monospace;
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Security footer */
+    .processing-security {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 9px;
+      color: #4b5563;
+      font-family: 'JetBrains Mono', monospace;
+      position: relative;
+      z-index: 1;
+    }
+
+    .processing-security svg {
+      width: 11px;
+      height: 11px;
+    }
+
+    /* Particle effects */
+    .processing-particles {
       position: absolute;
       inset: 0;
       pointer-events: none;
       overflow: hidden;
     }
 
-    .particle {
+    .processing-particle {
       position: absolute;
       width: 3px;
       height: 3px;
       border-radius: 50%;
       background: #10b981;
       box-shadow: 0 0 8px #10b981;
-      animation: particleFloat 2.5s infinite;
+      animation: floatUp 2.5s infinite;
     }
 
-    /* TOAST */
+    /* ============ TOAST ============ */
     #admin-notify-popup {
       position: fixed;
       top: 16px;
@@ -545,9 +738,9 @@
     /* MODALS */
     .modal-overlay {
       position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       display: flex; align-items: center; justify-content: center;
       padding: 16px;
       z-index: 9998;
@@ -582,7 +775,7 @@
     .metric-value { font-size: 15px; font-weight: 900; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
 
     /* ============================================ */
-    /* ⚡ PROFESSIONAL RECEIPT - NO SCROLL, COMPACT */
+    /* RECEIPT - COMPACT, NO SCROLL                 */
     /* ============================================ */
     .receipt-modal-container {
       width: 100%;
@@ -611,7 +804,6 @@
       background: var(--receipt-accent, linear-gradient(90deg, #10b981, #06b6d4));
     }
 
-    /* Receipt Header */
     .receipt-header {
       padding: 24px 20px 18px;
       text-align: center;
@@ -626,6 +818,11 @@
       width: 200%; height: 300%;
       background: radial-gradient(circle, var(--receipt-glow, rgba(16, 185, 129, 0.18)) 0%, transparent 55%);
       pointer-events: none;
+    }
+
+    @keyframes receiptShine {
+      0% { transform: translateX(-100%) skewX(-15deg); }
+      100% { transform: translateX(200%) skewX(-15deg); }
     }
 
     .receipt-shine {
@@ -732,7 +929,6 @@
     .receipt-status.rejected { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
     .receipt-status.active { background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.4); }
 
-    /* Divider with dots */
     .receipt-divider {
       position: relative;
       height: 16px;
@@ -760,7 +956,6 @@
       transform: translateY(-50%);
     }
 
-    /* Receipt Body - COMPACT */
     .receipt-body {
       padding: 14px 18px;
       background: rgba(8, 11, 17, 0.5);
@@ -796,7 +991,6 @@
       line-height: 1.3;
     }
 
-    /* Address Block (for withdrawal) */
     .receipt-address-block {
       background: rgba(6, 182, 212, 0.06);
       border: 1px solid rgba(6, 182, 212, 0.25);
@@ -828,7 +1022,6 @@
       line-height: 1.4;
     }
 
-    /* TX ID Block */
     .receipt-txid-block {
       background: rgba(16, 185, 129, 0.06);
       border: 1px solid rgba(16, 185, 129, 0.25);
@@ -860,7 +1053,6 @@
       line-height: 1.5;
     }
 
-    /* Footer */
     .receipt-footer {
       padding: 14px 18px;
       background: rgba(8, 11, 17, 0.75);
@@ -894,35 +1086,6 @@
       letter-spacing: 0.28em;
       font-weight: 800;
     }
-
-    /* Actions */
-    .receipt-actions {
-      padding: 14px 18px 18px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      background: rgba(8, 11, 17, 0.5);
-    }
-
-    .receipt-btn {
-      width: 100%;
-      padding: 11px;
-      border-radius: 11px;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 0.04em;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      cursor: pointer;
-      border: none;
-      transition: all 0.2s;
-    }
-
-    .receipt-btn:hover { filter: brightness(1.15); }
-    .receipt-btn:active { transform: scale(0.97); }
-    .receipt-btn svg { width: 14px; height: 14px; }
 
     /* History Card */
     .history-tx-card {
@@ -1324,7 +1487,7 @@
           <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
           <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">All Systems Operational</span>
         </div>
-        <span class="text-[9px] text-gray-400 font-mono">v2.8.0</span>
+        <span class="text-[9px] text-gray-400 font-mono">v3.0.0</span>
       </div>
 
     </div>
@@ -2038,56 +2201,63 @@
     </div>
   </div>
 
-  <!-- ⚡ 3-STEP PROCESSING MODAL - SLOWER, LARGER -->
+  <!-- ⚡ NEW PREMIUM 3-STEP PROCESSING MODAL -->
   <div id="processing-modal" class="modal-overlay hidden">
-    <div class="processing-modal rounded-2xl w-full max-w-xs p-6 text-center modal-animate-in relative">
+    <div id="processing-card" class="processing-premium w-full max-w-xs modal-animate-in" data-step="1">
       
-      <div class="particle-container" id="particle-container"></div>
+      <!-- Particle effects -->
+      <div class="processing-particles" id="particle-container"></div>
+      
+      <!-- Ambient glow -->
+      <div class="processing-ambient"></div>
 
-      <div class="step-icon-container mb-4">
-        <div class="step-ring"></div>
-        <div class="step-ring"></div>
-        <div class="step-ring"></div>
-        <div id="step-icon" class="step-icon sent">
+      <!-- Icon with rings -->
+      <div class="processing-icon-wrapper">
+        <div class="processing-ring"></div>
+        <div class="processing-ring"></div>
+        <div class="processing-ring"></div>
+        <div id="step-icon" class="processing-icon">
           <i id="step-icon-content" data-lucide="send"></i>
         </div>
       </div>
 
-      <div id="step-label-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full mb-3" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3);">
-        <div class="w-1.5 h-1.5 rounded-full" style="background: #3b82f6; animation: pulse 1.5s infinite;"></div>
-        <span id="step-label" class="step-label sent">PAYMENT SENT</span>
+      <!-- Step indicator -->
+      <div class="processing-steps">
+        <div id="dot-1" class="processing-step-dot active"></div>
+        <div id="dot-2" class="processing-step-dot"></div>
+        <div id="dot-3" class="processing-step-dot"></div>
       </div>
 
-      <h3 id="processing-title" class="processing-title text-white">Broadcasting Payment</h3>
+      <!-- Status badge -->
+      <div class="processing-badge" id="step-badge" data-state="1">
+        <span class="processing-badge-dot"></span>
+        <span id="step-label">PAYMENT SENT</span>
+      </div>
+
+      <!-- Title & subtitle -->
+      <h3 id="processing-title" class="processing-title">Broadcasting Payment</h3>
       <p id="processing-subtitle" class="processing-subtitle">Sending transaction to blockchain network...</p>
 
-      <div class="mt-5">
-        <div class="step-progress-track">
-          <div id="step-progress-bar" class="step-progress-bar" style="width: 15%;"></div>
-        </div>
-        
-        <div class="step-dots">
-          <div id="dot-1" class="step-dot active"></div>
-          <div id="dot-2" class="step-dot"></div>
-          <div id="dot-3" class="step-dot"></div>
-        </div>
+      <!-- Progress bar -->
+      <div class="processing-progress-track">
+        <div id="step-progress-bar" class="processing-progress-bar" style="width: 15%;"></div>
       </div>
 
-      <div class="mt-4 p-3 rounded-xl" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2);">
-        <div class="flex items-center justify-between text-[10px]">
-          <span class="text-gray-400 uppercase tracking-wider font-bold">Amount</span>
-          <span id="processing-amount" class="text-emerald-400 font-black font-mono text-base">$0.00</span>
-        </div>
+      <!-- Amount card -->
+      <div class="processing-amount-card">
+        <span class="processing-amount-label">AMOUNT</span>
+        <span id="processing-amount" class="processing-amount-value">$0.00</span>
       </div>
 
-      <div class="mt-4 flex items-center justify-center gap-1.5 text-[9px] text-gray-500 font-mono">
-        <i data-lucide="lock" class="w-3 h-3"></i>
+      <!-- Security -->
+      <div class="processing-security">
+        <i data-lucide="lock"></i>
         <span>256-bit encrypted · institutional-grade</span>
       </div>
     </div>
   </div>
 
-  <!-- RECEIPT MODAL - NO SCROLL, COMPACT -->
+  <!-- RECEIPT MODAL -->
   <div id="receipt-modal" class="modal-overlay hidden">
     <div class="receipt-modal-container modal-animate-in">
       <div id="receipt-content" class="receipt-container">
@@ -2364,81 +2534,70 @@
     }
 
     // ============================================================
-    // ⚡ SLOW, ELEGANT 3-STEP ANIMATION (Total 5.5s)
+    // ⚡ NEW PREMIUM 3-STEP ANIMATION (Total 5.5s)
     // ============================================================
     
     function createParticles() {
       const container = document.getElementById('particle-container');
       container.innerHTML = '';
       
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < 10; i++) {
         const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = `${20 + Math.random() * 60}%`;
-        particle.style.top = `${20 + Math.random() * 60}%`;
-        particle.style.animationDelay = `${Math.random() * 2}s`;
-        particle.style.animationDuration = `${1.8 + Math.random() * 1.2}s`;
+        particle.className = 'processing-particle';
+        particle.style.left = `${15 + Math.random() * 70}%`;
+        particle.style.top = `${30 + Math.random() * 50}%`;
+        particle.style.animationDelay = `${Math.random() * 2.5}s`;
+        particle.style.animationDuration = `${2 + Math.random() * 1.5}s`;
         container.appendChild(particle);
       }
     }
 
     function setStep(stepNumber) {
+      const card = document.getElementById('processing-card');
       const stepIcon = document.getElementById('step-icon');
       const stepIconContent = document.getElementById('step-icon-content');
       const stepLabel = document.getElementById('step-label');
-      const stepLabelBadge = document.getElementById('step-label-badge');
+      const stepBadge = document.getElementById('step-badge');
       const processingTitle = document.getElementById('processing-title');
       const processingSubtitle = document.getElementById('processing-subtitle');
       const progressBar = document.getElementById('step-progress-bar');
       const dot1 = document.getElementById('dot-1');
       const dot2 = document.getElementById('dot-2');
       const dot3 = document.getElementById('dot-3');
+
+      card.setAttribute('data-step', stepNumber);
+      stepBadge.setAttribute('data-state', stepNumber);
       
       if (stepNumber === 1) {
-        stepIcon.className = 'step-icon sent';
+        stepIcon.className = 'processing-icon';
         stepIconContent.setAttribute('data-lucide', 'send');
         stepLabel.textContent = 'PAYMENT SENT';
-        stepLabel.className = 'step-label sent';
-        stepLabelBadge.style.background = 'rgba(59, 130, 246, 0.15)';
-        stepLabelBadge.style.borderColor = 'rgba(59, 130, 246, 0.3)';
-        stepLabelBadge.querySelector('div').style.background = '#3b82f6';
         processingTitle.textContent = 'Broadcasting Payment';
         processingSubtitle.textContent = 'Sending transaction to blockchain network...';
         progressBar.style.width = '15%';
-        progressBar.style.background = 'linear-gradient(90deg, #3b82f6, #06b6d4)';
-        dot1.className = 'step-dot active';
-        dot2.className = 'step-dot';
-        dot3.className = 'step-dot';
+        dot1.className = 'processing-step-dot active';
+        dot2.className = 'processing-step-dot';
+        dot3.className = 'processing-step-dot';
       } else if (stepNumber === 2) {
-        stepIcon.className = 'step-icon verifying';
+        stepIcon.className = 'processing-icon step-2';
         stepIconContent.setAttribute('data-lucide', 'shield-check');
         stepLabel.textContent = 'VERIFYING';
-        stepLabel.className = 'step-label verifying';
-        stepLabelBadge.style.background = 'rgba(245, 158, 11, 0.15)';
-        stepLabelBadge.style.borderColor = 'rgba(245, 158, 11, 0.3)';
-        stepLabelBadge.querySelector('div').style.background = '#f59e0b';
         processingTitle.textContent = 'Verifying Transaction';
         processingSubtitle.textContent = 'Confirming on-chain security protocols...';
         progressBar.style.width = '60%';
-        progressBar.style.background = 'linear-gradient(90deg, #f59e0b, #f97316)';
-        dot1.className = 'step-dot completed';
-        dot2.className = 'step-dot active';
-        dot3.className = 'step-dot';
+        dot1.className = 'processing-step-dot completed';
+        dot2.className = 'processing-step-dot active';
+        dot3.className = 'processing-step-dot';
       } else if (stepNumber === 3) {
-        stepIcon.className = 'step-icon confirmed';
+        stepIcon.className = 'processing-icon step-3';
         stepIconContent.setAttribute('data-lucide', 'check');
         stepLabel.textContent = 'CONFIRMATION';
-        stepLabel.className = 'step-label confirmed';
-        stepLabelBadge.style.background = 'rgba(16, 185, 129, 0.15)';
-        stepLabelBadge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
-        stepLabelBadge.querySelector('div').style.background = '#10b981';
         processingTitle.textContent = 'Confirmed!';
         processingSubtitle.textContent = 'Transaction successfully verified!';
         progressBar.style.width = '100%';
-        progressBar.style.background = 'linear-gradient(90deg, #10b981, #06b6d4)';
-        dot1.className = 'step-dot completed';
-        dot2.className = 'step-dot completed';
-        dot3.className = 'step-dot active';
+        dot1.className = 'processing-step-dot completed';
+        dot2.className = 'processing-step-dot completed';
+        dot3.className = 'processing-step-dot active';
         
         if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
       }
@@ -2446,7 +2605,7 @@
       lucide.createIcons();
     }
 
-    // ⚡ SLOWER: 5.5s total (elegant, professional pacing)
+    // ⚡ SLOW 5.5s total (elegant pacing)
     function startProcessingAnimation(amount, txId) {
       document.getElementById('processing-amount').innerText = amount;
       document.getElementById('processing-modal').classList.remove('hidden');
@@ -2479,7 +2638,7 @@
     }
 
     // ============================================================
-    // ⚡ NEW PROFESSIONAL RECEIPT - COMPACT, NO SCROLL
+    // ⚡ PROFESSIONAL RECEIPT (No download/share, shows actual TxID)
     // ============================================================
     function generateReceiptHTML(tx) {
       const isDeposit = tx.type === 'deposit';
@@ -2543,13 +2702,12 @@
         month: 'short', day: 'numeric', year: 'numeric', 
         hour: '2-digit', minute: '2-digit' 
       });
-      const txFullId = tx.fullId || tx.id || 'TXN-' + Date.now();
       const fullAddress = tx.fullAddress || tx.ref || 'N/A';
 
       let adminActionsHTML = '';
       if (isAdmin && tx.status === 'Pending Review') {
         adminActionsHTML = `
-          <div style="padding: 0 18px 12px; display: flex; gap: 6px;">
+          <div style="padding: 0 18px 14px; display: flex; gap: 6px;">
             <button onclick="simulateSystemResponse('${tx.id}', 'approve')" style="flex: 1; background: rgba(16, 185, 129, 0.2); color: #10b981; font-size: 10px; font-weight: 700; padding: 9px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.4);">
               ✓ Approve
             </button>
@@ -2615,7 +2773,7 @@
             </div>
             
             ${isWithdrawal ? `
-              <!-- Withdrawal: Show destination address -->
+              <!-- WITHDRAWAL: Show destination address -->
               <div class="receipt-address-block">
                 <div class="receipt-address-label">
                   <i data-lucide="wallet"></i>
@@ -2623,14 +2781,23 @@
                 </div>
                 <div class="receipt-address-value">${fullAddress}</div>
               </div>
-            ` : `
-              <!-- Deposit: Show TxID -->
+            ` : isDeposit ? `
+              <!-- DEPOSIT: Show TxID that user entered -->
               <div class="receipt-txid-block">
                 <div class="receipt-txid-label">
                   <i data-lucide="fingerprint"></i>
                   TRANSACTION ID
                 </div>
-                <div class="receipt-txid-value">${txFullId}</div>
+                <div class="receipt-txid-value">${fullAddress}</div>
+              </div>
+            ` : `
+              <!-- INVESTMENT -->
+              <div class="receipt-txid-block">
+                <div class="receipt-txid-label">
+                  <i data-lucide="fingerprint"></i>
+                  REFERENCE ID
+                </div>
+                <div class="receipt-txid-value">${tx.fullId || tx.id}</div>
               </div>
             `}
             
@@ -2647,17 +2814,6 @@
           </div>
           
           ${adminActionsHTML}
-          
-          <div class="receipt-actions">
-            <button onclick="downloadReceipt()" class="receipt-btn" style="background: linear-gradient(135deg, #10b981, #06b6d4); color: #000;">
-              <i data-lucide="download"></i>
-              Download Receipt
-            </button>
-            <button onclick="shareReceipt()" class="receipt-btn" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.3);">
-              <i data-lucide="share-2"></i>
-              Share Receipt
-            </button>
-          </div>
         </div>
       `;
     }
@@ -2676,105 +2832,6 @@
       lucide.createIcons();
       
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-    }
-
-    // ============================================================
-    // DOWNLOAD & SHARE RECEIPT
-    // ============================================================
-    async function downloadReceipt() {
-      const receiptEl = document.getElementById('receipt-content');
-      if (!receiptEl) return;
-      
-      try {
-        const actionBtns = receiptEl.querySelectorAll('.receipt-actions, button[onclick*="closeModal"]');
-        actionBtns.forEach(b => b.style.display = 'none');
-        
-        await new Promise(resolve => setTimeout(resolve, 150));
-        
-        const canvas = await html2canvas(receiptEl, {
-          backgroundColor: '#0a121c',
-          scale: 3,
-          useCORS: true,
-          allowTaint: true,
-          logging: false
-        });
-        
-        actionBtns.forEach(b => b.style.display = '');
-        
-        const link = document.createElement('a');
-        link.download = `ApexInvest-Receipt-${Date.now()}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-        
-        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-        showNotificationPopup('Downloaded! 📥', 'Receipt saved to your gallery', 'emerald', 'download');
-        
-      } catch (err) {
-        console.error('Download error:', err);
-        const actionBtns = receiptEl.querySelectorAll('.receipt-actions, button[onclick*="closeModal"]');
-        actionBtns.forEach(b => b.style.display = '');
-        showNotificationPopup('Download Failed ⚠️', 'Please try again', 'red', 'alert-circle');
-      }
-    }
-
-    async function shareReceipt() {
-      const receiptEl = document.getElementById('receipt-content');
-      if (!receiptEl) return;
-      
-      try {
-        const actionBtns = receiptEl.querySelectorAll('.receipt-actions, button[onclick*="closeModal"]');
-        actionBtns.forEach(b => b.style.display = 'none');
-        
-        await new Promise(resolve => setTimeout(resolve, 150));
-        
-        const canvas = await html2canvas(receiptEl, {
-          backgroundColor: '#0a121c',
-          scale: 3,
-          useCORS: true,
-          allowTaint: true,
-          logging: false
-        });
-        
-        actionBtns.forEach(b => b.style.display = '');
-        
-        canvas.toBlob(async (blob) => {
-          if (!blob) {
-            showNotificationPopup('Share Failed ⚠️', 'Could not create image', 'red', 'alert-circle');
-            return;
-          }
-          
-          const file = new File([blob], `ApexInvest-Receipt-${Date.now()}.png`, { type: 'image/png' });
-          
-          if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-            try {
-              await navigator.share({
-                title: 'ApexInvest Receipt',
-                text: 'My ApexInvest transaction receipt',
-                files: [file]
-              });
-              
-              if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-              showNotificationPopup('Shared! ✨', 'Receipt shared successfully', 'emerald', 'share-2');
-            } catch (err) {
-              if (err.name !== 'AbortError') {
-                showNotificationPopup('Share Cancelled', 'No problem — try again', 'amber', 'x-circle');
-              }
-            }
-          } else {
-            const link = document.createElement('a');
-            link.download = file.name;
-            link.href = canvas.toDataURL('image/png');
-            link.click();
-            showNotificationPopup('Saved! 📥', 'Receipt saved (share not supported)', 'cyan', 'download');
-          }
-        }, 'image/png');
-        
-      } catch (err) {
-        console.error('Share error:', err);
-        const actionBtns = receiptEl.querySelectorAll('.receipt-actions, button[onclick*="closeModal"]');
-        actionBtns.forEach(b => b.style.display = '');
-        showNotificationPopup('Share Failed ⚠️', 'Please try again', 'red', 'alert-circle');
-      }
     }
 
     function renderHistory() {
@@ -3065,6 +3122,15 @@
       }
 
       const networkName = cryptoWallets[selectedDepositNetworkKey].name;
+      
+      // ⚡ IMPORTANT: Store actual TxID or screenshot filename for receipt
+      let actualProof = '';
+      if (hash && hash.length >= 5) {
+        actualProof = hash; // Full actual TxID the user entered
+      } else {
+        actualProof = uploadedScreenshotData; // Screenshot filename
+      }
+
       let proofRef = '';
       if (hash && hash.length >= 5) {
         proofRef = 'TxID: ' + hash.substring(0, 8) + '...';
@@ -3090,7 +3156,7 @@
         ref: proofRef, rawAmount: depAmt, amount: `+$${depAmt.toFixed(2)}`,
         status: 'Pending Review', color: 'emerald', icon: 'arrow-down-left',
         time: nowStr, fullDate: nowStr, fullId: 'DEP-' + txId.toUpperCase().slice(-12),
-        fullAddress: hash ? hash : proofRef
+        fullAddress: actualProof // ⚡ Actual TxID or screenshot filename
       };
 
       transactionsHistory.unshift(txObj);
@@ -3140,7 +3206,7 @@
         ref: 'To: ' + shortAddr, rawAmount: amt, amount: `-$${amt.toFixed(2)}`,
         status: 'Pending Review', color: 'cyan', icon: 'arrow-up-right',
         time: nowStr, fullDate: nowStr, fullId: 'WDR-' + txId.toUpperCase().slice(-12),
-        fullAddress: addr
+        fullAddress: addr // ⚡ Full address for receipt display
       };
 
       transactionsHistory.unshift(txObj);
@@ -3368,4 +3434,4 @@
     }
   </script>
 </body>
-  </html>
+        </html>
