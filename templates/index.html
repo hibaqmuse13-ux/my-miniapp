@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>ApexInvest - Institutional Crypto Yield</title>
+
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -31,12 +32,15 @@
   </script>
 
   <style>
+    * { -webkit-tap-highlight-color: transparent; }
+    
+    html { scroll-behavior: smooth; }
+    
     body { 
       background-color: #080b11; 
       color: #f3f4f6; 
-      user-select: none; 
-      -webkit-tap-highlight-color: transparent;
-      overscroll-behavior: none;
+      user-select: none;
+      overscroll-behavior-y: none;
     }
     
     .glass-card { 
@@ -57,32 +61,57 @@
     .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
     
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes modalFadeIn {
-      0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+      0% { opacity: 0; transform: scale(0.92) translateY(16px); }
       100% { opacity: 1; transform: scale(1) translateY(0); }
     }
     
-    @keyframes spinSlow { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(100%); }
+      to { opacity: 1; transform: translateX(0); }
+    }
 
-    .modal-animate-in { animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .spin-slow-anim { animation: spinSlow 3s linear infinite; }
+    @keyframes spinSlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateX(-50%) translateY(-150px) scale(0.9); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+    }
+
+    @keyframes progressBar {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+
+    .modal-animate-in { animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .spin-slow-anim { animation: spinSlow 2.5s linear infinite; }
+
+    /* ============ PREMIUM TOAST NOTIFICATION ============ */
     #admin-notify-popup {
       position: fixed;
-      top: 20px;
+      top: 16px;
       left: 50%;
       transform: translateX(-50%) translateY(-150px) scale(0.9);
       opacity: 0;
-      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-      z-index: 100;
-      width: 90%;
+      transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 9999;
+      width: 92%;
       max-width: 380px;
       pointer-events: none;
+      border-radius: 18px;
+      overflow: hidden;
     }
     
     #admin-notify-popup.show-popup {
@@ -91,10 +120,36 @@
       pointer-events: auto;
     }
 
+    .toast-container {
+      background: linear-gradient(135deg, #0f1826 0%, #0a121c 100%);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      box-shadow: 
+        0 20px 50px -10px rgba(0, 0, 0, 0.8),
+        0 0 40px -10px rgba(16, 185, 129, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .toast-container::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.6), transparent);
+    }
+
+    .toast-progress {
+      position: absolute;
+      bottom: 0; left: 0; height: 3px;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      border-radius: 0 0 18px 18px;
+      animation: progressBar 5.5s linear forwards;
+    }
+
+    /* ============ LIVE PULSE DOT ============ */
     .live-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
+      width: 8px; height: 8px; border-radius: 50%;
       background: #10b981;
       box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
       animation: pulse 2s infinite;
@@ -106,7 +161,8 @@
       100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
 
-    button:active { transform: scale(0.97); }
+    button:active { transform: scale(0.97); transition: transform 0.1s; }
+    button { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
     
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -118,15 +174,25 @@
       box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
     }
 
-    .progress-bar { position: relative; overflow: hidden; }
+    input, textarea, select { 
+      -webkit-user-select: text !important; 
+      user-select: text !important;
+    }
+
+    .progress-bar {
+      position: relative;
+      overflow: hidden;
+    }
+    
     .progress-bar::after {
       content: '';
-      position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
       animation: shimmer 2s infinite;
     }
 
-    /* NETWORK CARD */
+    /* ============ NETWORK CARD ============ */
     .network-card {
       position: relative;
       border-radius: 16px;
@@ -138,13 +204,7 @@
       overflow: hidden;
     }
 
-    .network-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-    }
-
-    .network-card:hover { border-color: rgba(255, 255, 255, 0.15); }
+    .network-card:hover { border-color: rgba(255, 255, 255, 0.15); transform: translateY(-1px); }
 
     .network-card.active {
       border-color: #10b981 !important;
@@ -155,8 +215,10 @@
     .network-card.active .network-check { opacity: 1; transform: scale(1); }
 
     .network-check {
-      position: absolute; top: 8px; right: 8px;
-      width: 18px; height: 18px; border-radius: 50%;
+      position: absolute;
+      top: 8px; right: 8px;
+      width: 18px; height: 18px;
+      border-radius: 50%;
       background: linear-gradient(135deg, #10b981, #06b6d4);
       display: flex; align-items: center; justify-content: center;
       color: #000; opacity: 0; transform: scale(0.5);
@@ -198,38 +260,47 @@
       width: 22px; height: 22px; border-radius: 50%;
       background: linear-gradient(135deg, #10b981, #06b6d4);
       color: #000; font-weight: 900; font-size: 11px;
-      margin-right: 8px; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+      margin-right: 8px;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
     }
 
     .verified-chip {
       display: inline-flex; align-items: center; gap: 4px;
       font-size: 9px; font-weight: 700; padding: 3px 8px;
-      border-radius: 999px; background: rgba(16, 185, 129, 0.12);
-      color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);
-      letter-spacing: 0.03em; text-transform: uppercase;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
     }
 
-    /* PLAN CARD */
+    /* ============ PLAN CARD ============ */
     .plan-card {
-      position: relative; border-radius: 20px; padding: 18px; overflow: hidden;
+      position: relative;
+      border-radius: 20px;
+      padding: 18px;
+      overflow: hidden;
       background: linear-gradient(145deg, #121926 0%, #0b111d 100%);
       border: 1px solid rgba(255,255,255,0.08);
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .plan-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 2px; background: var(--accent-gradient); opacity: 0.9;
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent-gradient);
+      opacity: 0.9;
     }
 
-    .plan-card:hover { transform: translateY(-3px); }
+    .plan-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 10px 40px -10px var(--accent); }
 
     .plan-starter { --accent: #10b981; --accent-gradient: linear-gradient(90deg, #10b981, #06b6d4); }
     .plan-silver  { --accent: #06b6d4; --accent-gradient: linear-gradient(90deg, #06b6d4, #3b82f6); }
     .plan-gold    { --accent: #f59e0b; --accent-gradient: linear-gradient(90deg, #f59e0b, #f97316); }
     .plan-vip     { --accent: #a855f7; --accent-gradient: linear-gradient(90deg, #a855f7, #6366f1); }
-
-    .plan-card:hover { border-color: var(--accent); box-shadow: 0 10px 40px -10px var(--accent); }
 
     .plan-icon-badge {
       width: 44px; height: 44px; border-radius: 14px;
@@ -240,17 +311,18 @@
 
     .plan-tier-badge {
       font-size: 9px; font-weight: 900; letter-spacing: 0.12em;
-      text-transform: uppercase; padding: 3px 9px; border-radius: 999px;
+      text-transform: uppercase; padding: 3px 9px;
+      border-radius: 999px;
       background: rgba(255,255,255,0.05);
-      border: 1px solid var(--accent); color: var(--accent);
+      border: 1px solid var(--accent);
+      color: var(--accent);
     }
-
-    .plan-roi-block { display: flex; flex-direction: column; align-items: flex-end; }
 
     .plan-roi-value {
       font-size: 24px; font-weight: 900;
       background: var(--accent-gradient);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       line-height: 1;
     }
 
@@ -266,9 +338,9 @@
     }
 
     .plan-stat-label {
-      font-size: 8px; color: #6b7280; text-transform: uppercase;
-      letter-spacing: 0.06em; font-weight: 800;
-      display: block; margin-bottom: 2px;
+      font-size: 8px; color: #6b7280;
+      text-transform: uppercase; letter-spacing: 0.06em;
+      font-weight: 800; display: block; margin-bottom: 2px;
     }
 
     .plan-stat-value {
@@ -282,14 +354,15 @@
       font-size: 12px; font-weight: 900; letter-spacing: 0.04em;
       display: flex; align-items: center; justify-content: center; gap: 6px;
       box-shadow: 0 6px 20px -6px var(--accent);
-      transition: all 0.2s; cursor: pointer; border: none;
+      cursor: pointer; border: none;
     }
 
     .plan-cta:hover { filter: brightness(1.15); }
     .plan-cta:active { transform: scale(0.97); }
 
     .plan-popular {
-      position: absolute; top: 12px; right: -28px;
+      position: absolute;
+      top: 12px; right: -28px;
       transform: rotate(45deg);
       background: linear-gradient(90deg, #f59e0b, #f97316);
       color: #000; font-size: 8px; font-weight: 900;
@@ -298,82 +371,78 @@
       box-shadow: 0 2px 10px rgba(245, 158, 11, 0.5);
     }
 
-    /* WALLET ACTION BAR - ONLY IN HEADER */
+    /* ============ WALLET ACTION BAR ============ */
     .wallet-action-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
     .wallet-action-btn {
-      position: relative; padding: 14px 16px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      font-size: 12px; font-weight: 900; letter-spacing: 0.03em;
-      cursor: pointer; overflow: hidden;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      border: none;
+      position: relative;
+      padding: 13px 14px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; gap: 7px;
+      font-size: 11px; font-weight: 900; letter-spacing: 0.03em;
+      cursor: pointer; overflow: hidden; border: none;
     }
 
-    .wallet-action-btn::before {
-      content: ''; position: absolute; inset: 0;
-      opacity: 0.15; transition: opacity 0.25s;
-    }
-
-    .wallet-action-btn:hover::before { opacity: 0.25; }
     .wallet-action-btn:hover { transform: translateY(-2px); }
     .wallet-action-btn:active { transform: scale(0.97); }
 
     .wallet-action-btn.deposit {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(6, 182, 212, 0.08) 100%);
-      border: 1px solid rgba(16, 185, 129, 0.4); color: #10b981;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #10b981;
       box-shadow: 0 4px 16px -4px rgba(16, 185, 129, 0.4);
     }
 
-    .wallet-action-btn.deposit::before { background: linear-gradient(135deg, #10b981, #06b6d4); }
-
     .wallet-action-btn.withdraw {
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(59, 130, 246, 0.08) 100%);
-      border: 1px solid rgba(6, 182, 212, 0.4); color: #06b6d4;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      color: #06b6d4;
       box-shadow: 0 4px 16px -4px rgba(6, 182, 212, 0.4);
     }
 
-    .wallet-action-btn.withdraw::before { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
-
     .wallet-action-btn-icon {
-      width: 28px; height: 28px; border-radius: 9px;
+      width: 26px; height: 26px; border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.3); position: relative; z-index: 1;
+      background: rgba(0,0,0,0.3);
     }
 
-    .wallet-action-btn-text { position: relative; z-index: 1; }
-
-    /* Professional metrics cards */
-    .metric-card {
-      background: linear-gradient(145deg, rgba(17, 22, 34, 0.9) 0%, rgba(11, 16, 27, 0.9) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
-      padding: 12px;
-      transition: all 0.2s;
+    /* ============ MODALS ============ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 9998;
     }
 
-    .metric-card:hover {
-      border-color: rgba(16, 185, 129, 0.3);
-      transform: translateY(-2px);
+    .modal-overlay.hidden { display: none; }
+
+    /* Fix for mobile keyboard pushing content */
+    @media (max-width: 640px) {
+      .modal-overlay { align-items: flex-start; padding-top: 40px; }
     }
 
-    .metric-label {
-      font-size: 9px;
-      color: #6b7280;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      font-weight: 800;
-      display: block;
-      margin-bottom: 4px;
+    /* Form inputs always above header */
+    #section-deposit, #section-withdraw {
+      position: relative;
+      z-index: 10;
     }
 
-    .metric-value {
-      font-size: 15px;
-      font-weight: 900;
-      color: #ffffff;
-      font-family: monospace;
+    /* Smooth scroll for plan section */
+    #tab-dashboard { scroll-behavior: smooth; }
+
+    /* Prevent keyboard from hiding inputs */
+    .input-safe {
+      scroll-margin-top: 100px;
+      scroll-margin-bottom: 300px;
     }
 
+    /* ============ INFO ROW ============ */
     .info-row {
       display: flex;
       justify-content: space-between;
@@ -381,30 +450,28 @@
       padding: 10px 0;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     }
-
     .info-row:last-child { border-bottom: none; }
+    .info-label { font-size: 11px; color: #9ca3af; display: flex; align-items: center; gap: 8px; }
+    .info-value { font-size: 11px; font-weight: 800; color: #ffffff; font-family: monospace; }
 
-    .info-label {
-      font-size: 11px;
-      color: #9ca3af;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    /* ============ METRIC CARD ============ */
+    .metric-card {
+      background: linear-gradient(145deg, rgba(17, 22, 34, 0.9) 0%, rgba(11, 16, 27, 0.9) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 12px;
+      transition: all 0.2s;
     }
-
-    .info-value {
-      font-size: 11px;
-      font-weight: 800;
-      color: #ffffff;
-      font-family: monospace;
-    }
+    .metric-card:hover { border-color: rgba(16, 185, 129, 0.3); transform: translateY(-2px); }
+    .metric-label { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; display: block; margin-bottom: 4px; }
+    .metric-value { font-size: 15px; font-weight: 900; color: #ffffff; font-family: monospace; }
   </style>
 </head>
-<body class="font-sans antialiased pb-28">
+<body class="font-sans antialiased pb-32">
 
-  <!-- Header -->
-  <header class="p-4 border-b border-brand-border bg-brand-bg/80 sticky top-0 z-40 backdrop-blur-md">
-    <div class="flex items-center justify-between mb-4">
+  <!-- Header - Compact, No balance card on scroll -->
+  <header class="p-4 border-b border-brand-border bg-brand-bg/95 backdrop-blur-md sticky top-0 z-30">
+    <div class="flex items-center justify-between">
       <div class="flex items-center gap-2.5">
         <div class="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-black shadow-lg shadow-emerald-500/20 font-black">
           <i data-lucide="gem" class="w-6 h-6"></i>
@@ -422,8 +489,12 @@
         <span id="user-name" class="text-xs font-semibold text-gray-300 hidden sm:inline">Investor</span>
       </div>
     </div>
+  </header>
 
-    <!-- MAIN BALANCE CARD -->
+  <!-- DASHBOARD TAB -->
+  <main id="tab-dashboard" class="tab-content active p-4 space-y-5">
+    
+    <!-- MAIN BALANCE CARD (Only in dashboard, not sticky) -->
     <div class="relative overflow-hidden rounded-3xl p-5 bg-gradient-to-br from-[#111622] via-[#0d131f] to-[#080b11] border border-emerald-500/20 shadow-2xl">
       <div class="absolute -right-12 -top-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -left-12 -bottom-12 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -456,29 +527,26 @@
           <span id="locked-balance" class="text-cyan-400 font-extrabold text-sm font-mono">$0.00</span>
         </div>
 
-        <!-- PREMIUM DEPOSIT / WITHDRAW ACTION BAR (ONLY in header) -->
+        <!-- Deposit/Withdraw Action Bar -->
         <div class="wallet-action-bar pt-2">
           <button onclick="openWalletAction('deposit')" class="wallet-action-btn deposit">
             <div class="wallet-action-btn-icon">
               <i data-lucide="arrow-down-left" class="w-3.5 h-3.5"></i>
             </div>
-            <span class="wallet-action-btn-text">Deposit</span>
+            <span>Deposit</span>
           </button>
 
           <button onclick="openWalletAction('withdraw')" class="wallet-action-btn withdraw">
             <div class="wallet-action-btn-icon">
               <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
             </div>
-            <span class="wallet-action-btn-text">Withdraw</span>
+            <span>Withdraw</span>
           </button>
         </div>
       </div>
     </div>
-  </header>
 
-  <!-- DASHBOARD TAB -->
-  <main id="tab-dashboard" class="tab-content active p-4 space-y-5">
-    
+    <!-- Active Investments -->
     <div>
       <div class="flex items-center justify-between mb-3">
         <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
@@ -493,7 +561,8 @@
       </div>
     </div>
 
-    <div>
+    <!-- Investment Plans -->
+    <div id="investment-plans-section">
       <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
         <i data-lucide="zap" class="w-4 h-4 text-cyan-400"></i> Investment Plans
       </h3>
@@ -515,7 +584,7 @@
                 <h4 class="font-extrabold text-base text-white tracking-tight">5-Day Starter Sprint</h4>
               </div>
             </div>
-            <div class="plan-roi-block">
+            <div class="text-right">
               <span class="plan-roi-value">30%</span>
               <p class="text-[8px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
             </div>
@@ -560,7 +629,7 @@
                 <h4 class="font-extrabold text-base text-white tracking-tight">7-Day Silver Boost</h4>
               </div>
             </div>
-            <div class="plan-roi-block">
+            <div class="text-right">
               <span class="plan-roi-value">35%</span>
               <p class="text-[8px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
             </div>
@@ -590,7 +659,7 @@
           </button>
         </div>
 
-        <!-- PLAN 3: GOLD (POPULAR) -->
+        <!-- PLAN 3: GOLD -->
         <div class="plan-card plan-gold">
           <div class="plan-popular">POPULAR</div>
           <div class="flex justify-between items-start mb-3 relative z-10">
@@ -606,7 +675,7 @@
                 <h4 class="font-extrabold text-base text-white tracking-tight">10-Day Gold Growth</h4>
               </div>
             </div>
-            <div class="plan-roi-block">
+            <div class="text-right">
               <span class="plan-roi-value">40%</span>
               <p class="text-[8px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
             </div>
@@ -651,7 +720,7 @@
                 <h4 class="font-extrabold text-base text-white tracking-tight">15-Day VIP Max</h4>
               </div>
             </div>
-            <div class="plan-roi-block">
+            <div class="text-right">
               <span class="plan-roi-value">50%</span>
               <p class="text-[8px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
             </div>
@@ -685,12 +754,11 @@
     </div>
   </main>
 
-  <!-- WALLET TAB - REDESIGNED WITH MORE INFO, NO DEPOSIT/WITHDRAW BUTTONS -->
+  <!-- WALLET TAB -->
   <main id="tab-wallet" class="tab-content p-4 space-y-4">
     
     <div id="wallet-overview" class="space-y-4">
-      
-      <!-- Balance Card (no action buttons) -->
+      <!-- Balance Overview -->
       <div class="glass-card rounded-3xl p-5 border border-emerald-500/30 relative overflow-hidden shadow-2xl bg-gradient-to-br from-[#111622] via-[#0b101b] to-[#080b11]">
         <div class="absolute -right-10 -top-10 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
         <div class="absolute -left-10 -bottom-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl pointer-events-none"></div>
@@ -699,7 +767,7 @@
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
               <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                <i data-lucide="wallet" class="w-4.5 h-4.5 text-black"></i>
+                <i data-lucide="wallet" class="w-4 h-4 text-black"></i>
               </div>
               <div>
                 <span class="text-[10px] text-gray-400 uppercase tracking-wider font-extrabold block">Wallet Balance</span>
@@ -710,7 +778,7 @@
           </div>
           
           <div>
-            <h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight" id="wallet-balance-display">$0.00</h2>
+            <h2 class="text-3xl font-black text-white tracking-tight" id="wallet-balance-display">$0.00</h2>
             <p class="text-[10px] text-gray-500 mt-1 font-mono">Available for withdrawal & investment</p>
           </div>
 
@@ -911,7 +979,7 @@
 
     </div>
 
-    <!-- DEPOSIT SECTION -->
+    <!-- DEPOSIT SECTION - Fixed for visibility -->
     <div id="section-deposit" class="space-y-4 hidden">
       
       <div class="flex items-center justify-between">
@@ -1015,7 +1083,7 @@
         
         <div class="relative">
           <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-black text-lg">$</span>
-          <input type="number" id="deposit-amount-input" placeholder="0.00" class="w-full bg-brand-bg border border-brand-border rounded-xl pl-9 pr-4 py-3.5 text-xl font-black text-white font-mono tracking-tight">
+          <input type="number" id="deposit-amount-input" placeholder="0.00" class="input-safe w-full bg-brand-bg border border-brand-border rounded-xl pl-9 pr-4 py-3.5 text-xl font-black text-white font-mono tracking-tight">
         </div>
 
         <div class="flex gap-2">
@@ -1079,7 +1147,7 @@
         </div>
       </div>
 
-      <!-- STEP 4 -->
+      <!-- STEP 4 - PROOF OF PAYMENT (now visible) -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <div class="flex items-center">
@@ -1093,7 +1161,7 @@
           <label class="text-[10px] text-gray-400 uppercase font-bold flex items-center gap-1.5">
             <i data-lucide="hash" class="w-3 h-3 text-emerald-400"></i> Transaction Hash (TxID)
           </label>
-          <input type="text" id="tx-hash-input" placeholder="Paste 64-char transaction hash..." class="w-full bg-brand-bg border border-brand-border rounded-xl p-3 text-[11px] text-white font-mono">
+          <input type="text" id="tx-hash-input" placeholder="Paste 64-char transaction hash..." class="input-safe w-full bg-brand-bg border border-brand-border rounded-xl p-3 text-[11px] text-white font-mono">
         </div>
 
         <div class="flex items-center gap-2">
@@ -1165,6 +1233,7 @@
         </div>
       </div>
 
+      <!-- STEP 1 -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <div class="flex items-center">
@@ -1231,6 +1300,7 @@
         </div>
       </div>
 
+      <!-- STEP 2 -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <div class="flex items-center">
@@ -1242,7 +1312,7 @@
         
         <div class="relative">
           <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-black text-lg">$</span>
-          <input type="number" id="withdraw-amount" placeholder="0.00" oninput="calculateWithdrawFee()" class="w-full bg-brand-bg border border-brand-border rounded-xl pl-9 pr-16 py-3.5 text-xl font-black text-white font-mono tracking-tight">
+          <input type="number" id="withdraw-amount" placeholder="0.00" oninput="calculateWithdrawFee()" class="input-safe w-full bg-brand-bg border border-brand-border rounded-xl pl-9 pr-16 py-3.5 text-xl font-black text-white font-mono tracking-tight">
           <button onclick="setMaxWithdraw()" class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-black text-cyan-400 bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/30 px-3 py-1.5 rounded-lg transition-all">MAX</button>
         </div>
 
@@ -1254,6 +1324,7 @@
         </div>
       </div>
 
+      <!-- STEP 3 -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <div class="flex items-center">
@@ -1267,7 +1338,7 @@
           <div class="flex items-center gap-1.5 text-[10px] text-gray-400 uppercase font-bold">
             <i data-lucide="wallet" class="w-3 h-3 text-cyan-400"></i> Receiving Wallet Address
           </div>
-          <input type="text" id="withdraw-address" placeholder="Paste destination wallet address..." class="w-full bg-transparent text-[11px] text-white font-mono focus:outline-none tracking-tight placeholder-gray-600">
+          <input type="text" id="withdraw-address" placeholder="Paste destination wallet address..." class="input-safe w-full bg-transparent text-[11px] text-white font-mono focus:outline-none tracking-tight placeholder-gray-600">
         </div>
 
         <div class="flex items-start gap-2.5 p-3 rounded-xl bg-amber-500/8 border border-amber-500/25">
@@ -1281,6 +1352,7 @@
         </div>
       </div>
 
+      <!-- Summary -->
       <div class="glass-card rounded-2xl p-4 border border-cyan-500/20 space-y-2.5">
         <div class="flex items-center justify-between text-xs">
           <span class="text-gray-400">Amount</span>
@@ -1391,7 +1463,7 @@
         <a href="https://t.me/ApexInvestSupport" target="_blank" class="gradient-bg text-black font-extrabold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all text-center">
           <i data-lucide="send" class="w-4 h-4"></i> Telegram Chat
         </a>
-        <button onclick="scrollToTicketForm()" class="bg-brand-bg text-cyan-400 border border-cyan-500/30 font-extrabold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-all">
+        <button onclick="scrollToTicketForm()" class="glass-btn text-cyan-400 border border-cyan-500/30 font-extrabold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 active:scale-95 transition-all">
           <i data-lucide="ticket" class="w-4 h-4"></i> Submit Ticket
         </button>
       </div>
@@ -1602,7 +1674,7 @@
   </main>
 
   <!-- BOTTOM NAVIGATION -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-[#0b101b]/95 border-t border-emerald-500/20 backdrop-blur-xl z-50 px-3 py-3 flex justify-between items-center shadow-2xl">
+  <nav class="fixed bottom-0 left-0 right-0 bg-[#0b101b]/95 border-t border-emerald-500/20 backdrop-blur-xl z-40 px-3 py-3 flex justify-between items-center shadow-2xl">
     <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 text-emerald-400 flex-1 transition-all active:scale-95">
       <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
       <span class="text-[10px] font-extrabold tracking-wide">Home</span>
@@ -1629,10 +1701,10 @@
     </button>
   </nav>
 
-  <!-- INVEST MODAL -->
-  <div id="invest-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+  <!-- INVEST MODAL (with high z-index) -->
+  <div id="invest-modal" class="modal-overlay hidden">
     <div class="glass-card rounded-2xl w-full max-w-sm p-5 space-y-4 relative border border-emerald-500/30 modal-animate-in">
-      <button onclick="closeModal('invest-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+      <button onclick="closeModal('invest-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-lg bg-white/5">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
@@ -1660,7 +1732,7 @@
   </div>
 
   <!-- STATUS MODAL -->
-  <div id="status-modal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+  <div id="status-modal" class="modal-overlay hidden">
     <div id="status-modal-card" class="glass-card rounded-2xl w-full max-w-sm p-6 text-center space-y-5 border border-cyan-500/40 shadow-2xl relative">
       
       <div id="modal-step-verifying" class="space-y-4 py-2">
@@ -1717,18 +1789,26 @@
     </div>
   </div>
 
-  <!-- NOTIFICATION POPUP -->
-  <div id="admin-notify-popup" class="glass-card bg-gradient-to-br from-[#161f33] to-[#0d1320] border border-cyan-500/40 rounded-2xl p-4 shadow-2xl backdrop-blur-xl">
-    <div class="flex items-start gap-3.5">
-      <div id="notify-icon-box" class="w-11 h-11 rounded-2xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
-        <i data-lucide="check-circle" class="w-6 h-6"></i>
+  <!-- PREMIUM TOAST NOTIFICATION -->
+  <div id="admin-notify-popup">
+    <div class="toast-container">
+      <div class="p-4 flex items-start gap-3.5">
+        <div id="notify-icon-box" class="w-11 h-11 rounded-2xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/20">
+          <i data-lucide="check-circle" class="w-6 h-6"></i>
+        </div>
+        <div class="flex-1 space-y-1 text-left">
+          <h4 id="notify-title" class="text-sm font-black text-white tracking-wide">Success</h4>
+          <p id="notify-desc" class="text-[11px] text-gray-300 leading-relaxed">Transaction processed successfully.</p>
+          <div class="flex items-center gap-1.5 pt-1">
+            <div class="w-1.5 h-1.5 rounded-full bg-cyan-400"></div>
+            <span id="notify-time" class="text-[9px] text-cyan-400 font-mono font-bold">Secure Node • Just now</span>
+          </div>
+        </div>
+        <button onclick="hideAdminNotify()" class="text-gray-400 hover:text-white p-1.5 rounded-lg bg-white/5 active:scale-90 transition-all">
+          <i data-lucide="x" class="w-3.5 h-3.5"></i>
+        </button>
       </div>
-      <div class="flex-1 space-y-0.5 text-left">
-        <h4 id="notify-title" class="text-xs font-black text-white tracking-wide uppercase">Success</h4>
-        <p id="notify-desc" class="text-[11px] text-gray-300 leading-relaxed">Transaction processed.</p>
-        <span id="notify-time" class="text-[9px] text-cyan-400 font-mono font-bold block pt-1">Secure Node • Just now</span>
-      </div>
-      <button onclick="hideAdminNotify()" class="text-gray-400 hover:text-white p-1 rounded-lg bg-white/5"><i data-lucide="x" class="w-4 h-4"></i></button>
+      <div class="toast-progress"></div>
     </div>
   </div>
 
@@ -1813,25 +1893,31 @@
       document.getElementById('main-balance').innerText = `$${totalNet.toFixed(2)}`;
       document.getElementById('locked-balance').innerText = `$${locked.toFixed(2)}`;
       document.getElementById('active-inv-count').innerText = `${activeInvestments.length} Active`;
-      document.getElementById('wallet-active-plans').innerText = activeInvestments.length;
+      const wap = document.getElementById('wallet-active-plans');
+      if (wap) wap.innerText = activeInvestments.length;
       
       if (userPortfolio.totalDeposited > 0) {
         const roi = ((totalNet - userPortfolio.totalDeposited) / userPortfolio.totalDeposited) * 100;
         document.getElementById('total-roi-badge').innerText = `+${roi.toFixed(1)}%`;
-        document.getElementById('wallet-total-roi').innerText = `+${roi.toFixed(1)}%`;
-        document.getElementById('total-profit').innerText = `$${(totalNet - userPortfolio.totalDeposited).toFixed(2)}`;
+        const wtroi = document.getElementById('wallet-total-roi');
+        if (wtroi) wtroi.innerText = `+${roi.toFixed(1)}%`;
+        const tp = document.getElementById('total-profit');
+        if (tp) tp.innerText = `$${(totalNet - userPortfolio.totalDeposited).toFixed(2)}`;
       } else {
         document.getElementById('total-roi-badge').innerText = `+0.0%`;
-        document.getElementById('wallet-total-roi').innerText = `+0.0%`;
-        document.getElementById('total-profit').innerText = `$0.00`;
+        const wtroi = document.getElementById('wallet-total-roi');
+        if (wtroi) wtroi.innerText = `+0.0%`;
+        const tp = document.getElementById('total-profit');
+        if (tp) tp.innerText = `$0.00`;
       }
 
-      // Calculate avg yield
       if (activeInvestments.length > 0) {
         const avgYield = activeInvestments.reduce((sum, inv) => sum + inv.rate, 0) / activeInvestments.length;
-        document.getElementById('avg-daily-yield').innerText = `+${avgYield.toFixed(1)}%`;
+        const ady = document.getElementById('avg-daily-yield');
+        if (ady) ady.innerText = `+${avgYield.toFixed(1)}%`;
       } else {
-        document.getElementById('avg-daily-yield').innerText = `+0.0%`;
+        const ady = document.getElementById('avg-daily-yield');
+        if (ady) ady.innerText = `+0.0%`;
       }
     }
 
@@ -1949,6 +2035,8 @@
       });
       const activeBtn = document.getElementById(`nav-${tabId}`);
       if (activeBtn) activeBtn.classList.replace('text-gray-400', 'text-emerald-400');
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function openWalletAction(action) {
@@ -1957,12 +2045,14 @@
       document.getElementById('wallet-overview').classList.add('hidden');
       document.getElementById('section-deposit').classList.toggle('hidden', !isDeposit);
       document.getElementById('section-withdraw').classList.toggle('hidden', isDeposit);
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
     }
 
     function backToWalletOverview() {
       document.getElementById('wallet-overview').classList.remove('hidden');
       document.getElementById('section-deposit').classList.add('hidden');
       document.getElementById('section-withdraw').classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function renderHistory() {
@@ -2522,4 +2612,4 @@
     }
   </script>
 </body>
-  </html>
+            </html>
