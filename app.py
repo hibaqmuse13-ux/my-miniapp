@@ -195,69 +195,74 @@ def telegram_polling():
                         data = cq['data']
                         cq_id = cq['id']
                         
-                        action, tx_id = data.split('_')[:3], data.split('_')[3]
-                        action_type = action[0]
-                        is_ok = action[1] == 'ok'
+                        parts = data.split('_')
+                        if len(parts) >= 3:
+                            action_type = parts[0]
+                            status_type = parts[1]
+                            tx_id = "_".join(parts[2:])
 
-                        if db is not None:
-                            from bson.objectid import ObjectId
-                            try: tx = txs_col.find_one({'_id': ObjectId(tx_id)})
-                            except: tx = None
-                        else:
-                            tx = next((t for t in memory_txs if t['id'] == tx_id), None)
+                            is_ok = (status_type == 'ok')
 
-                        if not tx or tx['status'] != 'Pending Review':
-                            answer_callback(cq_id, "Already processed!")
-                            continue
-
-                        if action_type == 'dep' and is_ok:
                             if db is not None:
-                                txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Completed'}})
-                                users_col.update_one({'telegramId': tx['userId']}, {'$inc': {'balance': tx['amount'], 'totalDeposited': tx['amount']}})
+                                from bson.objectid import ObjectId
+                                try: tx = txs_col.find_one({'_id': ObjectId(tx_id)})
+                                except: tx = None
                             else:
-                                tx['status'] = 'Completed'
-                                memory_users[tx['userId']]['balance'] += tx['amount']
-                            
-                            send_tg_message(tx['userId'], f"✅ *Deposit Approved!*\n💰 +${tx['amount']} added to balance.")
-                            answer_callback(cq_id, "✅ Deposit Approved")
+                                tx = next((t for t in memory_txs if t['id'] == tx_id), None)
 
-                        elif action_type == 'dep' and not is_ok:
-                            if db is not None: txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Rejected'}})
-                            else: tx['status'] = 'Rejected'
-                            send_tg_message(tx['userId'], f"❌ *Deposit Rejected*\nYour deposit of ${tx['amount']} was rejected.")
-                            answer_callback(cq_id, "❌ Deposit Rejected")
+                            if not tx or tx['status'] != 'Pending Review':
+                                answer_callback(cq_id, "Already processed!")
+                                continue
 
-                        elif action_type == 'wth' and is_ok:
-                            if db is not None:
-                                txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Completed'}})
-                                users_col.update_one({'telegramId': tx['userId']}, {'$inc': {'totalWithdrawn': tx['amount']}})
-                            else:
-                                tx['status'] = 'Completed'
-                                memory_users[tx['userId']]['totalWithdrawn'] = memory_users[tx['userId']].get('totalWithdrawn', 0) + tx['amount']
-                            
-                            send_tg_message(tx['userId'], f"✅ *Withdrawal Successful!*\n💰 -${tx['amount']} sent.")
-                            answer_callback(cq_id, "✅ Withdraw Approved")
+                            if action_type == 'dep' and is_ok:
+                                if db is not None:
+                                    txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Completed'}})
+                                    users_col.update_one({'telegramId': tx['userId']}, {'$inc': {'balance': tx['amount'], 'totalDeposited': tx['amount']}})
+                                else:
+                                    tx['status'] = 'Completed'
+                                    memory_users[tx['userId']]['balance'] += tx['amount']
+                                
+                                send_tg_message(tx['userId'], f"✅ *Deposit Approved!*\n💰 +${tx['amount']} added to balance.")
+                                answer_callback(cq_id, "✅ Deposit Approved")
 
-                        elif action_type == 'wth' and not is_ok:
-                            if db is not None:
-                                txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Rejected'}})
-                                users_col.update_one({'telegramId': tx['userId']}, {'$inc': {'balance': tx['amount']}})
-                            else:
-                                tx['status'] = 'Rejected'
-                                memory_users[tx['userId']]['balance'] += tx['amount']
+                            elif action_type == 'dep' and not is_ok:
+                                if db is not None: txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Rejected'}})
+                                else: tx['status'] = 'Rejected'
+                                send_tg_message(tx['userId'], f"❌ *Deposit Rejected*\nYour deposit of ${tx['amount']} was rejected.")
+                                answer_callback(cq_id, "❌ Deposit Rejected")
 
-                            send_tg_message(tx['userId'], f"❌ *Withdrawal Rejected*\n${tx['amount']} has been refunded to your balance.")
-                            answer_callback(cq_id, "❌ Withdraw Rejected (Refunded)")
-                            
-                        requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageReplyMarkup", json={
-                            'chat_id': cq['message']['chat']['id'],
-                            'message_id': cq['message']['message_id'],
-                            'reply_markup': {'inline_keyboard': []}
-                        })
+                            elif action_type == 'wth' and is_ok:
+                                if db is not None:
+                                    txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Completed'}})
+                                    users_col.update_one({'telegramId': tx['userId']}, {'$inc': {'totalWithdrawn': tx['amount']}})
+                                else:
+                                    tx['status'] = 'Completed'
+                                    memory_users[tx['userId']]['totalWithdrawn'] = memory_users[tx['userId']].get('totalWithdrawn', 0) + tx['amount']
+                                
+                                send_tg_message(tx['userId'], f"✅ *Withdrawal Successful!*\n💰 -${tx['amount']} sent.")
+                                answer_callback(cq_id, "✅ Withdraw Approved")
+
+                            elif action_type == 'wth' and not is_ok:
+                                if db is not None:
+                                    txs_col.update_one({'_id': tx['_id']}, {'$set': {'status': 'Rejected'}})
+                                    users_col.update_one({'telegramId': tx['userId']}, {'$inc': {'balance': tx['amount']}})
+                                else:
+                                    tx['status'] = 'Rejected'
+                                    memory_users[tx['userId']]['balance'] += tx['amount']
+
+                                send_tg_message(tx['userId'], f"❌ *Withdrawal Rejected*\n${tx['amount']} has been refunded to your balance.")
+                                answer_callback(cq_id, "❌ Withdraw Rejected (Refunded)")
+                                
+                            requests.post(f"https://api.telegram.org/bot{BOT_TOKEN}/editMessageReplyMarkup", json={
+                                'chat_id': cq['message']['chat']['id'],
+                                'message_id': cq['message']['message_id'],
+                                'reply_markup': {'inline_keyboard': []}
+                            })
         except Exception as e:
             print("Polling Error:", e)
         time.sleep(1)
 
+# Start the polling thread
 threading.Thread(target=telegram_polling, daemon=True).start()
 
 if __name__ == '__main__':
