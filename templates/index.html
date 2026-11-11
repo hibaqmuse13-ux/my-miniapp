@@ -90,10 +90,6 @@
 
     .modal-animate-in { animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-    /* =================================================== */
-    /* ⚡ NEW PREMIUM PROCESSING ANIMATION                  */
-    /* =================================================== */
-    
     @keyframes ringPulse {
       0% { transform: scale(0.5); opacity: 0.9; }
       80% { transform: scale(2.2); opacity: 0; }
@@ -117,12 +113,6 @@
       50% { filter: drop-shadow(0 0 24px currentColor); }
     }
 
-    @keyframes scanLine {
-      0% { transform: translateY(-100%); opacity: 0; }
-      50% { opacity: 1; }
-      100% { transform: translateY(400%); opacity: 0; }
-    }
-
     @keyframes dotFill {
       0% { transform: scale(0); }
       50% { transform: scale(1.2); }
@@ -139,7 +129,6 @@
       to { transform: rotate(360deg); }
     }
 
-    /* Premium Processing Modal */
     .processing-premium {
       background: 
         radial-gradient(ellipse at top, rgba(16, 185, 129, 0.15), transparent 60%),
@@ -194,18 +183,9 @@
       animation: ringPulse 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
-    .processing-ring:nth-child(1) {
-      border-color: rgba(59, 130, 246, 0.5);
-      animation-delay: 0s;
-    }
-    .processing-ring:nth-child(2) {
-      border-color: rgba(59, 130, 246, 0.35);
-      animation-delay: 0.9s;
-    }
-    .processing-ring:nth-child(3) {
-      border-color: rgba(59, 130, 246, 0.2);
-      animation-delay: 1.8s;
-    }
+    .processing-ring:nth-child(1) { border-color: rgba(59, 130, 246, 0.5); animation-delay: 0s; }
+    .processing-ring:nth-child(2) { border-color: rgba(59, 130, 246, 0.35); animation-delay: 0.9s; }
+    .processing-ring:nth-child(3) { border-color: rgba(59, 130, 246, 0.2); animation-delay: 1.8s; }
 
     .processing-premium[data-step="2"] .processing-ring:nth-child(1) { border-color: rgba(245, 158, 11, 0.5); }
     .processing-premium[data-step="2"] .processing-ring:nth-child(2) { border-color: rgba(245, 158, 11, 0.35); }
@@ -234,27 +214,17 @@
       transition: background 0.4s, box-shadow 0.4s;
     }
 
-    .processing-icon svg {
-      width: 44px;
-      height: 44px;
-      stroke-width: 2.5;
-    }
+    .processing-icon svg { width: 44px; height: 44px; stroke-width: 2.5; }
 
     .processing-icon.step-2 {
       background: linear-gradient(145deg, #f59e0b, #f97316);
-      box-shadow: 
-        0 20px 50px -15px rgba(245, 158, 11, 0.8),
-        0 0 50px -10px rgba(245, 158, 11, 0.6),
-        inset 0 2px 0 rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 50px -15px rgba(245, 158, 11, 0.8), 0 0 50px -10px rgba(245, 158, 11, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.2);
       animation: iconEnter 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, iconGlow 1.8s infinite;
     }
 
     .processing-icon.step-3 {
       background: linear-gradient(145deg, #10b981, #06b6d4);
-      box-shadow: 
-        0 20px 50px -15px rgba(16, 185, 129, 0.9),
-        0 0 60px -10px rgba(16, 185, 129, 0.6),
-        inset 0 2px 0 rgba(255, 255, 255, 0.2);
+      box-shadow: 0 20px 50px -15px rgba(16, 185, 129, 0.9), 0 0 60px -10px rgba(16, 185, 129, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.2);
       animation: iconCheckBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
@@ -267,25 +237,19 @@
     }
 
     .processing-step-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
+      width: 8px; height: 8px; border-radius: 50%;
       background: rgba(255, 255, 255, 0.15);
       transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .processing-step-dot.active {
-      width: 28px;
-      border-radius: 4px;
+      width: 28px; border-radius: 4px;
       background: linear-gradient(90deg, #3b82f6, #06b6d4);
       box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
       animation: dotFill 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    .processing-step-dot.completed {
-      background: #10b981;
-      box-shadow: 0 0 8px rgba(16, 185, 129, 0.5);
-    }
+    .processing-step-dot.completed { background: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.5); }
 
     .processing-premium[data-step="2"] .processing-step-dot.active {
       background: linear-gradient(90deg, #f59e0b, #f97316);
@@ -298,94 +262,52 @@
     }
 
     .processing-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
-      border: 1px solid;
-      transition: all 0.4s;
-      position: relative;
-      z-index: 1;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px; border-radius: 999px;
+      font-size: 10px; font-weight: 900; letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 12px;
+      border: 1px solid; transition: all 0.4s;
+      position: relative; z-index: 1;
     }
 
-    .processing-badge[data-state="1"] {
-      background: rgba(59, 130, 246, 0.12);
-      border-color: rgba(59, 130, 246, 0.35);
-      color: #3b82f6;
-    }
-
-    .processing-badge[data-state="2"] {
-      background: rgba(245, 158, 11, 0.12);
-      border-color: rgba(245, 158, 11, 0.35);
-      color: #f59e0b;
-    }
-
-    .processing-badge[data-state="3"] {
-      background: rgba(16, 185, 129, 0.12);
-      border-color: rgba(16, 185, 129, 0.35);
-      color: #10b981;
-    }
+    .processing-badge[data-state="1"] { background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.35); color: #3b82f6; }
+    .processing-badge[data-state="2"] { background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); color: #f59e0b; }
+    .processing-badge[data-state="3"] { background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.35); color: #10b981; }
 
     .processing-badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: currentColor;
-      animation: pulse 1.5s infinite;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: currentColor; animation: pulse 1.5s infinite;
     }
 
     .processing-title {
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      color: #ffffff;
-      line-height: 1.2;
-      text-align: center;
-      margin-bottom: 6px;
-      position: relative;
-      z-index: 1;
+      font-size: 22px; font-weight: 900; letter-spacing: -0.02em;
+      color: #ffffff; line-height: 1.2; text-align: center;
+      margin-bottom: 6px; position: relative; z-index: 1;
     }
 
     .processing-subtitle {
-      font-size: 11px;
-      color: #9ca3af;
-      text-align: center;
-      line-height: 1.5;
-      padding: 0 8px;
-      position: relative;
-      z-index: 1;
+      font-size: 11px; color: #9ca3af; text-align: center;
+      line-height: 1.5; padding: 0 8px; position: relative; z-index: 1;
     }
 
     .processing-progress-track {
-      width: 100%;
-      height: 6px;
+      width: 100%; height: 6px;
       background: rgba(255, 255, 255, 0.06);
-      border-radius: 999px;
-      overflow: hidden;
-      margin: 20px 0 16px;
-      position: relative;
+      border-radius: 999px; overflow: hidden;
+      margin: 20px 0 16px; position: relative;
     }
 
     .processing-progress-bar {
-      height: 100%;
-      border-radius: 999px;
+      height: 100%; border-radius: 999px;
       background: linear-gradient(90deg, #3b82f6, #06b6d4);
       box-shadow: 0 0 14px rgba(59, 130, 246, 0.7);
       transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s, box-shadow 0.4s;
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
 
     .processing-progress-bar::after {
       content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
       animation: shimmer 1.5s infinite;
       background-size: 200% 100%;
@@ -404,101 +326,67 @@
     .processing-amount-card {
       background: rgba(16, 185, 129, 0.06);
       border: 1px solid rgba(16, 185, 129, 0.2);
-      border-radius: 14px;
-      padding: 14px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 14px;
-      position: relative;
-      z-index: 1;
+      border-radius: 14px; padding: 14px 16px;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 14px; position: relative; z-index: 1;
     }
 
     .processing-amount-label {
-      font-size: 9px;
-      color: #6b7280;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 900;
+      font-size: 9px; color: #6b7280;
+      text-transform: uppercase; letter-spacing: 0.12em; font-weight: 900;
     }
 
     .processing-amount-value {
-      font-size: 18px;
-      font-weight: 900;
+      font-size: 18px; font-weight: 900;
       font-family: 'JetBrains Mono', monospace;
       background: linear-gradient(135deg, #10b981, #06b6d4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
     .processing-security {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      font-size: 9px;
-      color: #4b5563;
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; font-size: 9px; color: #4b5563;
       font-family: 'JetBrains Mono', monospace;
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
     }
 
-    .processing-security svg {
-      width: 11px;
-      height: 11px;
-    }
+    .processing-security svg { width: 11px; height: 11px; }
 
     .processing-particles {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
+      position: absolute; inset: 0;
+      pointer-events: none; overflow: hidden;
     }
 
     .processing-particle {
-      position: absolute;
-      width: 3px;
-      height: 3px;
-      border-radius: 50%;
-      background: #10b981;
+      position: absolute; width: 3px; height: 3px;
+      border-radius: 50%; background: #10b981;
       box-shadow: 0 0 8px #10b981;
       animation: floatUp 2.5s infinite;
     }
 
-    /* ============ PROFESSIONAL TOAST ============ */
     #admin-notify-popup {
-      position: fixed;
-      top: 16px;
-      left: 50%;
+      position: fixed; top: 16px; left: 50%;
       transform: translateX(-50%) translateY(-150px) scale(0.9);
       opacity: 0;
       transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-      z-index: 9999;
-      width: 92%;
-      max-width: 380px;
-      pointer-events: none;
-      border-radius: 18px;
-      overflow: hidden;
+      z-index: 9999; width: 92%; max-width: 380px;
+      pointer-events: none; border-radius: 18px; overflow: hidden;
     }
     
     #admin-notify-popup.show-popup {
       transform: translateX(-50%) translateY(0) scale(1);
-      opacity: 1;
-      pointer-events: auto;
+      opacity: 1; pointer-events: auto;
     }
 
     .toast-container {
       background: linear-gradient(135deg, #0f1826 0%, #0a121c 100%);
       border: 1px solid rgba(16, 185, 129, 0.35);
       box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(16, 185, 129, 0.3);
-      border-radius: 18px;
-      position: relative;
-      overflow: hidden;
+      border-radius: 18px; position: relative; overflow: hidden;
     }
 
     .toast-progress {
-      position: absolute;
-      bottom: 0; left: 0; height: 3px;
+      position: absolute; bottom: 0; left: 0; height: 3px;
       background: linear-gradient(90deg, #10b981, #06b6d4);
       animation: progressBar 5.5s linear forwards;
     }
@@ -510,124 +398,80 @@
       animation: pulse 2s infinite;
     }
 
-    /* ============================================ */
-    /* 🆕 MODERN ALERT MODAL (Qaybta Alert)         */
-    /* ============================================ */
     .modern-alert-overlay {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(4, 6, 11, 0.85);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 10000;
-      opacity: 0;
-      pointer-events: none;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px; z-index: 10000;
+      opacity: 0; pointer-events: none;
       transition: opacity 0.3s ease;
     }
-    .modern-alert-overlay.show {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .modern-alert-overlay.show { opacity: 1; pointer-events: auto; }
     .modern-alert-card {
-      width: 100%;
-      max-width: 320px;
-      border-radius: 22px;
-      padding: 26px 22px 20px;
+      width: 100%; max-width: 320px;
+      border-radius: 22px; padding: 26px 22px 20px;
       background: linear-gradient(165deg, #0f1826 0%, #0a121c 60%, #080d16 100%);
       border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 0 40px 100px -25px rgba(0, 0, 0, 0.95), 0 0 80px -20px rgba(16, 185, 129, 0.25);
-      position: relative;
-      overflow: hidden;
-      transform: scale(0.85) translateY(20px);
-      opacity: 0;
+      position: relative; overflow: hidden;
+      transform: scale(0.85) translateY(20px); opacity: 0;
       transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .modern-alert-overlay.show .modern-alert-card {
-      transform: scale(1) translateY(0);
-      opacity: 1;
+      transform: scale(1) translateY(0); opacity: 1;
     }
     .modern-alert-card::before {
       content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 2px;
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
       background: var(--alert-accent, linear-gradient(90deg, #10b981, #06b6d4));
     }
     .modern-alert-glow {
-      position: absolute;
-      top: -80px; left: 50%;
+      position: absolute; top: -80px; left: 50%;
       transform: translateX(-50%);
-      width: 220px; height: 220px;
-      border-radius: 50%;
+      width: 220px; height: 220px; border-radius: 50%;
       background: var(--alert-glow, radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 65%));
-      filter: blur(20px);
-      pointer-events: none;
+      filter: blur(20px); pointer-events: none;
     }
     .modern-alert-icon-wrap {
-      width: 68px; height: 68px;
-      border-radius: 20px;
+      width: 68px; height: 68px; border-radius: 20px;
       display: flex; align-items: center; justify-content: center;
       margin: 0 auto 16px;
       background: var(--alert-icon-bg, linear-gradient(145deg, #10b981, #06b6d4));
-      box-shadow: 0 15px 35px -10px var(--alert-shadow, rgba(16, 185, 129, 0.6)),
-                  inset 0 2px 0 rgba(255,255,255,0.2);
-      color: #000;
-      position: relative;
-      z-index: 1;
+      box-shadow: 0 15px 35px -10px var(--alert-shadow, rgba(16, 185, 129, 0.6)), inset 0 2px 0 rgba(255,255,255,0.2);
+      color: #000; position: relative; z-index: 1;
       animation: iconEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .modern-alert-icon-wrap svg { width: 34px; height: 34px; stroke-width: 2.5; }
     .modern-alert-title {
-      font-size: 17px;
-      font-weight: 900;
-      color: #fff;
-      text-align: center;
-      letter-spacing: -0.02em;
-      margin-bottom: 6px;
-      position: relative; z-index: 1;
+      font-size: 17px; font-weight: 900; color: #fff;
+      text-align: center; letter-spacing: -0.02em;
+      margin-bottom: 6px; position: relative; z-index: 1;
     }
     .modern-alert-message {
-      font-size: 12px;
-      color: #9ca3af;
-      text-align: center;
-      line-height: 1.55;
-      margin-bottom: 20px;
-      padding: 0 4px;
+      font-size: 12px; color: #9ca3af;
+      text-align: center; line-height: 1.55;
+      margin-bottom: 20px; padding: 0 4px;
       position: relative; z-index: 1;
     }
     .modern-alert-btn {
-      width: 100%;
-      padding: 12px;
-      border-radius: 14px;
+      width: 100%; padding: 12px; border-radius: 14px;
       background: var(--alert-accent, linear-gradient(90deg, #10b981, #06b6d4));
-      color: #000;
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 0.03em;
-      border: none;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      color: #000; font-size: 13px; font-weight: 900;
+      letter-spacing: 0.03em; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
       gap: 6px;
       box-shadow: 0 8px 24px -8px var(--alert-shadow, rgba(16, 185, 129, 0.6));
-      transition: all 0.2s;
-      position: relative; z-index: 1;
+      transition: all 0.2s; position: relative; z-index: 1;
     }
     .modern-alert-btn:active { transform: scale(0.97); }
     .modern-alert-btn svg { width: 15px; height: 15px; }
     .modern-alert-id {
-      font-size: 8px;
-      color: #374151;
+      font-size: 8px; color: #374151;
       text-align: center;
       font-family: 'JetBrains Mono', monospace;
-      margin-top: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      position: relative; z-index: 1;
+      margin-top: 12px; letter-spacing: 0.1em;
+      text-transform: uppercase; position: relative; z-index: 1;
     }
 
     button:active { transform: scale(0.97); }
@@ -648,16 +492,13 @@
     .progress-bar { position: relative; overflow: hidden; }
     .progress-bar::after {
       content: '';
-      position: absolute;
-      top: 0; left: 0; bottom: 0; right: 0;
+      position: absolute; top: 0; left: 0; bottom: 0; right: 0;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
       animation: shimmer 2s infinite;
     }
 
     .network-card {
-      position: relative;
-      border-radius: 16px;
-      padding: 12px;
+      position: relative; border-radius: 16px; padding: 12px;
       cursor: pointer;
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
       background: linear-gradient(145deg, rgba(22, 28, 44, 0.9) 0%, rgba(15, 20, 32, 0.9) 100%);
@@ -674,10 +515,8 @@
     .network-card.active .network-check { opacity: 1; transform: scale(1); }
 
     .network-check {
-      position: absolute;
-      top: 8px; right: 8px;
-      width: 18px; height: 18px;
-      border-radius: 50%;
+      position: absolute; top: 8px; right: 8px;
+      width: 18px; height: 18px; border-radius: 50%;
       background: linear-gradient(135deg, #10b981, #06b6d4);
       display: flex; align-items: center; justify-content: center;
       color: #000; opacity: 0; transform: scale(0.5);
@@ -697,7 +536,7 @@
     .network-logo-usdt { background: #26A17B15; border-color: #26A17B33; }
     .network-logo-eth  { background: #627EEA15; border-color: #627EEA33; }
     .network-logo-bnb  { background: #F3BA2F15; border-color: #F3BA2F33; }
-    .network-logo-usdc { background: #2775CA15; border-color: #2775CA33; }
+    .network-logo-ton  { background: #0098EA15; border-color: #0098EA33; }
 
     .address-display {
       background: linear-gradient(135deg, #0a0f1a 0%, #0d1420 100%);
@@ -728,14 +567,11 @@
       background: rgba(16, 185, 129, 0.12);
       color: #10b981;
       border: 1px solid rgba(16, 185, 129, 0.3);
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
+      letter-spacing: 0.03em; text-transform: uppercase;
     }
 
     .plan-card {
-      position: relative;
-      border-radius: 20px;
-      padding: 18px;
+      position: relative; border-radius: 20px; padding: 18px;
       overflow: hidden;
       background: linear-gradient(145deg, #121926 0%, #0b111d 100%);
       border: 1px solid rgba(255,255,255,0.08);
@@ -744,11 +580,9 @@
 
     .plan-card::before {
       content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
+      position: absolute; top: 0; left: 0; right: 0;
       height: 2px;
-      background: var(--accent-gradient);
-      opacity: 0.9;
+      background: var(--accent-gradient); opacity: 0.9;
     }
 
     .plan-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 10px 40px -10px var(--accent); }
@@ -768,17 +602,14 @@
     .plan-tier-badge {
       font-size: 9px; font-weight: 900; letter-spacing: 0.12em;
       text-transform: uppercase; padding: 3px 9px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--accent);
-      color: var(--accent);
+      border-radius: 999px; background: rgba(255,255,255,0.05);
+      border: 1px solid var(--accent); color: var(--accent);
     }
 
     .plan-roi-value {
       font-size: 24px; font-weight: 900;
       background: var(--accent-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       line-height: 1;
     }
 
@@ -798,8 +629,7 @@
     .plan-cta:hover { filter: brightness(1.15); }
 
     .plan-popular {
-      position: absolute;
-      top: 12px; right: -28px;
+      position: absolute; top: 12px; right: -28px;
       transform: rotate(45deg);
       background: linear-gradient(90deg, #f59e0b, #f97316);
       color: #000; font-size: 8px; font-weight: 900;
@@ -811,9 +641,7 @@
     .wallet-action-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
     .wallet-action-btn {
-      position: relative;
-      padding: 13px 14px;
-      border-radius: 12px;
+      position: relative; padding: 13px 14px; border-radius: 12px;
       display: flex; align-items: center; justify-content: center; gap: 7px;
       font-size: 11px; font-weight: 900; letter-spacing: 0.03em;
       cursor: pointer; overflow: hidden; border: none;
@@ -839,11 +667,9 @@
     .modal-overlay {
       position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.88);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
       display: flex; align-items: center; justify-content: center;
-      padding: 16px;
-      z-index: 9998;
+      padding: 16px; z-index: 9998;
     }
     .modal-overlay.hidden { display: none; }
 
@@ -866,8 +692,7 @@
     .metric-card {
       background: linear-gradient(145deg, rgba(17, 22, 34, 0.9) 0%, rgba(11, 16, 27, 0.9) 100%);
       border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
-      padding: 12px;
+      border-radius: 14px; padding: 12px;
       transition: all 0.2s;
     }
     .metric-card:hover { border-color: rgba(16, 185, 129, 0.3); transform: translateY(-2px); }
@@ -875,43 +700,31 @@
     .metric-value { font-size: 15px; font-weight: 900; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
 
     .receipt-modal-container {
-      width: 100%;
-      max-width: 340px;
-      max-height: 95vh;
-      display: flex;
-      flex-direction: column;
+      width: 100%; max-width: 340px; max-height: 95vh;
+      display: flex; flex-direction: column;
     }
 
     .receipt-container {
-      background: 
-        linear-gradient(165deg, #0f1826 0%, #0a121c 50%, #080d16 100%);
-      border-radius: 22px;
-      position: relative;
-      overflow: hidden;
+      background: linear-gradient(165deg, #0f1826 0%, #0a121c 50%, #080d16 100%);
+      border-radius: 22px; position: relative; overflow: hidden;
       border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 
-        0 40px 100px -25px rgba(0, 0, 0, 0.95),
-        0 0 70px -25px rgba(16, 185, 129, 0.35);
+      box-shadow: 0 40px 100px -25px rgba(0, 0, 0, 0.95), 0 0 70px -25px rgba(16, 185, 129, 0.35);
     }
 
     .receipt-container::before {
       content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
       background: var(--receipt-accent, linear-gradient(90deg, #10b981, #06b6d4));
     }
 
     .receipt-header {
-      padding: 24px 20px 18px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+      padding: 24px 20px 18px; text-align: center;
+      position: relative; overflow: hidden;
     }
 
     .receipt-header::before {
       content: '';
-      position: absolute;
-      top: -100%; left: -50%;
+      position: absolute; top: -100%; left: -50%;
       width: 200%; height: 300%;
       background: radial-gradient(circle, var(--receipt-glow, rgba(16, 185, 129, 0.18)) 0%, transparent 55%);
       pointer-events: none;
@@ -923,8 +736,7 @@
     }
 
     .receipt-shine {
-      position: absolute;
-      top: 0; left: 0;
+      position: absolute; top: 0; left: 0;
       width: 40%; height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
       animation: receiptShine 3.5s infinite;
@@ -932,23 +744,15 @@
     }
 
     .receipt-brand-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-bottom: 16px;
-      position: relative;
-      z-index: 1;
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px; margin-bottom: 16px;
+      position: relative; z-index: 1;
     }
 
     .receipt-brand-icon {
-      width: 22px;
-      height: 22px;
-      border-radius: 7px;
+      width: 22px; height: 22px; border-radius: 7px;
       background: linear-gradient(135deg, #10b981, #06b6d4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       color: #000;
       box-shadow: 0 3px 10px rgba(16, 185, 129, 0.4);
     }
@@ -956,67 +760,48 @@
     .receipt-brand-icon svg { width: 12px; height: 12px; }
 
     .receipt-brand-text {
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 0.18em;
-      color: #ffffff;
+      font-size: 11px; font-weight: 900;
+      letter-spacing: 0.18em; color: #ffffff;
     }
 
     .receipt-brand-text span {
       background: linear-gradient(135deg, #10b981, #06b6d4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
 
     .receipt-logo {
-      width: 64px; height: 64px;
-      border-radius: 18px;
+      width: 64px; height: 64px; border-radius: 18px;
       display: flex; align-items: center; justify-content: center;
       margin: 0 auto 14px;
       background: #0d1220;
       border: 2px solid rgba(255,255,255,0.1);
       padding: 10px;
-      box-shadow: 
-        0 12px 35px -10px rgba(0, 0, 0, 0.7),
-        0 0 35px -10px var(--receipt-glow, rgba(16, 185, 129, 0.5));
-      position: relative;
-      z-index: 1;
+      box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.7), 0 0 35px -10px var(--receipt-glow, rgba(16, 185, 129, 0.5));
+      position: relative; z-index: 1;
     }
 
     .receipt-logo img { width: 100%; height: 100%; object-fit: contain; }
 
     .receipt-amount {
-      font-size: 40px;
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      margin-bottom: 6px;
-      position: relative;
-      z-index: 1;
+      font-size: 40px; font-weight: 900;
+      letter-spacing: -0.04em; line-height: 1;
+      margin-bottom: 6px; position: relative; z-index: 1;
       text-shadow: 0 2px 20px currentColor;
     }
 
     .receipt-amount-label {
-      font-size: 9px;
-      color: #6b7280;
+      font-size: 9px; color: #6b7280;
       font-family: 'JetBrains Mono', monospace;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 12px;
-      position: relative;
-      z-index: 1;
+      text-transform: uppercase; letter-spacing: 0.15em;
+      margin-bottom: 12px; position: relative; z-index: 1;
     }
 
     .receipt-status {
       display: inline-flex; align-items: center; gap: 5px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 9px;
-      font-weight: 900;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      position: relative;
-      z-index: 1;
+      padding: 6px 14px; border-radius: 999px;
+      font-size: 9px; font-weight: 900;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      position: relative; z-index: 1;
     }
 
     .receipt-status svg { width: 11px; height: 11px; }
@@ -1026,18 +811,12 @@
     .receipt-status.rejected { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
     .receipt-status.active { background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.4); }
 
-    .receipt-divider {
-      position: relative;
-      height: 16px;
-      margin: 0 16px;
-    }
+    .receipt-divider { position: relative; height: 16px; margin: 0 16px; }
 
     .receipt-divider::before, .receipt-divider::after {
       content: '';
-      position: absolute;
-      top: 50%; width: 14px; height: 14px;
-      background: #080b11;
-      border-radius: 50%;
+      position: absolute; top: 50%; width: 14px; height: 14px;
+      background: #080b11; border-radius: 50%;
       transform: translateY(-50%);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
@@ -1046,22 +825,15 @@
     .receipt-divider::after { right: -24px; }
 
     .receipt-divider-line {
-      position: absolute;
-      top: 50%; left: 0; right: 0;
-      height: 1px;
+      position: absolute; top: 50%; left: 0; right: 0; height: 1px;
       background: repeating-linear-gradient(90deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 5px, transparent 5px, transparent 10px);
       transform: translateY(-50%);
     }
 
-    .receipt-body {
-      padding: 14px 18px;
-      background: rgba(8, 11, 17, 0.5);
-    }
+    .receipt-body { padding: 14px 18px; background: rgba(8, 11, 17, 0.5); }
 
     .receipt-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
       padding: 9px 0;
       border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
       gap: 10px;
@@ -1070,84 +842,57 @@
     .receipt-row:last-child { border-bottom: none; }
 
     .receipt-row-label {
-      font-size: 9px;
-      color: #6b7280;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 800;
-      flex-shrink: 0;
+      font-size: 9px; color: #6b7280;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      font-weight: 800; flex-shrink: 0;
     }
 
     .receipt-row-value {
-      font-size: 11px;
-      font-weight: 800;
-      color: #ffffff;
+      font-size: 11px; font-weight: 800; color: #ffffff;
       font-family: 'JetBrains Mono', monospace;
-      text-align: right;
-      word-break: break-all;
-      line-height: 1.3;
+      text-align: right; word-break: break-all; line-height: 1.3;
     }
 
     .receipt-address-block {
       background: rgba(6, 182, 212, 0.06);
       border: 1px solid rgba(6, 182, 212, 0.25);
-      border-radius: 10px;
-      padding: 10px;
-      margin: 8px 0;
+      border-radius: 10px; padding: 10px; margin: 8px 0;
     }
 
     .receipt-address-label {
-      font-size: 8px;
-      color: #06b6d4;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 900;
-      margin-bottom: 5px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      font-size: 8px; color: #06b6d4;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      font-weight: 900; margin-bottom: 5px;
+      display: flex; align-items: center; gap: 4px;
     }
 
     .receipt-address-label svg { width: 10px; height: 10px; }
 
     .receipt-address-value {
-      font-size: 10px;
-      color: #ffffff;
+      font-size: 10px; color: #ffffff;
       font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      word-break: break-all;
-      line-height: 1.4;
+      font-weight: 600; word-break: break-all; line-height: 1.4;
     }
 
     .receipt-txid-block {
       background: rgba(16, 185, 129, 0.06);
       border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: 10px;
-      padding: 10px;
-      margin: 8px 0;
+      border-radius: 10px; padding: 10px; margin: 8px 0;
     }
 
     .receipt-txid-label {
-      font-size: 8px;
-      color: #10b981;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 900;
-      margin-bottom: 5px;
-      display: flex;
-      align-items: center;
-      gap: 4px;
+      font-size: 8px; color: #10b981;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      font-weight: 900; margin-bottom: 5px;
+      display: flex; align-items: center; gap: 4px;
     }
 
     .receipt-txid-label svg { width: 10px; height: 10px; }
 
     .receipt-txid-value {
-      font-size: 9px;
-      color: #ffffff;
+      font-size: 9px; color: #ffffff;
       font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      word-break: break-all;
-      line-height: 1.5;
+      font-weight: 600; word-break: break-all; line-height: 1.5;
     }
 
     .receipt-footer {
@@ -1160,38 +905,29 @@
 
     .receipt-footer::before {
       content: '';
-      position: absolute;
-      top: 0; left: 50%;
+      position: absolute; top: 0; left: 50%;
       transform: translateX(-50%);
-      width: 70%;
-      height: 1px;
+      width: 70%; height: 1px;
       background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.5), transparent);
     }
 
     .receipt-id {
-      font-size: 8px;
-      color: #4b5563;
+      font-size: 8px; color: #4b5563;
       font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 0.05em;
-      margin-bottom: 3px;
+      letter-spacing: 0.05em; margin-bottom: 3px;
     }
 
     .receipt-watermark {
-      font-size: 7px;
-      color: #374151;
-      text-transform: uppercase;
-      letter-spacing: 0.28em;
+      font-size: 7px; color: #374151;
+      text-transform: uppercase; letter-spacing: 0.28em;
       font-weight: 800;
     }
 
     .history-tx-card {
-      position: relative;
-      border-radius: 16px;
-      padding: 14px;
+      position: relative; border-radius: 16px; padding: 14px;
       background: linear-gradient(145deg, rgba(22, 28, 44, 0.9) 0%, rgba(15, 20, 32, 0.9) 100%);
       border: 1px solid rgba(255, 255, 255, 0.06);
-      transition: all 0.25s;
-      cursor: pointer;
+      transition: all 0.25s; cursor: pointer;
     }
 
     .history-tx-card:hover {
@@ -1201,12 +937,9 @@
     }
 
     .history-tx-logo {
-      width: 44px; height: 44px;
-      border-radius: 14px;
+      width: 44px; height: 44px; border-radius: 14px;
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      background: #0d1220;
-      padding: 6px;
+      flex-shrink: 0; background: #0d1220; padding: 6px;
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
@@ -1548,11 +1281,11 @@
             <span class="text-[7px] text-blue-400 font-mono">ERC20</span>
           </div>
           <div class="flex flex-col items-center gap-1.5 p-2 rounded-xl bg-brand-bg border border-brand-border">
-            <div class="network-logo-wrap network-logo-usdc" style="width:32px;height:32px;">
-              <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040" alt="USDC" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#2775CA;font-weight:900;font-size:14px\'>$</span>'">
+            <div class="network-logo-wrap network-logo-ton" style="width:32px;height:32px;">
+              <img src="https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040" alt="TON" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#0098EA;font-weight:900;font-size:14px\'>💎</span>'">
             </div>
-            <span class="text-[8px] font-black text-white">USDC</span>
-            <span class="text-[7px] text-cyan-400 font-mono">USD</span>
+            <span class="text-[8px] font-black text-white">TON</span>
+            <span class="text-[7px] text-cyan-400 font-mono">TON</span>
           </div>
         </div>
       </div>
@@ -1663,15 +1396,15 @@
             </div>
           </div>
 
-          <div onclick="selectCryptoMethod('usdc')" id="card-usdc" class="network-card">
+          <div onclick="selectCryptoMethod('ton')" id="card-ton" class="network-card">
             <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
             <div class="flex items-center gap-2.5">
-              <div class="network-logo-wrap network-logo-usdc">
-                <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040" alt="USDC" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#2775CA;font-weight:900;font-size:16px\'>$</span>'">
+              <div class="network-logo-wrap network-logo-ton">
+                <img src="https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040" alt="TON" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#0098EA;font-weight:900;font-size:16px\'>💎</span>'">
               </div>
               <div class="min-w-0">
-                <h5 class="text-[11px] font-black text-white">USDC</h5>
-                <p class="text-[9px] text-cyan-400 font-bold">USD Coin</p>
+                <h5 class="text-[11px] font-black text-white">TON</h5>
+                <p class="text-[9px] text-cyan-400 font-bold">Toncoin</p>
               </div>
             </div>
           </div>
@@ -1722,7 +1455,7 @@
             <i data-lucide="wallet" class="w-3 h-3 text-emerald-400"></i> Deposit Address
           </div>
           <div class="flex items-center gap-2">
-            <input type="text" id="wallet-address-text" readonly value="TY9x8K2zXq2P1mN84jLpQvM902RzL1mN" class="bg-transparent text-[11px] text-emerald-400 font-mono font-bold w-full focus:outline-none tracking-tight">
+            <input type="text" id="wallet-address-text" readonly value="TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs" class="bg-transparent text-[11px] text-emerald-400 font-mono font-bold w-full focus:outline-none tracking-tight">
             <button onclick="copyToClipboard('wallet-address-text')" class="px-3 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-black rounded-lg text-[10px] shrink-0 flex items-center gap-1 shadow-md shadow-emerald-500/25 active:scale-95 transition-all">
               <i data-lucide="copy" class="w-3 h-3"></i> COPY
             </button>
@@ -1746,7 +1479,7 @@
         <div id="deposit-qr-container" class="pt-2 flex flex-col items-center justify-center hidden">
           <div class="qr-frame">
             <div>
-              <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TY9x8K2zXq2P1mN84jLpQvM902RzL1mN&color=080b11&bgcolor=ffffff" alt="QR" class="w-40 h-40 rounded-md">
+              <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs&color=080b11&bgcolor=ffffff" alt="QR" class="w-40 h-40 rounded-md">
             </div>
           </div>
           <span class="text-[10px] text-gray-500 mt-2 font-mono">Scan with your crypto wallet</span>
@@ -1888,15 +1621,15 @@
             </div>
           </div>
 
-          <div onclick="selectWithdrawNetwork('usdc')" id="w-card-usdc" class="network-card">
+          <div onclick="selectWithdrawNetwork('ton')" id="w-card-ton" class="network-card">
             <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
             <div class="flex items-center gap-2.5">
-              <div class="network-logo-wrap network-logo-usdc">
-                <img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040" alt="USDC" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#2775CA;font-weight:900;font-size:16px\'>$</span>'">
+              <div class="network-logo-wrap network-logo-ton">
+                <img src="https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040" alt="TON" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#0098EA;font-weight:900;font-size:16px\'>💎</span>'">
               </div>
               <div class="min-w-0">
-                <h5 class="text-[11px] font-black text-white">USDC</h5>
-                <p class="text-[9px] text-cyan-400 font-bold">USD Coin</p>
+                <h5 class="text-[11px] font-black text-white">TON</h5>
+                <p class="text-[9px] text-cyan-400 font-bold">Toncoin</p>
               </div>
             </div>
           </div>
@@ -2376,7 +2109,7 @@
     </div>
   </div>
 
-  <!-- 🆕 MODERN ALERT MODAL -->
+  <!-- MODERN ALERT MODAL -->
   <div id="modern-alert-overlay" class="modern-alert-overlay" onclick="closeModernAlert(event)">
     <div class="modern-alert-card" id="modern-alert-card" onclick="event.stopPropagation()">
       <div class="modern-alert-glow" id="modern-alert-glow"></div>
@@ -2459,9 +2192,6 @@
       localStorage.setItem('apex_inv_' + currentUserProfile.id, JSON.stringify(activeInvestments));
     }
 
-    // ============================================================
-    // 🆕 MODERN ALERT SYSTEM (Alert hore oo casri ah)
-    // ============================================================
     function showModernAlert({ title, message, type = 'info', icon = 'alert-circle', btnText = 'Got it' }) {
       const overlay = document.getElementById('modern-alert-overlay');
       const card = document.getElementById('modern-alert-card');
@@ -2524,10 +2254,6 @@
       const overlay = document.getElementById('modern-alert-overlay');
       overlay.classList.remove('show');
     }
-
-    // ============================================================
-    // ⚡ UPDATE: MAIN CARD BALANCE AUTO-DEDUCT
-    // ============================================================
 
     function updateWalletUI() {
       const liquid = userPortfolio.balance;
@@ -2606,11 +2332,42 @@
       document.getElementById('admin-real-pending-count').innerText = pendingCount;
     }
 
+    // ============================================================
+    // ⚡ CUSUB: ADDRESS-YADA SAXDA AH + TON (USDC BEDDEL)
+    // ============================================================
     const cryptoWallets = {
-      usdt_trc20: { name: 'USDT (TRC20 - Tron)', address: 'TY9x8K2zXq2P1mN84jLpQvM902RzL1mN', logo: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040', emoji: '₮', logoClass: 'network-logo-usdt', color: '#26A17B' },
-      usdt_bep20: { name: 'USDT (BEP20 - BNB Chain)', address: '0x89234b9A1F8203bC61204e9021mN84jL', logo: 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040', emoji: '⚡', logoClass: 'network-logo-bnb', color: '#F3BA2F' },
-      usdt_erc20: { name: 'USDT (ERC20 - Ethereum)', address: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', logo: 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040', emoji: 'Ξ', logoClass: 'network-logo-eth', color: '#627EEA' },
-      usdc: { name: 'USDC (USD Coin)', address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', logo: 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040', emoji: '$', logoClass: 'network-logo-usdc', color: '#2775CA' }
+      usdt_trc20: { 
+        name: 'USDT (TRC20 - Tron)', 
+        address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', 
+        logo: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040', 
+        emoji: '₮', 
+        logoClass: 'network-logo-usdt', 
+        color: '#26A17B' 
+      },
+      usdt_bep20: { 
+        name: 'USDT (BEP20 - BNB Chain)', 
+        address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', 
+        logo: 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040', 
+        emoji: '⚡', 
+        logoClass: 'network-logo-bnb', 
+        color: '#F3BA2F' 
+      },
+      usdt_erc20: { 
+        name: 'USDT (ERC20 - Ethereum)', 
+        address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', 
+        logo: 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040', 
+        emoji: 'Ξ', 
+        logoClass: 'network-logo-eth', 
+        color: '#627EEA' 
+      },
+      ton: { 
+        name: 'TON (Toncoin)', 
+        address: 'UQBGo3k-EhMubMv4h3RqHszdcJdqoxttvZnuwDvPHbk8jl6P', 
+        logo: 'https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040', 
+        emoji: '💎', 
+        logoClass: 'network-logo-ton', 
+        color: '#0098EA' 
+      }
     };
 
     let selectedDepositNetworkKey = 'usdt_trc20';
@@ -2625,7 +2382,7 @@
       document.getElementById('selected-network-badge').innerText = data.name;
       document.getElementById('warning-net-name').innerText = data.name;
       document.getElementById('wallet-address-text').value = data.address;
-      document.getElementById('qr-code-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${data.address}&color=080b11&bgcolor=ffffff`;
+      document.getElementById('qr-code-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(data.address)}&color=080b11&bgcolor=ffffff`;
     }
 
     function setDepositQuickAmount(amt) {
@@ -2669,7 +2426,7 @@
       document.querySelectorAll('[id^="w-card-"]').forEach(card => card.classList.remove('active'));
       document.getElementById(`w-card-${networkKey}`).classList.add('active');
 
-      const netNames = { usdt_trc20: 'TRC20', usdt_bep20: 'BEP20', usdt_erc20: 'ERC20', usdc: 'USDC' };
+      const netNames = { usdt_trc20: 'TRC20', usdt_bep20: 'BEP20', usdt_erc20: 'ERC20', ton: 'TON' };
       document.getElementById('withdraw-network-label').innerText = netNames[networkKey];
       document.getElementById('warning-withdraw-net').innerText = netNames[networkKey];
     }
@@ -2706,10 +2463,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // ============================================================
-    // PROCESSING ANIMATION
-    // ============================================================
-    
     function createParticles() {
       const container = document.getElementById('particle-container');
       container.innerHTML = '';
@@ -2805,9 +2558,6 @@
       }, 5500);
     }
 
-    // ============================================================
-    // RECEIPT
-    // ============================================================
     function generateReceiptHTML(tx) {
       const isDeposit = tx.type === 'deposit';
       const isWithdrawal = tx.type === 'withdraw';
@@ -2857,9 +2607,9 @@
       } else if (tx.network && tx.network.includes('ERC20')) {
         networkLogo = 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040';
         networkEmoji = 'Ξ';
-      } else if (tx.network && tx.network.includes('USDC')) {
-        networkLogo = 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040';
-        networkEmoji = '$';
+      } else if (tx.network && tx.network.includes('TON')) {
+        networkLogo = 'https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040';
+        networkEmoji = '💎';
       } else if (isInvestment) {
         networkLogo = '';
         networkEmoji = '📈';
@@ -3034,11 +2784,11 @@
           logoEmoji = 'Ξ';
           logoColor = '#627EEA';
           logoClass = 'network-logo-eth';
-        } else if (tx.network && tx.network.includes('USDC')) {
-          logoImg = 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040';
-          logoEmoji = '$';
-          logoColor = '#2775CA';
-          logoClass = 'network-logo-usdc';
+        } else if (tx.network && tx.network.includes('TON')) {
+          logoImg = 'https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040';
+          logoEmoji = '💎';
+          logoColor = '#0098EA';
+          logoClass = 'network-logo-ton';
         } else if (tx.type === 'investment') {
           logoImg = '';
           logoEmoji = '📈';
@@ -3222,9 +2972,6 @@
       document.getElementById('modal-total-payout').innerText = `$${totalPayout.toFixed(2)}`;
     }
 
-    // ============================================================
-    // ⚡ INVEST — MAIN CARD BALANCE AUTO-DEDUCT
-    // ============================================================
     function confirmInvestment() {
       const amt = parseFloat(document.getElementById('modal-amount-input').value);
       
@@ -3252,7 +2999,6 @@
       const now = Date.now();
       const endTime = now + (currentPlan.days * 24 * 60 * 60 * 1000);
 
-      // ⚡ MAIN CARD BALANCE AUTO-DEDUCT
       userPortfolio.balance -= amt;
       userPortfolio.lockedBalance += amt;
       updateWalletUI();
@@ -3288,9 +3034,6 @@
       });
     }
 
-    // ============================================================
-    // ⚡ DEPOSIT
-    // ============================================================
     function initiateDepositProcess() {
       const depAmtInput = document.getElementById('deposit-amount-input');
       const hashInput = document.getElementById('tx-hash-input');
@@ -3348,7 +3091,7 @@
       });
       
       const txObj = {
-        id: txId, type: 'deposit', title: 'USDT Deposit', network: networkName,
+        id: txId, type: 'deposit', title: 'Crypto Deposit', network: networkName,
         ref: proofRef, rawAmount: depAmt, amount: `+$${depAmt.toFixed(2)}`,
         status: 'Pending Review', color: 'emerald', icon: 'arrow-down-left',
         time: nowStr, fullDate: nowStr, fullId: 'DEP-' + txId.toUpperCase().slice(-12),
@@ -3364,9 +3107,6 @@
       startProcessingAnimation(`+$${depAmt.toFixed(2)}`, txId);
     }
 
-    // ============================================================
-    // ⚡ WITHDRAW — MAIN CARD BALANCE AUTO-DEDUCT
-    // ============================================================
     function initiateWithdrawalProcess() {
       const amt = parseFloat(document.getElementById('withdraw-amount').value);
       const addr = document.getElementById('withdraw-address').value.trim();
@@ -3402,12 +3142,11 @@
         return;
       }
 
-      // ⚡ MAIN CARD BALANCE AUTO-DEDUCT
       userPortfolio.balance -= amt;
       updateWalletUI();
       saveAppData();
 
-      const netNames = { usdt_trc20: 'USDT (TRC20)', usdt_bep20: 'USDT (BEP20)', usdt_erc20: 'ERC20', usdc: 'USDC' };
+      const netNames = { usdt_trc20: 'USDT (TRC20)', usdt_bep20: 'USDT (BEP20)', usdt_erc20: 'USDT (ERC20)', ton: 'TON' };
       const netName = netNames[selectedWithdrawNetworkKey];
       const shortAddr = addr.length > 20 ? addr.substring(0, 6) + '...' + addr.substring(addr.length - 4) : addr;
 
@@ -3422,7 +3161,7 @@
       });
       
       const txObj = {
-        id: txId, type: 'withdraw', title: 'USDT Withdrawal', network: netName,
+        id: txId, type: 'withdraw', title: 'Crypto Withdrawal', network: netName,
         ref: 'To: ' + shortAddr, rawAmount: amt, amount: `-$${amt.toFixed(2)}`,
         status: 'Pending Review', color: 'cyan', icon: 'arrow-up-right',
         time: nowStr, fullDate: nowStr, fullId: 'WDR-' + txId.toUpperCase().slice(-12),
@@ -3704,4 +3443,4 @@
     }
   </script>
 </body>
-                  </html>
+  </html>
