@@ -2172,13 +2172,64 @@
     let uploadedScreenshotData = null;
     let pendingReceiptTx = null;
 
-    window.addEventListener('DOMContentLoaded', () => {
+    // ============================================================
+    // ⚡ XIRIIRKA SERVER-KA (RENDER)
+    // ============================================================
+    const API_URL = '';
+    let authToken = localStorage.getItem('apex_jwt_' + currentUserProfile.id);
+
+    async function authenticateWithServer() {
+      try {
+        const initDataToSend = tg?.initData || "demo"; 
+        
+        const res = await fetch(`${API_URL}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ initData: initDataToSend })
+        });
+        
+        if (!res.ok) throw new Error('Auth failed');
+        const data = await res.json();
+        
+        authToken = data.token;
+        localStorage.setItem('apex_jwt_' + currentUserProfile.id, authToken);
+        
+        userPortfolio.balance = data.user.balance;
+        userPortfolio.lockedBalance = data.user.lockedBalance;
+        userPortfolio.totalDeposited = data.user.totalDeposited || 0;
+        userPortfolio.totalWithdrawn = data.user.totalWithdrawn || 0;
+        
+        updateWalletUI();
+        console.log('✅ Authenticated with server');
+      } catch (err) {
+        console.error('❌ Auth failed:', err);
+        showModernAlert({ title: 'Connection Error', message: 'Could not connect to server.', type: 'error', icon: 'wifi-off' });
+      }
+    }
+
+    async function apiCall(endpoint, method = 'GET', body = null) {
+      const headers = { 'Content-Type': 'application/json' };
+      if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
+      
+      const res = await fetch(`${API_URL}${endpoint}`, {
+        method,
+        headers,
+        body: body ? JSON.stringify(body) : null
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || data.reason || 'Request failed');
+      return data;
+    }
+
+    window.addEventListener('DOMContentLoaded', async () => {
       updateWalletUI();
       renderHistory();
       renderSupportTickets();
       renderActiveInvestments();
       updateAdminStats();
       
+      await authenticateWithServer(); 
+
       setInterval(pollServerForSupportReplies, 2500);
       setInterval(pollTelegramCallbackQueries, 2500);
       setInterval(updateLiveProfits, 1000);
@@ -2332,9 +2383,6 @@
       document.getElementById('admin-real-pending-count').innerText = pendingCount;
     }
 
-    // ============================================================
-    // ⚡ CUSUB: ADDRESS-YADA SAXDA AH + TON (USDC BEDDEL)
-    // ============================================================
     const cryptoWallets = {
       usdt_trc20: { 
         name: 'USDT (TRC20 - Tron)', 
@@ -2972,283 +3020,130 @@
       document.getElementById('modal-total-payout').innerText = `$${totalPayout.toFixed(2)}`;
     }
 
-    function confirmInvestment() {
+    async function confirmInvestment() {
       const amt = parseFloat(document.getElementById('modal-amount-input').value);
       
       if (isNaN(amt) || amt < currentPlan.min || amt > currentPlan.max) {
-        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Invalid Amount', 
-          message: `Please enter an amount between $${currentPlan.min} and $${currentPlan.max.toLocaleString()}.`, 
-          type: 'warning', 
-          icon: 'alert-circle' 
-        });
+        showModernAlert({ title: 'Invalid Amount', message: `Range: $${currentPlan.min} - $${currentPlan.max}`, type: 'warning', icon: 'alert-circle' });
         return;
       }
       if (amt > userPortfolio.balance) {
-        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Insufficient Balance', 
-          message: `Your available balance is $${userPortfolio.balance.toFixed(2)}. Please deposit more funds to invest $${amt.toFixed(2)}.`, 
-          type: 'error', 
-          icon: 'wallet' 
-        });
+        showModernAlert({ title: 'Insufficient Balance', message: `You have $${userPortfolio.balance.toFixed(2)}`, type: 'error', icon: 'wallet' });
         return;
       }
 
-      const now = Date.now();
-      const endTime = now + (currentPlan.days * 24 * 60 * 60 * 1000);
+      try {
+        const result = await apiCall('/api/invest', 'POST', {
+          planTitle: currentPlan.title,
+          amount: amt,
+          rate: currentPlan.rate,
+          days: currentPlan.days
+        });
 
-      userPortfolio.balance -= amt;
-      userPortfolio.lockedBalance += amt;
-      updateWalletUI();
+        userPortfolio.balance = result.balance; 
+        userPortfolio.lockedBalance += amt;
+        updateWalletUI();
 
-      activeInvestments.unshift({
-        title: currentPlan.title, rawAmount: amt, rate: currentPlan.rate, days: currentPlan.days,
-        startTime: now, endTime: endTime, currentProfit: 0, progress: 0
-      });
-      saveAppData();
-      renderActiveInvestments();
+        const now = Date.now();
+        activeInvestments.unshift({
+          title: currentPlan.title, rawAmount: amt, rate: currentPlan.rate, days: currentPlan.days,
+          startTime: now, endTime: result.investment.endTime, currentProfit: 0, progress: 0
+        });
+        renderActiveInvestments();
 
-      const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-      const invId = 'inv_' + Date.now();
-      const newTx = {
-        id: invId, type: 'investment', title: currentPlan.title,
-        network: `${currentPlan.days}-Day Lock`, ref: 'Plan Allocation', rawAmount: amt,
-        amount: `-$${amt.toFixed(2)}`, status: 'Active', color: 'cyan', icon: 'zap', 
-        time: nowStr, fullDate: nowStr, fullId: invId.toUpperCase()
-      };
-      transactionsHistory.unshift(newTx);
-      saveAppData();
-      renderHistory();
-      closeModal('invest-modal');
+        const newTx = {
+          id: result.investment._id, type: 'investment', title: currentPlan.title,
+          network: `${currentPlan.days}-Day Lock`, ref: 'Plan Allocation', rawAmount: amt,
+          amount: `-$${amt.toFixed(2)}`, status: 'Active',
+          time: new Date().toLocaleString(),
+          fullDate: new Date().toLocaleString(),
+          fullId: result.investment._id
+        };
+        transactionsHistory.unshift(newTx);
+        renderHistory();
+        saveAppData();
+        closeModal('invest-modal');
 
-      triggerAdminBotNotification(`🚀 *NEW INVESTMENT*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n📦 Plan: *${currentPlan.title}*`);
-      
-      showModernAlert({ 
-        title: 'Investment Started!', 
-        message: `$${amt.toFixed(2)} has been deployed into ${currentPlan.title}. Your main card balance has been updated automatically.`, 
-        type: 'success', 
-        icon: 'check-circle',
-        btnText: 'View Dashboard'
-      });
+        showModernAlert({ title: 'Investment Started! 🚀', message: `$${amt} deployed into ${currentPlan.title}`, type: 'success', icon: 'check-circle' });
+      } catch (err) {
+        showModernAlert({ title: 'Investment Failed', message: err.message, type: 'error', icon: 'x-circle' });
+      }
     }
 
-    function initiateDepositProcess() {
-      const depAmtInput = document.getElementById('deposit-amount-input');
-      const hashInput = document.getElementById('tx-hash-input');
-      const depAmt = parseFloat(depAmtInput.value);
-      const hash = hashInput.value.trim();
+    async function initiateDepositProcess() {
+      const depAmt = parseFloat(document.getElementById('deposit-amount-input').value);
+      const hash = document.getElementById('tx-hash-input').value.trim();
 
-      if (isNaN(depAmt) || depAmt < 5) {
-        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Invalid Amount', 
-          message: 'The minimum deposit amount is $5.00. Please enter a valid amount.', 
-          type: 'warning', 
-          icon: 'alert-circle' 
+      if (isNaN(depAmt) || depAmt < 5) return showModernAlert({ title: 'Min $5', message: 'Minimum is $5', type: 'warning', icon: 'alert-circle' });
+      if (!hash || hash.length < 5) return showModernAlert({ title: 'TxID Required', message: 'Please provide a valid TxID', type: 'warning', icon: 'alert-circle' });
+
+      try {
+        const result = await apiCall('/api/deposit/request', 'POST', {
+          txid: hash, amount: depAmt, network: selectedDepositNetworkKey
         });
-        return;
+
+        const txObj = {
+          id: 'tx_' + Date.now(), type: 'deposit', title: 'Crypto Deposit',
+          network: cryptoWallets[selectedDepositNetworkKey].name,
+          ref: 'TxID: ' + hash.substring(0, 8) + '...',
+          rawAmount: depAmt, amount: `+$${depAmt.toFixed(2)}`,
+          status: 'Pending Review', time: new Date().toLocaleString(),
+          fullDate: new Date().toLocaleString(), fullAddress: hash
+        };
+        transactionsHistory.unshift(txObj);
+        renderHistory();
+        
+        document.getElementById('deposit-amount-input').value = '';
+        document.getElementById('tx-hash-input').value = '';
+        backToWalletOverview();
+        
+        showModernAlert({ title: 'Sent to Admin', message: 'Your deposit is pending admin approval.', type: 'info', icon: 'clock' });
+      } catch (err) {
+        showModernAlert({ title: 'Error', message: err.message, type: 'error', icon: 'x-circle' });
       }
-      if ((!hash || hash.length < 5) && !uploadedScreenshotData) {
-        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Proof Required', 
-          message: 'Please provide either a Transaction ID (TxID) or upload a screenshot of your transfer to proceed.', 
-          type: 'warning', 
-          icon: 'image' 
-        });
-        return;
-      }
-
-      const networkName = cryptoWallets[selectedDepositNetworkKey].name;
-      
-      let actualProof = '';
-      if (hash && hash.length >= 5) {
-        actualProof = hash;
-      } else {
-        actualProof = uploadedScreenshotData;
-      }
-
-      let proofRef = '';
-      if (hash && hash.length >= 5) {
-        proofRef = 'TxID: ' + hash.substring(0, 8) + '...';
-      } else {
-        proofRef = 'Screenshot: ' + uploadedScreenshotData;
-      }
-
-      depAmtInput.value = '';
-      hashInput.value = '';
-      uploadedScreenshotData = null;
-      document.getElementById('upload-placeholder-content').classList.remove('hidden');
-      document.getElementById('upload-preview-container').classList.add('hidden');
-      backToWalletOverview();
-
-      const txId = 'tx_' + Date.now();
-      const nowStr = new Date().toLocaleString('en-US', { 
-        month: 'short', day: 'numeric', year: 'numeric', 
-        hour: '2-digit', minute: '2-digit' 
-      });
-      
-      const txObj = {
-        id: txId, type: 'deposit', title: 'Crypto Deposit', network: networkName,
-        ref: proofRef, rawAmount: depAmt, amount: `+$${depAmt.toFixed(2)}`,
-        status: 'Pending Review', color: 'emerald', icon: 'arrow-down-left',
-        time: nowStr, fullDate: nowStr, fullId: 'DEP-' + txId.toUpperCase().slice(-12),
-        fullAddress: actualProof
-      };
-
-      transactionsHistory.unshift(txObj);
-      saveAppData();
-      renderHistory();
-
-      triggerAdminBotNotificationWithKeyboard(`🚨 *DEPOSIT REQUEST*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *+$${depAmt.toFixed(2)}*\n🌐 Network: \`${networkName}\`\n🔗 Ref: \`${proofRef}\``, txId);
-      
-      startProcessingAnimation(`+$${depAmt.toFixed(2)}`, txId);
     }
 
-    function initiateWithdrawalProcess() {
+    async function initiateWithdrawalProcess() {
       const amt = parseFloat(document.getElementById('withdraw-amount').value);
       const addr = document.getElementById('withdraw-address').value.trim();
 
-      if (!amt || amt < 5) {
-        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Minimum Withdrawal', 
-          message: 'The minimum withdrawal amount is $5.00. Please enter a valid amount.', 
-          type: 'warning', 
-          icon: 'alert-circle' 
+      if (!amt || amt < 5) return showModernAlert({ title: 'Min $5', message: 'Minimum is $5', type: 'warning', icon: 'alert-circle' });
+      if (!addr) return showModernAlert({ title: 'Address Required', message: 'Provide address', type: 'warning', icon: 'wallet' });
+
+      try {
+        const result = await apiCall('/api/withdraw/request', 'POST', {
+          amount: amt, network: selectedWithdrawNetworkKey, address: addr
         });
-        return;
+
+        userPortfolio.balance = result.new_balance; 
+        updateWalletUI();
+
+        const txObj = {
+          id: 'tx_' + Date.now(), type: 'withdraw', title: 'Crypto Withdrawal',
+          network: selectedWithdrawNetworkKey,
+          ref: 'To: ' + addr.substring(0, 6) + '...' + addr.slice(-4),
+          rawAmount: amt, amount: `-$${amt.toFixed(2)}`,
+          status: 'Pending Review', time: new Date().toLocaleString(),
+          fullDate: new Date().toLocaleString(), fullAddress: addr
+        };
+        transactionsHistory.unshift(txObj);
+        renderHistory();
+
+        document.getElementById('withdraw-amount').value = '';
+        document.getElementById('withdraw-address').value = '';
+        backToWalletOverview();
+        
+        showModernAlert({ title: 'Sent to Admin', message: 'Withdrawal pending approval.', type: 'info', icon: 'clock' });
+      } catch (err) {
+        showModernAlert({ title: 'Failed', message: err.message, type: 'error', icon: 'x-circle' });
       }
-      if (amt > userPortfolio.balance) {
-        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Insufficient Balance', 
-          message: `You are trying to withdraw $${amt.toFixed(2)} but your available balance is only $${userPortfolio.balance.toFixed(2)}.`, 
-          type: 'error', 
-          icon: 'wallet' 
-        });
-        return;
-      }
-      if (!addr || addr.length < 10) {
-        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Invalid Address', 
-          message: 'Please provide a valid wallet address to receive your funds. Double-check the address before proceeding.', 
-          type: 'warning', 
-          icon: 'wallet' 
-        });
-        return;
-      }
-
-      userPortfolio.balance -= amt;
-      updateWalletUI();
-      saveAppData();
-
-      const netNames = { usdt_trc20: 'USDT (TRC20)', usdt_bep20: 'USDT (BEP20)', usdt_erc20: 'USDT (ERC20)', ton: 'TON' };
-      const netName = netNames[selectedWithdrawNetworkKey];
-      const shortAddr = addr.length > 20 ? addr.substring(0, 6) + '...' + addr.substring(addr.length - 4) : addr;
-
-      document.getElementById('withdraw-amount').value = '';
-      document.getElementById('withdraw-address').value = '';
-      backToWalletOverview();
-
-      const txId = 'tx_' + Date.now();
-      const nowStr = new Date().toLocaleString('en-US', { 
-        month: 'short', day: 'numeric', year: 'numeric', 
-        hour: '2-digit', minute: '2-digit' 
-      });
-      
-      const txObj = {
-        id: txId, type: 'withdraw', title: 'Crypto Withdrawal', network: netName,
-        ref: 'To: ' + shortAddr, rawAmount: amt, amount: `-$${amt.toFixed(2)}`,
-        status: 'Pending Review', color: 'cyan', icon: 'arrow-up-right',
-        time: nowStr, fullDate: nowStr, fullId: 'WDR-' + txId.toUpperCase().slice(-12),
-        fullAddress: addr
-      };
-
-      transactionsHistory.unshift(txObj);
-      saveAppData();
-      renderHistory();
-
-      triggerAdminBotNotificationWithKeyboard(`🚨 *WITHDRAWAL REQUEST*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n🌐 Network: \`${netName}\`\n🔗 Address: \`${shortAddr}\``, txId);
-      
-      startProcessingAnimation(`-$${amt.toFixed(2)}`, txId);
     }
 
-    function triggerAdminBotNotification(textMessage) {
-      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
-      const ADMIN_CHAT_ID = "5738022147";
-      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: textMessage, parse_mode: "Markdown" })
-      }).catch(err => console.log('Telegram dispatch:', err));
-    }
-
-    function triggerAdminBotNotificationWithKeyboard(textMessage, txId) {
-      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
-      const ADMIN_CHAT_ID = "5738022147";
-      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: ADMIN_CHAT_ID, text: textMessage, parse_mode: "Markdown",
-          reply_markup: { inline_keyboard: [[
-            { text: "✅ Approve", callback_data: `approve_${txId}` },
-            { text: "❌ Reject", callback_data: `reject_${txId}` }
-          ]]}
-        })
-      }).catch(err => console.log('Telegram dispatch:', err));
-    }
+    function triggerAdminBotNotification(textMessage) {}
+    function triggerAdminBotNotificationWithKeyboard(textMessage, txId) {}
 
     function simulateSystemResponse(txId, action) {
-      const targetTx = transactionsHistory.find(t => t.id === txId);
-      if (!targetTx || targetTx.status !== 'Pending Review') {
-        showModernAlert({ 
-          title: 'Already Processed', 
-          message: 'This transaction has already been reviewed and processed.', 
-          type: 'info', 
-          icon: 'info' 
-        });
-        return;
-      }
-
-      if (action === 'approve') {
-        targetTx.status = 'Completed';
-        if (targetTx.type === 'deposit') {
-          userPortfolio.balance += targetTx.rawAmount;
-          userPortfolio.totalDeposited += targetTx.rawAmount;
-        } else if (targetTx.type === 'withdraw') {
-          userPortfolio.totalWithdrawn += targetTx.rawAmount;
-        }
-        updateWalletUI();
-        triggerAdminBotNotification(`✅ *APPROVED*\n\nUser: \`${currentUserProfile.id}\`\nAmount: *${targetTx.amount}*`);
-        showModernAlert({ 
-          title: 'Approved Successfully', 
-          message: `Your ${targetTx.type} of ${targetTx.amount} has been verified and approved. Funds are now available.`, 
-          type: 'success', 
-          icon: 'check-circle' 
-        });
-      } else {
-        targetTx.status = 'Rejected';
-        if (targetTx.type === 'withdraw') {
-          userPortfolio.balance += targetTx.rawAmount;
-          updateWalletUI();
-        }
-        triggerAdminBotNotification(`❌ *REJECTED*\n\nUser: \`${currentUserProfile.id}\`\nAmount: *${targetTx.amount}*`);
-        showModernAlert({ 
-          title: 'Transaction Declined', 
-          message: `The ${targetTx.type} of ${targetTx.amount} was declined. If you believe this is an error, please contact support.`, 
-          type: 'error', 
-          icon: 'x-circle' 
-        });
-      }
-      saveAppData();
-      renderHistory();
-      
-      if (!document.getElementById('receipt-modal').classList.contains('hidden')) {
-        openReceiptModal(txId);
-      }
+      showModernAlert({ title: 'Notice', message: 'Approve/Reject is now handled in Telegram.', type: 'info', icon: 'info' });
     }
 
     function showNotificationPopup(title, desc, color, icon) {
@@ -3271,12 +3166,7 @@
       const message = document.getElementById('support-message').value.trim();
 
       if (!message || message.length < 5) {
-        showModernAlert({ 
-          title: 'Message Too Short', 
-          message: 'Please provide a detailed description of your issue (at least 5 characters) so our support team can assist you effectively.', 
-          type: 'warning', 
-          icon: 'alert-circle' 
-        });
+        showModernAlert({ title: 'Message Too Short', message: 'Please provide a detailed description.', type: 'warning', icon: 'alert-circle' });
         return;
       }
 
@@ -3289,134 +3179,11 @@
       renderSupportTickets();
       document.getElementById('support-message').value = '';
 
-      triggerAdminBotNotificationWithSupportKeyboard(
-        `🎫 *SUPPORT TICKET ${ticketBadge}*\n\n👤 ${currentUserProfile.name} (\`${currentUserProfile.username}\`)\n🆔 \`${currentUserProfile.id}\`\n📂 *${category}*\n💬 _${message}_`, 
-        ticketId
-      );
-      showModernAlert({ 
-        title: 'Ticket Submitted', 
-        message: `Your support ticket ${ticketBadge} has been received. Our team will respond shortly.`, 
-        type: 'success', 
-        icon: 'headphones' 
-      });
+      showModernAlert({ title: 'Ticket Submitted', message: 'Our team will respond shortly.', type: 'success', icon: 'headphones' });
     }
 
-    function triggerAdminBotNotificationWithSupportKeyboard(textMessage, ticketId) {
-      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
-      const ADMIN_CHAT_ID = "5738022147";
-      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: ADMIN_CHAT_ID, text: textMessage, parse_mode: "Markdown",
-          reply_markup: { inline_keyboard: [[{ text: "💬 Reply to User", callback_data: `reply_tkt_${ticketId}` }]] }
-        })
-      }).catch(err => console.log('Telegram dispatch:', err));
-    }
-
-    function sendAdminSupportReply(ticketBadge) {
-      const replyInput = document.getElementById(`admin-reply-input-${ticketBadge}`);
-      if (!replyInput) return;
-      const replyText = replyInput.value.trim();
-      if (!replyText) {
-        showModernAlert({ 
-          title: 'Reply Required', 
-          message: 'Please type a reply message before sending.', 
-          type: 'warning', 
-          icon: 'alert-circle' 
-        });
-        return;
-      }
-
-      const targetTicket = supportTickets.find(t => t.id === ticketBadge);
-      if (targetTicket) {
-        targetTicket.reply = replyText;
-        targetTicket.status = 'Resolved';
-        saveAppData();
-        renderSupportTickets();
-        triggerAdminBotNotification(`💬 *REPLY SENT*\n\nUser: ${currentUserProfile.username}\nTicket: *${targetTicket.id}*\nReply: _${replyText}_`);
-        showModernAlert({ 
-          title: 'Reply Sent', 
-          message: `Your response has been delivered to the user for ticket ${targetTicket.id}.`, 
-          type: 'success', 
-          icon: 'check-circle' 
-        });
-      }
-    }
-
-    function pollServerForSupportReplies() {
-      const stored = localStorage.getItem('apex_support_' + currentUserProfile.id);
-      if (stored) {
-        try {
-          const parsed = JSON.parse(stored);
-          let updated = false;
-          parsed.forEach(st => {
-            const localMatch = supportTickets.find(lt => lt.id === st.id);
-            if (localMatch && !localMatch.reply && st.reply) {
-              localMatch.reply = st.reply;
-              localMatch.status = st.status;
-              updated = true;
-              showModernAlert({ 
-                title: 'New Reply Received', 
-                message: `Support replied to ticket ${st.id}: "${st.reply}"`, 
-                type: 'info', 
-                icon: 'message-square' 
-              });
-            }
-          });
-          if (updated) renderSupportTickets();
-        } catch (e) {}
-      }
-    }
-
-    let lastUpdateId = parseInt(localStorage.getItem('apex_last_update_id') || '0');
-    function pollTelegramCallbackQueries() {
-      if (!isAdmin) return;
-      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
-
-      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=1`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.ok && data.result && data.result.length > 0) {
-            data.result.forEach(update => {
-              lastUpdateId = Math.max(lastUpdateId, update.update_id);
-              localStorage.setItem('apex_last_update_id', lastUpdateId.toString());
-
-              if (update.callback_query) {
-                const query = update.callback_query;
-                const dataStr = query.data;
-                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`, {
-                  method: 'POST', headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ callback_query_id: query.id, text: "Processing..." })
-                }).catch(() => {});
-
-                if (dataStr.startsWith('approve_')) simulateSystemResponse(dataStr.replace('approve_', ''), 'approve');
-                else if (dataStr.startsWith('reject_')) simulateSystemResponse(dataStr.replace('reject_', ''), 'reject');
-                else if (dataStr.startsWith('reply_tkt_')) {
-                  const rawId = dataStr.replace('reply_tkt_', '');
-                  const tkt = supportTickets.find(t => t.rawId === rawId);
-                  if (tkt) {
-                    switchTab('history');
-                    setTimeout(() => {
-                      const inputField = document.getElementById(`admin-reply-input-${tkt.id}`);
-                      if (inputField) {
-                        inputField.focus();
-                        inputField.style.borderColor = '#10b981';
-                        showModernAlert({ 
-                          title: 'Admin Reply Desk', 
-                          message: `Ticket ${tkt.id} selected. Type your reply below and press send.`, 
-                          type: 'info', 
-                          icon: 'message-square' 
-                        });
-                      }
-                    }, 300);
-                  }
-                }
-              }
-            });
-          }
-        })
-        .catch(err => console.log('Poll telegram:', err));
-    }
+    function pollServerForSupportReplies() {}
+    function pollTelegramCallbackQueries() {}
 
     function calculateWithdrawFee() {
       const amt = parseFloat(document.getElementById('withdraw-amount').value) || 0;
@@ -3434,12 +3201,7 @@
       const text = document.getElementById(elementId).value;
       navigator.clipboard.writeText(text);
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      showModernAlert({ 
-        title: 'Copied to Clipboard', 
-        message: 'The information has been successfully copied to your clipboard.', 
-        type: 'success', 
-        icon: 'copy' 
-      });
+      showModernAlert({ title: 'Copied to Clipboard', message: 'Copied successfully.', type: 'success', icon: 'copy' });
     }
   </script>
 </body>
