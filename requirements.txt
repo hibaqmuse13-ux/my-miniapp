@@ -5,3 +5,4 @@ Flask-Limiter
 pymongo
 python-dotenv
 requests
+gunicorn
