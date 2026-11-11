@@ -88,11 +88,6 @@
       to { width: 0%; }
     }
 
-    @keyframes checkmarkDraw {
-      0% { stroke-dashoffset: 50; }
-      100% { stroke-dashoffset: 0; }
-    }
-
     @keyframes successPop {
       0% { transform: scale(0); opacity: 0; }
       50% { transform: scale(1.15); }
@@ -109,10 +104,208 @@
       100% { transform: translateX(200%) skewX(-15deg); }
     }
 
+    /* ⚡ NEW: 3-STEP PROCESSING ANIMATIONS */
+    @keyframes stepIconPop {
+      0% { transform: scale(0.3) rotate(-20deg); opacity: 0; }
+      50% { transform: scale(1.15) rotate(5deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    @keyframes stepIconFadeOut {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(0.5); opacity: 0; }
+    }
+
+    @keyframes ringExpand {
+      0% { transform: scale(0.5); opacity: 0.8; }
+      100% { transform: scale(2); opacity: 0; }
+    }
+
+    @keyframes progressFill {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    @keyframes checkBounce {
+      0% { transform: scale(0) rotate(-180deg); }
+      60% { transform: scale(1.2) rotate(0deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-80px) scale(0); opacity: 0; }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(16, 185, 129, 0.4), 0 0 60px rgba(16, 185, 129, 0.2); }
+      50% { box-shadow: 0 0 50px rgba(16, 185, 129, 0.7), 0 0 100px rgba(16, 185, 129, 0.35); }
+    }
+
     .modal-animate-in { animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .spin-slow-anim { animation: spinSlow 2.5s linear infinite; }
-    .success-pop { animation: successPop 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .slide-up-fade { animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+    /* ⚡ 3-STEP PROCESSING MODAL STYLES */
+    .processing-modal {
+      background: linear-gradient(145deg, #0f1826 0%, #080d16 100%);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 60px -20px rgba(16, 185, 129, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .processing-modal::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, #10b981, #06b6d4, transparent);
+      animation: shimmer 2s infinite;
+      background-size: 1000px 100%;
+    }
+
+    .step-icon-container {
+      width: 100px;
+      height: 100px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+
+    .step-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(16, 185, 129, 0.3);
+      animation: ringExpand 2s infinite;
+    }
+
+    .step-ring:nth-child(2) {
+      animation-delay: 0.7s;
+    }
+
+    .step-ring:nth-child(3) {
+      animation-delay: 1.4s;
+    }
+
+    .step-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      color: #000;
+      box-shadow: 0 15px 40px -10px rgba(16, 185, 129, 0.6);
+      animation: stepIconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      position: relative;
+      z-index: 2;
+    }
+
+    .step-icon.sent {
+      background: linear-gradient(135deg, #3b82f6, #06b6d4);
+      box-shadow: 0 15px 40px -10px rgba(59, 130, 246, 0.6);
+    }
+
+    .step-icon.verifying {
+      background: linear-gradient(135deg, #f59e0b, #f97316);
+      box-shadow: 0 15px 40px -10px rgba(245, 158, 11, 0.6);
+      animation: stepIconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, glowPulse 1.5s infinite;
+    }
+
+    .step-icon.confirmed {
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      box-shadow: 0 15px 40px -10px rgba(16, 185, 129, 0.7);
+      animation: checkBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .step-progress-track {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .step-progress-bar {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+      transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .step-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .step-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      transition: all 0.4s;
+    }
+
+    .step-dot.active {
+      background: #10b981;
+      box-shadow: 0 0 12px #10b981;
+      transform: scale(1.3);
+    }
+
+    .step-dot.completed {
+      background: #10b981;
+    }
+
+    .step-label {
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .step-label.sent { color: #3b82f6; }
+    .step-label.verifying { color: #f59e0b; }
+    .step-label.confirmed { color: #10b981; }
+
+    .processing-title {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-top: 16px;
+    }
+
+    .processing-subtitle {
+      font-size: 12px;
+      color: #6b7280;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    /* Particle effects */
+    .particle-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: particleFloat 2s infinite;
+    }
 
     /* ============ PREMIUM TOAST ============ */
     #admin-notify-popup {
@@ -413,7 +606,7 @@
     .metric-label { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; display: block; margin-bottom: 4px; }
     .metric-value { font-size: 15px; font-weight: 900; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
 
-    /* ============ RECEIPT STYLES (PROFESSIONAL) ============ */
+    /* ============ RECEIPT STYLES ============ */
     .receipt-container {
       background: linear-gradient(145deg, #0f1826 0%, #0a121c 100%);
       border-radius: 24px;
@@ -493,29 +686,10 @@
       z-index: 1;
     }
 
-    .receipt-status.pending {
-      background: rgba(245, 158, 11, 0.15);
-      color: #f59e0b;
-      border: 1px solid rgba(245, 158, 11, 0.4);
-    }
-
-    .receipt-status.completed {
-      background: rgba(16, 185, 129, 0.15);
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.4);
-    }
-
-    .receipt-status.rejected {
-      background: rgba(239, 68, 68, 0.15);
-      color: #ef4444;
-      border: 1px solid rgba(239, 68, 68, 0.4);
-    }
-
-    .receipt-status.active {
-      background: rgba(6, 182, 212, 0.15);
-      color: #06b6d4;
-      border: 1px solid rgba(6, 182, 212, 0.4);
-    }
+    .receipt-status.pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .receipt-status.completed { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .receipt-status.rejected { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .receipt-status.active { background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.4); }
 
     .receipt-divider {
       position: relative;
@@ -648,40 +822,6 @@
     }
 
     .history-tx-logo img { width: 100%; height: 100%; object-fit: contain; }
-
-    /* Success animation */
-    .success-checkmark {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      display: block;
-      stroke-width: 3;
-      stroke: #10b981;
-      stroke-miterlimit: 10;
-      box-shadow: inset 0 0 0 6px rgba(16, 185, 129, 0.15);
-      margin: 0 auto;
-    }
-
-    .success-checkmark__circle {
-      stroke-dasharray: 166;
-      stroke-dashoffset: 166;
-      stroke-width: 3;
-      stroke-miterlimit: 10;
-      stroke: #10b981;
-      fill: none;
-      animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
-    }
-
-    .success-checkmark__check {
-      transform-origin: 50% 50%;
-      stroke-dasharray: 48;
-      stroke-dashoffset: 48;
-      animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.5s forwards;
-    }
-
-    @keyframes stroke {
-      100% { stroke-dashoffset: 0; }
-    }
   </style>
 </head>
 <body class="font-sans antialiased pb-32">
@@ -1130,7 +1270,7 @@
           <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
           <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">All Systems Operational</span>
         </div>
-        <span class="text-[9px] text-gray-400 font-mono">v2.5.0</span>
+        <span class="text-[9px] text-gray-400 font-mono">v2.6.0</span>
       </div>
 
     </div>
@@ -1881,30 +2021,61 @@
   </div>
 
   <!-- ============================================ -->
-  <!-- SUCCESS ANIMATION MODAL (BEFORE RECEIPT) -->
+  <!-- ⚡ 3-STEP PROCESSING MODAL (NEW!) -->
   <!-- ============================================ -->
-  <div id="success-modal" class="modal-overlay hidden">
-    <div class="glass-card rounded-2xl w-full max-w-sm p-8 text-center space-y-5 border border-emerald-500/40 shadow-2xl modal-animate-in">
-      <svg class="success-checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-        <circle class="success-checkmark__circle" cx="26" cy="26" r="25" fill="none"/>
-        <path class="success-checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
-      </svg>
+  <div id="processing-modal" class="modal-overlay hidden">
+    <div class="processing-modal rounded-3xl w-full max-w-sm p-8 text-center modal-animate-in relative">
       
-      <div class="space-y-2 slide-up-fade" style="animation-delay: 0.6s;">
-        <h3 id="success-main-title" class="font-black text-white text-xl tracking-tight">Success!</h3>
-        <p id="success-sub-desc" class="text-xs text-gray-400 leading-relaxed">Your transaction has been submitted successfully.</p>
-      </div>
+      <!-- Particle effects -->
+      <div class="particle-container" id="particle-container"></div>
 
-      <div class="p-3 bg-emerald-500/5 border border-emerald-500/20 rounded-xl slide-up-fade" style="animation-delay: 0.8s;">
-        <div class="flex items-center justify-between text-xs">
-          <span class="text-gray-400">Amount</span>
-          <span id="success-amount" class="text-emerald-400 font-black font-mono text-base">$0.00</span>
+      <!-- Step icon container with rings -->
+      <div class="step-icon-container mb-6">
+        <div class="step-ring"></div>
+        <div class="step-ring"></div>
+        <div class="step-ring"></div>
+        <div id="step-icon" class="step-icon sent">
+          <i id="step-icon-content" data-lucide="send" class="w-10 h-10"></i>
         </div>
       </div>
 
-      <button onclick="openReceiptFromSuccess()" class="w-full gradient-bg text-black font-extrabold py-3 rounded-xl text-sm shadow-lg active:scale-95 transition-all slide-up-fade" style="animation-delay: 1s;">
-        View Receipt
-      </button>
+      <!-- Step label badge -->
+      <div id="step-label-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full mb-3" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3);">
+        <div class="w-1.5 h-1.5 rounded-full" style="background: #3b82f6; animation: pulse 1.5s infinite;"></div>
+        <span id="step-label" class="step-label sent">PAYMENT SENT</span>
+      </div>
+
+      <!-- Title & subtitle -->
+      <h3 id="processing-title" class="processing-title text-white">Broadcasting Payment</h3>
+      <p id="processing-subtitle" class="processing-subtitle">Sending transaction to blockchain network...</p>
+
+      <!-- Progress track -->
+      <div class="mt-6">
+        <div class="step-progress-track">
+          <div id="step-progress-bar" class="step-progress-bar" style="width: 15%;"></div>
+        </div>
+        
+        <!-- Step dots -->
+        <div class="step-dots">
+          <div id="dot-1" class="step-dot active"></div>
+          <div id="dot-2" class="step-dot"></div>
+          <div id="dot-3" class="step-dot"></div>
+        </div>
+      </div>
+
+      <!-- Amount chip -->
+      <div class="mt-5 p-3 rounded-xl" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2);">
+        <div class="flex items-center justify-between text-xs">
+          <span class="text-gray-400 text-[10px] uppercase tracking-wider font-bold">Processing Amount</span>
+          <span id="processing-amount" class="text-emerald-400 font-black font-mono text-base">$0.00</span>
+        </div>
+      </div>
+
+      <!-- Secure note -->
+      <div class="mt-4 flex items-center justify-center gap-1.5 text-[9px] text-gray-500 font-mono">
+        <i data-lucide="lock" class="w-3 h-3"></i>
+        <span>256-bit encrypted · institutional-grade security</span>
+      </div>
     </div>
   </div>
 
@@ -2187,7 +2358,126 @@
     }
 
     // ============================================================
-    // RECEIPT GENERATOR - PROFESSIONAL
+    // ⚡ 3-STEP PROCESSING ANIMATION SYSTEM (NEW)
+    // ============================================================
+    
+    function createParticles() {
+      const container = document.getElementById('particle-container');
+      container.innerHTML = '';
+      
+      for (let i = 0; i < 8; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = `${20 + Math.random() * 60}%`;
+        particle.style.top = `${20 + Math.random() * 60}%`;
+        particle.style.animationDelay = `${Math.random() * 2}s`;
+        particle.style.animationDuration = `${1.5 + Math.random() * 1.5}s`;
+        container.appendChild(particle);
+      }
+    }
+
+    function setStep(stepNumber) {
+      const stepIcon = document.getElementById('step-icon');
+      const stepIconContent = document.getElementById('step-icon-content');
+      const stepLabel = document.getElementById('step-label');
+      const stepLabelBadge = document.getElementById('step-label-badge');
+      const processingTitle = document.getElementById('processing-title');
+      const processingSubtitle = document.getElementById('processing-subtitle');
+      const progressBar = document.getElementById('step-progress-bar');
+      const dot1 = document.getElementById('dot-1');
+      const dot2 = document.getElementById('dot-2');
+      const dot3 = document.getElementById('dot-3');
+      
+      if (stepNumber === 1) {
+        // PAYMENT SENT
+        stepIcon.className = 'step-icon sent';
+        stepIconContent.setAttribute('data-lucide', 'send');
+        stepLabel.textContent = 'PAYMENT SENT';
+        stepLabel.className = 'step-label sent';
+        stepLabelBadge.style.background = 'rgba(59, 130, 246, 0.15)';
+        stepLabelBadge.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+        stepLabelBadge.querySelector('div').style.background = '#3b82f6';
+        processingTitle.textContent = 'Broadcasting Payment';
+        processingSubtitle.textContent = 'Sending transaction to blockchain network...';
+        progressBar.style.width = '15%';
+        progressBar.style.background = 'linear-gradient(90deg, #3b82f6, #06b6d4)';
+        dot1.className = 'step-dot active';
+        dot2.className = 'step-dot';
+        dot3.className = 'step-dot';
+      } else if (stepNumber === 2) {
+        // VERIFYING
+        stepIcon.className = 'step-icon verifying';
+        stepIconContent.setAttribute('data-lucide', 'shield-check');
+        stepLabel.textContent = 'VERIFYING';
+        stepLabel.className = 'step-label verifying';
+        stepLabelBadge.style.background = 'rgba(245, 158, 11, 0.15)';
+        stepLabelBadge.style.borderColor = 'rgba(245, 158, 11, 0.3)';
+        stepLabelBadge.querySelector('div').style.background = '#f59e0b';
+        processingTitle.textContent = 'Verifying Transaction';
+        processingSubtitle.textContent = 'Confirming on-chain security protocols...';
+        progressBar.style.width = '60%';
+        progressBar.style.background = 'linear-gradient(90deg, #f59e0b, #f97316)';
+        dot1.className = 'step-dot completed';
+        dot2.className = 'step-dot active';
+        dot3.className = 'step-dot';
+      } else if (stepNumber === 3) {
+        // CONFIRMED
+        stepIcon.className = 'step-icon confirmed';
+        stepIconContent.setAttribute('data-lucide', 'check');
+        stepLabel.textContent = 'CONFIRMATION';
+        stepLabel.className = 'step-label confirmed';
+        stepLabelBadge.style.background = 'rgba(16, 185, 129, 0.15)';
+        stepLabelBadge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        stepLabelBadge.querySelector('div').style.background = '#10b981';
+        processingTitle.textContent = 'Confirmation Complete';
+        processingSubtitle.textContent = 'Transaction successfully verified!';
+        progressBar.style.width = '100%';
+        progressBar.style.background = 'linear-gradient(90deg, #10b981, #06b6d4)';
+        dot1.className = 'step-dot completed';
+        dot2.className = 'step-dot completed';
+        dot3.className = 'step-dot active';
+        
+        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      }
+      
+      lucide.createIcons();
+    }
+
+    function startProcessingAnimation(amount, txId) {
+      // Reset state
+      document.getElementById('processing-amount').innerText = amount;
+      document.getElementById('processing-modal').classList.remove('hidden');
+      
+      // Create particles
+      createParticles();
+      
+      // Step 1: Payment Sent
+      setStep(1);
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+      
+      // Step 2: Verifying (1.5s later)
+      setTimeout(() => {
+        setStep(2);
+        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+      }, 1500);
+      
+      // Step 3: Confirmation (3s total)
+      setTimeout(() => {
+        setStep(3);
+      }, 3000);
+      
+      // Auto-open receipt (4.2s total)
+      setTimeout(() => {
+        closeModal('processing-modal');
+        pendingReceiptTx = txId;
+        setTimeout(() => {
+          openReceiptModal(txId);
+        }, 300);
+      }, 4200);
+    }
+
+    // ============================================================
+    // RECEIPT GENERATOR
     // ============================================================
     function generateReceiptHTML(tx) {
       const isDeposit = tx.type === 'deposit';
@@ -2228,7 +2518,6 @@
         statusColor = '#06b6d4';
       }
       
-      // Determine network info
       let networkLogo = 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040';
       let networkEmoji = '₮';
       let networkName = tx.network || 'USDT';
@@ -2247,19 +2536,14 @@
         networkEmoji = '📈';
       }
       
-      // Extract raw amount (strip formatting)
       let rawAmount = tx.rawAmount || parseFloat((tx.amount || '0').replace(/[^0-9.]/g, '')) || 0;
-      
       const receiptDate = tx.fullDate || new Date().toLocaleString('en-US', { 
         month: 'short', day: 'numeric', year: 'numeric', 
         hour: '2-digit', minute: '2-digit' 
       });
-
       const txFullId = tx.fullId || tx.id || 'TXN-' + Date.now();
-
       const truncatedAddress = tx.fullAddress || tx.ref || '--';
 
-      // Admin action buttons for pending
       let adminActionsHTML = '';
       if (isAdmin && tx.status === 'Pending Review') {
         adminActionsHTML = `
@@ -2276,12 +2560,10 @@
 
       return `
         <div style="--receipt-accent: ${accentGradient}; --receipt-glow: ${glowColor};">
-          <!-- Close button -->
           <button onclick="closeModal('receipt-modal')" class="absolute top-3 right-3 z-20 w-9 h-9 rounded-full bg-black/40 border border-white/10 flex items-center justify-center text-gray-300 hover:text-white active:scale-90 transition-all">
             <i data-lucide="x" class="w-4 h-4"></i>
           </button>
           
-          <!-- Receipt Header -->
           <div class="receipt-header">
             <div class="receipt-shine"></div>
             
@@ -2304,12 +2586,10 @@
             </div>
           </div>
           
-          <!-- Divider -->
           <div class="receipt-divider">
             <div class="receipt-divider-line"></div>
           </div>
           
-          <!-- Receipt Body -->
           <div class="receipt-body">
             <div class="receipt-row">
               <span class="receipt-row-label">Type</span>
@@ -2347,7 +2627,6 @@
             </div>
           </div>
           
-          <!-- Footer -->
           <div class="receipt-footer">
             <div class="receipt-id">REF: APX-${Date.now().toString().slice(-8)}-${Math.random().toString(36).substring(2, 6).toUpperCase()}</div>
             <div class="receipt-watermark">APEXINVEST · SECURE TRANSACTION RECEIPT</div>
@@ -2355,7 +2634,6 @@
           
           ${adminActionsHTML}
           
-          <!-- Actions -->
           <div class="px-5 pb-5 pt-2 flex flex-col gap-2">
             <button onclick="shareReceiptImage()" class="receipt-btn" style="background: linear-gradient(135deg, #10b981, #06b6d4); color: #000;">
               <i data-lucide="share-2" class="w-4 h-4"></i>
@@ -2389,15 +2667,6 @@
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
     }
 
-    function openReceiptFromSuccess() {
-      closeModal('success-modal');
-      if (pendingReceiptTx) {
-        setTimeout(() => {
-          openReceiptModal(pendingReceiptTx);
-        }, 200);
-      }
-    }
-
     function shareReceiptImage() {
       showNotificationPopup('Shared ✨', 'Receipt link copied', 'emerald', 'share-2');
     }
@@ -2423,9 +2692,6 @@ Institutional Crypto Yield
       showNotificationPopup('Copied ✨', 'Receipt details copied', 'emerald', 'copy');
     }
 
-    // ============================================================
-    // HISTORY RENDERER - PROFESSIONAL
-    // ============================================================
     function renderHistory() {
       const container = document.getElementById('history-container');
       const countBadge = document.getElementById('history-count-badge');
@@ -2448,14 +2714,6 @@ Institutional Crypto Yield
       }
 
       transactionsHistory.forEach(tx => {
-        let statusColor = 'amber';
-        let statusLabel = tx.status;
-        
-        if (tx.status === 'Completed') statusColor = 'emerald';
-        else if (tx.status === 'Rejected') statusColor = 'red';
-        else if (tx.status === 'Active') statusColor = 'cyan';
-        
-        // Determine network logo
         let logoImg = 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040';
         let logoEmoji = '₮';
         let logoColor = '#26A17B';
@@ -2486,7 +2744,6 @@ Institutional Crypto Yield
         const isPositive = tx.amount.startsWith('+');
         const amountColor = isPositive ? 'text-emerald-400' : (tx.type === 'withdraw' ? 'text-cyan-400' : 'text-purple-400');
 
-        // Direction label
         let directionLabel = 'IN';
         let directionColor = '#10b981';
         if (tx.type === 'withdraw') { directionLabel = 'OUT'; directionColor = '#06b6d4'; }
@@ -2513,7 +2770,7 @@ Institutional Crypto Yield
                 
                 <div class="flex items-center justify-between mb-2">
                   <p class="text-[10px] text-gray-500 font-mono">${tx.time}</p>
-                  <span class="text-[9px] font-bold px-2 py-0.5 rounded" style="background: rgba(var(--${statusColor}-500-rgb, 245, 158, 11), 0.15); color: ${tx.status === 'Completed' ? '#10b981' : tx.status === 'Rejected' ? '#ef4444' : tx.status === 'Active' ? '#06b6d4' : '#f59e0b'};">
+                  <span class="text-[9px] font-bold px-2 py-0.5 rounded" style="background: rgba(245, 158, 11, 0.15); color: ${tx.status === 'Completed' ? '#10b981' : tx.status === 'Rejected' ? '#ef4444' : tx.status === 'Active' ? '#06b6d4' : '#f59e0b'};">
                     ${tx.status}
                   </span>
                 </div>
@@ -2705,6 +2962,7 @@ Institutional Crypto Yield
       showNotificationPopup('Investment Started! 🚀', `$${amt.toFixed(2)} deployed into ${currentPlan.title}`, 'emerald', 'check-circle');
     }
 
+    // ⚡ DEPOSIT - WITH 3-STEP ANIMATION
     function initiateDepositProcess() {
       const depAmtInput = document.getElementById('deposit-amount-input');
       const hashInput = document.getElementById('tx-hash-input');
@@ -2757,11 +3015,11 @@ Institutional Crypto Yield
 
       triggerAdminBotNotificationWithKeyboard(`🚨 *DEPOSIT REQUEST*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *+$${depAmt.toFixed(2)}*\n🌐 Network: \`${networkName}\`\n🔗 Ref: \`${proofRef}\``, txId);
       
-      // Show success + receipt
-      pendingReceiptTx = txId;
-      showSuccessAndReceipt('Deposit Submitted!', 'Your deposit request is being verified', `+$${depAmt.toFixed(2)}`, txId);
+      // ⚡ START 3-STEP ANIMATION
+      startProcessingAnimation(`+$${depAmt.toFixed(2)}`, txId);
     }
 
+    // ⚡ WITHDRAW - WITH 3-STEP ANIMATION
     function initiateWithdrawalProcess() {
       const amt = parseFloat(document.getElementById('withdraw-amount').value);
       const addr = document.getElementById('withdraw-address').value.trim();
@@ -2809,27 +3067,8 @@ Institutional Crypto Yield
 
       triggerAdminBotNotificationWithKeyboard(`🚨 *WITHDRAWAL REQUEST*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n🌐 Network: \`${netName}\`\n🔗 Address: \`${shortAddr}\``, txId);
       
-      // Show success + receipt
-      pendingReceiptTx = txId;
-      showSuccessAndReceipt('Withdrawal Submitted!', 'Your withdrawal is being processed', `-$${amt.toFixed(2)}`, txId);
-    }
-
-    // Show success animation then receipt
-    function showSuccessAndReceipt(title, subtitle, amount, txId) {
-      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      
-      document.getElementById('success-main-title').innerText = title;
-      document.getElementById('success-sub-desc').innerText = subtitle;
-      document.getElementById('success-amount').innerText = amount;
-      
-      document.getElementById('success-modal').classList.remove('hidden');
-      
-      // Auto-show receipt after animation completes
-      setTimeout(() => {
-        if (!document.getElementById('success-modal').classList.contains('hidden')) {
-          openReceiptFromSuccess();
-        }
-      }, 3500);
+      // ⚡ START 3-STEP ANIMATION
+      startProcessingAnimation(`-$${amt.toFixed(2)}`, txId);
     }
 
     function triggerAdminBotNotification(textMessage) {
@@ -2886,7 +3125,6 @@ Institutional Crypto Yield
       saveAppData();
       renderHistory();
       
-      // Refresh receipt if open
       if (!document.getElementById('receipt-modal').classList.contains('hidden')) {
         openReceiptModal(txId);
       }
@@ -3049,4 +3287,4 @@ Institutional Crypto Yield
     }
   </script>
 </body>
-        </html>
+  </html>
