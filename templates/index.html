@@ -70,13 +70,41 @@
     }
 
     @keyframes modalFadeIn {
-      0% { opacity: 0; transform: scale(0.92) translateY(16px); }
+      0% { opacity: 0; transform: scale(0.9) translateY(16px); }
       100% { opacity: 1; transform: scale(1) translateY(0); }
     }
-    
-    @keyframes spinSlow {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+
+    /* ⚡ SLOW ELEGANT 3-STEP ANIMATIONS */
+    @keyframes stepIconPop {
+      0% { transform: scale(0.4) rotate(-15deg); opacity: 0; }
+      50% { transform: scale(1.08) rotate(3deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    @keyframes ringExpand {
+      0% { transform: scale(0.6); opacity: 0.9; }
+      100% { transform: scale(2.5); opacity: 0; }
+    }
+
+    @keyframes checkBounce {
+      0% { transform: scale(0) rotate(-180deg); }
+      60% { transform: scale(1.1) rotate(0deg); }
+      100% { transform: scale(1) rotate(0deg); }
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100px) scale(0); opacity: 0; }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 25px rgba(245, 158, 11, 0.5), 0 0 50px rgba(245, 158, 11, 0.25); }
+      50% { box-shadow: 0 0 45px rgba(245, 158, 11, 0.8), 0 0 90px rgba(245, 158, 11, 0.4); }
+    }
+
+    @keyframes receiptShine {
+      0% { transform: translateX(-100%) skewX(-15deg); }
+      100% { transform: translateX(200%) skewX(-15deg); }
     }
 
     @keyframes shimmer {
@@ -89,58 +117,23 @@
       to { width: 0%; }
     }
 
-    @keyframes successPop {
-      0% { transform: scale(0); opacity: 0; }
-      50% { transform: scale(1.15); }
-      100% { transform: scale(1); opacity: 1; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
     }
 
-    @keyframes receiptShine {
-      0% { transform: translateX(-100%) skewX(-15deg); }
-      100% { transform: translateX(200%) skewX(-15deg); }
-    }
+    .modal-animate-in { animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-    /* ⚡ OPTIMIZED 3-STEP PROCESSING ANIMATIONS */
-    @keyframes stepIconPop {
-      0% { transform: scale(0.3) rotate(-20deg); opacity: 0; }
-      50% { transform: scale(1.1) rotate(3deg); }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
-    }
-
-    @keyframes ringExpand {
-      0% { transform: scale(0.5); opacity: 0.8; }
-      100% { transform: scale(2); opacity: 0; }
-    }
-
-    @keyframes checkBounce {
-      0% { transform: scale(0) rotate(-180deg); }
-      60% { transform: scale(1.15) rotate(0deg); }
-      100% { transform: scale(1) rotate(0deg); }
-    }
-
-    @keyframes particleFloat {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-60px) scale(0); opacity: 0; }
-    }
-
-    @keyframes glowPulse {
-      0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), 0 0 40px rgba(16, 185, 129, 0.2); }
-      50% { box-shadow: 0 0 35px rgba(16, 185, 129, 0.7), 0 0 70px rgba(16, 185, 129, 0.35); }
-    }
-
-    .modal-animate-in { animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-    .spin-slow-anim { animation: spinSlow 2.5s linear infinite; }
-
-    /* ⚡ COMPACT PROCESSING MODAL - ENHANCED VISUAL */
+    /* ⚡ LARGER, MORE ELEGANT PROCESSING MODAL */
     .processing-modal {
       background: 
-        radial-gradient(circle at top, rgba(16, 185, 129, 0.15), transparent 50%),
+        radial-gradient(circle at top, rgba(16, 185, 129, 0.18), transparent 55%),
         linear-gradient(145deg, #0f1826 0%, #080d16 100%);
-      border: 1px solid rgba(16, 185, 129, 0.35);
+      border: 1px solid rgba(16, 185, 129, 0.4);
       box-shadow: 
-        0 30px 70px -15px rgba(0, 0, 0, 0.95), 
-        0 0 80px -20px rgba(16, 185, 129, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        0 35px 90px -20px rgba(0, 0, 0, 0.95), 
+        0 0 100px -20px rgba(16, 185, 129, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
       position: relative;
       overflow: hidden;
     }
@@ -148,15 +141,15 @@
     .processing-modal::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; height: 2px;
+      top: 0; left: 0; right: 0; height: 3px;
       background: linear-gradient(90deg, transparent, #10b981, #06b6d4, transparent);
-      animation: shimmer 1.5s infinite;
+      animation: shimmer 2s infinite;
       background-size: 1000px 100%;
     }
 
     .step-icon-container {
-      width: 80px;
-      height: 80px;
+      width: 120px;
+      height: 120px;
       position: relative;
       display: flex;
       align-items: center;
@@ -168,92 +161,95 @@
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      border: 2px solid rgba(16, 185, 129, 0.3);
-      animation: ringExpand 1.5s infinite;
+      border: 2px solid rgba(16, 185, 129, 0.35);
+      animation: ringExpand 2.5s infinite;
     }
 
-    .step-ring:nth-child(2) { animation-delay: 0.5s; }
-    .step-ring:nth-child(3) { animation-delay: 1s; }
+    .step-ring:nth-child(2) { animation-delay: 0.8s; }
+    .step-ring:nth-child(3) { animation-delay: 1.6s; }
 
     .step-icon {
-      width: 64px;
-      height: 64px;
+      width: 96px;
+      height: 96px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       background: linear-gradient(135deg, #10b981, #06b6d4);
       color: #000;
-      box-shadow: 0 12px 30px -8px rgba(16, 185, 129, 0.6);
-      animation: stepIconPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      box-shadow: 0 15px 40px -10px rgba(16, 185, 129, 0.7);
+      animation: stepIconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       position: relative;
       z-index: 2;
     }
 
+    .step-icon svg {
+      width: 44px;
+      height: 44px;
+    }
+
     .step-icon.sent {
       background: linear-gradient(135deg, #3b82f6, #06b6d4);
-      box-shadow: 0 12px 30px -8px rgba(59, 130, 246, 0.7);
+      box-shadow: 0 15px 40px -10px rgba(59, 130, 246, 0.8);
     }
 
     .step-icon.verifying {
       background: linear-gradient(135deg, #f59e0b, #f97316);
-      box-shadow: 0 12px 30px -8px rgba(245, 158, 11, 0.7);
-      animation: stepIconPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, glowPulse 1s infinite;
+      box-shadow: 0 15px 40px -10px rgba(245, 158, 11, 0.8);
+      animation: stepIconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, glowPulse 1.5s infinite;
     }
 
     .step-icon.confirmed {
       background: linear-gradient(135deg, #10b981, #06b6d4);
-      box-shadow: 0 12px 30px -8px rgba(16, 185, 129, 0.8);
-      animation: checkBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      box-shadow: 0 15px 40px -10px rgba(16, 185, 129, 0.9);
+      animation: checkBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
 
     .step-progress-track {
       width: 100%;
-      height: 3px;
+      height: 4px;
       background: rgba(255, 255, 255, 0.08);
       border-radius: 999px;
       overflow: hidden;
-      margin: 6px 0;
+      margin: 10px 0;
     }
 
     .step-progress-bar {
       height: 100%;
       border-radius: 999px;
       background: linear-gradient(90deg, #10b981, #06b6d4);
-      box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
-      transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.7);
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .step-dots {
       display: flex;
       justify-content: center;
-      gap: 6px;
-      margin-top: 6px;
+      gap: 10px;
+      margin-top: 10px;
     }
 
     .step-dot {
-      width: 6px;
-      height: 6px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.15);
-      transition: all 0.3s;
+      transition: all 0.4s;
     }
 
     .step-dot.active {
       background: #10b981;
-      box-shadow: 0 0 10px #10b981;
-      transform: scale(1.3);
+      box-shadow: 0 0 14px #10b981;
+      transform: scale(1.4);
     }
 
-    .step-dot.completed {
-      background: #10b981;
-    }
+    .step-dot.completed { background: #10b981; }
 
     .step-label {
-      font-size: 9px;
+      font-size: 11px;
       font-weight: 900;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.15em;
     }
 
     .step-label.sent { color: #3b82f6; }
@@ -261,18 +257,18 @@
     .step-label.confirmed { color: #10b981; }
 
     .processing-title {
-      font-size: 18px;
+      font-size: 22px;
       font-weight: 900;
       letter-spacing: -0.02em;
-      line-height: 1.1;
-      margin-top: 10px;
+      line-height: 1.2;
+      margin-top: 14px;
     }
 
     .processing-subtitle {
-      font-size: 10px;
+      font-size: 12px;
       color: #6b7280;
-      margin-top: 4px;
-      line-height: 1.4;
+      margin-top: 6px;
+      line-height: 1.5;
     }
 
     .particle-container {
@@ -288,11 +284,11 @@
       height: 3px;
       border-radius: 50%;
       background: #10b981;
-      box-shadow: 0 0 6px #10b981;
-      animation: particleFloat 1.5s infinite;
+      box-shadow: 0 0 8px #10b981;
+      animation: particleFloat 2.5s infinite;
     }
 
-    /* ============ PREMIUM TOAST ============ */
+    /* TOAST */
     #admin-notify-popup {
       position: fixed;
       top: 16px;
@@ -317,7 +313,7 @@
     .toast-container {
       background: linear-gradient(135deg, #0f1826 0%, #0a121c 100%);
       border: 1px solid rgba(16, 185, 129, 0.35);
-      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(16, 185, 129, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(16, 185, 129, 0.3);
       border-radius: 18px;
       position: relative;
       overflow: hidden;
@@ -335,12 +331,6 @@
       background: #10b981;
       box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
       animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-      70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
 
     button:active { transform: scale(0.97); }
@@ -367,7 +357,7 @@
       animation: shimmer 2s infinite;
     }
 
-    /* ============ NETWORK CARD ============ */
+    /* NETWORK CARD */
     .network-card {
       position: relative;
       border-radius: 16px;
@@ -446,7 +436,7 @@
       text-transform: uppercase;
     }
 
-    /* ============ PLAN CARD ============ */
+    /* PLAN CARD */
     .plan-card {
       position: relative;
       border-radius: 20px;
@@ -523,7 +513,7 @@
       box-shadow: 0 2px 10px rgba(245, 158, 11, 0.5);
     }
 
-    /* ============ WALLET ACTION BAR ============ */
+    /* WALLET ACTION BAR */
     .wallet-action-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
     .wallet-action-btn {
@@ -552,7 +542,7 @@
       background: rgba(0,0,0,0.3);
     }
 
-    /* ============ MODALS ============ */
+    /* MODALS */
     .modal-overlay {
       position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.85);
@@ -591,18 +581,27 @@
     .metric-label { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; display: block; margin-bottom: 4px; }
     .metric-value { font-size: 15px; font-weight: 900; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
 
-    /* ============ PROFESSIONAL RECEIPT STYLES ============ */
+    /* ============================================ */
+    /* ⚡ PROFESSIONAL RECEIPT - NO SCROLL, COMPACT */
+    /* ============================================ */
+    .receipt-modal-container {
+      width: 100%;
+      max-width: 340px;
+      max-height: 95vh;
+      display: flex;
+      flex-direction: column;
+    }
+
     .receipt-container {
       background: 
-        radial-gradient(circle at top, rgba(16, 185, 129, 0.08), transparent 40%),
-        linear-gradient(145deg, #0f1826 0%, #0a121c 100%);
-      border-radius: 24px;
+        linear-gradient(165deg, #0f1826 0%, #0a121c 50%, #080d16 100%);
+      border-radius: 22px;
       position: relative;
       overflow: hidden;
-      border: 1px solid rgba(16, 185, 129, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 
-        0 30px 80px -20px rgba(0, 0, 0, 0.9),
-        0 0 60px -20px rgba(16, 185, 129, 0.3);
+        0 40px 100px -25px rgba(0, 0, 0, 0.95),
+        0 0 70px -25px rgba(16, 185, 129, 0.35);
     }
 
     .receipt-container::before {
@@ -612,20 +611,20 @@
       background: var(--receipt-accent, linear-gradient(90deg, #10b981, #06b6d4));
     }
 
+    /* Receipt Header */
     .receipt-header {
-      padding: 28px 20px 24px;
+      padding: 24px 20px 18px;
       text-align: center;
       position: relative;
       overflow: hidden;
-      background: rgba(8, 11, 17, 0.3);
     }
 
     .receipt-header::before {
       content: '';
       position: absolute;
-      top: -50%; left: -50%;
-      width: 200%; height: 200%;
-      background: radial-gradient(circle, var(--receipt-glow, rgba(16, 185, 129, 0.15)) 0%, transparent 60%);
+      top: -100%; left: -50%;
+      width: 200%; height: 300%;
+      background: radial-gradient(circle, var(--receipt-glow, rgba(16, 185, 129, 0.18)) 0%, transparent 55%);
       pointer-events: none;
     }
 
@@ -633,36 +632,39 @@
       position: absolute;
       top: 0; left: 0;
       width: 40%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
-      animation: receiptShine 3s infinite;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      animation: receiptShine 3.5s infinite;
       pointer-events: none;
     }
 
-    .receipt-brand-logo {
+    .receipt-brand-row {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       position: relative;
       z-index: 1;
     }
 
     .receipt-brand-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 6px;
+      width: 22px;
+      height: 22px;
+      border-radius: 7px;
       background: linear-gradient(135deg, #10b981, #06b6d4);
       display: flex;
       align-items: center;
       justify-content: center;
       color: #000;
+      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.4);
     }
+
+    .receipt-brand-icon svg { width: 12px; height: 12px; }
 
     .receipt-brand-text {
       font-size: 11px;
       font-weight: 900;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.18em;
       color: #ffffff;
     }
 
@@ -673,16 +675,16 @@
     }
 
     .receipt-logo {
-      width: 72px; height: 72px;
-      border-radius: 20px;
+      width: 64px; height: 64px;
+      border-radius: 18px;
       display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 16px;
+      margin: 0 auto 14px;
       background: #0d1220;
       border: 2px solid rgba(255,255,255,0.1);
-      padding: 12px;
+      padding: 10px;
       box-shadow: 
-        0 15px 40px -12px rgba(0, 0, 0, 0.6),
-        0 0 40px -10px var(--receipt-glow, rgba(16, 185, 129, 0.4));
+        0 12px 35px -10px rgba(0, 0, 0, 0.7),
+        0 0 35px -10px var(--receipt-glow, rgba(16, 185, 129, 0.5));
       position: relative;
       z-index: 1;
     }
@@ -690,11 +692,11 @@
     .receipt-logo img { width: 100%; height: 100%; object-fit: contain; }
 
     .receipt-amount {
-      font-size: 46px;
+      font-size: 40px;
       font-weight: 900;
       letter-spacing: -0.04em;
       line-height: 1;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       position: relative;
       z-index: 1;
       text-shadow: 0 2px 20px currentColor;
@@ -706,16 +708,16 @@
       font-family: 'JetBrains Mono', monospace;
       text-transform: uppercase;
       letter-spacing: 0.15em;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       position: relative;
       z-index: 1;
     }
 
     .receipt-status {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 7px 16px;
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 6px 14px;
       border-radius: 999px;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 900;
       letter-spacing: 0.1em;
       text-transform: uppercase;
@@ -723,69 +725,54 @@
       z-index: 1;
     }
 
+    .receipt-status svg { width: 11px; height: 11px; }
+
     .receipt-status.pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
     .receipt-status.completed { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); }
     .receipt-status.rejected { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
     .receipt-status.active { background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.4); }
 
+    /* Divider with dots */
     .receipt-divider {
       position: relative;
-      height: 20px;
-      margin: 0 20px;
+      height: 16px;
+      margin: 0 16px;
     }
 
     .receipt-divider::before, .receipt-divider::after {
       content: '';
       position: absolute;
-      top: 50%; width: 16px; height: 16px;
+      top: 50%; width: 14px; height: 14px;
       background: #080b11;
       border-radius: 50%;
       transform: translateY(-50%);
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    .receipt-divider::before { left: -28px; }
-    .receipt-divider::after { right: -28px; }
+    .receipt-divider::before { left: -24px; }
+    .receipt-divider::after { right: -24px; }
 
     .receipt-divider-line {
       position: absolute;
       top: 50%; left: 0; right: 0;
       height: 1px;
-      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 6px, transparent 6px, transparent 12px);
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 5px, transparent 5px, transparent 10px);
       transform: translateY(-50%);
     }
 
+    /* Receipt Body - COMPACT */
     .receipt-body {
-      padding: 20px;
-      background: rgba(8, 11, 17, 0.4);
-    }
-
-    .receipt-section-title {
-      font-size: 8px;
-      color: #4b5563;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      font-weight: 900;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .receipt-section-title::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: linear-gradient(90deg, rgba(16, 185, 129, 0.3), transparent);
+      padding: 14px 18px;
+      background: rgba(8, 11, 17, 0.5);
     }
 
     .receipt-row {
       display: flex;
       justify-content: space-between;
-      align-items: flex-start;
-      padding: 10px 0;
+      align-items: center;
+      padding: 9px 0;
       border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
-      gap: 12px;
+      gap: 10px;
     }
 
     .receipt-row:last-child { border-bottom: none; }
@@ -794,7 +781,7 @@
       font-size: 9px;
       color: #6b7280;
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       font-weight: 800;
       flex-shrink: 0;
     }
@@ -806,30 +793,33 @@
       font-family: 'JetBrains Mono', monospace;
       text-align: right;
       word-break: break-all;
-      line-height: 1.4;
+      line-height: 1.3;
     }
 
-    .receipt-wallet-block {
-      background: rgba(16, 185, 129, 0.06);
-      border: 1px solid rgba(16, 185, 129, 0.2);
+    /* Address Block (for withdrawal) */
+    .receipt-address-block {
+      background: rgba(6, 182, 212, 0.06);
+      border: 1px solid rgba(6, 182, 212, 0.25);
       border-radius: 10px;
       padding: 10px;
       margin: 8px 0;
     }
 
-    .receipt-wallet-label {
+    .receipt-address-label {
       font-size: 8px;
-      color: #10b981;
+      color: #06b6d4;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       font-weight: 900;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
       display: flex;
       align-items: center;
       gap: 4px;
     }
 
-    .receipt-wallet-value {
+    .receipt-address-label svg { width: 10px; height: 10px; }
+
+    .receipt-address-value {
       font-size: 10px;
       color: #ffffff;
       font-family: 'JetBrains Mono', monospace;
@@ -838,9 +828,10 @@
       line-height: 1.4;
     }
 
+    /* TX ID Block */
     .receipt-txid-block {
-      background: rgba(6, 182, 212, 0.06);
-      border: 1px solid rgba(6, 182, 212, 0.2);
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(16, 185, 129, 0.25);
       border-radius: 10px;
       padding: 10px;
       margin: 8px 0;
@@ -848,15 +839,17 @@
 
     .receipt-txid-label {
       font-size: 8px;
-      color: #06b6d4;
+      color: #10b981;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       font-weight: 900;
-      margin-bottom: 4px;
+      margin-bottom: 5px;
       display: flex;
       align-items: center;
       gap: 4px;
     }
+
+    .receipt-txid-label svg { width: 10px; height: 10px; }
 
     .receipt-txid-value {
       font-size: 9px;
@@ -867,9 +860,10 @@
       line-height: 1.5;
     }
 
+    /* Footer */
     .receipt-footer {
-      padding: 18px 20px;
-      background: rgba(8, 11, 17, 0.7);
+      padding: 14px 18px;
+      background: rgba(8, 11, 17, 0.75);
       text-align: center;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
       position: relative;
@@ -880,9 +874,9 @@
       position: absolute;
       top: 0; left: 50%;
       transform: translateX(-50%);
-      width: 60%;
+      width: 70%;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.4), transparent);
+      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.5), transparent);
     }
 
     .receipt-id {
@@ -890,28 +884,29 @@
       color: #4b5563;
       font-family: 'JetBrains Mono', monospace;
       letter-spacing: 0.05em;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
 
     .receipt-watermark {
       font-size: 7px;
       color: #374151;
       text-transform: uppercase;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.28em;
       font-weight: 800;
     }
 
+    /* Actions */
     .receipt-actions {
-      padding: 16px 20px 20px;
+      padding: 14px 18px 18px;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      background: rgba(8, 11, 17, 0.4);
+      background: rgba(8, 11, 17, 0.5);
     }
 
     .receipt-btn {
       width: 100%;
-      padding: 12px;
+      padding: 11px;
       border-radius: 11px;
       font-size: 11px;
       font-weight: 900;
@@ -927,6 +922,7 @@
 
     .receipt-btn:hover { filter: brightness(1.15); }
     .receipt-btn:active { transform: scale(0.97); }
+    .receipt-btn svg { width: 14px; height: 14px; }
 
     /* History Card */
     .history-tx-card {
@@ -981,7 +977,7 @@
     </div>
   </header>
 
-  <!-- DASHBOARD TAB -->
+  <!-- DASHBOARD -->
   <main id="tab-dashboard" class="tab-content active p-4 space-y-5">
     
     <div class="relative overflow-hidden rounded-3xl p-5 bg-gradient-to-br from-[#111622] via-[#0d131f] to-[#080b11] border border-emerald-500/20 shadow-2xl">
@@ -1058,9 +1054,7 @@
         <div class="plan-card plan-starter">
           <div class="flex justify-between items-start mb-3 relative z-10">
             <div class="flex items-center gap-3">
-              <div class="plan-icon-badge">
-                <i data-lucide="rocket" class="w-5 h-5"></i>
-              </div>
+              <div class="plan-icon-badge"><i data-lucide="rocket" class="w-5 h-5"></i></div>
               <div>
                 <div class="flex items-center gap-2 mb-1">
                   <span class="plan-tier-badge">Starter</span>
@@ -1074,26 +1068,12 @@
               <p class="text-[8px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
             </div>
           </div>
-          
           <div class="plan-stat-grid">
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Duration</span>
-              <span class="plan-stat-value">5 Days</span>
-            </div>
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Total ROI</span>
-              <span class="plan-stat-value" style="color:#10b981">+250%</span>
-            </div>
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Range</span>
-              <span class="plan-stat-value">$5 – $99</span>
-            </div>
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Principal</span>
-              <span class="plan-stat-value" style="color:#06b6d4">Included</span>
-            </div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Duration</span><span class="plan-stat-value">5 Days</span></div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Total ROI</span><span class="plan-stat-value" style="color:#10b981">+250%</span></div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Range</span><span class="plan-stat-value">$5 – $99</span></div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Principal</span><span class="plan-stat-value" style="color:#06b6d4">Included</span></div>
           </div>
-
           <button onclick="openInvestModal('5-Day Starter Sprint', 30.0, 5, 5, 99)" class="plan-cta">
             <i data-lucide="zap" class="w-3.5 h-3.5"></i> Invest Now
           </button>
@@ -1102,9 +1082,7 @@
         <div class="plan-card plan-silver">
           <div class="flex justify-between items-start mb-3 relative z-10">
             <div class="flex items-center gap-3">
-              <div class="plan-icon-badge">
-                <i data-lucide="medal" class="w-5 h-5"></i>
-              </div>
+              <div class="plan-icon-badge"><i data-lucide="medal" class="w-5 h-5"></i></div>
               <div>
                 <div class="flex items-center gap-2 mb-1">
                   <span class="plan-tier-badge">Silver</span>
@@ -1118,26 +1096,12 @@
               <p class="text-[8px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
             </div>
           </div>
-          
           <div class="plan-stat-grid">
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Duration</span>
-              <span class="plan-stat-value">7 Days</span>
-            </div>
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Total ROI</span>
-              <span class="plan-stat-value" style="color:#06b6d4">+345%</span>
-            </div>
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Range</span>
-              <span class="plan-stat-value">$100 – $499</span>
-            </div>
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Principal</span>
-              <span class="plan-stat-value" style="color:#06b6d4">Included</span>
-            </div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Duration</span><span class="plan-stat-value">7 Days</span></div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Total ROI</span><span class="plan-stat-value" style="color:#06b6d4">+345%</span></div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Range</span><span class="plan-stat-value">$100 – $499</span></div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Principal</span><span class="plan-stat-value" style="color:#06b6d4">Included</span></div>
           </div>
-
           <button onclick="openInvestModal('7-Day Silver Boost', 35.0, 7, 100, 499)" class="plan-cta">
             <i data-lucide="zap" class="w-3.5 h-3.5"></i> Invest Now
           </button>
@@ -1147,9 +1111,7 @@
           <div class="plan-popular">POPULAR</div>
           <div class="flex justify-between items-start mb-3 relative z-10">
             <div class="flex items-center gap-3">
-              <div class="plan-icon-badge">
-                <i data-lucide="crown" class="w-5 h-5"></i>
-              </div>
+              <div class="plan-icon-badge"><i data-lucide="crown" class="w-5 h-5"></i></div>
               <div>
                 <div class="flex items-center gap-2 mb-1">
                   <span class="plan-tier-badge">Gold</span>
@@ -1163,26 +1125,12 @@
               <p class="text-[8px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
             </div>
           </div>
-          
           <div class="plan-stat-grid">
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Duration</span>
-              <span class="plan-stat-value">10 Days</span>
-            </div>
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Total ROI</span>
-              <span class="plan-stat-value" style="color:#f59e0b">+500%</span>
-            </div>
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Range</span>
-              <span class="plan-stat-value">$500 – $1,999</span>
-            </div>
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Principal</span>
-              <span class="plan-stat-value" style="color:#06b6d4">Included</span>
-            </div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Duration</span><span class="plan-stat-value">10 Days</span></div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Total ROI</span><span class="plan-stat-value" style="color:#f59e0b">+500%</span></div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Range</span><span class="plan-stat-value">$500 – $1,999</span></div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Principal</span><span class="plan-stat-value" style="color:#06b6d4">Included</span></div>
           </div>
-
           <button onclick="openInvestModal('10-Day Gold Growth', 40.0, 10, 500, 1999)" class="plan-cta">
             <i data-lucide="zap" class="w-3.5 h-3.5"></i> Invest Now
           </button>
@@ -1191,9 +1139,7 @@
         <div class="plan-card plan-vip">
           <div class="flex justify-between items-start mb-3 relative z-10">
             <div class="flex items-center gap-3">
-              <div class="plan-icon-badge">
-                <i data-lucide="gem" class="w-5 h-5"></i>
-              </div>
+              <div class="plan-icon-badge"><i data-lucide="gem" class="w-5 h-5"></i></div>
               <div>
                 <div class="flex items-center gap-2 mb-1">
                   <span class="plan-tier-badge">VIP</span>
@@ -1207,26 +1153,12 @@
               <p class="text-[8px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
             </div>
           </div>
-          
           <div class="plan-stat-grid">
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Duration</span>
-              <span class="plan-stat-value">15 Days</span>
-            </div>
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Total ROI</span>
-              <span class="plan-stat-value" style="color:#a855f7">+850%</span>
-            </div>
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Range</span>
-              <span class="plan-stat-value">$2,000 – $10k</span>
-            </div>
-            <div class="plan-stat-cell">
-              <span class="plan-stat-label">Principal</span>
-              <span class="plan-stat-value" style="color:#06b6d4">Included</span>
-            </div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Duration</span><span class="plan-stat-value">15 Days</span></div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Total ROI</span><span class="plan-stat-value" style="color:#a855f7">+850%</span></div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Range</span><span class="plan-stat-value">$2,000 – $10k</span></div>
+            <div class="plan-stat-cell"><span class="plan-stat-label">Principal</span><span class="plan-stat-value" style="color:#06b6d4">Included</span></div>
           </div>
-
           <button onclick="openInvestModal('15-Day VIP Max', 50.0, 15, 2000, 10000)" class="plan-cta">
             <i data-lucide="zap" class="w-3.5 h-3.5"></i> Invest Now
           </button>
@@ -1236,7 +1168,7 @@
     </div>
   </main>
 
-  <!-- WALLET TAB -->
+  <!-- WALLET -->
   <main id="tab-wallet" class="tab-content p-4 space-y-4">
     
     <div id="wallet-overview" class="space-y-4">
@@ -1320,22 +1252,10 @@
           <span class="text-[9px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded-full font-mono">VERIFIED</span>
         </div>
         
-        <div class="info-row">
-          <span class="info-label"><i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-400"></i> Encryption</span>
-          <span class="info-value text-cyan-400">AES-256 Bit</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i data-lucide="key" class="w-3.5 h-3.5 text-amber-400"></i> 2FA Authentication</span>
-          <span class="info-value text-emerald-400">Enabled</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i data-lucide="user-check" class="w-3.5 h-3.5 text-purple-400"></i> KYC Status</span>
-          <span class="info-value text-emerald-400">Verified</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label"><i data-lucide="vault" class="w-3.5 h-3.5 text-cyan-400"></i> Vault Type</span>
-          <span class="info-value text-white">Institutional</span>
-        </div>
+        <div class="info-row"><span class="info-label"><i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-400"></i> Encryption</span><span class="info-value text-cyan-400">AES-256 Bit</span></div>
+        <div class="info-row"><span class="info-label"><i data-lucide="key" class="w-3.5 h-3.5 text-amber-400"></i> 2FA Authentication</span><span class="info-value text-emerald-400">Enabled</span></div>
+        <div class="info-row"><span class="info-label"><i data-lucide="user-check" class="w-3.5 h-3.5 text-purple-400"></i> KYC Status</span><span class="info-value text-emerald-400">Verified</span></div>
+        <div class="info-row"><span class="info-label"><i data-lucide="vault" class="w-3.5 h-3.5 text-cyan-400"></i> Vault Type</span><span class="info-value text-white">Institutional</span></div>
       </div>
 
       <div class="glass-card rounded-2xl p-4 space-y-3">
@@ -1404,12 +1324,12 @@
           <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
           <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">All Systems Operational</span>
         </div>
-        <span class="text-[9px] text-gray-400 font-mono">v2.7.0</span>
+        <span class="text-[9px] text-gray-400 font-mono">v2.8.0</span>
       </div>
 
     </div>
 
-    <!-- DEPOSIT SECTION -->
+    <!-- DEPOSIT -->
     <div id="section-deposit" class="space-y-4 hidden">
       
       <div class="flex items-center justify-between">
@@ -1625,7 +1545,7 @@
       </p>
     </div>
 
-    <!-- WITHDRAW SECTION -->
+    <!-- WITHDRAW -->
     <div id="section-withdraw" class="space-y-4 hidden">
       
       <div class="flex items-center justify-between">
@@ -1808,7 +1728,7 @@
     </div>
   </main>
 
-  <!-- HISTORY TAB -->
+  <!-- HISTORY -->
   <main id="tab-history" class="tab-content p-4 space-y-4">
     
     <div id="admin-panel-section" class="glass-card rounded-2xl p-4 border border-emerald-500/40 space-y-3 bg-gradient-to-b from-brand-card to-emerald-950/10 hidden">
@@ -1856,7 +1776,7 @@
     </div>
   </main>
 
-  <!-- SUPPORT TAB -->
+  <!-- SUPPORT -->
   <main id="tab-support" class="tab-content p-4 space-y-4">
     
     <div class="glass-card rounded-2xl p-5 border border-emerald-500/30 relative overflow-hidden space-y-3">
@@ -1944,33 +1864,9 @@
         </div>
       </div>
     </div>
-
-    <div class="glass-card rounded-2xl p-4 space-y-3">
-      <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-        <i data-lucide="help-circle" class="w-4 h-4 text-cyan-400"></i> FAQ
-      </h4>
-      
-      <div class="space-y-2 text-xs">
-        <div class="p-3 bg-brand-bg rounded-xl border border-brand-border">
-          <p class="font-bold text-white mb-1 flex items-center justify-between">
-            <span>How long do deposits take?</span>
-            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-emerald-400"></i>
-          </p>
-          <p class="text-gray-400 text-[11px] leading-relaxed">Deposits credited after blockchain verification.</p>
-        </div>
-
-        <div class="p-3 bg-brand-bg rounded-xl border border-brand-border">
-          <p class="font-bold text-white mb-1 flex items-center justify-between">
-            <span>Are there withdrawal fees?</span>
-            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-emerald-400"></i>
-          </p>
-          <p class="text-gray-400 text-[11px] leading-relaxed">0% network fee on all withdrawals.</p>
-        </div>
-      </div>
-    </div>
   </main>
 
-  <!-- REFERRAL TAB -->
+  <!-- REFERRAL -->
   <main id="tab-referral" class="tab-content p-4 space-y-4">
     <div class="glass-card rounded-2xl p-5 space-y-4 border border-emerald-500/30 relative overflow-hidden bg-gradient-to-br from-[#111622] via-[#0c121f] to-[#080b11]">
       <div class="absolute -right-12 -top-12 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
@@ -2014,7 +1910,7 @@
     </div>
   </main>
 
-  <!-- PROFILE TAB -->
+  <!-- PROFILE -->
   <main id="tab-profile" class="tab-content p-4 space-y-4">
     <div class="relative overflow-hidden rounded-3xl p-6 bg-gradient-to-br from-[#111622] via-[#0d131f] to-[#080b11] border border-emerald-500/30 shadow-2xl space-y-5">
       <div class="absolute -right-16 -top-16 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -2029,9 +1925,7 @@
 
       <div class="flex items-center gap-4 relative z-10 pt-2">
         <div class="relative">
-          <div class="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center text-black font-black text-2xl shadow-xl shadow-emerald-500/20" id="profile-big-avatar">
-            U
-          </div>
+          <div class="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center text-black font-black text-2xl shadow-xl shadow-emerald-500/20" id="profile-big-avatar">U</div>
           <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-emerald-400 border-2 border-[#111622] flex items-center justify-center text-[10px] text-black font-bold">✓</div>
         </div>
         <div class="space-y-1 overflow-hidden">
@@ -2044,12 +1938,9 @@
       <div class="w-full h-px bg-gradient-to-r from-emerald-500/30 via-brand-border to-transparent"></div>
 
       <div class="space-y-2.5 relative z-10 text-xs">
-        
         <div class="bg-brand-bg/80 p-3 rounded-2xl border border-brand-border flex items-center justify-between">
           <div class="flex items-center gap-2.5 text-gray-400">
-            <div class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
-              <i data-lucide="hash" class="w-4 h-4"></i>
-            </div>
+            <div class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center"><i data-lucide="hash" class="w-4 h-4"></i></div>
             <span>Telegram ID</span>
           </div>
           <span class="font-mono font-extrabold text-white tracking-wider" id="profile-telegram-id">-</span>
@@ -2057,9 +1948,7 @@
 
         <div class="bg-brand-bg/80 p-3 rounded-2xl border border-brand-border flex items-center justify-between">
           <div class="flex items-center gap-2.5 text-gray-400">
-            <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
-            </div>
+            <div class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center"><i data-lucide="check-circle-2" class="w-4 h-4"></i></div>
             <span>Status</span>
           </div>
           <span class="font-extrabold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full text-[11px]">Active</span>
@@ -2067,9 +1956,7 @@
 
         <div class="bg-brand-bg/80 p-3 rounded-2xl border border-brand-border flex items-center justify-between">
           <div class="flex items-center gap-2.5 text-gray-400">
-            <div class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
-              <i data-lucide="shield-alert" class="w-4 h-4"></i>
-            </div>
+            <div class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center"><i data-lucide="shield-alert" class="w-4 h-4"></i></div>
             <span>Security</span>
           </div>
           <span class="font-extrabold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full text-[11px]">A+ 2FA</span>
@@ -2077,14 +1964,11 @@
 
         <div class="bg-brand-bg/80 p-3 rounded-2xl border border-brand-border flex items-center justify-between">
           <div class="flex items-center gap-2.5 text-gray-400">
-            <div class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center">
-              <i data-lucide="globe" class="w-4 h-4"></i>
-            </div>
+            <div class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center"><i data-lucide="globe" class="w-4 h-4"></i></div>
             <span>Region</span>
           </div>
           <span class="font-mono font-bold text-gray-200">Global Node</span>
         </div>
-
       </div>
 
       <button onclick="switchTab('dashboard')" class="w-full relative group overflow-hidden rounded-xl p-[1px] font-extrabold text-xs active:scale-95 transition-all shadow-lg">
@@ -2096,7 +1980,7 @@
     </div>
   </main>
 
-  <!-- BOTTOM NAVIGATION -->
+  <!-- NAV -->
   <nav class="fixed bottom-0 left-0 right-0 bg-[#0b101b]/95 border-t border-emerald-500/20 backdrop-blur-xl z-40 px-3 py-3 flex justify-between items-center shadow-2xl">
     <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 text-emerald-400 flex-1 transition-all active:scale-95">
       <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
@@ -2154,42 +2038,34 @@
     </div>
   </div>
 
-  <!-- ============================================ -->
-  <!-- ⚡ COMPACT 3-STEP PROCESSING MODAL -->
-  <!-- ============================================ -->
+  <!-- ⚡ 3-STEP PROCESSING MODAL - SLOWER, LARGER -->
   <div id="processing-modal" class="modal-overlay hidden">
-    <div class="processing-modal rounded-2xl w-full max-w-xs p-5 text-center modal-animate-in relative">
+    <div class="processing-modal rounded-2xl w-full max-w-xs p-6 text-center modal-animate-in relative">
       
-      <!-- Particle effects -->
       <div class="particle-container" id="particle-container"></div>
 
-      <!-- Step icon container with rings -->
-      <div class="step-icon-container mb-3">
+      <div class="step-icon-container mb-4">
         <div class="step-ring"></div>
         <div class="step-ring"></div>
         <div class="step-ring"></div>
         <div id="step-icon" class="step-icon sent">
-          <i id="step-icon-content" data-lucide="send" class="w-7 h-7"></i>
+          <i id="step-icon-content" data-lucide="send"></i>
         </div>
       </div>
 
-      <!-- Step label badge -->
-      <div id="step-label-badge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full mb-2" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3);">
-        <div class="w-1 h-1 rounded-full" style="background: #3b82f6; animation: pulse 1.5s infinite;"></div>
+      <div id="step-label-badge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full mb-3" style="background: rgba(59, 130, 246, 0.15); border: 1px solid rgba(59, 130, 246, 0.3);">
+        <div class="w-1.5 h-1.5 rounded-full" style="background: #3b82f6; animation: pulse 1.5s infinite;"></div>
         <span id="step-label" class="step-label sent">PAYMENT SENT</span>
       </div>
 
-      <!-- Title & subtitle -->
       <h3 id="processing-title" class="processing-title text-white">Broadcasting Payment</h3>
-      <p id="processing-subtitle" class="processing-subtitle">Sending to blockchain network...</p>
+      <p id="processing-subtitle" class="processing-subtitle">Sending transaction to blockchain network...</p>
 
-      <!-- Progress track -->
-      <div class="mt-4">
+      <div class="mt-5">
         <div class="step-progress-track">
           <div id="step-progress-bar" class="step-progress-bar" style="width: 15%;"></div>
         </div>
         
-        <!-- Step dots -->
         <div class="step-dots">
           <div id="dot-1" class="step-dot active"></div>
           <div id="dot-2" class="step-dot"></div>
@@ -2197,34 +2073,30 @@
         </div>
       </div>
 
-      <!-- Amount chip -->
-      <div class="mt-3 p-2.5 rounded-lg" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2);">
+      <div class="mt-4 p-3 rounded-xl" style="background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2);">
         <div class="flex items-center justify-between text-[10px]">
           <span class="text-gray-400 uppercase tracking-wider font-bold">Amount</span>
-          <span id="processing-amount" class="text-emerald-400 font-black font-mono text-sm">$0.00</span>
+          <span id="processing-amount" class="text-emerald-400 font-black font-mono text-base">$0.00</span>
         </div>
       </div>
 
-      <!-- Secure note -->
-      <div class="mt-3 flex items-center justify-center gap-1 text-[8px] text-gray-500 font-mono">
-        <i data-lucide="lock" class="w-2.5 h-2.5"></i>
-        <span>256-bit encrypted · secured</span>
+      <div class="mt-4 flex items-center justify-center gap-1.5 text-[9px] text-gray-500 font-mono">
+        <i data-lucide="lock" class="w-3 h-3"></i>
+        <span>256-bit encrypted · institutional-grade</span>
       </div>
     </div>
   </div>
 
-  <!-- ============================================ -->
-  <!-- PROFESSIONAL RECEIPT MODAL -->
-  <!-- ============================================ -->
+  <!-- RECEIPT MODAL - NO SCROLL, COMPACT -->
   <div id="receipt-modal" class="modal-overlay hidden">
-    <div class="w-full max-w-sm modal-animate-in" style="max-height: 90vh; overflow-y: auto;">
+    <div class="receipt-modal-container modal-animate-in">
       <div id="receipt-content" class="receipt-container">
-        <!-- Content injected dynamically -->
+        <!-- Dynamic -->
       </div>
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION -->
+  <!-- TOAST -->
   <div id="admin-notify-popup">
     <div class="toast-container">
       <div class="p-4 flex items-start gap-3.5">
@@ -2492,20 +2364,20 @@
     }
 
     // ============================================================
-    // ⚡ COMPACT 3-STEP ANIMATION (FASTER + SMALLER)
+    // ⚡ SLOW, ELEGANT 3-STEP ANIMATION (Total 5.5s)
     // ============================================================
     
     function createParticles() {
       const container = document.getElementById('particle-container');
       container.innerHTML = '';
       
-      for (let i = 0; i < 6; i++) {
+      for (let i = 0; i < 8; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
         particle.style.left = `${20 + Math.random() * 60}%`;
         particle.style.top = `${20 + Math.random() * 60}%`;
-        particle.style.animationDelay = `${Math.random() * 1.5}s`;
-        particle.style.animationDuration = `${1 + Math.random() * 1}s`;
+        particle.style.animationDelay = `${Math.random() * 2}s`;
+        particle.style.animationDuration = `${1.8 + Math.random() * 1.2}s`;
         container.appendChild(particle);
       }
     }
@@ -2531,7 +2403,7 @@
         stepLabelBadge.style.borderColor = 'rgba(59, 130, 246, 0.3)';
         stepLabelBadge.querySelector('div').style.background = '#3b82f6';
         processingTitle.textContent = 'Broadcasting Payment';
-        processingSubtitle.textContent = 'Sending to blockchain network...';
+        processingSubtitle.textContent = 'Sending transaction to blockchain network...';
         progressBar.style.width = '15%';
         progressBar.style.background = 'linear-gradient(90deg, #3b82f6, #06b6d4)';
         dot1.className = 'step-dot active';
@@ -2546,7 +2418,7 @@
         stepLabelBadge.style.borderColor = 'rgba(245, 158, 11, 0.3)';
         stepLabelBadge.querySelector('div').style.background = '#f59e0b';
         processingTitle.textContent = 'Verifying Transaction';
-        processingSubtitle.textContent = 'Confirming on-chain protocols...';
+        processingSubtitle.textContent = 'Confirming on-chain security protocols...';
         progressBar.style.width = '60%';
         progressBar.style.background = 'linear-gradient(90deg, #f59e0b, #f97316)';
         dot1.className = 'step-dot completed';
@@ -2574,7 +2446,7 @@
       lucide.createIcons();
     }
 
-    // ⚡ FASTER: 2.4s total (vs old 4.2s)
+    // ⚡ SLOWER: 5.5s total (elegant, professional pacing)
     function startProcessingAnimation(amount, txId) {
       document.getElementById('processing-amount').innerText = amount;
       document.getElementById('processing-modal').classList.remove('hidden');
@@ -2585,29 +2457,29 @@
       setStep(1);
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
       
-      // Step 2: Verifying (0.8s)
+      // Step 2: Verifying (1.8s)
       setTimeout(() => {
         setStep(2);
         if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-      }, 800);
+      }, 1800);
       
-      // Step 3: Confirmation (1.6s)
+      // Step 3: Confirmation (3.8s)
       setTimeout(() => {
         setStep(3);
-      }, 1600);
+      }, 3800);
       
-      // Auto-open receipt (2.4s)
+      // Auto-open receipt (5.5s)
       setTimeout(() => {
         closeModal('processing-modal');
         pendingReceiptTx = txId;
         setTimeout(() => {
           openReceiptModal(txId);
         }, 200);
-      }, 2400);
+      }, 5500);
     }
 
     // ============================================================
-    // RECEIPT GENERATOR - PROFESSIONAL
+    // ⚡ NEW PROFESSIONAL RECEIPT - COMPACT, NO SCROLL
     // ============================================================
     function generateReceiptHTML(tx) {
       const isDeposit = tx.type === 'deposit';
@@ -2677,12 +2549,12 @@
       let adminActionsHTML = '';
       if (isAdmin && tx.status === 'Pending Review') {
         adminActionsHTML = `
-          <div style="padding: 0 20px 12px; display: flex; gap: 8px;">
-            <button onclick="simulateSystemResponse('${tx.id}', 'approve')" style="flex: 1; background: rgba(16, 185, 129, 0.2); color: #10b981; font-size: 11px; font-weight: 700; padding: 10px; border-radius: 11px; border: 1px solid rgba(16, 185, 129, 0.4); display: flex; align-items: center; justify-content: center; gap: 4px;">
-              <i data-lucide="check" style="width: 14px; height: 14px;"></i> Approve
+          <div style="padding: 0 18px 12px; display: flex; gap: 6px;">
+            <button onclick="simulateSystemResponse('${tx.id}', 'approve')" style="flex: 1; background: rgba(16, 185, 129, 0.2); color: #10b981; font-size: 10px; font-weight: 700; padding: 9px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.4);">
+              ✓ Approve
             </button>
-            <button onclick="simulateSystemResponse('${tx.id}', 'reject')" style="flex: 1; background: rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 11px; font-weight: 700; padding: 10px; border-radius: 11px; border: 1px solid rgba(239, 68, 68, 0.4); display: flex; align-items: center; justify-content: center; gap: 4px;">
-              <i data-lucide="x" style="width: 14px; height: 14px;"></i> Reject
+            <button onclick="simulateSystemResponse('${tx.id}', 'reject')" style="flex: 1; background: rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 10px; font-weight: 700; padding: 9px; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.4);">
+              ✕ Reject
             </button>
           </div>
         `;
@@ -2690,98 +2562,77 @@
 
       return `
         <div style="--receipt-accent: ${accentGradient}; --receipt-glow: ${glowColor};">
-          <button onclick="closeModal('receipt-modal')" style="position: absolute; top: 12px; right: 12px; z-index: 20; width: 32px; height: 32px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #d1d5db;">
-            <i data-lucide="x" style="width: 14px; height: 14px;"></i>
+          <button onclick="closeModal('receipt-modal')" style="position: absolute; top: 10px; right: 10px; z-index: 20; width: 28px; height: 28px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #d1d5db;">
+            <i data-lucide="x" style="width: 12px; height: 12px;"></i>
           </button>
           
-          <!-- HEADER -->
           <div class="receipt-header">
             <div class="receipt-shine"></div>
             
-            <!-- Brand logo -->
-            <div class="receipt-brand-logo">
+            <div class="receipt-brand-row">
               <div class="receipt-brand-icon">
-                <i data-lucide="gem" style="width: 14px; height: 14px;"></i>
+                <i data-lucide="gem"></i>
               </div>
               <div class="receipt-brand-text">APEX<span>INVEST</span></div>
             </div>
             
-            <!-- Network logo -->
             <div class="receipt-logo" style="border-color: ${statusColor}50;">
               ${networkLogo 
-                ? `<img src="${networkLogo}" alt="${networkName}" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'color:${statusColor};font-weight:900;font-size:30px\\'>${networkEmoji}</span>'">`
-                : `<span style="color:${statusColor};font-weight:900;font-size:30px;">${networkEmoji}</span>`
+                ? `<img src="${networkLogo}" alt="${networkName}" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'color:${statusColor};font-weight:900;font-size:26px\\'>${networkEmoji}</span>'">`
+                : `<span style="color:${statusColor};font-weight:900;font-size:26px;">${networkEmoji}</span>`
               }
             </div>
             
-            <!-- Amount -->
             <div class="receipt-amount" style="color: ${amountColor}">
               ${amountPrefix}$${rawAmount.toFixed(2)}
             </div>
             
-            <!-- Amount label -->
             <div class="receipt-amount-label">
               ${isDeposit ? 'DEPOSIT AMOUNT' : isWithdrawal ? 'WITHDRAWAL AMOUNT' : 'INVESTMENT AMOUNT'}
             </div>
             
-            <!-- Status -->
             <div class="receipt-status ${statusClass}">
-              <i data-lucide="${tx.status === 'Completed' ? 'check-circle-2' : tx.status === 'Rejected' ? 'x-circle' : 'clock'}" style="width: 12px; height: 12px;"></i>
+              <i data-lucide="${tx.status === 'Completed' ? 'check-circle-2' : tx.status === 'Rejected' ? 'x-circle' : 'clock'}"></i>
               ${statusLabel}
             </div>
           </div>
           
-          <!-- DIVIDER -->
           <div class="receipt-divider">
             <div class="receipt-divider-line"></div>
           </div>
           
-          <!-- BODY -->
           <div class="receipt-body">
             
-            <!-- Transaction Details -->
-            <div class="receipt-section-title">
-              <i data-lucide="receipt" style="width: 10px; height: 10px;"></i>
-              Transaction Details
-            </div>
-            
-            <div class="receipt-row">
-              <span class="receipt-row-label">Type</span>
-              <span class="receipt-row-value">${isDeposit ? 'Deposit' : isWithdrawal ? 'Withdrawal' : 'Investment'}</span>
-            </div>
-            
+            <!-- Network + Date Rows -->
             <div class="receipt-row">
               <span class="receipt-row-label">Network</span>
               <span class="receipt-row-value" style="color:${statusColor}">${tx.network || 'Plan Allocation'}</span>
             </div>
             
             <div class="receipt-row">
-              <span class="receipt-row-label">Date & Time</span>
+              <span class="receipt-row-label">Date</span>
               <span class="receipt-row-value" style="font-size: 10px;">${receiptDate}</span>
             </div>
             
-            <div class="receipt-row">
-              <span class="receipt-row-label">Network Fee</span>
-              <span class="receipt-row-value" style="color:#10b981;">$0.00 FREE</span>
-            </div>
-            
-            <!-- Wallet Address Block -->
-            <div class="receipt-wallet-block">
-              <div class="receipt-wallet-label">
-                <i data-lucide="${isDeposit ? 'arrow-down-to-line' : 'arrow-up-from-line'}" style="width: 10px; height: 10px;"></i>
-                ${isDeposit ? 'Sender Wallet' : 'Destination Wallet'}
+            ${isWithdrawal ? `
+              <!-- Withdrawal: Show destination address -->
+              <div class="receipt-address-block">
+                <div class="receipt-address-label">
+                  <i data-lucide="wallet"></i>
+                  DESTINATION WALLET
+                </div>
+                <div class="receipt-address-value">${fullAddress}</div>
               </div>
-              <div class="receipt-wallet-value">${fullAddress}</div>
-            </div>
-            
-            <!-- Transaction ID Block -->
-            <div class="receipt-txid-block">
-              <div class="receipt-txid-label">
-                <i data-lucide="fingerprint" style="width: 10px; height: 10px;"></i>
-                Transaction ID
+            ` : `
+              <!-- Deposit: Show TxID -->
+              <div class="receipt-txid-block">
+                <div class="receipt-txid-label">
+                  <i data-lucide="fingerprint"></i>
+                  TRANSACTION ID
+                </div>
+                <div class="receipt-txid-value">${txFullId}</div>
               </div>
-              <div class="receipt-txid-value">${txFullId}</div>
-            </div>
+            `}
             
             <!-- Status Row -->
             <div class="receipt-row">
@@ -2790,27 +2641,21 @@
             </div>
           </div>
           
-          <!-- FOOTER -->
           <div class="receipt-footer">
-            <div class="receipt-id">REF: APX-${Date.now().toString().slice(-8)}-${Math.random().toString(36).substring(2, 6).toUpperCase()}</div>
-            <div class="receipt-watermark">APEXINVEST · SECURE TRANSACTION RECEIPT</div>
+            <div class="receipt-id">REF: APX-${Date.now().toString().slice(-8)}</div>
+            <div class="receipt-watermark">APEXINVEST · SECURE RECEIPT</div>
           </div>
           
           ${adminActionsHTML}
           
-          <!-- ACTION BUTTONS -->
           <div class="receipt-actions">
             <button onclick="downloadReceipt()" class="receipt-btn" style="background: linear-gradient(135deg, #10b981, #06b6d4); color: #000;">
-              <i data-lucide="download" style="width: 14px; height: 14px;"></i>
+              <i data-lucide="download"></i>
               Download Receipt
             </button>
             <button onclick="shareReceipt()" class="receipt-btn" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.3);">
-              <i data-lucide="share-2" style="width: 14px; height: 14px;"></i>
+              <i data-lucide="share-2"></i>
               Share Receipt
-            </button>
-            <button onclick="copyReceiptText('${tx.id}')" class="receipt-btn" style="background: rgba(255,255,255,0.05); color: #ffffff; border: 1px solid rgba(255,255,255,0.1);">
-              <i data-lucide="copy" style="width: 14px; height: 14px;"></i>
-              Copy Details
             </button>
           </div>
         </div>
@@ -2834,19 +2679,17 @@
     }
 
     // ============================================================
-    // DOWNLOAD / SHARE RECEIPT AS IMAGE (html2canvas)
+    // DOWNLOAD & SHARE RECEIPT
     // ============================================================
     async function downloadReceipt() {
       const receiptEl = document.getElementById('receipt-content');
       if (!receiptEl) return;
       
       try {
-        // Hide action buttons and close button during capture
         const actionBtns = receiptEl.querySelectorAll('.receipt-actions, button[onclick*="closeModal"]');
         actionBtns.forEach(b => b.style.display = 'none');
         
-        // Wait for any pending render
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 150));
         
         const canvas = await html2canvas(receiptEl, {
           backgroundColor: '#0a121c',
@@ -2856,25 +2699,20 @@
           logging: false
         });
         
-        // Restore action buttons
         actionBtns.forEach(b => b.style.display = '');
         
-        // Trigger download
         const link = document.createElement('a');
         link.download = `ApexInvest-Receipt-${Date.now()}.png`;
         link.href = canvas.toDataURL('image/png');
         link.click();
         
         if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-        showNotificationPopup('Downloaded! 📥', 'Receipt saved to your device', 'emerald', 'download');
+        showNotificationPopup('Downloaded! 📥', 'Receipt saved to your gallery', 'emerald', 'download');
         
       } catch (err) {
         console.error('Download error:', err);
-        
-        // Restore buttons in case of error
         const actionBtns = receiptEl.querySelectorAll('.receipt-actions, button[onclick*="closeModal"]');
         actionBtns.forEach(b => b.style.display = '');
-        
         showNotificationPopup('Download Failed ⚠️', 'Please try again', 'red', 'alert-circle');
       }
     }
@@ -2887,7 +2725,7 @@
         const actionBtns = receiptEl.querySelectorAll('.receipt-actions, button[onclick*="closeModal"]');
         actionBtns.forEach(b => b.style.display = 'none');
         
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 150));
         
         const canvas = await html2canvas(receiptEl, {
           backgroundColor: '#0a121c',
@@ -2899,7 +2737,6 @@
         
         actionBtns.forEach(b => b.style.display = '');
         
-        // Convert canvas to blob
         canvas.toBlob(async (blob) => {
           if (!blob) {
             showNotificationPopup('Share Failed ⚠️', 'Could not create image', 'red', 'alert-circle');
@@ -2908,7 +2745,6 @@
           
           const file = new File([blob], `ApexInvest-Receipt-${Date.now()}.png`, { type: 'image/png' });
           
-          // Try Web Share API
           if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
             try {
               await navigator.share({
@@ -2925,7 +2761,6 @@
               }
             }
           } else {
-            // Fallback: download
             const link = document.createElement('a');
             link.download = file.name;
             link.href = canvas.toDataURL('image/png');
@@ -2942,33 +2777,6 @@
       }
     }
 
-    function copyReceiptText(txId) {
-      const tx = transactionsHistory.find(t => t.id === txId);
-      if (!tx) return;
-      
-      const text = `
-═══════════════════════════════
-    APEXINVEST RECEIPT
-═══════════════════════════════
-
-Type: ${tx.type === 'deposit' ? 'Deposit' : tx.type === 'withdraw' ? 'Withdrawal' : 'Investment'}
-Amount: ${tx.amount}
-Network: ${tx.network}
-Status: ${tx.status}
-Date: ${tx.time}
-Transaction ID: ${tx.id}
-
-═══════════════════════════════
-Institutional Crypto Yield
-Secure Transaction Receipt
-═══════════════════════════════
-      `.trim();
-      
-      navigator.clipboard.writeText(text);
-      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      showNotificationPopup('Copied! 📋', 'Receipt details copied to clipboard', 'emerald', 'copy');
-    }
-
     function renderHistory() {
       const container = document.getElementById('history-container');
       const countBadge = document.getElementById('history-count-badge');
@@ -2983,7 +2791,7 @@ Secure Transaction Receipt
               <i data-lucide="receipt" class="w-7 h-7 text-emerald-400"></i>
             </div>
             <p class="text-sm font-bold text-white mb-1">No Transactions Yet</p>
-            <p class="text-[11px] text-gray-400 leading-relaxed">Your transaction history will appear here once you make your first deposit or withdrawal.</p>
+            <p class="text-[11px] text-gray-400 leading-relaxed">Your transaction history will appear here.</p>
           </div>
         `;
         lucide.createIcons();
@@ -3059,7 +2867,7 @@ Secure Transaction Receipt
                   </div>
                   <div class="flex items-center gap-1 text-[9px] text-emerald-400 font-bold">
                     <i data-lucide="eye" class="w-3 h-3"></i>
-                    View Receipt
+                    Receipt
                   </div>
                 </div>
               </div>
@@ -3077,7 +2885,7 @@ Secure Transaction Receipt
       if (!container) return;
 
       if (activeInvestments.length === 0) {
-        container.innerHTML = `<div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">No active investments. Deploy capital below to start earning.</div>`;
+        container.innerHTML = `<div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">No active investments.</div>`;
         return;
       }
 
@@ -3131,7 +2939,7 @@ Secure Transaction Receipt
       container.innerHTML = '';
 
       if (supportTickets.length === 0) {
-        container.innerHTML = `<div class="glass-card rounded-xl p-3 text-center text-xs text-gray-400 border border-brand-border">No support tickets submitted yet.</div>`;
+        container.innerHTML = `<div class="glass-card rounded-xl p-3 text-center text-xs text-gray-400 border border-brand-border">No tickets yet.</div>`;
         return;
       }
 
@@ -3315,7 +3123,7 @@ Secure Transaction Receipt
 
       const netNames = { usdt_trc20: 'USDT (TRC20)', usdt_bep20: 'USDT (BEP20)', usdt_erc20: 'ERC20', usdc: 'USDC' };
       const netName = netNames[selectedWithdrawNetworkKey];
-      const shortAddr = 'To: ' + addr.substring(0, 6) + '...' + addr.substring(addr.length - 4);
+      const shortAddr = addr.length > 20 ? addr.substring(0, 6) + '...' + addr.substring(addr.length - 4) : addr;
 
       document.getElementById('withdraw-amount').value = '';
       document.getElementById('withdraw-address').value = '';
@@ -3329,7 +3137,7 @@ Secure Transaction Receipt
       
       const txObj = {
         id: txId, type: 'withdraw', title: 'USDT Withdrawal', network: netName,
-        ref: shortAddr, rawAmount: amt, amount: `-$${amt.toFixed(2)}`,
+        ref: 'To: ' + shortAddr, rawAmount: amt, amount: `-$${amt.toFixed(2)}`,
         status: 'Pending Review', color: 'cyan', icon: 'arrow-up-right',
         time: nowStr, fullDate: nowStr, fullId: 'WDR-' + txId.toUpperCase().slice(-12),
         fullAddress: addr
@@ -3470,8 +3278,8 @@ Secure Transaction Receipt
         targetTicket.status = 'Resolved';
         saveAppData();
         renderSupportTickets();
-        triggerAdminBotNotification(`💬 *REPLY SENT to ${currentUserProfile.username}*\n\nTicket: *${targetTicket.id}*\nReply: _${replyText}_`);
-        showNotificationPopup('Reply Sent ✨', `Response delivered to ${currentUserProfile.username}`, 'emerald', 'check-circle');
+        triggerAdminBotNotification(`💬 *REPLY SENT*\n\nUser: ${currentUserProfile.username}\nTicket: *${targetTicket.id}*\nReply: _${replyText}_`);
+        showNotificationPopup('Reply Sent ✨', `Response delivered`, 'emerald', 'check-circle');
       }
     }
 
@@ -3487,7 +3295,7 @@ Secure Transaction Receipt
               localMatch.reply = st.reply;
               localMatch.status = st.status;
               updated = true;
-              showNotificationPopup(`New Reply for ${currentUserProfile.username} ✨`, `Ticket ${st.id}: "${st.reply}"`, 'emerald', 'message-square');
+              showNotificationPopup(`New Reply ✨`, `Ticket ${st.id}: "${st.reply}"`, 'emerald', 'message-square');
             }
           });
           if (updated) renderSupportTickets();
@@ -3528,7 +3336,7 @@ Secure Transaction Receipt
                       if (inputField) {
                         inputField.focus();
                         inputField.style.borderColor = '#10b981';
-                        showNotificationPopup('Admin Reply Desk 💬', `Ticket ${tkt.id} selected for reply`, 'emerald', 'message-square');
+                        showNotificationPopup('Admin Reply Desk 💬', `Ticket ${tkt.id} selected`, 'emerald', 'message-square');
                       }
                     }, 300);
                   }
@@ -3560,4 +3368,4 @@ Secure Transaction Receipt
     }
   </script>
 </body>
-          </html>
+  </html>
