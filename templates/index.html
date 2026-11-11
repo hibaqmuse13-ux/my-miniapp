@@ -2231,7 +2231,6 @@
       await authenticateWithServer(); 
 
       setInterval(pollServerForSupportReplies, 2500);
-      setInterval(pollTelegramCallbackQueries, 2500);
       setInterval(updateLiveProfits, 1000);
       setInterval(updateBalanceTimestamp, 10000);
     });
@@ -2383,6 +2382,9 @@
       document.getElementById('admin-real-pending-count').innerText = pendingCount;
     }
 
+    // ============================================================
+    // ⚡ CUSUB: ADDRESS-YADA SAXDA AH + TON (USDC BEDDEL)
+    // ============================================================
     const cryptoWallets = {
       usdt_trc20: { 
         name: 'USDT (TRC20 - Tron)', 
@@ -3020,54 +3022,64 @@
       document.getElementById('modal-total-payout').innerText = `$${totalPayout.toFixed(2)}`;
     }
 
-    async function confirmInvestment() {
+    function confirmInvestment() {
       const amt = parseFloat(document.getElementById('modal-amount-input').value);
       
       if (isNaN(amt) || amt < currentPlan.min || amt > currentPlan.max) {
-        showModernAlert({ title: 'Invalid Amount', message: `Range: $${currentPlan.min} - $${currentPlan.max}`, type: 'warning', icon: 'alert-circle' });
+        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+        showModernAlert({ 
+          title: 'Invalid Amount', 
+          message: `Please enter an amount between $${currentPlan.min} and $${currentPlan.max.toLocaleString()}.`, 
+          type: 'warning', 
+          icon: 'alert-circle' 
+        });
         return;
       }
       if (amt > userPortfolio.balance) {
-        showModernAlert({ title: 'Insufficient Balance', message: `You have $${userPortfolio.balance.toFixed(2)}`, type: 'error', icon: 'wallet' });
+        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+        showModernAlert({ 
+          title: 'Insufficient Balance', 
+          message: `Your available balance is $${userPortfolio.balance.toFixed(2)}. Please deposit more funds to invest $${amt.toFixed(2)}.`, 
+          type: 'error', 
+          icon: 'wallet' 
+        });
         return;
       }
 
-      try {
-        const result = await apiCall('/api/invest', 'POST', {
-          planTitle: currentPlan.title,
-          amount: amt,
-          rate: currentPlan.rate,
-          days: currentPlan.days
-        });
+      const now = Date.now();
+      const endTime = now + (currentPlan.days * 24 * 60 * 60 * 1000);
 
-        userPortfolio.balance = result.balance; 
-        userPortfolio.lockedBalance += amt;
-        updateWalletUI();
+      userPortfolio.balance -= amt;
+      userPortfolio.lockedBalance += amt;
+      updateWalletUI();
 
-        const now = Date.now();
-        activeInvestments.unshift({
-          title: currentPlan.title, rawAmount: amt, rate: currentPlan.rate, days: currentPlan.days,
-          startTime: now, endTime: result.investment.endTime, currentProfit: 0, progress: 0
-        });
-        renderActiveInvestments();
+      activeInvestments.unshift({
+        title: currentPlan.title, rawAmount: amt, rate: currentPlan.rate, days: currentPlan.days,
+        startTime: now, endTime: endTime, currentProfit: 0, progress: 0
+      });
+      saveAppData();
+      renderActiveInvestments();
 
-        const newTx = {
-          id: result.investment._id, type: 'investment', title: currentPlan.title,
-          network: `${currentPlan.days}-Day Lock`, ref: 'Plan Allocation', rawAmount: amt,
-          amount: `-$${amt.toFixed(2)}`, status: 'Active',
-          time: new Date().toLocaleString(),
-          fullDate: new Date().toLocaleString(),
-          fullId: result.investment._id
-        };
-        transactionsHistory.unshift(newTx);
-        renderHistory();
-        saveAppData();
-        closeModal('invest-modal');
+      const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const invId = 'inv_' + Date.now();
+      const newTx = {
+        id: invId, type: 'investment', title: currentPlan.title,
+        network: `${currentPlan.days}-Day Lock`, ref: 'Plan Allocation', rawAmount: amt,
+        amount: `-$${amt.toFixed(2)}`, status: 'Active', color: 'cyan', icon: 'zap', 
+        time: nowStr, fullDate: nowStr, fullId: invId.toUpperCase()
+      };
+      transactionsHistory.unshift(newTx);
+      saveAppData();
+      renderHistory();
+      closeModal('invest-modal');
 
-        showModernAlert({ title: 'Investment Started! 🚀', message: `$${amt} deployed into ${currentPlan.title}`, type: 'success', icon: 'check-circle' });
-      } catch (err) {
-        showModernAlert({ title: 'Investment Failed', message: err.message, type: 'error', icon: 'x-circle' });
-      }
+      showModernAlert({ 
+        title: 'Investment Started!', 
+        message: `$${amt.toFixed(2)} has been deployed into ${currentPlan.title}. Your main card balance has been updated automatically.`, 
+        type: 'success', 
+        icon: 'check-circle',
+        btnText: 'View Dashboard'
+      });
     }
 
     async function initiateDepositProcess() {
