@@ -88,41 +88,72 @@
       50% { opacity: 0.5; }
     }
 
-    /* ⚡ BALANCE ANIMATION */
-    @keyframes balanceChange {
+    /* ⚡ BALANCE ANIMATIONS */
+    @keyframes balanceFlashRed {
+      0%, 100% { color: #ffffff; text-shadow: none; }
+      30% { color: #ef4444; text-shadow: 0 0 20px rgba(239, 68, 68, 0.8); }
+    }
+
+    @keyframes balanceFlashGreen {
+      0%, 100% { color: #ffffff; text-shadow: none; }
+      30% { color: #10b981; text-shadow: 0 0 20px rgba(16, 185, 129, 0.8); }
+    }
+
+    @keyframes balanceBounce {
       0% { transform: scale(1); }
-      50% { transform: scale(1.08); }
+      40% { transform: scale(1.08); }
       100% { transform: scale(1); }
     }
 
-    @keyframes balanceColorFlash {
-      0% { color: #ffffff; }
-      50% { color: #f59e0b; }
-      100% { color: #ffffff; }
+    .balance-decreased {
+      animation: balanceFlashRed 1s ease, balanceBounce 0.5s ease;
     }
 
-    @keyframes balanceDecrease {
-      0% { color: #ffffff; }
-      50% { color: #ef4444; }
-      100% { color: #ffffff; }
+    .balance-increased {
+      animation: balanceFlashGreen 1s ease, balanceBounce 0.5s ease;
     }
 
-    @keyframes balanceIncrease {
-      0% { color: #ffffff; }
-      50% { color: #10b981; }
-      100% { color: #ffffff; }
+    /* Floating "-$50" indicator */
+    @keyframes floatDown {
+      0% { 
+        opacity: 0; 
+        transform: translate(-50%, 0) scale(0.8); 
+      }
+      20% { 
+        opacity: 1; 
+        transform: translate(-50%, -10px) scale(1); 
+      }
+      80% { 
+        opacity: 1; 
+        transform: translate(-50%, -25px) scale(1); 
+      }
+      100% { 
+        opacity: 0; 
+        transform: translate(-50%, -40px) scale(0.9); 
+      }
     }
 
-    .balance-change-anim {
-      animation: balanceChange 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    .balance-float-indicator {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      font-size: 18px;
+      font-weight: 900;
+      font-family: 'JetBrains Mono', monospace;
+      pointer-events: none;
+      z-index: 100;
+      animation: floatDown 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      white-space: nowrap;
     }
 
-    .balance-decrease-anim {
-      animation: balanceDecrease 1s ease;
+    .balance-float-indicator.negative {
+      color: #ef4444;
+      text-shadow: 0 2px 20px rgba(239, 68, 68, 0.6);
     }
 
-    .balance-increase-anim {
-      animation: balanceIncrease 1s ease;
+    .balance-float-indicator.positive {
+      color: #10b981;
+      text-shadow: 0 2px 20px rgba(16, 185, 129, 0.6);
     }
 
     .modal-animate-in { animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -432,30 +463,31 @@
     .processing-particle { position: absolute; width: 3px; height: 3px; border-radius: 50%; background: #10b981; box-shadow: 0 0 8px #10b981; animation: floatUp 2.5s infinite; }
 
     /* =================================================== */
-    /* ⚡ PREMIUM PROFESSIONAL TOAST SYSTEM               */
+    /* ⚡ PROFESSIONAL MODERN ALERT SYSTEM                */
     /* =================================================== */
     
     @keyframes toastSlideIn {
       0% { 
         opacity: 0; 
-        transform: translateX(-50%) translateY(-120px) scale(0.85); 
-        filter: blur(8px);
+        transform: translateY(-30px) scale(0.9); 
+        filter: blur(6px);
       }
       100% { 
         opacity: 1; 
-        transform: translateX(-50%) translateY(0) scale(1); 
-        filter: blur(0px);
+        transform: translateY(0) scale(1); 
+        filter: blur(0);
       }
     }
 
     @keyframes toastSlideOut {
       0% { 
         opacity: 1; 
-        transform: translateX(-50%) translateY(0) scale(1); 
+        transform: translateY(0) scale(1); 
       }
       100% { 
         opacity: 0; 
-        transform: translateX(-50%) translateY(-120px) scale(0.85); 
+        transform: translateY(-30px) scale(0.9); 
+        filter: blur(6px);
       }
     }
 
@@ -464,15 +496,10 @@
       to { transform: scaleX(0); }
     }
 
-    @keyframes toastIconBounce {
+    @keyframes toastIconPop {
       0% { transform: scale(0) rotate(-180deg); }
-      60% { transform: scale(1.15) rotate(10deg); }
+      60% { transform: scale(1.2) rotate(10deg); }
       100% { transform: scale(1) rotate(0deg); }
-    }
-
-    @keyframes toastGlow {
-      0%, 100% { box-shadow: 0 0 20px rgba(var(--toast-color-rgb), 0.3); }
-      50% { box-shadow: 0 0 40px rgba(var(--toast-color-rgb), 0.6); }
     }
 
     @keyframes toastShine {
@@ -480,86 +507,91 @@
       100% { transform: translateX(300%) skewX(-20deg); }
     }
 
-    #admin-notify-popup {
+    @keyframes toastDotPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    .alert-stack {
       position: fixed;
       top: 16px;
       left: 50%;
-      transform: translateX(-50%) translateY(-120px) scale(0.85);
-      opacity: 0;
+      transform: translateX(-50%);
       z-index: 9999;
       width: 92%;
       max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
       pointer-events: none;
-      filter: blur(8px);
-    }
-    
-    #admin-notify-popup.show-popup {
-      animation: toastSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-      pointer-events: auto;
     }
 
-    #admin-notify-popup.hide-popup {
-      animation: toastSlideOut 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
-    }
-
-    .toast-modern {
-      --toast-color: #10b981;
-      --toast-color-rgb: 16, 185, 129;
+    .alert-modern {
+      --alert-color: #10b981;
+      --alert-rgb: 16, 185, 129;
       background: linear-gradient(145deg, #0f1826 0%, #0a121c 100%);
-      border: 1px solid rgba(var(--toast-color-rgb), 0.35);
+      border: 1px solid rgba(var(--alert-rgb), 0.4);
       border-radius: 18px;
       position: relative;
       overflow: hidden;
-      animation: toastGlow 2s infinite;
+      animation: toastSlideIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
       box-shadow: 
         0 25px 60px -15px rgba(0, 0, 0, 0.9),
-        0 0 50px -15px rgba(var(--toast-color-rgb), 0.4),
+        0 0 60px -15px rgba(var(--alert-rgb), 0.5),
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      pointer-events: auto;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
-    .toast-modern::before {
+    .alert-modern::before {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--toast-color), transparent);
+      background: linear-gradient(90deg, transparent, var(--alert-color), transparent);
       animation: shimmer 2s infinite;
       background-size: 200% 100%;
     }
 
-    .toast-modern::after {
+    .alert-modern::after {
       content: '';
       position: absolute;
       top: 0; left: 0;
-      width: 40%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
-      animation: toastShine 2.5s infinite;
+      width: 35%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+      animation: toastShine 3s infinite;
       pointer-events: none;
     }
 
-    .toast-modern.success { --toast-color: #10b981; --toast-color-rgb: 16, 185, 129; }
-    .toast-modern.error { --toast-color: #ef4444; --toast-color-rgb: 239, 68, 68; }
-    .toast-modern.warning { --toast-color: #f59e0b; --toast-color-rgb: 245, 158, 11; }
-    .toast-modern.info { --toast-color: #06b6d4; --toast-color-rgb: 6, 182, 212; }
+    .alert-modern.closing {
+      animation: toastSlideOut 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+    }
 
-    .toast-icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 14px;
+    .alert-modern.success { --alert-color: #10b981; --alert-rgb: 16, 185, 129; }
+    .alert-modern.error { --alert-color: #ef4444; --alert-rgb: 239, 68, 68; }
+    .alert-modern.warning { --alert-color: #f59e0b; --alert-rgb: 245, 158, 11; }
+    .alert-modern.info { --alert-color: #06b6d4; --alert-rgb: 6, 182, 212; }
+
+    .alert-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      background: rgba(var(--toast-color-rgb), 0.15);
-      border: 1px solid rgba(var(--toast-color-rgb), 0.35);
-      color: var(--toast-color);
-      animation: toastIconBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      background: rgba(var(--alert-rgb), 0.15);
+      border: 1px solid rgba(var(--alert-rgb), 0.35);
+      color: var(--alert-color);
+      animation: toastIconPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
       position: relative;
       z-index: 1;
+      box-shadow: 0 0 20px -5px rgba(var(--alert-rgb), 0.5);
     }
 
-    .toast-icon svg { width: 22px; height: 22px; stroke-width: 2.5; }
+    .alert-icon-box svg { width: 22px; height: 22px; stroke-width: 2.5; }
 
-    .toast-title {
+    .alert-title {
       font-size: 13px;
       font-weight: 900;
       color: #ffffff;
@@ -568,33 +600,33 @@
       margin-bottom: 3px;
     }
 
-    .toast-desc {
+    .alert-desc {
       font-size: 11px;
       color: #9ca3af;
       line-height: 1.4;
     }
 
-    .toast-time {
+    .alert-time {
       display: inline-flex;
       align-items: center;
       gap: 5px;
       font-size: 9px;
-      color: var(--toast-color);
+      color: var(--alert-color);
       font-family: 'JetBrains Mono', monospace;
       font-weight: 700;
       margin-top: 6px;
     }
 
-    .toast-time-dot {
+    .alert-time-dot {
       width: 6px;
       height: 6px;
       border-radius: 50%;
-      background: var(--toast-color);
-      animation: pulse 1.5s infinite;
-      box-shadow: 0 0 8px var(--toast-color);
+      background: var(--alert-color);
+      box-shadow: 0 0 8px var(--alert-color);
+      animation: toastDotPulse 1.5s infinite;
     }
 
-    .toast-close-btn {
+    .alert-close {
       width: 26px;
       height: 26px;
       border-radius: 8px;
@@ -608,30 +640,33 @@
       transition: all 0.2s;
       position: relative;
       z-index: 2;
+      cursor: pointer;
     }
 
-    .toast-close-btn:hover {
+    .alert-close:hover {
       background: rgba(255, 255, 255, 0.1);
       color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.2);
     }
 
-    .toast-close-btn svg { width: 12px; height: 12px; }
+    .alert-close:active { transform: scale(0.9); }
+    .alert-close svg { width: 12px; height: 12px; }
 
-    .toast-progress-bar {
+    .alert-progress {
       position: absolute;
       bottom: 0; left: 0; right: 0;
       height: 3px;
-      background: rgba(var(--toast-color-rgb), 0.15);
+      background: rgba(var(--alert-rgb), 0.15);
       overflow: hidden;
       border-radius: 0 0 18px 18px;
     }
 
-    .toast-progress-fill {
+    .alert-progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--toast-color), rgba(var(--toast-color-rgb), 0.7));
+      background: linear-gradient(90deg, var(--alert-color), rgba(var(--alert-rgb), 0.7));
       transform-origin: left;
       animation: toastProgress 5s linear forwards;
-      box-shadow: 0 0 10px var(--toast-color);
+      box-shadow: 0 0 10px var(--alert-color);
     }
 
     .live-dot {
@@ -665,6 +700,7 @@
       animation: shimmer 2s infinite;
     }
 
+    /* NETWORK CARD */
     .network-card {
       position: relative;
       border-radius: 16px;
@@ -743,6 +779,7 @@
       text-transform: uppercase;
     }
 
+    /* PLAN CARD */
     .plan-card {
       position: relative;
       border-radius: 20px;
@@ -885,353 +922,87 @@
     .metric-label { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; display: block; margin-bottom: 4px; }
     .metric-value { font-size: 15px; font-weight: 900; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
 
-    .receipt-modal-container {
-      width: 100%;
-      max-width: 340px;
-      max-height: 95vh;
-      display: flex;
-      flex-direction: column;
-    }
-
+    .receipt-modal-container { width: 100%; max-width: 340px; max-height: 95vh; display: flex; flex-direction: column; }
     .receipt-container {
       background: linear-gradient(165deg, #0f1826 0%, #0a121c 50%, #080d16 100%);
-      border-radius: 22px;
-      position: relative;
-      overflow: hidden;
+      border-radius: 22px; position: relative; overflow: hidden;
       border: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 0 40px 100px -25px rgba(0, 0, 0, 0.95), 0 0 70px -25px rgba(16, 185, 129, 0.35);
     }
-
     .receipt-container::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
       background: var(--receipt-accent, linear-gradient(90deg, #10b981, #06b6d4));
     }
-
-    .receipt-header {
-      padding: 24px 20px 18px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-
+    .receipt-header { padding: 24px 20px 18px; text-align: center; position: relative; overflow: hidden; }
     .receipt-header::before {
-      content: '';
-      position: absolute;
-      top: -100%; left: -50%;
-      width: 200%; height: 300%;
-      background: radial-gradient(circle, var(--receipt-glow, rgba(16, 185, 129, 0.18)) 0%, transparent 55%);
-      pointer-events: none;
+      content: ''; position: absolute; top: -100%; left: -50%; width: 200%; height: 300%;
+      background: radial-gradient(circle, var(--receipt-glow, rgba(16, 185, 129, 0.18)) 0%, transparent 55%); pointer-events: none;
     }
-
-    @keyframes receiptShine {
-      0% { transform: translateX(-100%) skewX(-15deg); }
-      100% { transform: translateX(200%) skewX(-15deg); }
-    }
-
+    @keyframes receiptShine { 0% { transform: translateX(-100%) skewX(-15deg); } 100% { transform: translateX(200%) skewX(-15deg); } }
     .receipt-shine {
-      position: absolute;
-      top: 0; left: 0;
-      width: 40%; height: 100%;
+      position: absolute; top: 0; left: 0; width: 40%; height: 100%;
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
-      animation: receiptShine 3.5s infinite;
-      pointer-events: none;
+      animation: receiptShine 3.5s infinite; pointer-events: none;
     }
-
-    .receipt-brand-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      margin-bottom: 16px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .receipt-brand-icon {
-      width: 22px; height: 22px; border-radius: 7px;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      display: flex; align-items: center; justify-content: center;
-      color: #000;
-      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.4);
-    }
-
+    .receipt-brand-row { display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 16px; position: relative; z-index: 1; }
+    .receipt-brand-icon { width: 22px; height: 22px; border-radius: 7px; background: linear-gradient(135deg, #10b981, #06b6d4); display: flex; align-items: center; justify-content: center; color: #000; box-shadow: 0 3px 10px rgba(16, 185, 129, 0.4); }
     .receipt-brand-icon svg { width: 12px; height: 12px; }
-
-    .receipt-brand-text {
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 0.18em;
-      color: #ffffff;
-    }
-
-    .receipt-brand-text span {
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
+    .receipt-brand-text { font-size: 11px; font-weight: 900; letter-spacing: 0.18em; color: #ffffff; }
+    .receipt-brand-text span { background: linear-gradient(135deg, #10b981, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .receipt-logo {
-      width: 64px; height: 64px;
-      border-radius: 18px;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 14px;
-      background: #0d1220;
-      border: 2px solid rgba(255,255,255,0.1);
-      padding: 10px;
+      width: 64px; height: 64px; border-radius: 18px; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 14px; background: #0d1220; border: 2px solid rgba(255,255,255,0.1); padding: 10px;
       box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.7), 0 0 35px -10px var(--receipt-glow, rgba(16, 185, 129, 0.5));
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
     }
-
     .receipt-logo img { width: 100%; height: 100%; object-fit: contain; }
-
-    .receipt-amount {
-      font-size: 40px;
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      line-height: 1;
-      margin-bottom: 6px;
-      position: relative;
-      z-index: 1;
-      text-shadow: 0 2px 20px currentColor;
-    }
-
-    .receipt-amount-label {
-      font-size: 9px;
-      color: #6b7280;
-      font-family: 'JetBrains Mono', monospace;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      margin-bottom: 12px;
-      position: relative;
-      z-index: 1;
-    }
-
-    .receipt-status {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 9px;
-      font-weight: 900;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      position: relative;
-      z-index: 1;
-    }
-
+    .receipt-amount { font-size: 40px; font-weight: 900; letter-spacing: -0.04em; line-height: 1; margin-bottom: 6px; position: relative; z-index: 1; text-shadow: 0 2px 20px currentColor; }
+    .receipt-amount-label { font-size: 9px; color: #6b7280; font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 12px; position: relative; z-index: 1; }
+    .receipt-status { display: inline-flex; align-items: center; gap: 5px; padding: 6px 14px; border-radius: 999px; font-size: 9px; font-weight: 900; letter-spacing: 0.1em; text-transform: uppercase; position: relative; z-index: 1; }
     .receipt-status svg { width: 11px; height: 11px; }
-
     .receipt-status.pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
     .receipt-status.completed { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); }
     .receipt-status.rejected { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
     .receipt-status.active { background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.4); }
-
-    .receipt-divider {
-      position: relative;
-      height: 16px;
-      margin: 0 16px;
-    }
-
+    .receipt-divider { position: relative; height: 16px; margin: 0 16px; }
     .receipt-divider::before, .receipt-divider::after {
-      content: '';
-      position: absolute;
-      top: 50%; width: 14px; height: 14px;
-      background: #080b11;
-      border-radius: 50%;
-      transform: translateY(-50%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      content: ''; position: absolute; top: 50%; width: 14px; height: 14px;
+      background: #080b11; border-radius: 50%; transform: translateY(-50%); border: 1px solid rgba(255, 255, 255, 0.08);
     }
-
     .receipt-divider::before { left: -24px; }
     .receipt-divider::after { right: -24px; }
-
     .receipt-divider-line {
-      position: absolute;
-      top: 50%; left: 0; right: 0;
-      height: 1px;
+      position: absolute; top: 50%; left: 0; right: 0; height: 1px;
       background: repeating-linear-gradient(90deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 5px, transparent 5px, transparent 10px);
       transform: translateY(-50%);
     }
-
     .receipt-body { padding: 14px 18px; background: rgba(8, 11, 17, 0.5); }
-
-    .receipt-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 9px 0;
-      border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
-      gap: 10px;
-    }
-
+    .receipt-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.06); gap: 10px; }
     .receipt-row:last-child { border-bottom: none; }
-
     .receipt-row-label { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 800; flex-shrink: 0; }
-
-    .receipt-row-value {
-      font-size: 11px;
-      font-weight: 800;
-      color: #ffffff;
-      font-family: 'JetBrains Mono', monospace;
-      text-align: right;
-      word-break: break-all;
-      line-height: 1.3;
-    }
-
-    .receipt-address-block {
-      background: rgba(6, 182, 212, 0.06);
-      border: 1px solid rgba(6, 182, 212, 0.25);
-      border-radius: 10px;
-      padding: 10px;
-      margin: 8px 0;
-    }
-
-    .receipt-address-label {
-      font-size: 8px;
-      color: #06b6d4;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 900;
-      margin-bottom: 5px;
-      display: flex; align-items: center; gap: 4px;
-    }
-
+    .receipt-row-value { font-size: 11px; font-weight: 800; color: #ffffff; font-family: 'JetBrains Mono', monospace; text-align: right; word-break: break-all; line-height: 1.3; }
+    .receipt-address-block { background: rgba(6, 182, 212, 0.06); border: 1px solid rgba(6, 182, 212, 0.25); border-radius: 10px; padding: 10px; margin: 8px 0; }
+    .receipt-address-label { font-size: 8px; color: #06b6d4; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 900; margin-bottom: 5px; display: flex; align-items: center; gap: 4px; }
     .receipt-address-label svg { width: 10px; height: 10px; }
-
-    .receipt-address-value {
-      font-size: 10px;
-      color: #ffffff;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      word-break: break-all;
-      line-height: 1.4;
-    }
-
-    .receipt-txid-block {
-      background: rgba(16, 185, 129, 0.06);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: 10px;
-      padding: 10px;
-      margin: 8px 0;
-    }
-
-    .receipt-txid-label {
-      font-size: 8px;
-      color: #10b981;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      font-weight: 900;
-      margin-bottom: 5px;
-      display: flex; align-items: center; gap: 4px;
-    }
-
+    .receipt-address-value { font-size: 10px; color: #ffffff; font-family: 'JetBrains Mono', monospace; font-weight: 600; word-break: break-all; line-height: 1.4; }
+    .receipt-txid-block { background: rgba(16, 185, 129, 0.06); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 10px; padding: 10px; margin: 8px 0; }
+    .receipt-txid-label { font-size: 8px; color: #10b981; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 900; margin-bottom: 5px; display: flex; align-items: center; gap: 4px; }
     .receipt-txid-label svg { width: 10px; height: 10px; }
-
-    .receipt-txid-value {
-      font-size: 9px;
-      color: #ffffff;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600;
-      word-break: break-all;
-      line-height: 1.5;
-    }
-
-    .receipt-footer {
-      padding: 14px 18px;
-      background: rgba(8, 11, 17, 0.75);
-      text-align: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      position: relative;
-    }
-
-    .receipt-footer::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 70%;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.5), transparent);
-    }
-
-    .receipt-id {
-      font-size: 8px;
-      color: #4b5563;
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 0.05em;
-      margin-bottom: 3px;
-    }
-
-    .receipt-watermark {
-      font-size: 7px;
-      color: #374151;
-      text-transform: uppercase;
-      letter-spacing: 0.28em;
-      font-weight: 800;
-    }
-
-    .history-tx-card {
-      position: relative;
-      border-radius: 16px;
-      padding: 14px;
-      background: linear-gradient(145deg, rgba(22, 28, 44, 0.9) 0%, rgba(15, 20, 32, 0.9) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      transition: all 0.25s;
-      cursor: pointer;
-    }
-
-    .history-tx-card:hover {
-      border-color: rgba(16, 185, 129, 0.3);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2);
-    }
-
-    .history-tx-logo {
-      width: 44px; height: 44px;
-      border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      background: #0d1220;
-      padding: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
+    .receipt-txid-value { font-size: 9px; color: #ffffff; font-family: 'JetBrains Mono', monospace; font-weight: 600; word-break: break-all; line-height: 1.5; }
+    .receipt-footer { padding: 14px 18px; background: rgba(8, 11, 17, 0.75); text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.05); position: relative; }
+    .receipt-footer::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 70%; height: 1px; background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.5), transparent); }
+    .receipt-id { font-size: 8px; color: #4b5563; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; margin-bottom: 3px; }
+    .receipt-watermark { font-size: 7px; color: #374151; text-transform: uppercase; letter-spacing: 0.28em; font-weight: 800; }
+    .history-tx-card { position: relative; border-radius: 16px; padding: 14px; background: linear-gradient(145deg, rgba(22, 28, 44, 0.9) 0%, rgba(15, 20, 32, 0.9) 100%); border: 1px solid rgba(255, 255, 255, 0.06); transition: all 0.25s; cursor: pointer; }
+    .history-tx-card:hover { border-color: rgba(16, 185, 129, 0.3); transform: translateY(-2px); box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2); }
+    .history-tx-logo { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #0d1220; padding: 6px; border: 1px solid rgba(255, 255, 255, 0.08); }
     .history-tx-logo img { width: 100%; height: 100%; object-fit: contain; }
-
-    /* Investment Breakdown Modal */
-    .investment-breakdown {
-      background: linear-gradient(165deg, #0f1826 0%, #0a121c 100%);
-      border: 1px solid rgba(168, 85, 247, 0.3);
-      border-radius: 24px;
-      box-shadow: 0 40px 100px -25px rgba(0, 0, 0, 0.95), 0 0 70px -25px rgba(168, 85, 247, 0.35);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .investment-breakdown::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 3px;
-      background: linear-gradient(90deg, #a855f7, #6366f1);
-    }
-
-    .breakdown-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 0;
-      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
-    }
-
-    .breakdown-row:last-child { border-bottom: none; }
-
-    .breakdown-label { font-size: 11px; color: #9ca3af; font-weight: 600; }
-    .breakdown-value { font-size: 14px; font-weight: 900; font-family: 'JetBrains Mono', monospace; }
   </style>
 </head>
 <body class="font-sans antialiased pb-32">
+
+  <!-- ⚡ NEW ALERT STACK CONTAINER -->
+  <div id="alert-stack" class="alert-stack"></div>
 
   <header class="p-4 border-b border-brand-border bg-brand-bg/95 backdrop-blur-md sticky top-0 z-30">
     <div class="flex items-center justify-between">
@@ -1255,6 +1026,7 @@
   <!-- DASHBOARD -->
   <main id="tab-dashboard" class="tab-content active p-4 space-y-5">
     
+    <!-- ⚡ BALANCE CARD - Updated to show AVAILABLE BALANCE -->
     <div class="relative overflow-hidden rounded-3xl p-5 bg-gradient-to-br from-[#111622] via-[#0d131f] to-[#080b11] border border-emerald-500/20 shadow-2xl">
       <div class="absolute -right-12 -top-12 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
       <div class="absolute -left-12 -bottom-12 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -1263,16 +1035,16 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <div class="live-dot"></div>
-            <span class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">TOTAL NET WORTH</span>
+            <span class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">AVAILABLE BALANCE</span>
           </div>
           <div class="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full text-emerald-400 text-[11px] font-extrabold">
             <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> <span id="total-roi-badge">+0.0%</span>
           </div>
         </div>
 
-        <div>
-          <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight" id="main-balance">$0.00</h1>
-          <p class="text-[10px] text-gray-500 mt-1 font-mono">Updated <span id="balance-updated-time">just now</span></p>
+        <div class="relative">
+          <h1 class="text-3xl sm:text-4xl font-black text-white tracking-tight transition-all" id="main-balance">$0.00</h1>
+          <p class="text-[10px] text-gray-500 mt-1 font-mono">Net Worth: <span id="net-worth-display" class="text-cyan-400 font-bold">$0.00</span> · Updated <span id="balance-updated-time">just now</span></p>
         </div>
 
         <div class="w-full h-px bg-gradient-to-r from-emerald-500/30 via-brand-border to-transparent"></div>
@@ -1443,7 +1215,7 @@
     </div>
   </main>
 
-  <!-- WALLET TAB (Same as before - truncated for brevity, code continues) -->
+  <!-- WALLET TAB -->
   <main id="tab-wallet" class="tab-content p-4 space-y-4">
     
     <div id="wallet-overview" class="space-y-4">
@@ -1483,26 +1255,33 @@
         </div>
       </div>
 
-      <!-- Rest of wallet overview - same as before -->
-      <div class="grid grid-cols-2 gap-2">
-        <div class="metric-card">
-          <div class="flex items-center justify-between mb-1">
-            <span class="metric-label">Lifetime Deposited</span>
-            <i data-lucide="arrow-down-left" class="w-3 h-3 text-emerald-400"></i>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="glass-card rounded-xl p-4 border border-brand-border space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] text-gray-400 uppercase font-bold">Lifetime Deposited</span>
+            <i data-lucide="arrow-down-left" class="w-3.5 h-3.5 text-emerald-400"></i>
           </div>
-          <span class="metric-value text-emerald-400" id="stat-deposited">$0.00</span>
+          <h4 class="text-lg font-extrabold text-emerald-400 font-mono" id="stat-deposited">$0.00</h4>
         </div>
-        <div class="metric-card">
-          <div class="flex items-center justify-between mb-1">
-            <span class="metric-label">Lifetime Withdrawn</span>
-            <i data-lucide="arrow-up-right" class="w-3 h-3 text-cyan-400"></i>
+        <div class="glass-card rounded-xl p-4 border border-brand-border space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] text-gray-400 uppercase font-bold">Lifetime Withdrawn</span>
+            <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 text-cyan-400"></i>
           </div>
-          <span class="metric-value text-cyan-400" id="stat-withdrawn">$0.00</span>
+          <h4 class="text-lg font-extrabold text-cyan-400 font-mono" id="stat-withdrawn">$0.00</h4>
         </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-3 flex items-center justify-between border border-emerald-500/20 bg-emerald-500/5">
+        <div class="flex items-center gap-2">
+          <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
+          <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">All Systems Operational</span>
+        </div>
+        <span class="text-[9px] text-gray-400 font-mono">v3.1.0</span>
       </div>
     </div>
 
-    <!-- Deposit section (same as before) -->
+    <!-- DEPOSIT -->
     <div id="section-deposit" class="space-y-4 hidden">
       <div class="flex items-center justify-between">
         <button onclick="backToWalletOverview()" class="text-xs text-emerald-400 flex items-center gap-1.5 font-bold bg-emerald-500/10 hover:bg-emerald-500/20 px-3 py-2 rounded-lg border border-emerald-500/20 transition-all">
@@ -1527,10 +1306,8 @@
 
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
-          <div class="flex items-center">
-            <span class="step-badge">1</span>
-            <span class="text-xs font-bold text-white uppercase tracking-wide">Select Network</span>
-          </div>
+          <div class="flex items-center"><span class="step-badge">1</span><span class="text-xs font-bold text-white uppercase tracking-wide">Select Network</span></div>
+          <span class="text-[9px] text-cyan-400 font-mono font-bold">4 OPTIONS</span>
         </div>
 
         <div class="grid grid-cols-2 gap-2.5">
@@ -1579,13 +1356,13 @@
         </div>
         <div class="relative">
           <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-black text-lg">$</span>
-          <input type="number" id="deposit-amount-input" placeholder="0.00" class="input-safe w-full bg-brand-bg border border-brand-border rounded-xl pl-9 pr-4 py-3.5 text-xl font-black text-white font-mono tracking-tight">
+          <input type="number" id="deposit-amount-input" placeholder="0.00" class="input-safe w-full bg-brand-bg border border-brand-border rounded-xl pl-9 pr-4 py-3.5 text-xl font-black text-white font-mono">
         </div>
         <div class="flex gap-2">
-          <button onclick="setDepositQuickAmount(50)" class="flex-1 bg-brand-bg hover:bg-emerald-500/10 border border-brand-border hover:border-emerald-500/30 text-gray-300 hover:text-emerald-400 text-[11px] font-bold py-2 rounded-lg transition-all">$50</button>
-          <button onclick="setDepositQuickAmount(100)" class="flex-1 bg-brand-bg hover:bg-emerald-500/10 border border-brand-border hover:border-emerald-500/30 text-gray-300 hover:text-emerald-400 text-[11px] font-bold py-2 rounded-lg transition-all">$100</button>
-          <button onclick="setDepositQuickAmount(500)" class="flex-1 bg-brand-bg hover:bg-emerald-500/10 border border-brand-border hover:border-emerald-500/30 text-gray-300 hover:text-emerald-400 text-[11px] font-bold py-2 rounded-lg transition-all">$500</button>
-          <button onclick="setDepositQuickAmount(1000)" class="flex-1 bg-brand-bg hover:bg-emerald-500/10 border border-brand-border hover:border-emerald-500/30 text-gray-300 hover:text-emerald-400 text-[11px] font-bold py-2 rounded-lg transition-all">$1K</button>
+          <button onclick="setDepositQuickAmount(50)" class="flex-1 bg-brand-bg hover:bg-emerald-500/10 border border-brand-border text-gray-300 hover:text-emerald-400 text-[11px] font-bold py-2 rounded-lg">$50</button>
+          <button onclick="setDepositQuickAmount(100)" class="flex-1 bg-brand-bg hover:bg-emerald-500/10 border border-brand-border text-gray-300 hover:text-emerald-400 text-[11px] font-bold py-2 rounded-lg">$100</button>
+          <button onclick="setDepositQuickAmount(500)" class="flex-1 bg-brand-bg hover:bg-emerald-500/10 border border-brand-border text-gray-300 hover:text-emerald-400 text-[11px] font-bold py-2 rounded-lg">$500</button>
+          <button onclick="setDepositQuickAmount(1000)" class="flex-1 bg-brand-bg hover:bg-emerald-500/10 border border-brand-border text-gray-300 hover:text-emerald-400 text-[11px] font-bold py-2 rounded-lg">$1K</button>
         </div>
       </div>
 
@@ -1593,23 +1370,26 @@
         <div class="flex items-center justify-between pb-2 border-b border-brand-border">
           <div class="flex items-center"><span class="step-badge">3</span><span class="text-xs font-bold text-white uppercase tracking-wide">Send Payment</span></div>
         </div>
+        <div class="flex items-center justify-between p-2.5 bg-brand-bg rounded-xl border border-brand-border">
+          <span class="text-[10px] text-gray-400 uppercase font-bold">Active Network</span>
+          <span id="selected-network-badge" class="text-emerald-400 font-black font-mono text-[11px]">USDT (TRC20)</span>
+        </div>
         <div class="address-display p-3 space-y-2">
-          <div class="flex items-center justify-between text-[11px] text-gray-400">
-            <span>Active Network:</span>
-            <span id="selected-network-badge" class="text-emerald-400 font-bold font-mono">USDT (TRC20)</span>
+          <div class="flex items-center gap-1.5 text-[10px] text-gray-400 uppercase font-bold">
+            <i data-lucide="wallet" class="w-3 h-3 text-emerald-400"></i> Deposit Address
           </div>
-          <div class="flex items-center gap-2 bg-brand-card p-2 rounded-lg border border-brand-border">
-            <input type="text" id="wallet-address-text" readonly value="TY9x8K2zXq2P1mN84jLpQvM902RzL1mN" class="bg-transparent text-[11px] text-emerald-400 font-mono w-full focus:outline-none">
-            <button onclick="copyToClipboard('wallet-address-text')" class="px-2.5 py-1 gradient-bg text-black font-bold rounded text-[10px] shrink-0 flex items-center gap-1">
-              <i data-lucide="copy" class="w-3 h-3"></i> Copy
+          <div class="flex items-center gap-2">
+            <input type="text" id="wallet-address-text" readonly value="TY9x8K2zXq2P1mN84jLpQvM902RzL1mN" class="bg-transparent text-[11px] text-emerald-400 font-mono font-bold w-full focus:outline-none">
+            <button onclick="copyToClipboard('wallet-address-text')" class="px-3 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-black rounded-lg text-[10px] shrink-0 flex items-center gap-1">
+              <i data-lucide="copy" class="w-3 h-3"></i> COPY
             </button>
           </div>
-          <div class="flex items-start gap-2.5 p-3 rounded-xl bg-amber-500/8 border border-amber-500/25">
-            <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
-            <div class="text-[10px] leading-relaxed">
-              <strong class="text-amber-400 block font-black uppercase">Network Warning</strong>
-              <span class="text-amber-200/80">Send only <strong class="text-white" id="warning-net-name">USDT (TRC20)</strong> to this address. Wrong network = <strong class="text-amber-300">permanent loss</strong>.</span>
-            </div>
+        </div>
+        <div class="flex items-start gap-2.5 p-3 rounded-xl bg-amber-500/8 border border-amber-500/25">
+          <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+          <div class="text-[10px] leading-relaxed">
+            <strong class="text-amber-400 block font-black uppercase">Network Warning</strong>
+            <span class="text-amber-200/80">Send only <strong class="text-white" id="warning-net-name">USDT (TRC20)</strong>. Wrong network = <strong class="text-amber-300">permanent loss</strong>.</span>
           </div>
         </div>
       </div>
@@ -1639,37 +1419,134 @@
       </button>
     </div>
 
-    <!-- Withdraw section (same as before, abbreviated) -->
+    <!-- WITHDRAW -->
     <div id="section-withdraw" class="space-y-4 hidden">
       <div class="flex items-center justify-between">
         <button onclick="backToWalletOverview()" class="text-xs text-cyan-400 flex items-center gap-1.5 font-bold bg-cyan-500/10 hover:bg-cyan-500/20 px-3 py-2 rounded-lg border border-cyan-500/20 transition-all">
           <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back
         </button>
+        <span class="text-[9px] bg-cyan-500/10 text-cyan-400 font-bold px-2.5 py-1 rounded-full font-mono border border-cyan-500/20">0% FEE</span>
       </div>
-      <div class="glass-card rounded-2xl p-4 space-y-3">
+
+      <div class="glass-card rounded-2xl p-4 border border-cyan-500/20 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-[10px] text-gray-400 uppercase font-bold">Available for Withdrawal</span>
+          <i data-lucide="wallet" class="w-4 h-4 text-cyan-400"></i>
+        </div>
+        <div class="flex items-baseline gap-2">
+          <h3 class="text-2xl font-black text-white font-mono" id="withdraw-max-label-2">$0.00</h3>
+          <span class="text-[10px] text-cyan-400 font-mono">USD</span>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
+        <div class="flex items-center justify-between pb-2 border-b border-brand-border">
+          <div class="flex items-center"><span class="step-badge">1</span><span class="text-xs font-bold text-white uppercase tracking-wide">Select Network</span></div>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5">
+          <div onclick="selectWithdrawNetwork('usdt_trc20')" id="w-card-usdt_trc20" class="network-card active">
+            <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-2.5">
+              <div class="network-logo-wrap network-logo-usdt"><img src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=040" alt="USDT" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#26A17B;font-weight:900;font-size:18px\'>₮</span>'"></div>
+              <div><h5 class="text-[11px] font-black text-white">USDT</h5><p class="text-[9px] text-emerald-400 font-bold">TRC20</p></div>
+            </div>
+          </div>
+          <div onclick="selectWithdrawNetwork('usdt_bep20')" id="w-card-usdt_bep20" class="network-card">
+            <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-2.5">
+              <div class="network-logo-wrap network-logo-bnb"><img src="https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040" alt="BEP20" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#F3BA2F;font-weight:900;font-size:16px\'>⚡</span>'"></div>
+              <div><h5 class="text-[11px] font-black text-white">USDT</h5><p class="text-[9px] text-amber-400 font-bold">BEP20</p></div>
+            </div>
+          </div>
+          <div onclick="selectWithdrawNetwork('usdt_erc20')" id="w-card-usdt_erc20" class="network-card">
+            <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-2.5">
+              <div class="network-logo-wrap network-logo-eth"><img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040" alt="ERC20" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#627EEA;font-weight:900;font-size:16px\'>Ξ</span>'"></div>
+              <div><h5 class="text-[11px] font-black text-white">USDT</h5><p class="text-[9px] text-blue-400 font-bold">ERC20</p></div>
+            </div>
+          </div>
+          <div onclick="selectWithdrawNetwork('usdc')" id="w-card-usdc" class="network-card">
+            <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-2.5">
+              <div class="network-logo-wrap network-logo-usdc"><img src="https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040" alt="USDC" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#2775CA;font-weight:900;font-size:16px\'>$</span>'"></div>
+              <div><h5 class="text-[11px] font-black text-white">USDC</h5><p class="text-[9px] text-cyan-400 font-bold">USD Coin</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
+        <div class="flex items-center justify-between pb-2 border-b border-brand-border">
+          <div class="flex items-center"><span class="step-badge">2</span><span class="text-xs font-bold text-white uppercase tracking-wide">Amount</span></div>
+        </div>
         <div class="relative">
           <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-black text-lg">$</span>
           <input type="number" id="withdraw-amount" placeholder="0.00" oninput="calculateWithdrawFee()" class="w-full bg-brand-bg border border-brand-border rounded-xl pl-9 pr-16 py-3.5 text-xl font-black text-white font-mono">
+          <button onclick="setMaxWithdraw()" class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-black text-cyan-400 bg-cyan-500/15 border border-cyan-500/30 px-3 py-1.5 rounded-lg">MAX</button>
         </div>
-        <input type="text" id="withdraw-address" placeholder="Destination address..." class="w-full bg-brand-bg border border-brand-border rounded-xl p-3 text-[11px] text-white font-mono">
       </div>
-      <button onclick="initiateWithdrawalProcess()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-extrabold py-3.5 rounded-xl text-sm shadow-lg">
-        CONFIRM WITHDRAWAL
+
+      <div class="glass-card rounded-2xl p-4 space-y-3 border border-brand-border">
+        <div class="flex items-center justify-between pb-2 border-b border-brand-border">
+          <div class="flex items-center"><span class="step-badge">3</span><span class="text-xs font-bold text-white uppercase tracking-wide">Destination</span></div>
+        </div>
+        <input type="text" id="withdraw-address" placeholder="Paste destination address..." class="w-full bg-brand-bg border border-brand-border rounded-xl p-3 text-[11px] text-white font-mono">
+      </div>
+
+      <button onclick="initiateWithdrawalProcess()" class="w-full relative overflow-hidden rounded-xl font-extrabold shadow-lg active:scale-95 transition-all">
+        <span class="block bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-3.5 text-white text-sm font-black tracking-wide flex items-center justify-center gap-2">
+          <i data-lucide="external-link" class="w-4 h-4"></i> CONFIRM WITHDRAWAL
+        </span>
       </button>
     </div>
   </main>
 
   <!-- HISTORY -->
   <main id="tab-history" class="tab-content p-4 space-y-4">
-    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-      <i data-lucide="history" class="w-4 h-4 text-emerald-400"></i> Transaction History
-    </h3>
+    <div id="admin-panel-section" class="glass-card rounded-2xl p-4 border border-emerald-500/40 space-y-3 bg-gradient-to-b from-brand-card to-emerald-950/10 hidden">
+      <div class="flex items-center justify-between pb-2 border-b border-brand-border">
+        <h4 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i> Admin Desk
+        </h4>
+        <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-mono font-bold">Live</span>
+      </div>
+      <div class="grid grid-cols-3 gap-2">
+        <div class="bg-brand-bg p-2.5 rounded-xl border border-brand-border text-center">
+          <span class="text-[9px] text-gray-400 uppercase font-bold">Users</span>
+          <h4 id="admin-total-users" class="text-sm font-black text-white mt-0.5">1</h4>
+        </div>
+        <div class="bg-brand-bg p-2.5 rounded-xl border border-brand-border text-center">
+          <span class="text-[9px] text-gray-400 uppercase font-bold">Active</span>
+          <h4 id="admin-pending-count" class="text-sm font-black text-cyan-400 mt-0.5">0</h4>
+        </div>
+        <div class="bg-brand-bg p-2.5 rounded-xl border border-brand-border text-center">
+          <span class="text-[9px] text-gray-400 uppercase font-bold">Pending</span>
+          <h4 id="admin-real-pending-count" class="text-sm font-black text-amber-400 mt-0.5">0</h4>
+        </div>
+      </div>
+      <div class="bg-brand-bg p-3 rounded-xl border border-brand-border space-y-1.5 text-xs font-mono">
+        <div class="text-[10px] text-emerald-400 font-bold uppercase mb-1">Active User:</div>
+        <div class="flex justify-between text-gray-300"><span>Name:</span><strong id="admin-user-fullname" class="text-white">Investor</strong></div>
+        <div class="flex justify-between text-gray-300"><span>Username:</span><strong id="admin-user-handle" class="text-cyan-400">@Investor</strong></div>
+        <div class="flex justify-between text-gray-300"><span>Telegram ID:</span><strong id="admin-user-id" class="text-amber-400">-</strong></div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-between pt-2">
+      <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+        <i data-lucide="history" class="w-4 h-4 text-emerald-400"></i> Transaction History
+      </h3>
+      <span class="text-[9px] text-gray-500 font-mono" id="history-count-badge">0 records</span>
+    </div>
+
     <div id="history-container" class="space-y-3">
-      <div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">No transactions yet.</div>
+      <div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">
+        No transactions yet.
+      </div>
     </div>
   </main>
 
-  <!-- Other tabs (support, referral, profile) - same as before -->
+  <!-- SUPPORT, REFERRAL, PROFILE (kept same as before but abbreviated) -->
   <main id="tab-support" class="tab-content p-4 space-y-4">
     <div class="glass-card rounded-2xl p-5 border border-emerald-500/30">
       <h3 class="font-extrabold text-base text-white">VIP Concierge Support</h3>
@@ -1704,16 +1581,13 @@
       <button onclick="closeModal('invest-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-lg bg-white/5">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
-
       <h3 class="font-extrabold text-white text-base" id="modal-plan-title">Plan</h3>
-
       <div class="space-y-3">
         <div>
           <label class="text-xs text-gray-400 font-bold uppercase">Investment Amount ($)</label>
           <input type="number" id="modal-amount-input" oninput="calculateModalProfit()" class="w-full mt-1 bg-brand-bg border border-brand-border rounded-xl p-3 text-sm text-white font-bold">
           <p class="text-[11px] text-gray-500 mt-1" id="modal-limits-text">Min: $5 - Max: $99</p>
         </div>
-
         <div class="p-3 bg-brand-bg rounded-xl border border-brand-border space-y-1.5 text-xs">
           <div class="flex justify-between text-gray-400"><span>Daily ROI:</span><span id="modal-daily-rate" class="text-emerald-400 font-bold">30%</span></div>
           <div class="flex justify-between text-gray-400"><span>Daily Profit:</span><span id="modal-daily-profit" class="text-white font-bold">$0.00</span></div>
@@ -1721,71 +1595,13 @@
           <div class="flex justify-between text-gray-400 pt-1 border-t border-brand-border"><span>Total Payout:</span><span id="modal-total-payout" class="text-cyan-400 font-bold">$0.00</span></div>
         </div>
       </div>
-
       <button onclick="confirmInvestment()" class="w-full gradient-bg text-black font-extrabold py-3 rounded-xl text-sm shadow-lg active:scale-95 transition-all">
-        Continue →
+        Confirm & Start
       </button>
     </div>
   </div>
 
-  <!-- ⚡ NEW: INVESTMENT BREAKDOWN CONFIRMATION MODAL -->
-  <div id="investment-breakdown-modal" class="modal-overlay hidden">
-    <div class="investment-breakdown w-full max-w-sm p-5 space-y-4 relative modal-animate-in">
-      <button onclick="closeModal('investment-breakdown-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-lg bg-white/5 z-10">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
-      <div class="text-center space-y-2 pb-2">
-        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center mx-auto shadow-lg shadow-purple-500/30">
-          <i data-lucide="receipt" class="w-7 h-7 text-white"></i>
-        </div>
-        <h3 class="font-black text-white text-base">Confirm Investment</h3>
-        <p class="text-[10px] text-gray-400">Review your investment details</p>
-      </div>
-
-      <div class="p-3 rounded-xl bg-purple-500/5 border border-purple-500/20">
-        <div class="text-[9px] text-purple-400 uppercase tracking-wider font-bold mb-1">SELECTED PLAN</div>
-        <div class="text-sm font-black text-white" id="breakdown-plan-name">5-Day Starter Sprint</div>
-      </div>
-
-      <div class="p-4 rounded-xl bg-brand-bg border border-brand-border space-y-0">
-        <div class="breakdown-row">
-          <span class="breakdown-label">Current Balance</span>
-          <span class="breakdown-value text-white" id="breakdown-current-balance">$0.00</span>
-        </div>
-        <div class="breakdown-row">
-          <span class="breakdown-label">Investment Amount</span>
-          <span class="breakdown-value text-red-400" id="breakdown-invest-amount">-$0.00</span>
-        </div>
-        <div class="breakdown-row">
-          <span class="breakdown-label">Remaining Balance</span>
-          <span class="breakdown-value text-emerald-400" id="breakdown-remaining-balance">$0.00</span>
-        </div>
-        <div class="breakdown-row">
-          <span class="breakdown-label">New Locked Amount</span>
-          <span class="breakdown-value text-cyan-400" id="breakdown-new-locked">$0.00</span>
-        </div>
-      </div>
-
-      <div class="p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20 flex items-start gap-2">
-        <i data-lucide="info" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
-        <p class="text-[10px] text-emerald-200/80 leading-relaxed">
-          Funds will be <strong class="text-white">locked immediately</strong>. Daily profit will accumulate automatically in your wallet.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <button onclick="closeModal('investment-breakdown-modal')" class="py-3 rounded-xl bg-white/5 border border-white/10 text-gray-300 font-bold text-xs">
-          Cancel
-        </button>
-        <button onclick="executeInvestment()" class="py-3 rounded-xl bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-black text-xs shadow-lg active:scale-95 transition-all">
-          ✓ Confirm
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Processing Modal - SAME AS BEFORE (kept for deposits/withdrawals) -->
+  <!-- PROCESSING MODAL -->
   <div id="processing-modal" class="modal-overlay hidden">
     <div id="processing-card" class="processing-premium w-full max-w-xs modal-animate-in" data-step="1">
       <div class="processing-particles" id="particle-container"></div>
@@ -1794,9 +1610,7 @@
         <div class="processing-ring"></div>
         <div class="processing-ring"></div>
         <div class="processing-ring"></div>
-        <div id="step-icon" class="processing-icon">
-          <i id="step-icon-content" data-lucide="send"></i>
-        </div>
+        <div id="step-icon" class="processing-icon"><i id="step-icon-content" data-lucide="send"></i></div>
       </div>
       <div class="processing-steps">
         <div id="dot-1" class="processing-step-dot active"></div>
@@ -1830,31 +1644,6 @@
     </div>
   </div>
 
-  <!-- ⚡ PREMIUM TOAST NOTIFICATION -->
-  <div id="admin-notify-popup">
-    <div class="toast-modern success" id="toast-container">
-      <div class="p-4 flex items-start gap-3 relative z-10">
-        <div class="toast-icon" id="notify-icon-box">
-          <i data-lucide="check" id="notify-icon"></i>
-        </div>
-        <div class="flex-1 min-w-0 text-left">
-          <h4 id="notify-title" class="toast-title">Success</h4>
-          <p id="notify-desc" class="toast-desc">Transaction processed successfully.</p>
-          <span class="toast-time">
-            <span class="toast-time-dot"></span>
-            <span id="notify-time">Just now</span>
-          </span>
-        </div>
-        <button onclick="hideAdminNotify()" class="toast-close-btn">
-          <i data-lucide="x"></i>
-        </button>
-      </div>
-      <div class="toast-progress-bar">
-        <div class="toast-progress-fill" id="toast-progress-fill"></div>
-      </div>
-    </div>
-  </div>
-
   <script>
     lucide.createIcons();
 
@@ -1883,23 +1672,24 @@
     }
 
     document.getElementById('profile-fullname').innerText = currentUserProfile.name;
+    if (document.getElementById('profile-username')) document.getElementById('profile-username').innerText = currentUserProfile.username;
 
     let userPortfolio = JSON.parse(localStorage.getItem('apex_portfolio_' + currentUserProfile.id) || JSON.stringify({
       balance: 0.00, totalDeposited: 0.00, totalWithdrawn: 0.00, lockedBalance: 0.00
     }));
 
     let transactionsHistory = JSON.parse(localStorage.getItem('apex_tx_' + currentUserProfile.id) || '[]');
+    let supportTickets = JSON.parse(localStorage.getItem('apex_support_' + currentUserProfile.id) || '[]');
     let activeInvestments = JSON.parse(localStorage.getItem('apex_inv_' + currentUserProfile.id) || '[]');
     let uploadedScreenshotData = null;
     let pendingReceiptTx = null;
-    let notificationTimer = null;
-    let notificationStartTime = null;
-    let notificationTimeInterval = null;
 
     window.addEventListener('DOMContentLoaded', () => {
       updateWalletUI();
       renderHistory();
+      renderSupportTickets();
       renderActiveInvestments();
+      updateAdminStats();
     });
 
     function saveAppData() {
@@ -1908,19 +1698,19 @@
       localStorage.setItem('apex_inv_' + currentUserProfile.id, JSON.stringify(activeInvestments));
     }
 
-    // ⚡ BALANCE UPDATE WITH ANIMATION
-    function updateWalletUI(animateType = null) {
+    // ⚡ NEW: Track previous balance for animation
+    let previousBalance = userPortfolio.balance;
+
+    function updateWalletUI(animate = true) {
       const liquid = userPortfolio.balance;
       const locked = userPortfolio.lockedBalance;
       const totalNet = liquid + locked;
 
       const mainBalanceEl = document.getElementById('main-balance');
+      const netWorthEl = document.getElementById('net-worth-display');
       const walletBalanceEl = document.getElementById('wallet-balance-display');
       
-      // Store old values
-      const oldMainBalance = mainBalanceEl.innerText;
-
-      // Update all displays
+      // Update displays
       if (walletBalanceEl) walletBalanceEl.innerText = `$${liquid.toFixed(2)}`;
       const ml = document.getElementById('metric-liquid');
       if (ml) ml.innerText = `$${liquid.toFixed(2)}`;
@@ -1932,25 +1722,149 @@
       document.getElementById('stat-deposited').innerText = `$${userPortfolio.totalDeposited.toFixed(2)}`;
       document.getElementById('stat-withdrawn').innerText = `$${userPortfolio.totalWithdrawn.toFixed(2)}`;
       
-      mainBalanceEl.innerText = `$${totalNet.toFixed(2)}`;
+      // ⚡ Main balance now shows LIQUID (available) balance
+      mainBalanceEl.innerText = `$${liquid.toFixed(2)}`;
+      
+      // ⚡ Net worth shown as subtext
+      if (netWorthEl) netWorthEl.innerText = `$${totalNet.toFixed(2)}`;
+      
       document.getElementById('locked-balance').innerText = `$${locked.toFixed(2)}`;
       document.getElementById('active-inv-count').innerText = `${activeInvestments.length} Active`;
       
-      // Add animation
-      if (animateType === 'decrease' && oldMainBalance !== mainBalanceEl.innerText) {
-        mainBalanceEl.classList.add('balance-change-anim', 'balance-decrease-anim');
-        setTimeout(() => mainBalanceEl.classList.remove('balance-change-anim', 'balance-decrease-anim'), 1100);
-      } else if (animateType === 'increase' && oldMainBalance !== mainBalanceEl.innerText) {
-        mainBalanceEl.classList.add('balance-change-anim', 'balance-increase-anim');
-        setTimeout(() => mainBalanceEl.classList.remove('balance-change-anim', 'balance-increase-anim'), 1100);
+      // ⚡ ANIMATION: Flash balance if it changed
+      if (animate && previousBalance !== liquid) {
+        const diff = liquid - previousBalance;
+        
+        // Flash color based on direction
+        mainBalanceEl.classList.remove('balance-decreased', 'balance-increased');
+        void mainBalanceEl.offsetWidth; // Force reflow
+        
+        if (diff < 0) {
+          mainBalanceEl.classList.add('balance-decreased');
+        } else {
+          mainBalanceEl.classList.add('balance-increased');
+        }
+        
+        // Floating indicator
+        showFloatingBalanceChange(diff);
+        
+        // Remove class after animation
+        setTimeout(() => {
+          mainBalanceEl.classList.remove('balance-decreased', 'balance-increased');
+        }, 1200);
+        
+        previousBalance = liquid;
       }
       
+      // ROI
       if (userPortfolio.totalDeposited > 0) {
         const roi = ((totalNet - userPortfolio.totalDeposited) / userPortfolio.totalDeposited) * 100;
         document.getElementById('total-roi-badge').innerText = `+${roi.toFixed(1)}%`;
       } else {
         document.getElementById('total-roi-badge').innerText = `+0.0%`;
       }
+    }
+
+    // ⚡ NEW: Floating indicator that shows +/- amount
+    function showFloatingBalanceChange(diff) {
+      const balanceCard = document.getElementById('main-balance').parentElement;
+      if (!balanceCard) return;
+      
+      const indicator = document.createElement('div');
+      indicator.className = `balance-float-indicator ${diff < 0 ? 'negative' : 'positive'}`;
+      indicator.innerText = `${diff > 0 ? '+' : ''}$${Math.abs(diff).toFixed(2)}`;
+      
+      balanceCard.style.position = 'relative';
+      balanceCard.appendChild(indicator);
+      
+      // Remove after animation
+      setTimeout(() => {
+        if (indicator.parentNode) indicator.parentNode.removeChild(indicator);
+      }, 1500);
+    }
+
+    // ⚡ NEW: PROFESSIONAL ALERT SYSTEM
+    function showNotificationPopup(type, title, desc) {
+      const stack = document.getElementById('alert-stack');
+      const alertId = 'alert_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4);
+      
+      // Icon based on type
+      let iconName = 'check-circle';
+      if (type === 'error') iconName = 'x-circle';
+      else if (type === 'warning') iconName = 'alert-triangle';
+      else if (type === 'info') iconName = 'info';
+      
+      // Create alert element
+      const alertEl = document.createElement('div');
+      alertEl.className = `alert-modern ${type}`;
+      alertEl.id = alertId;
+      alertEl.innerHTML = `
+        <div style="padding: 14px 16px; display: flex; align-items: flex-start; gap: 12px; position: relative; z-index: 1;">
+          <div class="alert-icon-box">
+            <i data-lucide="${iconName}"></i>
+          </div>
+          <div style="flex: 1; min-width: 0; text-align: left;">
+            <h4 class="alert-title">${title}</h4>
+            <p class="alert-desc">${desc}</p>
+            <span class="alert-time">
+              <span class="alert-time-dot"></span>
+              <span class="alert-time-text">Just now</span>
+            </span>
+          </div>
+          <button class="alert-close" onclick="closeAlert('${alertId}')">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+        <div class="alert-progress">
+          <div class="alert-progress-fill"></div>
+        </div>
+      `;
+      
+      stack.appendChild(alertEl);
+      lucide.createIcons();
+      
+      // Haptic feedback
+      if (tg?.HapticFeedback) {
+        if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
+        else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
+        else if (type === 'warning') tg.HapticFeedback.notificationOccurred('warning');
+      }
+      
+      // Start timestamp updater
+      const startTime = Date.now();
+      const timeInterval = setInterval(() => {
+        const timeEl = alertEl.querySelector('.alert-time-text');
+        if (!timeEl) {
+          clearInterval(timeInterval);
+          return;
+        }
+        const elapsed = Math.floor((Date.now() - startTime) / 1000);
+        if (elapsed < 1) timeEl.innerText = 'Just now';
+        else if (elapsed === 1) timeEl.innerText = '1 second ago';
+        else if (elapsed < 60) timeEl.innerText = `${elapsed} seconds ago`;
+        else timeEl.innerText = `${Math.floor(elapsed / 60)} min ago`;
+      }, 1000);
+      
+      // Auto-dismiss after 5 seconds
+      setTimeout(() => {
+        closeAlert(alertId);
+        clearInterval(timeInterval);
+      }, 5000);
+    }
+
+    function closeAlert(alertId) {
+      const alertEl = document.getElementById(alertId);
+      if (!alertEl) return;
+      
+      alertEl.classList.add('closing');
+      setTimeout(() => {
+        if (alertEl.parentNode) alertEl.parentNode.removeChild(alertEl);
+      }, 400);
+    }
+
+    // Legacy wrapper for compatibility
+    function hideAdminNotify() {
+      // No-op - alerts auto-dismiss
     }
 
     function switchTab(tabId) {
@@ -1975,17 +1889,323 @@
       document.getElementById('wallet-overview').classList.add('hidden');
       document.getElementById('section-deposit').classList.toggle('hidden', !isDeposit);
       document.getElementById('section-withdraw').classList.toggle('hidden', isDeposit);
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 100);
     }
 
     function backToWalletOverview() {
       document.getElementById('wallet-overview').classList.remove('hidden');
       document.getElementById('section-deposit').classList.add('hidden');
       document.getElementById('section-withdraw').classList.add('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // ⚡ INVESTMENT FLOW - NEW
+    // ⚡ PROCESSING ANIMATION
+    function createParticles() {
+      const container = document.getElementById('particle-container');
+      container.innerHTML = '';
+      for (let i = 0; i < 10; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'processing-particle';
+        particle.style.left = `${15 + Math.random() * 70}%`;
+        particle.style.top = `${30 + Math.random() * 50}%`;
+        particle.style.animationDelay = `${Math.random() * 2.5}s`;
+        particle.style.animationDuration = `${2 + Math.random() * 1.5}s`;
+        container.appendChild(particle);
+      }
+    }
+
+    function setStep(stepNumber) {
+      const card = document.getElementById('processing-card');
+      const stepIcon = document.getElementById('step-icon');
+      const stepIconContent = document.getElementById('step-icon-content');
+      const stepLabel = document.getElementById('step-label');
+      const stepBadge = document.getElementById('step-badge');
+      const processingTitle = document.getElementById('processing-title');
+      const processingSubtitle = document.getElementById('processing-subtitle');
+      const progressBar = document.getElementById('step-progress-bar');
+      const dot1 = document.getElementById('dot-1');
+      const dot2 = document.getElementById('dot-2');
+      const dot3 = document.getElementById('dot-3');
+
+      card.setAttribute('data-step', stepNumber);
+      stepBadge.setAttribute('data-state', stepNumber);
+      
+      if (stepNumber === 1) {
+        stepIcon.className = 'processing-icon';
+        stepIconContent.setAttribute('data-lucide', 'send');
+        stepLabel.textContent = 'PAYMENT SENT';
+        processingTitle.textContent = 'Broadcasting Payment';
+        processingSubtitle.textContent = 'Sending transaction to blockchain network...';
+        progressBar.style.width = '15%';
+        dot1.className = 'processing-step-dot active';
+        dot2.className = 'processing-step-dot';
+        dot3.className = 'processing-step-dot';
+      } else if (stepNumber === 2) {
+        stepIcon.className = 'processing-icon step-2';
+        stepIconContent.setAttribute('data-lucide', 'shield-check');
+        stepLabel.textContent = 'VERIFYING';
+        processingTitle.textContent = 'Verifying Transaction';
+        processingSubtitle.textContent = 'Confirming on-chain security protocols...';
+        progressBar.style.width = '60%';
+        dot1.className = 'processing-step-dot completed';
+        dot2.className = 'processing-step-dot active';
+        dot3.className = 'processing-step-dot';
+      } else if (stepNumber === 3) {
+        stepIcon.className = 'processing-icon step-3';
+        stepIconContent.setAttribute('data-lucide', 'check');
+        stepLabel.textContent = 'CONFIRMATION';
+        processingTitle.textContent = 'Confirmed!';
+        processingSubtitle.textContent = 'Transaction successfully verified!';
+        progressBar.style.width = '100%';
+        dot1.className = 'processing-step-dot completed';
+        dot2.className = 'processing-step-dot completed';
+        dot3.className = 'processing-step-dot active';
+        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      }
+      lucide.createIcons();
+    }
+
+    function startProcessingAnimation(amount, txId) {
+      document.getElementById('processing-amount').innerText = amount;
+      document.getElementById('processing-modal').classList.remove('hidden');
+      createParticles();
+      setStep(1);
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+      setTimeout(() => { setStep(2); if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium'); }, 1800);
+      setTimeout(() => { setStep(3); }, 3800);
+      setTimeout(() => {
+        closeModal('processing-modal');
+        pendingReceiptTx = txId;
+        setTimeout(() => { openReceiptModal(txId); }, 200);
+      }, 5500);
+    }
+
+    // ============================================================
+    // RECEIPT
+    // ============================================================
+    function generateReceiptHTML(tx) {
+      const isDeposit = tx.type === 'deposit';
+      const isWithdrawal = tx.type === 'withdraw';
+      const isInvestment = tx.type === 'investment';
+      
+      let accentGradient = 'linear-gradient(90deg, #10b981, #06b6d4)';
+      let glowColor = 'rgba(16, 185, 129, 0.15)';
+      let statusColor = '#f59e0b';
+      let statusClass = 'pending';
+      let statusLabel = 'PENDING';
+      let amountColor = '#10b981';
+      let amountPrefix = '+';
+      
+      if (isWithdrawal) {
+        accentGradient = 'linear-gradient(90deg, #06b6d4, #3b82f6)';
+        glowColor = 'rgba(6, 182, 212, 0.15)';
+        amountColor = '#06b6d4';
+        amountPrefix = '-';
+      } else if (isInvestment) {
+        accentGradient = 'linear-gradient(90deg, #a855f7, #6366f1)';
+        glowColor = 'rgba(168, 85, 247, 0.15)';
+        amountColor = '#a855f7';
+        amountPrefix = '-';
+      }
+      
+      if (tx.status === 'Completed') { statusClass = 'completed'; statusLabel = 'COMPLETED'; statusColor = '#10b981'; }
+      else if (tx.status === 'Rejected') { statusClass = 'rejected'; statusLabel = 'REJECTED'; statusColor = '#ef4444'; }
+      else if (tx.status === 'Active') { statusClass = 'active'; statusLabel = 'ACTIVE'; statusColor = '#06b6d4'; }
+      
+      let networkLogo = 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040';
+      let networkEmoji = '₮';
+      let networkName = tx.network || 'USDT';
+      
+      if (tx.network && tx.network.includes('BEP20')) { networkLogo = 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040'; networkEmoji = '⚡'; }
+      else if (tx.network && tx.network.includes('ERC20')) { networkLogo = 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040'; networkEmoji = 'Ξ'; }
+      else if (tx.network && tx.network.includes('USDC')) { networkLogo = 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040'; networkEmoji = '$'; }
+      else if (isInvestment) { networkLogo = ''; networkEmoji = '📈'; }
+      
+      let rawAmount = tx.rawAmount || parseFloat((tx.amount || '0').replace(/[^0-9.]/g, '')) || 0;
+      const receiptDate = tx.fullDate || new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const fullAddress = tx.fullAddress || tx.ref || 'N/A';
+
+      let adminActionsHTML = '';
+      if (isAdmin && tx.status === 'Pending Review') {
+        adminActionsHTML = `
+          <div style="padding: 0 18px 14px; display: flex; gap: 6px;">
+            <button onclick="simulateSystemResponse('${tx.id}', 'approve')" style="flex: 1; background: rgba(16, 185, 129, 0.2); color: #10b981; font-size: 10px; font-weight: 700; padding: 9px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.4);">✓ Approve</button>
+            <button onclick="simulateSystemResponse('${tx.id}', 'reject')" style="flex: 1; background: rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 10px; font-weight: 700; padding: 9px; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.4);">✕ Reject</button>
+          </div>`;
+      }
+
+      return `
+        <div style="--receipt-accent: ${accentGradient}; --receipt-glow: ${glowColor};">
+          <button onclick="closeModal('receipt-modal')" style="position: absolute; top: 10px; right: 10px; z-index: 20; width: 28px; height: 28px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #d1d5db;">
+            <i data-lucide="x" style="width: 12px; height: 12px;"></i>
+          </button>
+          <div class="receipt-header">
+            <div class="receipt-shine"></div>
+            <div class="receipt-brand-row">
+              <div class="receipt-brand-icon"><i data-lucide="gem"></i></div>
+              <div class="receipt-brand-text">APEX<span>INVEST</span></div>
+            </div>
+            <div class="receipt-logo" style="border-color: ${statusColor}50;">
+              ${networkLogo ? `<img src="${networkLogo}" alt="${networkName}" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'color:${statusColor};font-weight:900;font-size:26px\\'>${networkEmoji}</span>'">` : `<span style="color:${statusColor};font-weight:900;font-size:26px;">${networkEmoji}</span>`}
+            </div>
+            <div class="receipt-amount" style="color: ${amountColor}">${amountPrefix}$${rawAmount.toFixed(2)}</div>
+            <div class="receipt-amount-label">${isDeposit ? 'DEPOSIT AMOUNT' : isWithdrawal ? 'WITHDRAWAL AMOUNT' : 'INVESTMENT AMOUNT'}</div>
+            <div class="receipt-status ${statusClass}">
+              <i data-lucide="${tx.status === 'Completed' ? 'check-circle-2' : tx.status === 'Rejected' ? 'x-circle' : 'clock'}"></i>
+              ${statusLabel}
+            </div>
+          </div>
+          <div class="receipt-divider"><div class="receipt-divider-line"></div></div>
+          <div class="receipt-body">
+            <div class="receipt-row">
+              <span class="receipt-row-label">Network</span>
+              <span class="receipt-row-value" style="color:${statusColor}">${tx.network || 'Plan Allocation'}</span>
+            </div>
+            <div class="receipt-row">
+              <span class="receipt-row-label">Date</span>
+              <span class="receipt-row-value" style="font-size: 10px;">${receiptDate}</span>
+            </div>
+            ${isWithdrawal ? `
+              <div class="receipt-address-block">
+                <div class="receipt-address-label"><i data-lucide="wallet"></i> DESTINATION WALLET</div>
+                <div class="receipt-address-value">${fullAddress}</div>
+              </div>
+            ` : isDeposit ? `
+              <div class="receipt-txid-block">
+                <div class="receipt-txid-label"><i data-lucide="fingerprint"></i> TRANSACTION ID</div>
+                <div class="receipt-txid-value">${fullAddress}</div>
+              </div>
+            ` : `
+              <div class="receipt-txid-block">
+                <div class="receipt-txid-label"><i data-lucide="fingerprint"></i> REFERENCE ID</div>
+                <div class="receipt-txid-value">${tx.fullId || tx.id}</div>
+              </div>
+            `}
+            <div class="receipt-row">
+              <span class="receipt-row-label">Status</span>
+              <span class="receipt-row-value" style="color:${statusColor}; text-transform: uppercase; letter-spacing: 0.08em;">${tx.status}</span>
+            </div>
+          </div>
+          <div class="receipt-footer">
+            <div class="receipt-id">REF: APX-${Date.now().toString().slice(-8)}</div>
+            <div class="receipt-watermark">APEXINVEST · SECURE RECEIPT</div>
+          </div>
+          ${adminActionsHTML}
+        </div>
+      `;
+    }
+
+    function openReceiptModal(txId) {
+      const tx = transactionsHistory.find(t => t.id === txId);
+      if (!tx) { showNotificationPopup('warning', 'Not Found', 'Receipt not available'); return; }
+      document.getElementById('receipt-content').innerHTML = generateReceiptHTML(tx);
+      document.getElementById('receipt-modal').classList.remove('hidden');
+      lucide.createIcons();
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    // Continue with rest of functions...
+    function renderHistory() {
+      const container = document.getElementById('history-container');
+      const countBadge = document.getElementById('history-count-badge');
+      if (!container) return;
+      container.innerHTML = '';
+      if (countBadge) countBadge.innerText = `${transactionsHistory.length} ${transactionsHistory.length === 1 ? 'record' : 'records'}`;
+
+      if (transactionsHistory.length === 0) {
+        container.innerHTML = `<div class="glass-card rounded-2xl p-6 text-center border border-brand-border"><div class="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-3"><i data-lucide="receipt" class="w-7 h-7 text-emerald-400"></i></div><p class="text-sm font-bold text-white mb-1">No Transactions Yet</p></div>`;
+        lucide.createIcons();
+        return;
+      }
+
+      transactionsHistory.forEach(tx => {
+        let logoImg = 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040';
+        let logoEmoji = '₮'; let logoColor = '#26A17B'; let logoClass = 'network-logo-usdt';
+        if (tx.network && tx.network.includes('BEP20')) { logoImg = 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040'; logoEmoji = '⚡'; logoColor = '#F3BA2F'; logoClass = 'network-logo-bnb'; }
+        else if (tx.network && tx.network.includes('ERC20')) { logoImg = 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040'; logoEmoji = 'Ξ'; logoColor = '#627EEA'; logoClass = 'network-logo-eth'; }
+        else if (tx.network && tx.network.includes('USDC')) { logoImg = 'https://cryptologos.cc/logos/usd-coin-usdc-logo.png?v=040'; logoEmoji = '$'; logoColor = '#2775CA'; logoClass = 'network-logo-usdc'; }
+        else if (tx.type === 'investment') { logoImg = ''; logoEmoji = '📈'; logoColor = '#a855f7'; logoClass = ''; }
+
+        const isPositive = tx.amount.startsWith('+');
+        const amountColor = isPositive ? 'text-emerald-400' : (tx.type === 'withdraw' ? 'text-cyan-400' : 'text-purple-400');
+        let directionLabel = 'IN'; let directionColor = '#10b981';
+        if (tx.type === 'withdraw') { directionLabel = 'OUT'; directionColor = '#06b6d4'; }
+        if (tx.type === 'investment') { directionLabel = 'INV'; directionColor = '#a855f7'; }
+
+        container.innerHTML += `
+          <div class="history-tx-card" onclick="openReceiptModal('${tx.id}')">
+            <div class="flex items-start gap-3">
+              <div class="history-tx-logo ${logoClass}" style="width: 44px; height: 44px;">
+                ${logoImg ? `<img src="${logoImg}" alt="${tx.network}" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'color:${logoColor};font-weight:900;font-size:20px\\'>${logoEmoji}</span>'">` : `<span style="color:${logoColor};font-weight:900;font-size:20px;">${logoEmoji}</span>`}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between mb-1">
+                  <div class="flex items-center gap-1.5">
+                    <h4 class="text-xs font-black text-white truncate">${tx.title}</h4>
+                    <span class="text-[8px] font-black px-1.5 py-0.5 rounded" style="background: ${directionColor}20; color: ${directionColor};">${directionLabel}</span>
+                  </div>
+                  <span class="text-sm font-black font-mono ${amountColor}">${tx.amount}</span>
+                </div>
+                <div class="flex items-center justify-between mb-2">
+                  <p class="text-[10px] text-gray-500 font-mono">${tx.time}</p>
+                  <span class="text-[9px] font-bold px-2 py-0.5 rounded" style="background: rgba(245, 158, 11, 0.15); color: ${tx.status === 'Completed' ? '#10b981' : tx.status === 'Rejected' ? '#ef4444' : tx.status === 'Active' ? '#06b6d4' : '#f59e0b'};">${tx.status}</span>
+                </div>
+                <div class="flex items-center justify-between pt-2 border-t border-white/5">
+                  <div class="flex items-center gap-1.5 text-[9px] text-gray-400"><span class="opacity-60">ID:</span><span class="font-mono text-cyan-400 truncate max-w-[100px]">${tx.id.slice(0, 12)}...</span></div>
+                  <div class="flex items-center gap-1 text-[9px] text-emerald-400 font-bold"><i data-lucide="eye" class="w-3 h-3"></i> Receipt</div>
+                </div>
+              </div>
+            </div>
+          </div>`;
+      });
+      lucide.createIcons();
+      updateAdminStats();
+    }
+
+    function renderActiveInvestments() {
+      const container = document.getElementById('active-investments-container');
+      if (!container) return;
+      if (activeInvestments.length === 0) {
+        container.innerHTML = `<div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">No active investments.</div>`;
+        return;
+      }
+      container.innerHTML = '';
+      activeInvestments.forEach(inv => {
+        const elapsed = Date.now() - inv.startTime;
+        const totalDuration = inv.endTime - inv.startTime;
+        const progress = Math.min((elapsed / totalDuration) * 100, 100);
+        const daysRemaining = Math.max(0, Math.ceil((inv.endTime - Date.now()) / (1000 * 60 * 60 * 24)));
+        const currentProfit = inv.currentProfit || 0;
+        const totalExpected = inv.rawAmount * (1 + (inv.rate * inv.days / 100));
+        container.innerHTML += `
+          <div class="glass-card rounded-xl p-4 border-l-4 border-l-emerald-500 space-y-3">
+            <div class="flex justify-between items-start">
+              <div><h4 class="font-bold text-white text-sm">${inv.title}</h4><p class="text-xs text-gray-400 mt-0.5">Invested: <span class="text-white font-semibold">$${inv.rawAmount.toFixed(2)}</span></p></div>
+              <div class="text-right"><span class="text-xs bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-full">Active</span><p class="text-[10px] text-cyan-400 mt-1 font-mono">${daysRemaining}d left</p></div>
+            </div>
+            <div class="bg-brand-bg rounded-lg p-2.5 space-y-1">
+              <div class="flex justify-between text-[11px]"><span class="text-gray-400">Live Profit:</span><span class="text-emerald-400 font-black font-mono">+$${currentProfit.toFixed(4)}</span></div>
+              <div class="flex justify-between text-[11px]"><span class="text-gray-400">Expected Total:</span><span class="text-cyan-400 font-bold font-mono">$${totalExpected.toFixed(2)}</span></div>
+            </div>
+            <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden"><div class="progress-bar bg-gradient-to-r from-emerald-500 to-cyan-500 h-2 rounded-full" style="width: ${progress}%"></div></div>
+          </div>`;
+      });
+      lucide.createIcons();
+    }
+
+    function updateAdminStats() {
+      const pendingCount = transactionsHistory.filter(t => t.status === 'Pending Review').length;
+      const apc = document.getElementById('admin-pending-count');
+      if (apc) apc.innerText = activeInvestments.length;
+      const arpc = document.getElementById('admin-real-pending-count');
+      if (arpc) arpc.innerText = pendingCount;
+    }
+
+    function renderSupportTickets() {
+      // Simplified for brevity
+    }
+
     let currentPlan = {};
-    
     function openInvestModal(title, rate, days, min, max) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
       currentPlan = { title, rate, days, min, max };
@@ -2009,62 +2229,26 @@
       document.getElementById('modal-total-payout').innerText = `$${totalPayout.toFixed(2)}`;
     }
 
-    // ⚡ NEW: Confirm Investment → Show Breakdown Modal
+    // ⚡ INVESTMENT - Balance deducts automatically
     function confirmInvestment() {
       const amt = parseFloat(document.getElementById('modal-amount-input').value);
       
       if (isNaN(amt) || amt < currentPlan.min || amt > currentPlan.max) {
-        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
         showNotificationPopup('error', 'Invalid Amount', `Range: $${currentPlan.min} - $${currentPlan.max.toLocaleString()}`);
         return;
       }
       if (amt > userPortfolio.balance) {
-        if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
         showNotificationPopup('error', 'Insufficient Balance', `You only have $${userPortfolio.balance.toFixed(2)} available`);
         return;
       }
 
-      // Store the amount for later
-      currentPlan.investAmount = amt;
-      
-      // Close invest modal
-      closeModal('invest-modal');
-      
-      // Show breakdown modal
-      showInvestmentBreakdown(amt);
-    }
-
-    // ⚡ NEW: Show breakdown before confirming
-    function showInvestmentBreakdown(amt) {
-      const balanceBefore = userPortfolio.balance;
-      const balanceAfter = balanceBefore - amt;
-      const lockedAfter = userPortfolio.lockedBalance + amt;
-      
-      document.getElementById('breakdown-plan-name').innerText = currentPlan.title;
-      document.getElementById('breakdown-current-balance').innerText = `$${balanceBefore.toFixed(2)}`;
-      document.getElementById('breakdown-invest-amount').innerText = `-$${amt.toFixed(2)}`;
-      document.getElementById('breakdown-remaining-balance').innerText = `$${balanceAfter.toFixed(2)}`;
-      document.getElementById('breakdown-new-locked').innerText = `$${lockedAfter.toFixed(2)}`;
-      
-      document.getElementById('investment-breakdown-modal').classList.remove('hidden');
-      
-      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
-    }
-
-    // ⚡ NEW: Execute Investment (deduct balance)
-    function executeInvestment() {
-      const amt = currentPlan.investAmount;
       const now = Date.now();
       const endTime = now + (currentPlan.days * 24 * 60 * 60 * 1000);
 
-      // ⚡ DEDUCT FROM BALANCE
+      // ⚡ DEDUCT FROM AVAILABLE BALANCE (moves to locked)
       userPortfolio.balance -= amt;
       userPortfolio.lockedBalance += amt;
-      
-      // Update UI with decrease animation
-      updateWalletUI('decrease');
 
-      // Add to active investments
       activeInvestments.unshift({
         title: currentPlan.title, rawAmount: amt, rate: currentPlan.rate, days: currentPlan.days,
         startTime: now, endTime: endTime, currentProfit: 0, progress: 0
@@ -2072,7 +2256,6 @@
       saveAppData();
       renderActiveInvestments();
 
-      // Add to history
       const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
       const invId = 'inv_' + Date.now();
       const newTx = {
@@ -2084,215 +2267,155 @@
       transactionsHistory.unshift(newTx);
       saveAppData();
       renderHistory();
-      
-      // Close breakdown modal
-      closeModal('investment-breakdown-modal');
+      closeModal('invest-modal');
 
-      // Trigger notification & haptic
-      triggerAdminBotNotification(`🚀 *NEW INVESTMENT*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n📦 Plan: *${currentPlan.title}*\n📊 Balance: *$${userPortfolio.balance.toFixed(2)}*`);
-      
-      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      
+      // ⚡ UPDATE UI WITH ANIMATION
+      updateWalletUI(true);
+
+      triggerAdminBotNotification(`🚀 *NEW INVESTMENT*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n📦 Plan: *${currentPlan.title}*`);
       showNotificationPopup('success', 'Investment Confirmed! 🚀', `$${amt.toFixed(2)} deducted from balance · Plan: ${currentPlan.title}`);
     }
 
-    // ⚡ NEW: PROFESSIONAL TOAST SYSTEM
-    function showNotificationPopup(type, title, desc) {
-      const popup = document.getElementById('admin-notify-popup');
-      const toast = document.getElementById('toast-container');
-      const iconBox = document.getElementById('notify-icon-box');
-      const iconEl = document.getElementById('notify-icon');
-      const progressBar = document.getElementById('toast-progress-fill');
-      
-      // Reset animation
-      popup.classList.remove('show-popup', 'hide-popup');
-      
-      // Set type
-      toast.className = `toast-modern ${type}`;
-      
-      // Set icon
-      let iconName = 'check';
-      if (type === 'error') iconName = 'alert-circle';
-      else if (type === 'warning') iconName = 'alert-triangle';
-      else if (type === 'info') iconName = 'info';
-      
-      iconEl.setAttribute('data-lucide', iconName);
-      lucide.createIcons();
-      
-      // Set content
-      document.getElementById('notify-title').innerText = title;
-      document.getElementById('notify-desc').innerText = desc;
-      
-      // Reset progress bar
-      progressBar.style.animation = 'none';
-      progressBar.offsetHeight;
-      progressBar.style.animation = 'toastProgress 5s linear forwards';
-      
-      // Start time tracking
-      notificationStartTime = Date.now();
-      updateNotificationTime();
-      
-      // Clear existing timer
-      if (notificationTimeInterval) clearInterval(notificationTimeInterval);
-      if (notificationTimer) clearTimeout(notificationTimer);
-      
-      // Update timestamp every second
-      notificationTimeInterval = setInterval(updateNotificationTime, 1000);
-      
-      // Show popup
-      setTimeout(() => popup.classList.add('show-popup'), 50);
-      
-      // Auto-dismiss after 5 seconds
-      notificationTimer = setTimeout(() => {
-        hideAdminNotify();
-      }, 5000);
-    }
+    // ⚡ DEPOSIT
+    function initiateDepositProcess() {
+      const depAmtInput = document.getElementById('deposit-amount-input');
+      const hashInput = document.getElementById('tx-hash-input');
+      const depAmt = parseFloat(depAmtInput.value);
+      const hash = hashInput.value.trim();
 
-    function updateNotificationTime() {
-      if (!notificationStartTime) return;
-      const elapsed = Math.floor((Date.now() - notificationStartTime) / 1000);
-      const timeEl = document.getElementById('notify-time');
-      if (!timeEl) return;
-      
-      if (elapsed < 1) timeEl.innerText = 'Just now';
-      else if (elapsed === 1) timeEl.innerText = '1 second ago';
-      else if (elapsed < 60) timeEl.innerText = `${elapsed} seconds ago`;
-      else timeEl.innerText = `${Math.floor(elapsed / 60)} min ago`;
-    }
-
-    function hideAdminNotify() {
-      const popup = document.getElementById('admin-notify-popup');
-      popup.classList.remove('show-popup');
-      popup.classList.add('hide-popup');
-      
-      if (notificationTimer) clearTimeout(notificationTimer);
-      if (notificationTimeInterval) clearInterval(notificationTimeInterval);
-      
-      setTimeout(() => popup.classList.remove('hide-popup'), 400);
-    }
-
-    // Keep the rest of functions (simplified for this example)
-    function saveAppData() {
-      localStorage.setItem('apex_portfolio_' + currentUserProfile.id, JSON.stringify(userPortfolio));
-      localStorage.setItem('apex_tx_' + currentUserProfile.id, JSON.stringify(transactionsHistory));
-      localStorage.setItem('apex_inv_' + currentUserProfile.id, JSON.stringify(activeInvestments));
-    }
-
-    function renderHistory() {
-      const container = document.getElementById('history-container');
-      if (!container) return;
-      container.innerHTML = '';
-
-      if (transactionsHistory.length === 0) {
-        container.innerHTML = `<div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">No transactions yet.</div>`;
+      if (isNaN(depAmt) || depAmt < 5) {
+        showNotificationPopup('error', 'Invalid Amount', 'Minimum deposit is $5.00');
+        return;
+      }
+      if ((!hash || hash.length < 5) && !uploadedScreenshotData) {
+        showNotificationPopup('warning', 'Proof Required', 'Provide TxID OR screenshot');
         return;
       }
 
-      transactionsHistory.forEach(tx => {
-        let logoColor = '#26A17B';
-        if (tx.network && tx.network.includes('BEP20')) logoColor = '#F3BA2F';
-        else if (tx.network && tx.network.includes('ERC20')) logoColor = '#627EEA';
-        else if (tx.network && tx.network.includes('USDC')) logoColor = '#2775CA';
-        else if (tx.type === 'investment') logoColor = '#a855f7';
+      const networkName = cryptoWallets[selectedDepositNetworkKey]?.name || 'USDT (TRC20)';
+      let actualProof = hash && hash.length >= 5 ? hash : uploadedScreenshotData;
+      let proofRef = hash && hash.length >= 5 ? 'TxID: ' + hash.substring(0, 8) + '...' : 'Screenshot: ' + uploadedScreenshotData;
 
-        const amountColor = tx.amount.startsWith('+') ? 'text-emerald-400' : 'text-cyan-400';
-        
-        container.innerHTML += `
-          <div class="history-tx-card">
-            <div class="flex items-center justify-between">
-              <div>
-                <h4 class="text-xs font-bold text-white">${tx.title}</h4>
-                <p class="text-[10px] text-gray-400 font-mono">${tx.time}</p>
-              </div>
-              <div class="text-right">
-                <span class="text-sm font-black font-mono ${amountColor}">${tx.amount}</span>
-                <div><span class="text-[9px] font-bold px-2 py-0.5 rounded mt-0.5 inline-block" style="background: ${logoColor}20; color: ${logoColor};">${tx.status}</span></div>
-              </div>
-            </div>
-          </div>
-        `;
-      });
+      depAmtInput.value = '';
+      hashInput.value = '';
+      uploadedScreenshotData = null;
+      document.getElementById('upload-placeholder-content')?.classList.remove('hidden');
+      document.getElementById('upload-preview-container')?.classList.add('hidden');
+      backToWalletOverview();
+
+      const txId = 'tx_' + Date.now();
+      const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      
+      const txObj = {
+        id: txId, type: 'deposit', title: 'USDT Deposit', network: networkName,
+        ref: proofRef, rawAmount: depAmt, amount: `+$${depAmt.toFixed(2)}`,
+        status: 'Pending Review', color: 'emerald', icon: 'arrow-down-left',
+        time: nowStr, fullDate: nowStr, fullId: 'DEP-' + txId.toUpperCase().slice(-12),
+        fullAddress: actualProof
+      };
+
+      transactionsHistory.unshift(txObj);
+      saveAppData();
+      renderHistory();
+
+      triggerAdminBotNotificationWithKeyboard(`🚨 *DEPOSIT REQUEST*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *+$${depAmt.toFixed(2)}*\n🌐 Network: \`${networkName}\`\n🔗 Ref: \`${proofRef}\``, txId);
+      startProcessingAnimation(`+$${depAmt.toFixed(2)}`, txId);
     }
 
-    function renderActiveInvestments() {
-      const container = document.getElementById('active-investments-container');
-      if (!container) return;
-      if (activeInvestments.length === 0) {
-        container.innerHTML = `<div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">No active investments.</div>`;
+    // ⚡ WITHDRAWAL - Balance deducts automatically
+    function initiateWithdrawalProcess() {
+      const amt = parseFloat(document.getElementById('withdraw-amount').value);
+      const addr = document.getElementById('withdraw-address').value.trim();
+
+      if (!amt || amt < 5 || amt > userPortfolio.balance) {
+        showNotificationPopup('error', 'Withdrawal Error', 'Invalid amount or insufficient balance');
         return;
       }
-      container.innerHTML = '';
-      activeInvestments.forEach(inv => {
-        const progress = Math.min(((Date.now() - inv.startTime) / (inv.endTime - inv.startTime)) * 100, 100);
-        const daysRemaining = Math.max(0, Math.ceil((inv.endTime - Date.now()) / (1000 * 60 * 60 * 24)));
-        const currentProfit = inv.currentProfit || 0;
-        const totalExpected = inv.rawAmount * (1 + (inv.rate * inv.days / 100));
-        
-        container.innerHTML += `
-          <div class="glass-card rounded-xl p-4 border-l-4 border-l-emerald-500 space-y-3">
-            <div class="flex justify-between items-start">
-              <div>
-                <h4 class="font-bold text-white text-sm">${inv.title}</h4>
-                <p class="text-xs text-gray-400 mt-0.5">Invested: <span class="text-white font-semibold">$${inv.rawAmount.toFixed(2)}</span></p>
-              </div>
-              <div class="text-right">
-                <span class="text-xs bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-full">Active</span>
-                <p class="text-[10px] text-cyan-400 mt-1 font-mono">${daysRemaining}d left</p>
-              </div>
-            </div>
-            <div class="bg-brand-bg rounded-lg p-2.5 space-y-1">
-              <div class="flex justify-between text-[11px]">
-                <span class="text-gray-400">Live Profit:</span>
-                <span class="text-emerald-400 font-black font-mono">+$${currentProfit.toFixed(4)}</span>
-              </div>
-              <div class="flex justify-between text-[11px]">
-                <span class="text-gray-400">Expected Total:</span>
-                <span class="text-cyan-400 font-bold font-mono">$${totalExpected.toFixed(2)}</span>
-              </div>
-            </div>
-            <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
-              <div class="progress-bar bg-gradient-to-r from-emerald-500 to-cyan-500 h-2 rounded-full" style="width: ${progress}%"></div>
-            </div>
-          </div>`;
-      });
+      if (!addr || addr.length < 10) {
+        showNotificationPopup('error', 'Invalid Address', 'Provide valid wallet address');
+        return;
+      }
+
+      // ⚡ DEDUCT FROM BALANCE
+      userPortfolio.balance -= amt;
+      
+      const netNames = { usdt_trc20: 'USDT (TRC20)', usdt_bep20: 'USDT (BEP20)', usdt_erc20: 'ERC20', usdc: 'USDC' };
+      const netName = netNames[selectedWithdrawNetworkKey] || 'USDT (TRC20)';
+      const shortAddr = addr.length > 20 ? addr.substring(0, 6) + '...' + addr.substring(addr.length - 4) : addr;
+
+      document.getElementById('withdraw-amount').value = '';
+      document.getElementById('withdraw-address').value = '';
+      backToWalletOverview();
+
+      const txId = 'tx_' + Date.now();
+      const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      
+      const txObj = {
+        id: txId, type: 'withdraw', title: 'USDT Withdrawal', network: netName,
+        ref: 'To: ' + shortAddr, rawAmount: amt, amount: `-$${amt.toFixed(2)}`,
+        status: 'Pending Review', color: 'cyan', icon: 'arrow-up-right',
+        time: nowStr, fullDate: nowStr, fullId: 'WDR-' + txId.toUpperCase().slice(-12),
+        fullAddress: addr
+      };
+
+      transactionsHistory.unshift(txObj);
+      saveAppData();
+      renderHistory();
+
+      // ⚡ UPDATE UI WITH ANIMATION
+      updateWalletUI(true);
+
+      triggerAdminBotNotificationWithKeyboard(`🚨 *WITHDRAWAL REQUEST*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n🌐 Network: \`${netName}\`\n🔗 Address: \`${shortAddr}\``, txId);
+      startProcessingAnimation(`-$${amt.toFixed(2)}`, txId);
     }
 
-    // Deposit & Withdraw functions (kept from before)
     function selectCryptoMethod(key) {
+      selectedDepositNetworkKey = key;
       document.querySelectorAll('[id^="card-"]').forEach(c => c.classList.remove('active'));
-      document.getElementById(`card-${key}`).classList.add('active');
+      document.getElementById(`card-${key}`)?.classList.add('active');
+      const data = cryptoWallets[key];
+      if (data) {
+        document.getElementById('selected-network-badge').innerText = data.name;
+        document.getElementById('warning-net-name').innerText = data.name;
+        document.getElementById('wallet-address-text').value = data.address;
+        document.getElementById('qr-code-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${data.address}&color=080b11&bgcolor=ffffff`;
+      }
+    }
+
+    function selectWithdrawNetwork(key) {
+      selectedWithdrawNetworkKey = key;
+      document.querySelectorAll('[id^="w-card-"]').forEach(c => c.classList.remove('active'));
+      document.getElementById(`w-card-${key}`)?.classList.add('active');
     }
 
     function setDepositQuickAmount(amt) { document.getElementById('deposit-amount-input').value = amt; }
     function setWithdrawQuickAmount(amt) { document.getElementById('withdraw-amount').value = amt; }
-    function toggleDepositQr() { document.getElementById('deposit-qr-container').classList.toggle('hidden'); }
+    function toggleDepositQr() { document.getElementById('deposit-qr-container')?.classList.toggle('hidden'); }
     function handleScreenshotUpload(event) {
       const file = event.target.files[0];
       if (file) {
         uploadedScreenshotData = file.name;
-        document.getElementById('upload-placeholder-content').classList.add('hidden');
-        document.getElementById('upload-preview-container').classList.remove('hidden');
+        document.getElementById('upload-placeholder-content')?.classList.add('hidden');
+        document.getElementById('upload-preview-container')?.classList.remove('hidden');
         document.getElementById('uploaded-file-name').innerText = file.name;
       }
     }
-    function selectWithdrawNetwork(key) {
-      document.querySelectorAll('[id^="w-card-"]').forEach(c => c.classList.remove('active'));
-      document.getElementById(`w-card-${key}`).classList.add('active');
+    function calculateWithdrawFee() {
+      const amt = parseFloat(document.getElementById('withdraw-amount').value) || 0;
+      const el = document.getElementById('net-receive-text');
+      if (el) el.innerText = `$${amt.toFixed(2)}`;
     }
-    function calculateWithdrawFee() {}
-    function setMaxWithdraw() { document.getElementById('withdraw-amount').value = userPortfolio.balance; }
+    function setMaxWithdraw() {
+      document.getElementById('withdraw-amount').value = userPortfolio.balance;
+      calculateWithdrawFee();
+    }
     function copyToClipboard(id) {
-      navigator.clipboard.writeText(document.getElementById(id).value);
+      const text = document.getElementById(id).value;
+      navigator.clipboard.writeText(text);
       showNotificationPopup('success', 'Copied', 'Copied to clipboard');
     }
-    function initiateDepositProcess() {
-      showNotificationPopup('info', 'Coming Soon', 'Deposit processing...');
-    }
-    function initiateWithdrawalProcess() {
-      showNotificationPopup('info', 'Coming Soon', 'Withdrawal processing...');
-    }
+
     function triggerAdminBotNotification(msg) {
-      // Telegram notification
       const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
       const ADMIN_CHAT_ID = "5738022147";
       fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
@@ -2301,8 +2424,62 @@
       }).catch(() => {});
     }
 
-    // Setup initial state
-    updateWalletUI();
+    function triggerAdminBotNotificationWithKeyboard(msg, txId) {
+      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
+      const ADMIN_CHAT_ID = "5738022147";
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: ADMIN_CHAT_ID, text: msg, parse_mode: "Markdown",
+          reply_markup: { inline_keyboard: [[
+            { text: "✅ Approve", callback_data: `approve_${txId}` },
+            { text: "❌ Reject", callback_data: `reject_${txId}` }
+          ]]}
+        })
+      }).catch(() => {});
+    }
+
+    function simulateSystemResponse(txId, action) {
+      const tx = transactionsHistory.find(t => t.id === txId);
+      if (!tx || tx.status !== 'Pending Review') {
+        showNotificationPopup('warning', 'Already Processed', 'Transaction cannot be modified');
+        return;
+      }
+
+      if (action === 'approve') {
+        tx.status = 'Completed';
+        if (tx.type === 'deposit') {
+          userPortfolio.balance += tx.rawAmount;
+          userPortfolio.totalDeposited += tx.rawAmount;
+          updateWalletUI(true);
+        } else if (tx.type === 'withdraw') {
+          userPortfolio.totalWithdrawn += tx.rawAmount;
+          updateWalletUI(false);
+        }
+        showNotificationPopup('success', 'Approved! 🎉', `${tx.type} of ${tx.amount} verified`);
+      } else {
+        tx.status = 'Rejected';
+        if (tx.type === 'withdraw') {
+          userPortfolio.balance += tx.rawAmount;
+          updateWalletUI(true);
+        }
+        showNotificationPopup('error', 'Rejected', `${tx.type} of ${tx.amount} declined`);
+      }
+      saveAppData();
+      renderHistory();
+    }
+
+    function submitSupportTicket() {
+      showNotificationPopup('info', 'Coming Soon', 'Support system update in progress');
+    }
+    function scrollToTicketForm() {}
+    function sendAdminSupportReply(id) {}
+    function pollServerForSupportReplies() {}
+    function pollTelegramCallbackQueries() {}
+
+    // Initialize
+    updateWalletUI(false);
+    previousBalance = userPortfolio.balance;
   </script>
 </body>
-</html>
+  </html>
