@@ -9,7 +9,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <script>
     tailwind.config = {
@@ -22,12 +22,16 @@
           },
           colors: {
             brand: {
-              bg: '#080b11',
-              card: '#111622',
-              border: 'rgba(255, 255, 255, 0.08)',
-              emerald: '#10b981',
+              bg: '#0b0e11',
+              card: '#181a20',
+              panel: '#1e2329',
+              border: '#2b3139',
+              emerald: '#0ecb81',
               cyan: '#06b6d4',
-              accent: '#3b82f6'
+              accent: '#fcd535',
+              red: '#f6465d',
+              muted: '#848e9c',
+              dim: '#5e6673'
             }
           }
         }
@@ -36,459 +40,667 @@
   </script>
 
   <style>
+    /* ============================================
+       RESET & BASE
+       ============================================ */
     * { -webkit-tap-highlight-color: transparent; }
     html { scroll-behavior: smooth; }
     
     body { 
-      background-color: #080b11; 
-      color: #f3f4f6; 
+      background-color: #0b0e11; 
+      color: #eaecef; 
       user-select: none;
       overscroll-behavior-y: none;
+      font-feature-settings: "ss01", "ss02";
     }
     
-    .glass-card { 
-      background: rgba(17, 22, 34, 0.7); 
-      backdrop-filter: blur(20px); 
-      border: 1px solid rgba(255, 255, 255, 0.08); 
-      box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+    /* ============================================
+       TYPOGRAPHY REFINEMENTS
+       ============================================ */
+    .numeric-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.01em;
     }
     
     .gradient-text { 
-      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%); 
+      background: linear-gradient(135deg, #0ecb81 0%, #06b6d4 100%); 
       -webkit-background-clip: text; 
       -webkit-text-fill-color: transparent; 
     }
+    .gradient-bg { background: linear-gradient(135deg, #0ecb81 0%, #06b6d4 100%); }
     
-    .gradient-bg { background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%); }
-    
+    /* ============================================
+       TABS
+       ============================================ */
     .tab-content { display: none; }
-    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-    
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .tab-content.active { display: block; }
 
-    @keyframes modalFadeIn {
-      0% { opacity: 0; transform: scale(0.95) translateY(10px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-
-    .modal-animate-in { animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
+    /* ============================================
+       LIVE INDICATOR
+       ============================================ */
     .live-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-      animation: pulse 2s infinite;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: #0ecb81;
+      display: inline-block;
+      box-shadow: 0 0 0 0 rgba(14, 203, 129, 0.5);
     }
 
-    .network-card {
-      position: relative; border-radius: 16px; padding: 14px;
+    /* ============================================
+       BYBIT CARDS
+       ============================================ */
+    .bybit-card { 
+      background: #181a20; 
+      border: 1px solid #2b3139;
+      border-radius: 12px;
+    }
+    .bybit-panel {
+      background: #1e2329;
+      border-radius: 8px;
+    }
+
+    /* ============================================
+       SECTION HEADERS
+       ============================================ */
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #848e9c;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       NETWORK SELECTOR (Bybit-style)
+       ============================================ */
+    .network-item {
+      position: relative;
+      background: #1e2329;
+      border: 1px solid #2b3139;
+      border-radius: 8px;
+      padding: 12px 10px;
       cursor: pointer;
-      transition: all 0.25s ease;
-      background: rgba(17, 22, 34, 0.6);
-      border: 1.5px solid rgba(255, 255, 255, 0.06);
-      overflow: hidden;
+      transition: border-color 0.15s, background 0.15s;
     }
-
-    .network-card.active {
-      border-color: #10b981 !important;
-      background: linear-gradient(145deg, rgba(16, 185, 129, 0.1) 0%, rgba(6, 182, 212, 0.05) 100%) !important;
-      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.3), 0 8px 30px -10px rgba(16, 185, 129, 0.3);
+    .network-item:active { background: #252a32; }
+    .network-item.active {
+      border-color: #fcd535;
+      background: rgba(252, 213, 53, 0.05);
     }
-    .network-card.active .network-check { opacity: 1; transform: scale(1); }
-
-    .network-check {
-      position: absolute; top: 10px; right: 10px;
-      width: 20px; height: 20px; border-radius: 50%;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      display: flex; align-items: center; justify-content: center;
-      color: #000; opacity: 0; transform: scale(0.5);
-      transition: all 0.3s;
-      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.5);
-      z-index: 5;
-    }
-
-    .network-logo-wrap {
-      width: 42px; height: 42px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; background: #0d1220; padding: 6px;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .network-logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
-
-    .network-logo-usdt { background: rgba(38, 161, 123, 0.1); border-color: rgba(38, 161, 123, 0.2); }
-    .network-logo-eth  { background: rgba(98, 126, 234, 0.1); border-color: rgba(98, 126, 234, 0.2); }
-    .network-logo-bnb  { background: rgba(243, 186, 47, 0.1); border-color: rgba(243, 186, 47, 0.2); }
-    .network-logo-ton  { background: rgba(0, 152, 234, 0.1); border-color: rgba(0, 152, 234, 0.2); }
-
-    .address-display {
-      background: rgba(8, 11, 17, 0.8);
-      border: 1px solid rgba(16, 185, 129, 0.2);
-      border-radius: 14px;
-    }
-
-    .plan-card {
-      position: relative; border-radius: 24px; padding: 20px;
-      overflow: hidden;
-      background: linear-gradient(145deg, #111622 0%, #0a0e17 100%);
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: all 0.3s ease;
-    }
-
-    .plan-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.7); }
-    .plan-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: var(--accent-gradient); opacity: 0.8;
-    }
-
-    .plan-starter { --accent: #10b981; --accent-gradient: linear-gradient(90deg, transparent, #10b981, transparent); }
-    .plan-silver  { --accent: #06b6d4; --accent-gradient: linear-gradient(90deg, transparent, #06b6d4, transparent); }
-    .plan-gold    { --accent: #f59e0b; --accent-gradient: linear-gradient(90deg, transparent, #f59e0b, transparent); }
-    .plan-vip     { --accent: #a855f7; --accent-gradient: linear-gradient(90deg, transparent, #a855f7, transparent); }
-
-    .plan-icon-badge {
-      width: 48px; height: 48px; border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(255,255,255,0.03); color: var(--accent);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-
-    .plan-tier-badge {
-      font-size: 10px; font-weight: 800; letter-spacing: 0.1em;
-      text-transform: uppercase; padding: 4px 10px;
-      border-radius: 999px; background: rgba(255,255,255,0.03);
-      border: 1px solid var(--accent); color: var(--accent);
-    }
-
-    .plan-roi-value {
-      font-size: 26px; font-weight: 900;
-      background: var(--accent-gradient);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      line-height: 1;
-    }
-
-    .plan-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
-    .plan-stat-cell { padding: 10px 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255,255,255,0.03); }
-    .plan-stat-label { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; display: block; margin-bottom: 3px; }
-    .plan-stat-value { font-size: 12px; font-weight: 800; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
-
-    .plan-cta {
-      width: 100%; padding: 12px; border-radius: 14px;
-      background: rgba(255,255,255,0.05); color: #fff;
-      font-size: 13px; font-weight: 800; letter-spacing: 0.03em;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      border: 1px solid rgba(255,255,255,0.1);
-      transition: all 0.2s;
-    }
-    .plan-cta:hover { background: var(--accent); color: #000; border-color: transparent; }
-
-    .wallet-action-btn {
-      position: relative; padding: 16px; border-radius: 16px;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
-      font-size: 12px; font-weight: 800; letter-spacing: 0.02em;
-      cursor: pointer; border: 1px solid;
-      transition: all 0.2s;
-    }
+    .network-item.active .check-mark { display: flex; }
     
-    .wallet-action-btn.deposit {
-      background: rgba(16, 185, 129, 0.1);
-      border-color: rgba(16, 185, 129, 0.2); color: #10b981;
-    }
-    .wallet-action-btn.withdraw {
-      background: rgba(6, 182, 212, 0.1);
-      border-color: rgba(6, 182, 212, 0.2); color: #06b6d4;
+    .check-mark {
+      display: none;
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fcd535;
+      align-items: center;
+      justify-content: center;
+      color: #0b0e11;
     }
 
+    .network-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #0b0e11;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      flex-shrink: 0;
+    }
+    .network-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+    /* ============================================
+       AMOUNT INPUT (Bybit-style)
+       ============================================ */
+    .amount-input-wrap {
+      background: #1e2329;
+      border: 1px solid #2b3139;
+      border-radius: 8px;
+      padding: 14px 16px;
+      transition: border-color 0.15s;
+    }
+    .amount-input-wrap:focus-within { border-color: #fcd535; }
+    
+    .amount-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      font-size: 22px;
+      font-weight: 700;
+      color: #eaecef;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0;
+      letter-spacing: -0.02em;
+    }
+    .amount-input::placeholder { color: #5e6673; }
+    .amount-input::-webkit-outer-spin-button,
+    .amount-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .amount-input[type=number] { -moz-appearance: textfield; }
+
+    /* ============================================
+       QUICK AMOUNT PILLS
+       ============================================ */
+    .quick-amt {
+      flex: 1;
+      background: #1e2329;
+      border: 1px solid #2b3139;
+      border-radius: 6px;
+      padding: 7px 0;
+      font-size: 11px;
+      font-weight: 700;
+      color: #848e9c;
+      text-align: center;
+      transition: all 0.15s;
+      cursor: pointer;
+    }
+    .quick-amt:active { background: #252a32; }
+    .quick-amt.selected {
+      background: rgba(252, 213, 53, 0.08);
+      border-color: rgba(252, 213, 53, 0.4);
+      color: #fcd535;
+    }
+
+    /* ============================================
+       PRIMARY BUTTON
+       ============================================ */
+    .btn-primary {
+      width: 100%;
+      background: #fcd535;
+      color: #0b0e11;
+      font-weight: 800;
+      font-size: 14px;
+      padding: 15px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      letter-spacing: 0.02em;
+    }
+    .btn-primary:active { opacity: 0.85; }
+
+    /* ============================================
+       MODAL SYSTEM
+       ============================================ */
     .modal-overlay {
       position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.9);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.8);
       display: flex; align-items: center; justify-content: center;
       padding: 20px; z-index: 9998;
     }
     .modal-overlay.hidden { display: none; }
 
     input, textarea, select { -webkit-user-select: text !important; user-select: text !important; }
-    input:focus, textarea:focus, select:focus {
-      outline: none; border-color: rgba(16, 185, 129, 0.5) !important;
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-    }
 
-    .history-tx-card {
-      border-radius: 16px; padding: 16px;
-      background: linear-gradient(145deg, rgba(17,22,34,0.8) 0%, rgba(10,14,23,0.8) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: all 0.2s;
+    /* ============================================
+       HISTORY CARDS
+       ============================================ */
+    .tx-card {
+      background: #181a20;
+      border: 1px solid #2b3139;
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+      transition: background 0.15s;
     }
-    .history-tx-card:active { transform: scale(0.98); }
+    .tx-card:active { background: #1e2329; }
 
-    /* === MODERN PROCESSING SCREEN === */
-    .processing-card {
-      background: #111622;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 24px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
-      overflow: hidden;
-      position: relative;
-    }
-    .processing-bar-container {
-      height: 6px; background: rgba(255, 255, 255, 0.05); border-radius: 999px; overflow: hidden; margin-top: 24px;
-    }
-    .processing-bar-fill {
-      height: 100%; background: linear-gradient(90deg, #3b82f6, #06b6d4); border-radius: 999px; width: 0%;
-      transition: width 0.8s ease-in-out;
-    }
-    .processing-spinner {
-      width: 64px; height: 64px; border-radius: 50%;
-      border: 3px solid rgba(59, 130, 246, 0.2); border-top-color: #3b82f6;
-      animation: spin 1s linear infinite;
+    /* ============================================
+       PROCESSING MODAL
+       ============================================ */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 3px solid rgba(252, 213, 53, 0.15);
+      border-top-color: #fcd535;
+      animation: spin 0.8s linear infinite;
       margin: 0 auto;
     }
-    .step-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.3s;
+    .progress-track {
+      height: 3px;
+      background: #2b3139;
+      border-radius: 999px;
+      overflow: hidden;
     }
-    .step-dot.active { background: #3b82f6; box-shadow: 0 0 8px #3b82f6; width: 24px; border-radius: 999px; }
-    .step-dot.completed { background: #10b981; }
+    .progress-bar {
+      height: 100%;
+      background: #fcd535;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
 
-    /* === MODERN RECEIPT === */
-    .receipt-modal-container {
-      width: 100%; max-width: 340px; max-height: 90vh; display: flex; flex-direction: column;
+    /* ============================================
+       BYBIT RECEIPT
+       ============================================ */
+    .receipt-wrap {
+      width: 100%; 
+      max-width: 380px; 
+      max-height: 90vh; 
+      overflow-y: auto;
+      scrollbar-width: none;
     }
-    .receipt-card {
-      background: #ffffff; border-radius: 24px; overflow: hidden; color: #111;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    .receipt-wrap::-webkit-scrollbar { display: none; }
+    
+    .receipt {
+      background: #181a20;
+      border: 1px solid #2b3139;
+      border-radius: 16px;
+      overflow: hidden;
     }
-    .receipt-header-dark {
-      background: #0f172a; padding: 24px; text-align: center; position: relative;
+    .receipt-top {
+      padding: 28px 24px 24px;
+      text-align: center;
+      position: relative;
+      background: #1e2329;
+      border-bottom: 1px solid #2b3139;
     }
-    .receipt-body-light {
-      padding: 24px; position: relative; background: #ffffff;
+    .receipt-icon-wrap {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
     }
-    .receipt-dashed-line {
-      border-top: 2px dashed #e5e7eb; margin: 0 -24px; position: relative;
+    .receipt-body {
+      padding: 8px 24px;
     }
-    .receipt-dashed-line::before, .receipt-dashed-line::after {
-      content: ''; position: absolute; top: -10px; width: 20px; height: 20px; background: #111622; border-radius: 50%;
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 14px 0;
+      font-size: 12.5px;
+      gap: 16px;
+      border-bottom: 1px solid rgba(43, 49, 57, 0.5);
     }
-    .receipt-dashed-line::before { left: -10px; }
-    .receipt-dashed-line::after { right: -10px; }
+    .receipt-row:last-child { border-bottom: none; }
+    .receipt-row .label {
+      color: #848e9c;
+      font-weight: 500;
+      flex-shrink: 0;
+    }
+    .receipt-row .value {
+      color: #eaecef;
+      font-weight: 600;
+      text-align: right;
+      word-break: break-all;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      max-width: 60%;
+    }
+    .receipt-addr-block {
+      background: #0b0e11;
+      border: 1px solid #2b3139;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 12px 0;
+    }
+    .receipt-footer {
+      padding: 16px 24px;
+      text-align: center;
+      background: #0b0e11;
+      border-top: 1px solid #2b3139;
+    }
 
-    /* === MODERN ALERTS === */
-    .modern-alert-overlay {
-      position: fixed; inset: 0; background: rgba(4, 6, 11, 0.85);
-      backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center;
-      padding: 20px; z-index: 10000; opacity: 0; pointer-events: none;
-      transition: opacity 0.3s ease;
+    /* ============================================
+       ALERT MODAL
+       ============================================ */
+    .alert-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; z-index: 10000;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
     }
-    .modern-alert-overlay.show { opacity: 1; pointer-events: auto; }
-    .modern-alert-card {
-      width: 100%; max-width: 320px; border-radius: 24px; padding: 30px 24px 24px;
-      background: linear-gradient(165deg, #111622 0%, #080d16 100%);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 40px 100px -25px rgba(0, 0, 0, 0.95), 0 0 80px -20px rgba(16, 185, 129, 0.2);
-      position: relative; overflow: hidden; transform: scale(0.85) translateY(20px);
-      opacity: 0; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    .alert-overlay.show { opacity: 1; pointer-events: auto; }
+    .alert-box {
+      width: 100%; max-width: 320px;
+      background: #1e2329;
+      border: 1px solid #2b3139;
+      border-radius: 14px;
+      padding: 24px;
+      text-align: center;
     }
-    .modern-alert-overlay.show .modern-alert-card { transform: scale(1) translateY(0); opacity: 1; }
+    .alert-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+    }
+
+    /* ============================================
+       WALLET ACTION BUTTONS (Dashboard)
+       ============================================ */
+    .wallet-action-btn {
+      padding: 14px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      border: 1px solid;
+      transition: opacity 0.15s;
+    }
+    .wallet-action-btn:active { opacity: 0.8; }
+    .wallet-action-btn.deposit {
+      background: #fcd535;
+      border-color: #fcd535;
+      color: #0b0e11;
+    }
+    .wallet-action-btn.withdraw {
+      background: #1e2329;
+      border-color: #2b3139;
+      color: #eaecef;
+    }
+
+    /* ============================================
+       PLAN CARDS
+       ============================================ */
+    .plan-card {
+      background: #181a20;
+      border: 1px solid #2b3139;
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .plan-tier-badge {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.05em;
+      text-transform: uppercase; padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .plan-stat-cell {
+      padding: 9px 10px;
+      border-radius: 6px;
+      background: #1e2329;
+    }
+    .plan-stat-label {
+      font-size: 9px; color: #848e9c; text-transform: uppercase;
+      letter-spacing: 0.04em; font-weight: 700; display: block; margin-bottom: 2px;
+    }
+    .plan-stat-value {
+      font-size: 12px; font-weight: 700; color: #eaecef;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .plan-cta {
+      width: 100%; padding: 11px; border-radius: 8px;
+      background: #1e2329; color: #eaecef;
+      font-size: 12.5px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      border: 1px solid #2b3139;
+      transition: background 0.15s;
+    }
+    .plan-cta:active { background: #252a32; }
+
+    /* ============================================
+       METRIC CARD (Wallet)
+       ============================================ */
+    .metric-card {
+      background: #181a20;
+      border: 1px solid #2b3139;
+      border-radius: 10px;
+      padding: 14px;
+    }
+    .metric-label {
+      font-size: 10px;
+      color: #848e9c;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .metric-value {
+      font-size: 15px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: -0.01em;
+    }
+
+    /* ============================================
+       NETWORK PREVIEW GRID
+       ============================================ */
+    .network-preview-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 6px;
+      border-radius: 8px;
+      background: #1e2329;
+    }
+
+    /* ============================================
+       STATUS BADGES
+       ============================================ */
+    .status-badge {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ============================================
+       SAFE AREA PADDING
+       ============================================ */
+    @supports (padding: env(safe-area-inset-bottom)) {
+      .pb-safe {
+        padding-bottom: calc(env(safe-area-inset-bottom) + 88px);
+      }
+    }
   </style>
 </head>
-<body class="font-sans antialiased pb-32">
+<body class="font-sans antialiased pb-28">
 
-  <header class="p-5 border-b border-white/5 bg-brand-bg/80 backdrop-blur-xl sticky top-0 z-30">
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
+  <header class="px-5 py-4 border-b border-brand-border bg-brand-bg sticky top-0 z-30">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-2xl gradient-bg flex items-center justify-center text-black shadow-lg shadow-emerald-500/20 font-black">
+        <div class="w-9 h-9 rounded-lg gradient-bg flex items-center justify-center text-black font-black">
           <i data-lucide="gem" class="w-5 h-5"></i>
         </div>
         <div>
-          <h2 class="font-extrabold text-lg leading-tight text-white tracking-tight">APEX<span class="gradient-text">INVEST</span></h2>
-          <span class="text-[10px] text-gray-400 font-medium tracking-wider uppercase">Institutional Yield</span>
+          <h2 class="font-extrabold text-base text-white leading-tight tracking-tight">APEX<span class="gradient-text">INVEST</span></h2>
+          <span class="text-[9px] text-brand-muted font-semibold tracking-wider uppercase">Institutional Yield</span>
         </div>
       </div>
-
-      <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('profile')">
-        <div id="user-avatar" class="w-9 h-9 rounded-full bg-brand-card border border-emerald-500/30 flex items-center justify-center font-bold text-xs text-emerald-400 shadow-sm">
-          U
-        </div>
+      <div class="w-9 h-9 rounded-full bg-brand-card border border-brand-border flex items-center justify-center font-bold text-xs text-accent cursor-pointer" onclick="switchTab('profile')" id="user-avatar">
+        U
       </div>
     </div>
   </header>
 
-  <!-- DASHBOARD -->
-  <main id="tab-dashboard" class="tab-content active p-5 space-y-6">
+  <!-- ============================================================
+       DASHBOARD TAB
+       ============================================================ -->
+  <main id="tab-dashboard" class="tab-content active p-5 space-y-5">
     
-    <div class="relative overflow-hidden rounded-[28px] p-6 bg-gradient-to-br from-[#111622] to-[#080b11] border border-white/5 shadow-2xl">
-      <div class="relative z-10 space-y-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <div class="live-dot"></div>
-            <span class="text-[11px] font-bold text-gray-400 tracking-wider uppercase">Total Net Worth</span>
-          </div>
-          <div class="flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full text-emerald-400 text-[11px] font-extrabold">
-            <i data-lucide="trending-up" class="w-3.5 h-3.5"></i> <span id="total-roi-badge">+0.0%</span>
-          </div>
+    <!-- Balance Card -->
+    <div class="bybit-card p-5">
+      <div class="flex items-center justify-between mb-3">
+        <span class="section-title">Total Balance</span>
+        <div class="flex items-center gap-1.5 text-emerald-400 text-[11px] font-bold">
+          <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+          <span id="total-roi-badge">+0.0%</span>
         </div>
+      </div>
+      <h1 class="text-3xl font-black text-white tracking-tight mb-1 numeric-mono" id="main-balance">$0.00</h1>
+      <p class="text-[10px] text-brand-muted font-mono">Updated <span id="balance-updated-time">just now</span></p>
 
-        <div>
-          <h1 class="text-4xl font-black text-white tracking-tight" id="main-balance">$0.00</h1>
-          <p class="text-[10px] text-gray-500 mt-1 font-mono">Updated <span id="balance-updated-time">just now</span></p>
+      <div class="flex items-center justify-between mt-4 pt-4 border-t border-brand-border">
+        <div class="flex items-center gap-2 text-brand-muted text-xs">
+          <i data-lucide="lock" class="w-3.5 h-3.5 text-cyan-400"></i>
+          <span>Locked Funds</span>
         </div>
+        <span id="locked-balance" class="text-cyan-400 font-bold text-sm numeric-mono">$0.00</span>
+      </div>
 
-        <div class="flex items-center justify-between text-xs pt-2">
-          <div class="flex items-center gap-2 text-gray-400">
-            <div class="w-7 h-7 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
-              <i data-lucide="lock" class="w-3.5 h-3.5"></i>
-            </div>
-            <span>Active Locked Funds</span>
-          </div>
-          <span id="locked-balance" class="text-cyan-400 font-extrabold text-sm font-mono">$0.00</span>
-        </div>
-
-        <div class="wallet-action-bar pt-2">
-          <button onclick="openWalletAction('deposit')" class="wallet-action-btn deposit">
-            <i data-lucide="arrow-down-left" class="w-6 h-6"></i>
-            <span>Deposit</span>
-          </button>
-
-          <button onclick="openWalletAction('withdraw')" class="wallet-action-btn withdraw">
-            <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
-            <span>Withdraw</span>
-          </button>
-        </div>
+      <div class="grid grid-cols-2 gap-3 mt-5">
+        <button onclick="openWalletAction('deposit')" class="wallet-action-btn deposit">
+          <i data-lucide="arrow-down-to-line" class="w-5 h-5"></i>
+          <span>Deposit</span>
+        </button>
+        <button onclick="openWalletAction('withdraw')" class="wallet-action-btn withdraw">
+          <i data-lucide="arrow-up-from-line" class="w-5 h-5"></i>
+          <span>Withdraw</span>
+        </button>
       </div>
     </div>
 
+    <!-- Active Investments -->
     <div>
       <div class="flex items-center justify-between mb-3">
-        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-          <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i> Active Investments
-        </h3>
-        <span id="active-inv-count" class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded font-mono font-bold">0 Active</span>
+        <h3 class="section-title">Active Investments</h3>
+        <span id="active-inv-count" class="text-[10px] bg-brand-panel text-brand-muted px-2 py-0.5 rounded font-mono">0</span>
       </div>
       <div id="active-investments-container" class="space-y-3">
-        <div class="glass-card rounded-2xl p-6 text-center text-xs text-gray-400 border border-white/5">
-          No active investments. Deploy capital below.
+        <div class="bybit-card p-5 text-center text-xs text-brand-muted">
+          No active investments.
         </div>
       </div>
     </div>
 
-    <div id="investment-plans-section">
-      <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-        <i data-lucide="zap" class="w-4 h-4 text-cyan-400"></i> Investment Plans
-      </h3>
-
-      <div class="space-y-4">
+    <!-- Investment Plans -->
+    <div>
+      <h3 class="section-title mb-3">Investment Plans</h3>
+      <div class="space-y-3">
         
-        <div class="plan-card plan-starter">
-          <div class="flex justify-between items-start mb-4 relative z-10">
-            <div class="flex items-center gap-4">
-              <div class="plan-icon-badge"><i data-lucide="rocket" class="w-6 h-6"></i></div>
-              <div>
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="plan-tier-badge">Starter</span>
-                  <span class="text-[10px] text-gray-500 font-mono">MIN $5</span>
-                </div>
-                <h4 class="font-extrabold text-base text-white tracking-tight">5-Day Sprint</h4>
+        <!-- Starter -->
+        <div class="plan-card">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="plan-tier-badge text-emerald-400 bg-emerald-400/10">STARTER</span>
+                <span class="text-[10px] text-brand-muted font-mono">MIN $5</span>
               </div>
+              <h4 class="font-bold text-white text-base">5-Day Sprint</h4>
             </div>
             <div class="text-right">
-              <span class="plan-roi-value">30%</span>
-              <p class="text-[9px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
+              <p class="text-2xl font-black text-emerald-400 leading-none numeric-mono">30%</p>
+              <p class="text-[9px] text-brand-muted uppercase font-bold mt-1">Daily</p>
             </div>
           </div>
-          <div class="plan-stat-grid">
-            <div class="plan-stat-cell"><span class="plan-stat-label">Duration</span><span class="plan-stat-value">5 Days</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Total ROI</span><span class="plan-stat-value" style="color:#10b981">+250%</span></div>
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <div class="plan-stat-cell">
+              <span class="plan-stat-label">Duration</span>
+              <span class="plan-stat-value">5 Days</span>
+            </div>
+            <div class="plan-stat-cell">
+              <span class="plan-stat-label">Total ROI</span>
+              <span class="plan-stat-value text-emerald-400">+250%</span>
+            </div>
           </div>
           <button onclick="openInvestModal('5-Day Sprint', 30.0, 5, 5, 99)" class="plan-cta">
             Invest Now <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
         </div>
 
-        <div class="plan-card plan-silver">
-          <div class="flex justify-between items-start mb-4 relative z-10">
-            <div class="flex items-center gap-4">
-              <div class="plan-icon-badge"><i data-lucide="medal" class="w-6 h-6"></i></div>
-              <div>
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="plan-tier-badge">Silver</span>
-                  <span class="text-[10px] text-gray-500 font-mono">MIN $100</span>
-                </div>
-                <h4 class="font-extrabold text-base text-white tracking-tight">7-Day Boost</h4>
+        <!-- Silver -->
+        <div class="plan-card">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="plan-tier-badge text-cyan-400 bg-cyan-400/10">SILVER</span>
+                <span class="text-[10px] text-brand-muted font-mono">MIN $100</span>
               </div>
+              <h4 class="font-bold text-white text-base">7-Day Boost</h4>
             </div>
             <div class="text-right">
-              <span class="plan-roi-value">35%</span>
-              <p class="text-[9px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
+              <p class="text-2xl font-black text-cyan-400 leading-none numeric-mono">35%</p>
+              <p class="text-[9px] text-brand-muted uppercase font-bold mt-1">Daily</p>
             </div>
           </div>
-          <div class="plan-stat-grid">
-            <div class="plan-stat-cell"><span class="plan-stat-label">Duration</span><span class="plan-stat-value">7 Days</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Total ROI</span><span class="plan-stat-value" style="color:#06b6d4">+345%</span></div>
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <div class="plan-stat-cell">
+              <span class="plan-stat-label">Duration</span>
+              <span class="plan-stat-value">7 Days</span>
+            </div>
+            <div class="plan-stat-cell">
+              <span class="plan-stat-label">Total ROI</span>
+              <span class="plan-stat-value text-cyan-400">+345%</span>
+            </div>
           </div>
           <button onclick="openInvestModal('7-Day Boost', 35.0, 7, 100, 499)" class="plan-cta">
             Invest Now <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
         </div>
 
-        <div class="plan-card plan-gold">
-          <div class="flex justify-between items-start mb-4 relative z-10">
-            <div class="flex items-center gap-4">
-              <div class="plan-icon-badge"><i data-lucide="crown" class="w-6 h-6"></i></div>
-              <div>
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="plan-tier-badge">Gold</span>
-                  <span class="text-[10px] text-gray-500 font-mono">MIN $500</span>
-                </div>
-                <h4 class="font-extrabold text-base text-white tracking-tight">10-Day Growth</h4>
+        <!-- Gold -->
+        <div class="plan-card">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="plan-tier-badge text-amber-400 bg-amber-400/10">GOLD</span>
+                <span class="text-[10px] text-brand-muted font-mono">MIN $500</span>
               </div>
+              <h4 class="font-bold text-white text-base">10-Day Growth</h4>
             </div>
             <div class="text-right">
-              <span class="plan-roi-value">40%</span>
-              <p class="text-[9px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
+              <p class="text-2xl font-black text-amber-400 leading-none numeric-mono">40%</p>
+              <p class="text-[9px] text-brand-muted uppercase font-bold mt-1">Daily</p>
             </div>
           </div>
-          <div class="plan-stat-grid">
-            <div class="plan-stat-cell"><span class="plan-stat-label">Duration</span><span class="plan-stat-value">10 Days</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Total ROI</span><span class="plan-stat-value" style="color:#f59e0b">+500%</span></div>
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <div class="plan-stat-cell">
+              <span class="plan-stat-label">Duration</span>
+              <span class="plan-stat-value">10 Days</span>
+            </div>
+            <div class="plan-stat-cell">
+              <span class="plan-stat-label">Total ROI</span>
+              <span class="plan-stat-value text-amber-400">+500%</span>
+            </div>
           </div>
           <button onclick="openInvestModal('10-Day Growth', 40.0, 10, 500, 1999)" class="plan-cta">
             Invest Now <i data-lucide="arrow-right" class="w-4 h-4"></i>
           </button>
         </div>
 
-        <div class="plan-card plan-vip">
-          <div class="flex justify-between items-start mb-4 relative z-10">
-            <div class="flex items-center gap-4">
-              <div class="plan-icon-badge"><i data-lucide="gem" class="w-6 h-6"></i></div>
-              <div>
-                <div class="flex items-center gap-2 mb-1.5">
-                  <span class="plan-tier-badge">VIP</span>
-                  <span class="text-[10px] text-gray-500 font-mono">MIN $2,000</span>
-                </div>
-                <h4 class="font-extrabold text-base text-white tracking-tight">15-Day Max</h4>
+        <!-- VIP -->
+        <div class="plan-card">
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="plan-tier-badge text-purple-400 bg-purple-400/10">VIP</span>
+                <span class="text-[10px] text-brand-muted font-mono">MIN $2,000</span>
               </div>
+              <h4 class="font-bold text-white text-base">15-Day Max</h4>
             </div>
             <div class="text-right">
-              <span class="plan-roi-value">50%</span>
-              <p class="text-[9px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
+              <p class="text-2xl font-black text-purple-400 leading-none numeric-mono">50%</p>
+              <p class="text-[9px] text-brand-muted uppercase font-bold mt-1">Daily</p>
             </div>
           </div>
-          <div class="plan-stat-grid">
-            <div class="plan-stat-cell"><span class="plan-stat-label">Duration</span><span class="plan-stat-value">15 Days</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Total ROI</span><span class="plan-stat-value" style="color:#a855f7">+850%</span></div>
+          <div class="grid grid-cols-2 gap-2 mb-4">
+            <div class="plan-stat-cell">
+              <span class="plan-stat-label">Duration</span>
+              <span class="plan-stat-value">15 Days</span>
+            </div>
+            <div class="plan-stat-cell">
+              <span class="plan-stat-label">Total ROI</span>
+              <span class="plan-stat-value text-purple-400">+850%</span>
+            </div>
           </div>
           <button onclick="openInvestModal('15-Day Max', 50.0, 15, 2000, 10000)" class="plan-cta">
             Invest Now <i data-lucide="arrow-right" class="w-4 h-4"></i>
@@ -499,544 +711,551 @@
     </div>
   </main>
 
-  <!-- WALLET -->
-  <main id="tab-wallet" class="tab-content p-5 space-y-5">
-    <div id="wallet-overview" class="space-y-5">
-      <div class="glass-card rounded-[28px] p-6 border border-emerald-500/20 relative overflow-hidden shadow-2xl">
-        <div class="relative z-10 space-y-3">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                <i data-lucide="wallet" class="w-5 h-5 text-black"></i>
-              </div>
-              <div>
-                <span class="text-[11px] text-gray-400 uppercase tracking-wider font-extrabold block">Wallet Balance</span>
-                <span class="text-[10px] text-emerald-400 font-mono font-bold flex items-center gap-1"><div class="live-dot !w-1.5 !h-1.5"></div> LIVE</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="pt-2">
-            <h2 class="text-4xl font-black text-white tracking-tight" id="wallet-balance-display">$0.00</h2>
-            <p class="text-[11px] text-gray-500 mt-1 font-mono">Available for withdrawal & investment</p>
-          </div>
+  <!-- ============================================================
+       WALLET TAB
+       ============================================================ -->
+  <main id="tab-wallet" class="tab-content p-5 space-y-4">
+    
+    <!-- WALLET OVERVIEW -->
+    <div id="wallet-overview" class="space-y-4">
+      
+      <!-- Balance Hero -->
+      <div class="bybit-card p-5">
+        <div class="flex items-center gap-2 mb-3">
+          <i data-lucide="wallet" class="w-4 h-4 text-accent"></i>
+          <span class="section-title">Wallet Balance</span>
+        </div>
+        
+        <h2 class="text-3xl font-black text-white tracking-tight numeric-mono" id="wallet-balance-display">$0.00</h2>
+        <p class="text-[11px] text-brand-muted mt-1">Available for withdrawal & investment</p>
 
-          <div class="grid grid-cols-2 gap-3 pt-4 border-t border-white/5">
-            <div class="bg-black/20 p-3 rounded-2xl border border-white/5">
-              <span class="text-[10px] text-gray-400 uppercase font-bold block mb-1">Available</span>
-              <span class="text-sm font-black text-emerald-400 font-mono" id="metric-liquid">$0.00</span>
-            </div>
-            <div class="bg-black/20 p-3 rounded-2xl border border-white/5">
-              <span class="text-[10px] text-gray-400 uppercase font-bold block mb-1">Locked</span>
-              <span class="text-sm font-black text-cyan-400 font-mono" id="metric-locked">$0.00</span>
-            </div>
+        <div class="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-brand-border">
+          <div class="bybit-panel p-3">
+            <span class="text-[10px] text-brand-muted uppercase font-bold block mb-1">Available</span>
+            <span class="text-sm font-bold text-emerald-400 numeric-mono" id="metric-liquid">$0.00</span>
+          </div>
+          <div class="bybit-panel p-3">
+            <span class="text-[10px] text-brand-muted uppercase font-bold block mb-1">Locked</span>
+            <span class="text-sm font-bold text-cyan-400 numeric-mono" id="metric-locked">$0.00</span>
           </div>
         </div>
       </div>
 
+      <!-- Account Metrics -->
       <div>
-        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-          <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-400"></i> Account Metrics
-        </h3>
+        <h3 class="section-title mb-3">Account Metrics</h3>
         <div class="grid grid-cols-2 gap-3">
-          <div class="glass-card rounded-2xl p-4">
-            <span class="text-[10px] text-gray-400 uppercase font-bold block mb-1">Deposited</span>
-            <span class="text-sm font-black text-white font-mono" id="stat-deposited">$0.00</span>
+          <div class="metric-card">
+            <span class="metric-label">Deposited</span>
+            <span class="metric-value text-white" id="stat-deposited">$0.00</span>
           </div>
-          <div class="glass-card rounded-2xl p-4">
-            <span class="text-[10px] text-gray-400 uppercase font-bold block mb-1">Withdrawn</span>
-            <span class="text-sm font-black text-white font-mono" id="stat-withdrawn">$0.00</span>
+          <div class="metric-card">
+            <span class="metric-label">Withdrawn</span>
+            <span class="metric-value text-white" id="stat-withdrawn">$0.00</span>
           </div>
-          <div class="glass-card rounded-2xl p-4">
-            <span class="text-[10px] text-gray-400 uppercase font-bold block mb-1">Total ROI</span>
-            <span class="text-sm font-black text-purple-400 font-mono" id="wallet-total-roi">+0.0%</span>
+          <div class="metric-card">
+            <span class="metric-label">Total ROI</span>
+            <span class="metric-value text-purple-400" id="wallet-total-roi">+0.0%</span>
           </div>
-          <div class="glass-card rounded-2xl p-4">
-            <span class="text-[10px] text-gray-400 uppercase font-bold block mb-1">Active Plans</span>
-            <span class="text-sm font-black text-amber-400 font-mono" id="wallet-active-plans">0</span>
+          <div class="metric-card">
+            <span class="metric-label">Active Plans</span>
+            <span class="metric-value text-amber-400" id="wallet-active-plans">0</span>
           </div>
         </div>
       </div>
 
-      <div class="glass-card rounded-2xl p-5 space-y-3">
-        <div class="flex items-center justify-between pb-3 border-b border-white/5">
-          <h3 class="text-xs font-bold text-white flex items-center gap-2">
-            <i data-lucide="network" class="w-4 h-4 text-cyan-400"></i> Supported Networks
-          </h3>
-          <span class="text-[9px] bg-cyan-500/10 text-cyan-400 font-bold px-2 py-0.5 rounded-full font-mono">4 NETWORKS</span>
+      <!-- Supported Networks -->
+      <div class="bybit-card p-5">
+        <div class="flex items-center justify-between pb-3 border-b border-brand-border">
+          <h3 class="text-xs font-bold text-white">Supported Networks</h3>
+          <span class="text-[9px] bg-brand-panel text-brand-muted font-bold px-2 py-0.5 rounded font-mono">4</span>
         </div>
 
-        <div class="grid grid-cols-4 gap-2">
-          <div class="flex flex-col items-center gap-2 p-2 rounded-xl bg-black/20 border border-white/5">
-            <div class="network-logo-wrap network-logo-usdt" style="width:36px;height:36px;padding:6px;">
-              <img src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=040" alt="USDT" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#26A17B;font-weight:900;font-size:16px\'>₮</span>'">
+        <div class="grid grid-cols-4 gap-2 mt-4">
+          <div class="network-preview-item">
+            <div class="network-logo" style="background: rgba(38,161,123,0.15);">
+              <img src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=040" alt="USDT" onerror="this.parentElement.innerHTML='<span style=\'color:#26A17B;font-weight:900;font-size:14px\'>₮</span>'">
             </div>
-            <span class="text-[9px] font-black text-white">USDT</span>
+            <span class="text-[9px] font-bold text-white">USDT</span>
             <span class="text-[8px] text-emerald-400 font-mono">TRC20</span>
           </div>
-          <div class="flex flex-col items-center gap-2 p-2 rounded-xl bg-black/20 border border-white/5">
-            <div class="network-logo-wrap network-logo-bnb" style="width:36px;height:36px;padding:6px;">
-              <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040" alt="BEP20" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#F3BA2F;font-weight:900;font-size:16px\'>⚡</span>'">
+          <div class="network-preview-item">
+            <div class="network-logo" style="background: rgba(243,186,47,0.15);">
+              <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040" alt="BEP20" onerror="this.parentElement.innerHTML='<span style=\'color:#F3BA2F;font-weight:900;font-size:14px\'>⚡</span>'">
             </div>
-            <span class="text-[9px] font-black text-white">USDT</span>
+            <span class="text-[9px] font-bold text-white">USDT</span>
             <span class="text-[8px] text-amber-400 font-mono">BEP20</span>
           </div>
-          <div class="flex flex-col items-center gap-2 p-2 rounded-xl bg-black/20 border border-white/5">
-            <div class="network-logo-wrap network-logo-eth" style="width:36px;height:36px;padding:6px;">
-              <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040" alt="ERC20" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#627EEA;font-weight:900;font-size:16px\'>Ξ</span>'">
+          <div class="network-preview-item">
+            <div class="network-logo" style="background: rgba(98,126,234,0.15);">
+              <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040" alt="ERC20" onerror="this.parentElement.innerHTML='<span style=\'color:#627EEA;font-weight:900;font-size:14px\'>Ξ</span>'">
             </div>
-            <span class="text-[9px] font-black text-white">USDT</span>
+            <span class="text-[9px] font-bold text-white">USDT</span>
             <span class="text-[8px] text-blue-400 font-mono">ERC20</span>
           </div>
-          <div class="flex flex-col items-center gap-2 p-2 rounded-xl bg-black/20 border border-white/5">
-            <div class="network-logo-wrap network-logo-ton" style="width:36px;height:36px;padding:6px;">
-              <img src="https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040" alt="TON" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#0098EA;font-weight:900;font-size:16px\'>💎</span>'">
+          <div class="network-preview-item">
+            <div class="network-logo" style="background: rgba(0,152,234,0.15);">
+              <img src="https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040" alt="TON" onerror="this.parentElement.innerHTML='<span style=\'color:#0098EA;font-weight:900;font-size:14px\'>💎</span>'">
             </div>
-            <span class="text-[9px] font-black text-white">TON</span>
+            <span class="text-[9px] font-bold text-white">TON</span>
             <span class="text-[8px] text-cyan-400 font-mono">TON</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- DEPOSIT -->
-    <div id="section-deposit" class="space-y-5 hidden">
-      <div class="flex items-center justify-between">
-        <button onclick="backToWalletOverview()" class="text-xs text-white flex items-center gap-2 font-bold bg-white/5 hover:bg-white/10 px-4 py-2.5 rounded-xl border border-white/10 transition-all">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
-        </button>
-      </div>
+    <!-- ============================================================
+         DEPOSIT SECTION (Bybit-style)
+         ============================================================ -->
+    <div id="section-deposit" class="space-y-4 hidden">
+      
+      <button onclick="backToWalletOverview()" class="flex items-center gap-1.5 text-brand-muted text-sm font-semibold">
+        <i data-lucide="chevron-left" class="w-4 h-4"></i> Back to Wallet
+      </button>
 
-      <div class="glass-card rounded-2xl p-5 space-y-4 border border-white/5">
-        <div class="flex items-center justify-between pb-3 border-b border-white/5">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
-              <i data-lucide="arrow-down-to-line" class="w-5 h-5 text-emerald-400"></i>
-            </div>
-            <div>
-              <h3 class="text-sm font-black text-white tracking-tight">Crypto Deposit</h3>
-              <p class="text-[10px] text-emerald-400 font-mono">Min $5.00</p>
-            </div>
+      <!-- Network Selector Card -->
+      <div class="bybit-card p-5">
+        <div class="flex items-center gap-3 pb-4 border-b border-brand-border mb-4">
+          <div class="w-10 h-10 rounded-lg bg-emerald-400/10 flex items-center justify-center">
+            <i data-lucide="arrow-down-to-line" class="w-5 h-5 text-emerald-400"></i>
+          </div>
+          <div class="flex-1">
+            <h3 class="text-base font-bold text-white">Deposit Crypto</h3>
+            <p class="text-[11px] text-brand-muted">Minimum $5.00</p>
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-2.5">
-          <div onclick="selectCryptoMethod('usdt_trc20')" id="card-usdt_trc20" class="network-card active">
-            <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
-            <div class="flex items-center gap-2.5">
-              <div class="network-logo-wrap network-logo-usdt">
-                <img src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=040" alt="USDT" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#26A17B;font-weight:900;font-size:18px\'>₮</span>'">
+        <div class="grid grid-cols-2 gap-2">
+          <div onclick="selectCryptoMethod('usdt_trc20')" id="card-usdt_trc20" class="network-item active">
+            <div class="check-mark"><i data-lucide="check" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-2">
+              <div class="network-logo" style="background: rgba(38,161,123,0.15);">
+                <img src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=040" alt="USDT" onerror="this.parentElement.innerHTML='<span style=\'color:#26A17B;font-weight:900;font-size:14px\'>₮</span>'">
               </div>
-              <div class="min-w-0">
-                <h5 class="text-[11px] font-black text-white">USDT</h5>
-                <p class="text-[9px] text-emerald-400 font-bold">TRC20</p>
-              </div>
-            </div>
-          </div>
-
-          <div onclick="selectCryptoMethod('usdt_bep20')" id="card-usdt_bep20" class="network-card">
-            <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
-            <div class="flex items-center gap-2.5">
-              <div class="network-logo-wrap network-logo-bnb">
-                <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040" alt="BEP20" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#F3BA2F;font-weight:900;font-size:16px\'>⚡</span>'">
-              </div>
-              <div class="min-w-0">
-                <h5 class="text-[11px] font-black text-white">USDT</h5>
-                <p class="text-[9px] text-amber-400 font-bold">BEP20</p>
+              <div>
+                <h5 class="text-[11px] font-bold text-white">USDT</h5>
+                <p class="text-[10px] text-brand-muted">TRC20</p>
               </div>
             </div>
           </div>
 
-          <div onclick="selectCryptoMethod('usdt_erc20')" id="card-usdt_erc20" class="network-card">
-            <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
-            <div class="flex items-center gap-2.5">
-              <div class="network-logo-wrap network-logo-eth">
-                <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040" alt="ERC20" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#627EEA;font-weight:900;font-size:16px\'>Ξ</span>'">
+          <div onclick="selectCryptoMethod('usdt_bep20')" id="card-usdt_bep20" class="network-item">
+            <div class="check-mark"><i data-lucide="check" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-2">
+              <div class="network-logo" style="background: rgba(243,186,47,0.15);">
+                <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040" alt="BEP20" onerror="this.parentElement.innerHTML='<span style=\'color:#F3BA2F;font-weight:900;font-size:14px\'>⚡</span>'">
               </div>
-              <div class="min-w-0">
-                <h5 class="text-[11px] font-black text-white">USDT</h5>
-                <p class="text-[9px] text-blue-400 font-bold">ERC20</p>
+              <div>
+                <h5 class="text-[11px] font-bold text-white">USDT</h5>
+                <p class="text-[10px] text-brand-muted">BEP20</p>
+              </div>
+            </div>
+          </div>
+
+          <div onclick="selectCryptoMethod('usdt_erc20')" id="card-usdt_erc20" class="network-item">
+            <div class="check-mark"><i data-lucide="check" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-2">
+              <div class="network-logo" style="background: rgba(98,126,234,0.15);">
+                <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040" alt="ERC20" onerror="this.parentElement.innerHTML='<span style=\'color:#627EEA;font-weight:900;font-size:14px\'>Ξ</span>'">
+              </div>
+              <div>
+                <h5 class="text-[11px] font-bold text-white">USDT</h5>
+                <p class="text-[10px] text-brand-muted">ERC20</p>
               </div>
             </div>
           </div>
 
-          <div onclick="selectCryptoMethod('ton')" id="card-ton" class="network-card">
-            <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
-            <div class="flex items-center gap-2.5">
-              <div class="network-logo-wrap network-logo-ton">
-                <img src="https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040" alt="TON" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\'color:#0098EA;font-weight:900;font-size:16px\'>💎</span>'">
+          <div onclick="selectCryptoMethod('ton')" id="card-ton" class="network-item">
+            <div class="check-mark"><i data-lucide="check" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-2">
+              <div class="network-logo" style="background: rgba(0,152,234,0.15);">
+                <img src="https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040" alt="TON" onerror="this.parentElement.innerHTML='<span style=\'color:#0098EA;font-weight:900;font-size:14px\'>💎</span>'">
               </div>
-              <div class="min-w-0">
-                <h5 class="text-[11px] font-black text-white">TON</h5>
-                <p class="text-[9px] text-cyan-400 font-bold">Toncoin</p>
+              <div>
+                <h5 class="text-[11px] font-bold text-white">TON</h5>
+                <p class="text-[10px] text-brand-muted">Toncoin</p>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div class="glass-card rounded-2xl p-5 space-y-4 border border-white/5">
-        <div class="relative">
-          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-black text-lg">$</span>
-          <input type="number" id="deposit-amount-input" placeholder="0.00" class="input-safe w-full bg-brand-bg border border-white/10 rounded-xl pl-9 pr-4 py-4 text-xl font-black text-white font-mono tracking-tight focus:border-emerald-500/50">
-        </div>
-
-        <div class="flex gap-2">
-          <button onclick="setDepositQuickAmount(50)" class="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 text-[11px] font-bold py-2 rounded-lg transition-all">$50</button>
-          <button onclick="setDepositQuickAmount(100)" class="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 text-[11px] font-bold py-2 rounded-lg transition-all">$100</button>
-          <button onclick="setDepositQuickAmount(500)" class="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 text-[11px] font-bold py-2 rounded-lg transition-all">$500</button>
-          <button onclick="setDepositQuickAmount(1000)" class="flex-1 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 text-[11px] font-bold py-2 rounded-lg transition-all">$1K</button>
         </div>
       </div>
 
-      <div class="glass-card rounded-2xl p-5 space-y-3 border border-white/5">
-        <div class="flex items-center justify-between p-2.5 bg-black/20 rounded-xl border border-white/5">
-          <span class="text-[10px] text-gray-400 uppercase font-bold">Network</span>
-          <span id="selected-network-badge" class="text-emerald-400 font-black font-mono text-[11px]">USDT (TRC20)</span>
+      <!-- Address Card -->
+      <div class="bybit-card p-5">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-[10px] text-brand-muted uppercase font-bold tracking-wider">Deposit Address</span>
+          <span id="selected-network-badge" class="text-[10px] bg-brand-panel text-accent font-bold px-2 py-1 rounded font-mono">USDT (TRC20)</span>
         </div>
 
-        <div class="address-display p-3 space-y-2">
-          <div class="flex items-center gap-1.5 text-[10px] text-gray-400 uppercase font-bold">
-            <i data-lucide="wallet" class="w-3 h-3 text-emerald-400"></i> Deposit Address
-          </div>
+        <div class="bybit-panel p-3 mb-3">
           <div class="flex items-center gap-2">
-            <input type="text" id="wallet-address-text" readonly value="TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs" class="bg-transparent text-[11px] text-emerald-400 font-mono font-bold w-full focus:outline-none tracking-tight">
-            <button onclick="copyToClipboard('wallet-address-text')" class="px-3 py-2 bg-gradient-to-r from-emerald-500 to-cyan-500 text-black font-black rounded-lg text-[10px] shrink-0 flex items-center gap-1 active:scale-95 transition-all">
+            <input type="text" id="wallet-address-text" readonly value="TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs" class="bg-transparent text-xs text-white font-mono font-semibold w-full focus:outline-none truncate">
+            <button onclick="copyToClipboard('wallet-address-text')" class="px-2.5 py-1.5 bg-accent text-black font-extrabold rounded text-[10px] flex items-center gap-1 shrink-0">
               <i data-lucide="copy" class="w-3 h-3"></i> COPY
             </button>
           </div>
         </div>
 
-        <div class="flex items-start gap-2.5 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20">
-          <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
-          <div class="text-[10px] leading-relaxed">
-            <span class="text-amber-200/90">Send only <strong class="text-white" id="warning-net-name">USDT (TRC20)</strong>. Wrong network = <strong class="text-amber-400">permanent loss</strong>.</span>
-          </div>
+        <div class="flex items-start gap-2 p-2.5 rounded-md bg-amber-400/5 border border-amber-400/20">
+          <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-400 shrink-0 mt-0.5"></i>
+          <p class="text-[10px] leading-relaxed text-amber-200/90">
+            Send only <strong class="text-white" id="warning-net-name">USDT (TRC20)</strong>. Wrong network = <strong class="text-amber-400">permanent loss</strong>.
+          </p>
         </div>
 
-        <button onclick="toggleDepositQr()" id="qr-toggle-btn" class="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-1.5 transition-all">
-          <i data-lucide="qr-code" class="w-4 h-4"></i> Show QR Code
+        <button onclick="toggleDepositQr()" id="qr-toggle-btn" class="w-full mt-3 bg-brand-panel border border-brand-border text-white font-bold py-2.5 rounded-md text-xs flex items-center justify-center gap-1.5">
+          <i data-lucide="qr-code" class="w-3.5 h-3.5"></i> Show QR Code
         </button>
 
-        <div id="deposit-qr-container" class="pt-2 flex flex-col items-center justify-center hidden">
-          <div class="p-1.5 bg-white rounded-xl">
-            <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs&color=080b11&bgcolor=ffffff" alt="QR" class="w-40 h-40 rounded-lg">
+        <div id="deposit-qr-container" class="pt-3 flex flex-col items-center justify-center hidden">
+          <div class="p-2 bg-white rounded-md">
+            <img id="qr-code-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs&color=0b0e11&bgcolor=ffffff" alt="QR" class="w-36 h-36">
           </div>
         </div>
       </div>
 
-      <div class="glass-card rounded-2xl p-5 space-y-4 border border-white/5">
-        <div class="space-y-2">
-          <label class="text-[10px] text-gray-400 uppercase font-bold flex items-center gap-1.5">
-            <i data-lucide="hash" class="w-3 h-3 text-emerald-400"></i> Proof of Payment
-          </label>
-          <input type="text" id="tx-hash-input" placeholder="Paste TxID..." class="input-safe w-full bg-brand-bg border border-white/10 rounded-xl p-3 text-[11px] text-white font-mono focus:border-emerald-500/50">
+      <!-- Amount & Proof Card -->
+      <div class="bybit-card p-5 space-y-4">
+        <div>
+          <label class="text-[10px] text-brand-muted uppercase font-bold block mb-2">Amount (USD)</label>
+          <div class="amount-input-wrap">
+            <div class="flex items-center gap-2">
+              <span class="text-brand-muted text-xl font-bold">$</span>
+              <input type="number" id="deposit-amount-input" placeholder="0.00" class="amount-input" oninput="clearQuickAmtSelection('deposit')">
+            </div>
+          </div>
+          <div class="flex gap-2 mt-2">
+            <button onclick="setDepositQuickAmount(50, this)" class="quick-amt">$50</button>
+            <button onclick="setDepositQuickAmount(100, this)" class="quick-amt">$100</button>
+            <button onclick="setDepositQuickAmount(500, this)" class="quick-amt">$500</button>
+            <button onclick="setDepositQuickAmount(1000, this)" class="quick-amt">$1K</button>
+          </div>
         </div>
 
-        <div class="relative flex flex-col items-center justify-center p-4 border border-dashed border-white/20 rounded-xl bg-white/5 hover:border-emerald-500/40 transition-all cursor-pointer" onclick="document.getElementById('deposit-screenshot-file').click()">
-          <input type="file" id="deposit-screenshot-file" accept="image/*" class="hidden" onchange="handleScreenshotUpload(event)">
-          <div id="upload-placeholder-content" class="flex flex-col items-center gap-1 text-gray-400">
-            <i data-lucide="image-plus" class="w-5 h-5 text-emerald-400"></i>
-            <span class="text-[11px] font-bold">Upload Screenshot</span>
-          </div>
-          <div id="upload-preview-container" class="hidden flex items-center gap-2 text-emerald-400 text-xs font-bold">
-            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
-            <span id="uploaded-file-name" class="truncate max-w-[150px]">Attached</span>
+        <div>
+          <label class="text-[10px] text-brand-muted uppercase font-bold block mb-2">Transaction Hash (TxID)</label>
+          <input type="text" id="tx-hash-input" placeholder="Paste your TxID" class="w-full bg-brand-panel border border-brand-border rounded-md p-3 text-xs text-white font-mono focus:outline-none focus:border-accent/50">
+        </div>
+
+        <div>
+          <label class="text-[10px] text-brand-muted uppercase font-bold block mb-2">Proof of Payment</label>
+          <div class="relative flex flex-col items-center justify-center p-4 border border-dashed border-brand-border rounded-md bg-brand-panel cursor-pointer" onclick="document.getElementById('deposit-screenshot-file').click()">
+            <input type="file" id="deposit-screenshot-file" accept="image/*" class="hidden" onchange="handleScreenshotUpload(event)">
+            <div id="upload-placeholder-content" class="flex flex-col items-center gap-1 text-brand-muted">
+              <i data-lucide="image-plus" class="w-5 h-5 text-brand-muted"></i>
+              <span class="text-[11px] font-bold">Upload Screenshot</span>
+            </div>
+            <div id="upload-preview-container" class="hidden flex items-center gap-2 text-emerald-400 text-xs font-bold">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+              <span id="uploaded-file-name" class="truncate max-w-[150px]">Attached</span>
+            </div>
           </div>
         </div>
       </div>
 
-      <button onclick="initiateDepositProcess()" class="w-full relative overflow-hidden rounded-xl font-extrabold shadow-lg active:scale-95 transition-all">
-        <span class="block gradient-bg px-4 py-3.5 text-black text-sm font-black tracking-wide flex items-center justify-center gap-2">
-          SUBMIT DEPOSIT
-        </span>
-      </button>
+      <button onclick="initiateDepositProcess()" class="btn-primary">Submit Deposit</button>
     </div>
 
-    <!-- WITHDRAW -->
-    <div id="section-withdraw" class="space-y-5 hidden">
-      <div class="flex items-center justify-between">
-        <button onclick="backToWalletOverview()" class="text-xs text-white flex items-center gap-2 font-bold bg-white/5 hover:bg-white/10 px-4 py-2.5 rounded-xl border border-white/10 transition-all">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
-        </button>
-      </div>
+    <!-- ============================================================
+         WITHDRAW SECTION (Bybit-style)
+         ============================================================ -->
+    <div id="section-withdraw" class="space-y-4 hidden">
+      
+      <button onclick="backToWalletOverview()" class="flex items-center gap-1.5 text-brand-muted text-sm font-semibold">
+        <i data-lucide="chevron-left" class="w-4 h-4"></i> Back to Wallet
+      </button>
 
-      <div class="glass-card rounded-2xl p-5 border border-cyan-500/20 space-y-1">
-        <span class="text-[10px] text-gray-400 uppercase font-bold">Available</span>
-        <div class="flex items-baseline gap-2">
-          <h3 class="text-3xl font-black text-white font-mono" id="withdraw-max-label-2">$0.00</h3>
-          <span class="text-[10px] text-cyan-400 font-mono">USD</span>
+      <!-- Withdraw Header Card -->
+      <div class="bybit-card p-5">
+        <div class="flex items-center gap-3 pb-4 border-b border-brand-border mb-4">
+          <div class="w-10 h-10 rounded-lg bg-cyan-400/10 flex items-center justify-center">
+            <i data-lucide="arrow-up-from-line" class="w-5 h-5 text-cyan-400"></i>
+          </div>
+          <div class="flex-1">
+            <h3 class="text-base font-bold text-white">Withdraw Crypto</h3>
+            <div class="flex items-center gap-2 mt-0.5">
+              <span class="text-[11px] text-brand-muted">Available:</span>
+              <span class="text-[11px] text-white font-bold numeric-mono" id="withdraw-max-label-2">$0.00</span>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="glass-card rounded-2xl p-5 space-y-4 border border-white/5">
-        <div class="grid grid-cols-2 gap-2.5">
-          <div onclick="selectWithdrawNetwork('usdt_trc20')" id="w-card-usdt_trc20" class="network-card active">
-            <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
-            <div class="flex items-center gap-2.5">
-              <div class="network-logo-wrap network-logo-usdt">
+        <div class="grid grid-cols-2 gap-2">
+          <div onclick="selectWithdrawNetwork('usdt_trc20')" id="w-card-usdt_trc20" class="network-item active">
+            <div class="check-mark"><i data-lucide="check" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-2">
+              <div class="network-logo" style="background: rgba(38,161,123,0.15);">
                 <img src="https://cryptologos.cc/logos/tether-usdt-logo.png?v=040" alt="USDT">
               </div>
-              <div class="min-w-0">
-                <h5 class="text-[11px] font-black text-white">USDT</h5>
-                <p class="text-[9px] text-emerald-400 font-bold">TRC20</p>
+              <div>
+                <h5 class="text-[11px] font-bold text-white">USDT</h5>
+                <p class="text-[10px] text-brand-muted">TRC20</p>
               </div>
             </div>
           </div>
-          <div onclick="selectWithdrawNetwork('usdt_bep20')" id="w-card-usdt_bep20" class="network-card">
-            <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
-            <div class="flex items-center gap-2.5">
-              <div class="network-logo-wrap network-logo-bnb">
+
+          <div onclick="selectWithdrawNetwork('usdt_bep20')" id="w-card-usdt_bep20" class="network-item">
+            <div class="check-mark"><i data-lucide="check" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-2">
+              <div class="network-logo" style="background: rgba(243,186,47,0.15);">
                 <img src="https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040" alt="BEP20">
               </div>
-              <div class="min-w-0">
-                <h5 class="text-[11px] font-black text-white">USDT</h5>
-                <p class="text-[9px] text-amber-400 font-bold">BEP20</p>
+              <div>
+                <h5 class="text-[11px] font-bold text-white">USDT</h5>
+                <p class="text-[10px] text-brand-muted">BEP20</p>
               </div>
             </div>
           </div>
-          <div onclick="selectWithdrawNetwork('usdt_erc20')" id="w-card-usdt_erc20" class="network-card">
-            <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
-            <div class="flex items-center gap-2.5">
-              <div class="network-logo-wrap network-logo-eth">
+
+          <div onclick="selectWithdrawNetwork('usdt_erc20')" id="w-card-usdt_erc20" class="network-item">
+            <div class="check-mark"><i data-lucide="check" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-2">
+              <div class="network-logo" style="background: rgba(98,126,234,0.15);">
                 <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040" alt="ERC20">
               </div>
-              <div class="min-w-0">
-                <h5 class="text-[11px] font-black text-white">USDT</h5>
-                <p class="text-[9px] text-blue-400 font-bold">ERC20</p>
+              <div>
+                <h5 class="text-[11px] font-bold text-white">USDT</h5>
+                <p class="text-[10px] text-brand-muted">ERC20</p>
               </div>
             </div>
           </div>
-          <div onclick="selectWithdrawNetwork('ton')" id="w-card-ton" class="network-card">
-            <div class="network-check"><i data-lucide="check" class="w-3 h-3"></i></div>
-            <div class="flex items-center gap-2.5">
-              <div class="network-logo-wrap network-logo-ton">
+
+          <div onclick="selectWithdrawNetwork('ton')" id="w-card-ton" class="network-item">
+            <div class="check-mark"><i data-lucide="check" class="w-3 h-3"></i></div>
+            <div class="flex items-center gap-2">
+              <div class="network-logo" style="background: rgba(0,152,234,0.15);">
                 <img src="https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040" alt="TON">
               </div>
-              <div class="min-w-0">
-                <h5 class="text-[11px] font-black text-white">TON</h5>
-                <p class="text-[9px] text-cyan-400 font-bold">Toncoin</p>
+              <div>
+                <h5 class="text-[11px] font-bold text-white">TON</h5>
+                <p class="text-[10px] text-brand-muted">Toncoin</p>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="glass-card rounded-2xl p-5 space-y-4 border border-white/5">
-        <div class="relative">
-          <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-black text-lg">$</span>
-          <input type="number" id="withdraw-amount" placeholder="0.00" oninput="calculateWithdrawFee()" class="input-safe w-full bg-brand-bg border border-white/10 rounded-xl pl-9 pr-16 py-4 text-xl font-black text-white font-mono tracking-tight focus:border-cyan-500/50">
-          <button onclick="setMaxWithdraw()" class="absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-black text-cyan-400 bg-cyan-500/10 border border-cyan-500/20 px-3 py-1.5 rounded-lg transition-all">MAX</button>
-        </div>
-      </div>
-
-      <div class="glass-card rounded-2xl p-5 space-y-3 border border-white/5">
-        <div class="address-display p-3 space-y-2">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-1.5 text-[10px] text-gray-400 uppercase font-bold">
-              <i data-lucide="wallet" class="w-3 h-3 text-cyan-400"></i> Destination
+      <!-- Amount Card -->
+      <div class="bybit-card p-5 space-y-4">
+        <div>
+          <label class="text-[10px] text-brand-muted uppercase font-bold block mb-2">Amount (USD)</label>
+          <div class="amount-input-wrap">
+            <div class="flex items-center gap-2">
+              <span class="text-brand-muted text-xl font-bold">$</span>
+              <input type="number" id="withdraw-amount" placeholder="0.00" oninput="calculateWithdrawFee(); clearQuickAmtSelection('withdraw')" class="amount-input">
+              <button onclick="setMaxWithdraw()" class="text-[10px] font-extrabold text-accent bg-accent/10 border border-accent/30 px-2.5 py-1.5 rounded shrink-0">MAX</button>
             </div>
-            <span id="withdraw-network-label" class="text-[9px] bg-cyan-500/10 text-cyan-400 px-2 py-0.5 rounded font-mono font-bold">TRC20</span>
           </div>
-          <input type="text" id="withdraw-address" placeholder="Paste wallet address..." class="input-safe w-full bg-transparent text-[11px] text-white font-mono focus:outline-none tracking-tight placeholder-gray-600">
+          <div class="flex gap-2 mt-2">
+            <button onclick="setWithdrawQuickAmount(50, this)" class="quick-amt">$50</button>
+            <button onclick="setWithdrawQuickAmount(100, this)" class="quick-amt">$100</button>
+            <button onclick="setWithdrawQuickAmount(500, this)" class="quick-amt">$500</button>
+            <button onclick="setWithdrawQuickAmount(1000, this)" class="quick-amt">$1K</button>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label class="text-[10px] text-brand-muted uppercase font-bold">Destination Address</label>
+            <span id="withdraw-network-label" class="text-[9px] bg-brand-panel text-accent px-2 py-0.5 rounded font-mono font-bold">TRC20</span>
+          </div>
+          <input type="text" id="withdraw-address" placeholder="Paste wallet address" class="w-full bg-brand-panel border border-brand-border rounded-md p-3 text-xs text-white font-mono focus:outline-none focus:border-accent/50">
         </div>
       </div>
 
-      <div class="glass-card rounded-2xl p-4 border border-cyan-500/20 space-y-2">
-        <div class="flex items-center justify-between text-xs">
-          <span class="text-gray-400">You Receive</span>
-          <span id="net-receive-text" class="text-xl font-black text-cyan-400 font-mono">$0.00</span>
+      <!-- Receive Summary -->
+      <div class="bybit-card p-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs text-brand-muted font-semibold">You will receive</span>
+          <span id="net-receive-text" class="text-lg font-black text-accent numeric-mono">$0.00</span>
         </div>
       </div>
 
-      <button onclick="initiateWithdrawalProcess()" class="w-full relative overflow-hidden rounded-xl font-extrabold shadow-lg active:scale-95 transition-all">
-        <span class="block bg-gradient-to-r from-cyan-500 to-blue-600 px-4 py-3.5 text-white text-sm font-black tracking-wide flex items-center justify-center gap-2">
-          CONFIRM WITHDRAWAL
-        </span>
-      </button>
+      <button onclick="initiateWithdrawalProcess()" class="btn-primary">Confirm Withdrawal</button>
     </div>
   </main>
 
-  <!-- HISTORY -->
-  <main id="tab-history" class="tab-content p-5 space-y-5">
-    <div class="flex items-center justify-between pt-2">
-      <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
-        <i data-lucide="history" class="w-4 h-4 text-emerald-400"></i> Transaction History
-      </h3>
-      <span class="text-[9px] text-gray-500 font-mono" id="history-count-badge">0 records</span>
+  <!-- ============================================================
+       HISTORY TAB
+       ============================================================ -->
+  <main id="tab-history" class="tab-content p-5 space-y-4">
+    <div class="flex items-center justify-between">
+      <h3 class="section-title">Transaction History</h3>
+      <span class="text-[9px] text-brand-muted font-mono" id="history-count-badge">0 records</span>
     </div>
     <div id="history-container" class="space-y-3">
-      <div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">
-        No transactions yet.
-      </div>
+      <div class="bybit-card p-5 text-center text-xs text-brand-muted">No transactions yet.</div>
     </div>
   </main>
 
-  <!-- SUPPORT -->
-  <main id="tab-support" class="tab-content p-5 space-y-5">
-    <div class="glass-card rounded-2xl p-5 border border-white/5 space-y-3 text-center">
-      <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center text-black shadow-lg shadow-emerald-500/20 shrink-0 font-black mx-auto mb-2">
+  <!-- ============================================================
+       SUPPORT TAB
+       ============================================================ -->
+  <main id="tab-support" class="tab-content p-5 space-y-4">
+    <div class="bybit-card p-6 text-center space-y-3">
+      <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center text-black mx-auto mb-2">
         <i data-lucide="headphones" class="w-6 h-6"></i>
       </div>
-      <h3 class="font-extrabold text-base text-white">VIP Support</h3>
-      <p class="text-xs text-gray-400 leading-relaxed">Our desk provides instant support for all transactions.</p>
-      <a href="https://t.me/ApexInvestSupport" target="_blank" class="gradient-bg text-black font-extrabold py-3 px-6 rounded-xl text-xs inline-flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all mt-2">
-        <i data-lucide="send" class="w-4 h-4"></i> Telegram Chat
+      <h3 class="font-bold text-base text-white">24/7 Support</h3>
+      <p class="text-xs text-brand-muted">Our team is ready to help you anytime</p>
+      <a href="https://t.me/ApexInvestSupport" target="_blank" class="inline-flex items-center justify-center gap-2 bg-accent text-black font-extrabold py-3 px-6 rounded-md text-xs mt-2">
+        <i data-lucide="send" class="w-4 h-4"></i> Contact on Telegram
       </a>
     </div>
   </main>
 
-  <!-- REFERRAL -->
+  <!-- ============================================================
+       REFERRAL TAB
+       ============================================================ -->
   <main id="tab-referral" class="tab-content p-5 space-y-4">
-    <div class="glass-card rounded-2xl p-5 space-y-4 border border-white/5 text-center">
-      <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center text-black shadow-lg shadow-emerald-500/25 shrink-0 mx-auto mb-2">
+    <div class="bybit-card p-6 text-center space-y-3">
+      <div class="w-12 h-12 gradient-bg rounded-full flex items-center justify-center text-black mx-auto mb-2">
         <i data-lucide="users" class="w-6 h-6"></i>
       </div>
-      <div>
-        <h3 class="font-black text-white text-base">Affiliate Program</h3>
-        <span class="text-[10px] text-emerald-400 font-mono font-bold uppercase tracking-wider">Earn 8% Commission</span>
-      </div>
+      <h3 class="font-bold text-base text-white">Affiliate Program</h3>
+      <p class="text-[10px] text-emerald-400 font-mono font-bold uppercase tracking-wider">Earn 8% Commission</p>
+      <p class="text-xs text-brand-muted leading-relaxed">Share your link. Earn when they deposit.</p>
 
-      <p class="text-xs text-gray-400 leading-relaxed">
-        Share your link. Earn cash when your referrals deposit.
-      </p>
-
-      <div class="flex items-center gap-2 bg-black/20 p-2.5 rounded-xl border border-white/5 text-left">
+      <div class="flex items-center gap-2 bg-brand-panel p-2.5 rounded-md border border-brand-border text-left">
         <input type="text" id="ref-link" readonly value="https://t.me/ApexInvestBot?start=ref_" class="bg-transparent text-xs text-cyan-400 font-mono w-full focus:outline-none">
-        <button onclick="copyToClipboard('ref-link')" class="px-3 py-2 gradient-bg text-black font-extrabold rounded-lg text-xs shrink-0 flex items-center gap-1 shadow-md active:scale-95 transition-all">
+        <button onclick="copyToClipboard('ref-link')" class="px-3 py-2 bg-accent text-black font-extrabold rounded-md text-xs shrink-0 flex items-center gap-1">
           <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
         </button>
       </div>
     </div>
   </main>
 
-  <!-- PROFILE -->
+  <!-- ============================================================
+       PROFILE TAB
+       ============================================================ -->
   <main id="tab-profile" class="tab-content p-5 space-y-4">
-    <div class="glass-card rounded-3xl p-6 border border-white/5 space-y-5">
+    <div class="bybit-card p-6 space-y-5">
       <div class="flex items-center gap-4">
-        <div class="relative">
-          <div class="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center text-black font-black text-2xl shadow-xl" id="profile-big-avatar">U</div>
-        </div>
-        <div class="space-y-1 overflow-hidden">
-          <h3 class="font-black text-white text-lg tracking-tight truncate" id="profile-fullname">Investor</h3>
-          <p class="text-xs text-emerald-400 font-mono font-bold tracking-wide" id="profile-username">@username</p>
-          <span class="inline-block text-[10px] text-gray-400 bg-white/5 px-2 py-0.5 rounded border border-white/10 font-mono">VIP Account</span>
+        <div class="w-16 h-16 rounded-full gradient-bg flex items-center justify-center text-black font-black text-2xl" id="profile-big-avatar">U</div>
+        <div class="overflow-hidden">
+          <h3 class="font-bold text-white text-lg truncate" id="profile-fullname">Investor</h3>
+          <p class="text-xs text-accent font-mono font-bold" id="profile-username">@username</p>
+          <span class="inline-block text-[10px] text-brand-muted bg-brand-panel px-2 py-0.5 rounded border border-brand-border font-mono mt-1">VIP Account</span>
         </div>
       </div>
-      <div class="w-full h-px bg-white/10"></div>
-      <div class="space-y-2 text-xs">
-        <div class="flex justify-between"><span class="text-gray-400">Telegram ID</span><span class="font-mono text-white" id="profile-telegram-id">-</span></div>
-        <div class="flex justify-between"><span class="text-gray-400">Status</span><span class="text-emerald-400 font-bold">Active</span></div>
+      <div class="w-full h-px bg-brand-border"></div>
+      <div class="space-y-2.5 text-xs">
+        <div class="flex justify-between"><span class="text-brand-muted">Telegram ID</span><span class="font-mono text-white" id="profile-telegram-id">-</span></div>
+        <div class="flex justify-between"><span class="text-brand-muted">Status</span><span class="text-emerald-400 font-bold">Active</span></div>
       </div>
     </div>
   </main>
 
-  <!-- NAV -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-[#0b101b]/95 border-t border-emerald-500/20 backdrop-blur-xl z-40 px-3 py-3 flex justify-between items-center shadow-2xl">
-    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 text-emerald-400 flex-1 transition-all active:scale-95">
-      <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
-      <span class="text-[10px] font-extrabold tracking-wide">Home</span>
+  <!-- ============================================================
+       BOTTOM NAVIGATION
+       ============================================================ -->
+  <nav class="fixed bottom-0 left-0 right-0 bg-brand-bg border-t border-brand-border z-40 px-2 py-2.5 flex justify-around items-center">
+    <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 text-accent flex-1">
+      <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+      <span class="text-[9px] font-bold">Home</span>
     </button>
-    <button onclick="switchTab('wallet'); backToWalletOverview()" id="nav-wallet" class="flex flex-col items-center gap-1 text-gray-400 flex-1 transition-all active:scale-95">
-      <i data-lucide="wallet" class="w-6 h-6"></i>
-      <span class="text-[10px] font-extrabold tracking-wide">Wallet</span>
+    <button onclick="switchTab('wallet'); backToWalletOverview()" id="nav-wallet" class="flex flex-col items-center gap-1 text-brand-muted flex-1">
+      <i data-lucide="wallet" class="w-5 h-5"></i>
+      <span class="text-[9px] font-bold">Wallet</span>
     </button>
-    <button onclick="switchTab('history')" id="nav-history" class="flex flex-col items-center gap-1 text-gray-400 flex-1 transition-all active:scale-95">
-      <i data-lucide="history" class="w-6 h-6"></i>
-      <span class="text-[10px] font-extrabold tracking-wide">History</span>
+    <button onclick="switchTab('history')" id="nav-history" class="flex flex-col items-center gap-1 text-brand-muted flex-1">
+      <i data-lucide="history" class="w-5 h-5"></i>
+      <span class="text-[9px] font-bold">History</span>
     </button>
-    <button onclick="switchTab('support')" id="nav-support" class="flex flex-col items-center gap-1 text-gray-400 flex-1 transition-all active:scale-95">
-      <i data-lucide="headphones" class="w-6 h-6"></i>
-      <span class="text-[10px] font-extrabold tracking-wide">Support</span>
+    <button onclick="switchTab('support')" id="nav-support" class="flex flex-col items-center gap-1 text-brand-muted flex-1">
+      <i data-lucide="headphones" class="w-5 h-5"></i>
+      <span class="text-[9px] font-bold">Support</span>
     </button>
-    <button onclick="switchTab('referral')" id="nav-referral" class="flex flex-col items-center gap-1 text-gray-400 flex-1 transition-all active:scale-95">
-      <i data-lucide="share-2" class="w-6 h-6"></i>
-      <span class="text-[10px] font-extrabold tracking-wide">Referral</span>
+    <button onclick="switchTab('referral')" id="nav-referral" class="flex flex-col items-center gap-1 text-brand-muted flex-1">
+      <i data-lucide="share-2" class="w-5 h-5"></i>
+      <span class="text-[9px] font-bold">Referral</span>
     </button>
-    <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center gap-1 text-gray-400 flex-1 transition-all active:scale-95">
-      <i data-lucide="user" class="w-6 h-6"></i>
-      <span class="text-[10px] font-extrabold tracking-wide">Profile</span>
+    <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center gap-1 text-brand-muted flex-1">
+      <i data-lucide="user" class="w-5 h-5"></i>
+      <span class="text-[9px] font-bold">Profile</span>
     </button>
   </nav>
 
-  <!-- INVEST MODAL -->
+  <!-- ============================================================
+       INVEST MODAL
+       ============================================================ -->
   <div id="invest-modal" class="modal-overlay hidden">
-    <div class="glass-card rounded-2xl w-full max-w-sm p-5 space-y-4 relative border border-emerald-500/30 modal-animate-in">
-      <button onclick="closeModal('invest-modal')" class="absolute top-4 right-4 text-gray-400 hover:text-white p-1 rounded-lg bg-white/5">
+    <div class="bybit-card w-full max-w-sm p-5 space-y-4 relative">
+      <button onclick="closeModal('invest-modal')" class="absolute top-4 right-4 text-brand-muted p-1">
         <i data-lucide="x" class="w-5 h-5"></i>
       </button>
 
-      <h3 class="font-extrabold text-white text-base" id="modal-plan-title">Plan</h3>
+      <h3 class="font-bold text-white text-base" id="modal-plan-title">Plan</h3>
 
       <div class="space-y-3">
         <div>
-          <label class="text-xs text-gray-400 font-bold uppercase">Investment Amount ($)</label>
-          <input type="number" id="modal-amount-input" oninput="calculateModalProfit()" class="w-full mt-1 bg-brand-bg border border-brand-border rounded-xl p-3 text-sm text-white font-bold">
-          <p class="text-[11px] text-gray-500 mt-1" id="modal-limits-text">Min: $5 - Max: $99</p>
+          <label class="text-[10px] text-brand-muted font-bold uppercase block mb-2">Amount (USD)</label>
+          <div class="amount-input-wrap">
+            <div class="flex items-center gap-2">
+              <span class="text-brand-muted text-xl font-bold">$</span>
+              <input type="number" id="modal-amount-input" oninput="calculateModalProfit()" class="amount-input" style="font-size:18px;">
+            </div>
+          </div>
+          <p class="text-[10px] text-brand-muted mt-1" id="modal-limits-text">Min: $5 - Max: $99</p>
         </div>
 
-        <div class="p-3 bg-brand-bg rounded-xl border border-brand-border space-y-1.5 text-xs">
-          <div class="flex justify-between text-gray-400"><span>Daily ROI:</span><span id="modal-daily-rate" class="text-emerald-400 font-bold">30%</span></div>
-          <div class="flex justify-between text-gray-400"><span>Daily Profit:</span><span id="modal-daily-profit" class="text-white font-bold">$0.00</span></div>
-          <div class="flex justify-between text-gray-400"><span>Net Profit:</span><span id="modal-net-profit" class="text-emerald-400 font-bold">$0.00</span></div>
-          <div class="flex justify-between text-gray-400 pt-1 border-t border-brand-border"><span>Total Payout:</span><span id="modal-total-payout" class="text-cyan-400 font-bold">$0.00</span></div>
+        <div class="bybit-panel p-3 space-y-2 text-xs">
+          <div class="flex justify-between"><span class="text-brand-muted">Daily ROI</span><span id="modal-daily-rate" class="text-emerald-400 font-bold font-mono">30%</span></div>
+          <div class="flex justify-between"><span class="text-brand-muted">Daily Profit</span><span id="modal-daily-profit" class="text-white font-bold font-mono">$0.00</span></div>
+          <div class="flex justify-between"><span class="text-brand-muted">Net Profit</span><span id="modal-net-profit" class="text-emerald-400 font-bold font-mono">$0.00</span></div>
+          <div class="flex justify-between pt-2 border-t border-brand-border"><span class="text-brand-muted">Total Payout</span><span id="modal-total-payout" class="text-accent font-bold font-mono">$0.00</span></div>
         </div>
       </div>
 
-      <button onclick="confirmInvestment()" class="w-full gradient-bg text-black font-extrabold py-3 rounded-xl text-sm shadow-lg active:scale-95 transition-all">
-        Confirm & Start
-      </button>
+      <button onclick="confirmInvestment()" class="btn-primary">Confirm Investment</button>
     </div>
   </div>
 
-  <!-- PROCESSING MODAL -->
+  <!-- ============================================================
+       PROCESSING MODAL
+       ============================================================ -->
   <div id="processing-modal" class="modal-overlay hidden">
-    <div class="processing-card w-full max-w-sm p-6 text-center">
-      
-      <div class="processing-spinner"></div>
-      
-      <h3 id="processing-title" class="text-lg font-black text-white mt-6 mb-1">Processing...</h3>
-      <p id="processing-subtitle" class="text-xs text-gray-400 mb-6">Please wait while we verify the transaction.</p>
-
-      <div class="processing-bar-container">
-        <div id="step-progress-bar" class="processing-bar-fill"></div>
-      </div>
-      
-      <div class="flex items-center justify-center gap-1.5 mt-4">
-        <div id="dot-1" class="step-dot active"></div>
-        <div id="dot-2" class="step-dot"></div>
-        <div id="dot-3" class="step-dot"></div>
+    <div class="bybit-card w-full max-w-sm p-8 text-center">
+      <div class="spinner"></div>
+      <h3 id="processing-title" class="text-base font-bold text-white mt-6 mb-1">Processing...</h3>
+      <p id="processing-subtitle" class="text-xs text-brand-muted mb-6">Please wait</p>
+      <div class="progress-track">
+        <div id="step-progress-bar" class="progress-bar"></div>
       </div>
     </div>
   </div>
 
-  <!-- RECEIPT MODAL -->
+  <!-- ============================================================
+       RECEIPT MODAL (Bybit-style)
+       ============================================================ -->
   <div id="receipt-modal" class="modal-overlay hidden">
-    <div class="receipt-modal-container modal-animate-in">
-      <div id="receipt-content" class="receipt-card">
+    <div class="receipt-wrap">
+      <div id="receipt-content" class="receipt">
         <!-- Dynamic -->
       </div>
-      <button onclick="closeModal('receipt-modal')" class="mt-4 w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-xl transition-all">
+      <button onclick="closeModal('receipt-modal')" class="mt-3 w-full bg-brand-panel border border-brand-border text-white font-bold py-3 rounded-lg text-sm">
         Close Receipt
       </button>
     </div>
   </div>
 
-  <!-- MODERN ALERT MODAL -->
-  <div id="modern-alert-overlay" class="modern-alert-overlay" onclick="closeModernAlert(event)">
-    <div class="modern-alert-card" id="modern-alert-card" onclick="event.stopPropagation()">
-      <div class="modern-alert-glow" id="modern-alert-glow"></div>
-      <div class="modern-alert-icon-wrap" id="modern-alert-icon">
-        <i data-lucide="alert-circle"></i>
+  <!-- ============================================================
+       ALERT MODAL
+       ============================================================ -->
+  <div id="alert-overlay" class="alert-overlay" onclick="closeAlert(event)">
+    <div class="alert-box" onclick="event.stopPropagation()">
+      <div class="alert-icon" id="alert-icon-wrap">
+        <i data-lucide="alert-circle" id="alert-icon" class="w-6 h-6"></i>
       </div>
-      <h3 class="modern-alert-title" id="modern-alert-title">Notice</h3>
-      <p class="modern-alert-message" id="modern-alert-message">Something needs your attention.</p>
-      <button class="modern-alert-btn" id="modern-alert-btn" onclick="closeModernAlert()">
-        <i data-lucide="check"></i> <span>Got it</span>
-      </button>
+      <h3 class="text-base font-bold text-white mb-2" id="alert-title">Notice</h3>
+      <p class="text-xs text-brand-muted leading-relaxed mb-5" id="alert-message">Something needs your attention.</p>
+      <button onclick="closeAlert()" class="w-full bg-accent text-black font-extrabold py-3 rounded-md text-sm">Got it</button>
     </div>
   </div>
 
+  <!-- ============================================================
+       JAVASCRIPT
+       ============================================================ -->
   <script>
     lucide.createIcons();
 
@@ -1051,7 +1270,6 @@
         currentUserProfile.name = user.first_name + (user.last_name ? ' ' + user.last_name : '');
         currentUserProfile.username = user.username ? '@' + user.username : '@User_' + user.id;
         currentUserProfile.id = user.id.toString();
-        document.getElementById('user-name').innerText = currentUserProfile.name;
         document.getElementById('user-avatar').innerText = user.first_name.charAt(0);
       }
     }
@@ -1071,7 +1289,7 @@
     let uploadedScreenshotData = null;
     
     // ============================================================
-    // ⚡ XIRIIRKA SERVER-KA (RENDER)
+    // API ENDPOINTS
     // ============================================================
     const API_URL = '';
     let authToken = localStorage.getItem('apex_jwt_' + currentUserProfile.id);
@@ -1079,38 +1297,30 @@
     async function authenticateWithServer() {
       try {
         const initDataToSend = tg?.initData || "demo"; 
-        
         const res = await fetch(`${API_URL}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ initData: initDataToSend })
         });
-        
         if (!res.ok) throw new Error('Auth failed');
         const data = await res.json();
-        
         authToken = data.token;
         localStorage.setItem('apex_jwt_' + currentUserProfile.id, authToken);
-        
         userPortfolio.balance = data.user.balance;
         userPortfolio.lockedBalance = data.user.lockedBalance;
         userPortfolio.totalDeposited = data.user.totalDeposited || 0;
         userPortfolio.totalWithdrawn = data.user.totalWithdrawn || 0;
-        
         updateWalletUI();
       } catch (err) {
-        console.error('❌ Auth failed:', err);
+        console.error('Auth failed:', err);
       }
     }
 
     async function apiCall(endpoint, method = 'GET', body = null) {
       const headers = { 'Content-Type': 'application/json' };
       if (authToken) headers['Authorization'] = `Bearer ${authToken}`;
-      
       const res = await fetch(`${API_URL}${endpoint}`, {
-        method,
-        headers,
-        body: body ? JSON.stringify(body) : null
+        method, headers, body: body ? JSON.stringify(body) : null
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || data.reason || 'Request failed');
@@ -1121,9 +1331,7 @@
       updateWalletUI();
       renderHistory();
       renderActiveInvestments();
-      
       await authenticateWithServer(); 
-
       setInterval(updateLiveProfits, 1000);
       setInterval(updateBalanceTimestamp, 10000);
     });
@@ -1134,36 +1342,32 @@
       localStorage.setItem('apex_inv_' + currentUserProfile.id, JSON.stringify(activeInvestments));
     }
 
-    function showModernAlert({ title, message, type = 'info', icon = 'alert-circle', btnText = 'Got it' }) {
-      const overlay = document.getElementById('modern-alert-overlay');
-      const card = document.getElementById('modern-alert-card');
-      const iconWrap = document.getElementById('modern-alert-icon');
-      const glow = document.getElementById('modern-alert-glow');
-
-      const presets = {
-        success: { accent: 'linear-gradient(90deg, #10b981, #06b6d4)', iconBg: 'linear-gradient(145deg, #10b981, #06b6d4)', shadow: 'rgba(16, 185, 129, 0.6)', glow: 'radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 65%)' },
-        error: { accent: 'linear-gradient(90deg, #ef4444, #f97316)', iconBg: 'linear-gradient(145deg, #ef4444, #f97316)', shadow: 'rgba(239, 68, 68, 0.6)', glow: 'radial-gradient(circle, rgba(239, 68, 68, 0.3) 0%, transparent 65%)' },
-        warning: { accent: 'linear-gradient(90deg, #f59e0b, #f97316)', iconBg: 'linear-gradient(145deg, #f59e0b, #f97316)', shadow: 'rgba(245, 158, 11, 0.6)', glow: 'radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, transparent 65%)' },
-        info: { accent: 'linear-gradient(90deg, #3b82f6, #06b6d4)', iconBg: 'linear-gradient(145deg, #3b82f6, #06b6d4)', shadow: 'rgba(59, 130, 246, 0.6)', glow: 'radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 65%)' }
+    // ============================================================
+    // ALERT SYSTEM
+    // ============================================================
+    function showAlert({ title, message, type = 'info' }) {
+      const overlay = document.getElementById('alert-overlay');
+      const iconWrap = document.getElementById('alert-icon-wrap');
+      const icon = document.getElementById('alert-icon');
+      
+      const config = {
+        success: { bg: 'rgba(14, 203, 129, 0.12)', color: '#0ecb81', icon: 'check-circle' },
+        error: { bg: 'rgba(246, 70, 93, 0.12)', color: '#f6465d', icon: 'x-circle' },
+        warning: { bg: 'rgba(252, 213, 53, 0.12)', color: '#fcd535', icon: 'alert-triangle' },
+        info: { bg: 'rgba(6, 182, 212, 0.12)', color: '#06b6d4', icon: 'info' }
       };
-
-      const p = presets[type] || presets.info;
-
-      card.style.setProperty('--alert-accent', p.accent);
-      card.style.setProperty('--alert-icon-bg', p.iconBg);
-      card.style.setProperty('--alert-shadow', p.shadow);
-      glow.style.background = p.glow;
-      iconWrap.style.background = p.iconBg;
-      iconWrap.style.boxShadow = `0 15px 35px -10px ${p.shadow}, inset 0 2px 0 rgba(255,255,255,0.2)`;
-
-      iconWrap.innerHTML = `<i data-lucide="${icon}"></i>`;
-      document.getElementById('modern-alert-title').innerText = title;
-      document.getElementById('modern-alert-message').innerText = message;
-      document.getElementById('modern-alert-btn').innerHTML = `<i data-lucide="check"></i> <span>${btnText}</span>`;
+      
+      const c = config[type] || config.info;
+      iconWrap.style.background = c.bg;
+      iconWrap.style.color = c.color;
+      icon.setAttribute('data-lucide', c.icon);
+      
+      document.getElementById('alert-title').innerText = title;
+      document.getElementById('alert-message').innerText = message;
       
       lucide.createIcons();
       overlay.classList.add('show');
-
+      
       if (tg?.HapticFeedback) {
         if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
         else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
@@ -1171,10 +1375,13 @@
       }
     }
 
-    function closeModernAlert(e) {
-      document.getElementById('modern-alert-overlay').classList.remove('show');
+    function closeAlert(e) {
+      document.getElementById('alert-overlay').classList.remove('show');
     }
 
+    // ============================================================
+    // WALLET UI UPDATE
+    // ============================================================
     function updateWalletUI() {
       const liquid = userPortfolio.balance;
       const locked = userPortfolio.lockedBalance;
@@ -1183,23 +1390,21 @@
       document.getElementById('wallet-balance-display').innerText = `$${liquid.toFixed(2)}`;
       document.getElementById('metric-liquid').innerText = `$${liquid.toFixed(2)}`;
       document.getElementById('metric-locked').innerText = `$${locked.toFixed(2)}`;
-      const wml2 = document.getElementById('withdraw-max-label-2');
-      if (wml2) wml2.innerText = `$${liquid.toFixed(2)}`;
+      document.getElementById('withdraw-max-label-2').innerText = `$${liquid.toFixed(2)}`;
       document.getElementById('stat-deposited').innerText = `$${userPortfolio.totalDeposited.toFixed(2)}`;
       document.getElementById('stat-withdrawn').innerText = `$${userPortfolio.totalWithdrawn.toFixed(2)}`;
       document.getElementById('main-balance').innerText = `$${totalNet.toFixed(2)}`;
       document.getElementById('locked-balance').innerText = `$${locked.toFixed(2)}`;
-      document.getElementById('active-inv-count').innerText = `${activeInvestments.length} Active`;
+      document.getElementById('active-inv-count').innerText = `${activeInvestments.length}`;
+      document.getElementById('wallet-active-plans').innerText = activeInvestments.length;
       
       if (userPortfolio.totalDeposited > 0) {
         const roi = ((totalNet - userPortfolio.totalDeposited) / userPortfolio.totalDeposited) * 100;
         document.getElementById('total-roi-badge').innerText = `+${roi.toFixed(1)}%`;
-        const wtroi = document.getElementById('wallet-total-roi');
-        if (wtroi) wtroi.innerText = `+${roi.toFixed(1)}%`;
+        document.getElementById('wallet-total-roi').innerText = `+${roi.toFixed(1)}%`;
       } else {
         document.getElementById('total-roi-badge').innerText = `+0.0%`;
-        const wtroi = document.getElementById('wallet-total-roi');
-        if (wtroi) wtroi.innerText = `+0.0%`;
+        document.getElementById('wallet-total-roi').innerText = `+0.0%`;
       }
     }
 
@@ -1211,7 +1416,6 @@
       if (activeInvestments.length === 0) return;
       const now = Date.now();
       let hasUpdates = false;
-
       activeInvestments.forEach(inv => {
         if (inv.startTime && inv.endTime) {
           const elapsed = now - inv.startTime;
@@ -1224,42 +1428,51 @@
           hasUpdates = true;
         }
       });
-
       if (hasUpdates) {
         renderActiveInvestments();
         saveAppData();
       }
     }
 
+    // ============================================================
+    // WALLET CONFIGURATION
+    // ============================================================
     const cryptoWallets = {
-      usdt_trc20: { name: 'USDT (TRC20 - Tron)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', logo: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040', emoji: '₮', logoClass: 'network-logo-usdt', color: '#26A17B' },
-      usdt_bep20: { name: 'USDT (BEP20 - BNB Chain)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', logo: 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040', emoji: '⚡', logoClass: 'network-logo-bnb', color: '#F3BA2F' },
-      usdt_erc20: { name: 'USDT (ERC20 - Ethereum)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', logo: 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040', emoji: 'Ξ', logoClass: 'network-logo-eth', color: '#627EEA' },
-      ton: { name: 'TON (Toncoin)', address: 'UQBGo3k-EhMubMv4h3RqHszdcJdqoxttvZnuwDvPHbk8jl6P', logo: 'https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040', emoji: '💎', logoClass: 'network-logo-ton', color: '#0098EA' }
+      usdt_trc20: { name: 'USDT (TRC20)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs' },
+      usdt_bep20: { name: 'USDT (BEP20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0' },
+      usdt_erc20: { name: 'USDT (ERC20)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0' },
+      ton: { name: 'TON (Toncoin)', address: 'UQBGo3k-EhMubMv4h3RqHszdcJdqoxttvZnuwDvPHbk8jl6P' }
     };
 
     let selectedDepositNetworkKey = 'usdt_trc20';
     function selectCryptoMethod(methodKey) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
       selectedDepositNetworkKey = methodKey;
-
       document.querySelectorAll('[id^="card-"]').forEach(card => card.classList.remove('active'));
       document.getElementById(`card-${methodKey}`).classList.add('active');
-
       const data = cryptoWallets[methodKey];
       document.getElementById('selected-network-badge').innerText = data.name;
       document.getElementById('warning-net-name').innerText = data.name;
       document.getElementById('wallet-address-text').value = data.address;
-      document.getElementById('qr-code-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(data.address)}&color=080b11&bgcolor=ffffff`;
+      document.getElementById('qr-code-img').src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(data.address)}&color=0b0e11&bgcolor=ffffff`;
     }
 
-    function setDepositQuickAmount(amt) {
+    function setDepositQuickAmount(amt, btn) {
       document.getElementById('deposit-amount-input').value = amt;
+      document.querySelectorAll('#section-deposit .quick-amt').forEach(b => b.classList.remove('selected'));
+      if (btn) btn.classList.add('selected');
     }
 
-    function setWithdrawQuickAmount(amt) {
+    function setWithdrawQuickAmount(amt, btn) {
       document.getElementById('withdraw-amount').value = amt;
       calculateWithdrawFee();
+      document.querySelectorAll('#section-withdraw .quick-amt').forEach(b => b.classList.remove('selected'));
+      if (btn) btn.classList.add('selected');
+    }
+
+    function clearQuickAmtSelection(type) {
+      const sectionId = type === 'deposit' ? '#section-deposit' : '#section-withdraw';
+      document.querySelectorAll(sectionId + ' .quick-amt').forEach(b => b.classList.remove('selected'));
     }
 
     function toggleDepositQr() {
@@ -1268,8 +1481,8 @@
       qrContainer.classList.toggle('hidden');
       const isHidden = qrContainer.classList.contains('hidden');
       toggleBtn.innerHTML = isHidden 
-        ? '<i data-lucide="qr-code" class="w-4 h-4"></i> Show QR Code' 
-        : '<i data-lucide="eye-off" class="w-4 h-4"></i> Hide QR Code';
+        ? '<i data-lucide="qr-code" class="w-3.5 h-3.5"></i> Show QR Code' 
+        : '<i data-lucide="eye-off" class="w-3.5 h-3.5"></i> Hide QR Code';
       lucide.createIcons();
     }
 
@@ -1287,27 +1500,32 @@
     function selectWithdrawNetwork(networkKey) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
       selectedWithdrawNetworkKey = networkKey;
-
       document.querySelectorAll('[id^="w-card-"]').forEach(card => card.classList.remove('active'));
       document.getElementById(`w-card-${networkKey}`).classList.add('active');
-
       const netNames = { usdt_trc20: 'TRC20', usdt_bep20: 'BEP20', usdt_erc20: 'ERC20', ton: 'TON' };
       document.getElementById('withdraw-network-label').innerText = netNames[networkKey];
     }
 
+    // ============================================================
+    // TAB NAVIGATION
+    // ============================================================
     function switchTab(tabId) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById(`tab-${tabId}`).classList.add('active');
-
       const navIds = ['dashboard', 'wallet', 'history', 'support', 'referral', 'profile'];
       navIds.forEach(id => {
         const btn = document.getElementById(`nav-${id}`);
-        if (btn) btn.classList.replace('text-emerald-400', 'text-gray-400');
+        if (btn) {
+          btn.classList.remove('text-accent');
+          btn.classList.add('text-brand-muted');
+        }
       });
       const activeBtn = document.getElementById(`nav-${tabId}`);
-      if (activeBtn) activeBtn.classList.replace('text-gray-400', 'text-emerald-400');
-      
+      if (activeBtn) {
+        activeBtn.classList.remove('text-brand-muted');
+        activeBtn.classList.add('text-accent');
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1327,76 +1545,59 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
+    // ============================================================
+    // PROCESSING FLOW
+    // ============================================================
     function setStep(stepNumber) {
       const progressBar = document.getElementById('step-progress-bar');
-      const dot1 = document.getElementById('dot-1');
-      const dot2 = document.getElementById('dot-2');
-      const dot3 = document.getElementById('dot-3');
       const title = document.getElementById('processing-title');
       const subtitle = document.getElementById('processing-subtitle');
       
       if (stepNumber === 1) {
         progressBar.style.width = '33%';
-        dot1.className = 'step-dot active';
-        dot2.className = 'step-dot';
-        dot3.className = 'step-dot';
-        title.textContent = 'Sending Request...';
-        subtitle.textContent = 'Verifying network connectivity...';
+        title.textContent = 'Processing...';
+        subtitle.textContent = 'Verifying request';
       } else if (stepNumber === 2) {
         progressBar.style.width = '66%';
-        dot1.className = 'step-dot completed';
-        dot2.className = 'step-dot active';
-        dot3.className = 'step-dot';
         title.textContent = 'Pending Approval';
-        subtitle.textContent = 'Waiting for admin to verify...';
+        subtitle.textContent = 'Waiting for admin verification';
       } else if (stepNumber === 3) {
         progressBar.style.width = '100%';
-        dot1.className = 'step-dot completed';
-        dot2.className = 'step-dot completed';
-        dot3.className = 'step-dot active';
-        title.textContent = 'Request Submitted';
-        subtitle.textContent = 'We will notify you shortly.';
+        title.textContent = 'Submitted Successfully';
+        subtitle.textContent = 'You will be notified shortly';
       }
     }
 
     function startProcessingAnimation(amount, txId) {
       document.getElementById('processing-modal').classList.remove('hidden');
       setStep(1);
-      
-      setTimeout(() => {
-        setStep(2);
-      }, 1500);
-      
-      setTimeout(() => {
-        setStep(3);
-      }, 3500);
-      
+      setTimeout(() => setStep(2), 1200);
+      setTimeout(() => setStep(3), 2800);
       setTimeout(() => {
         closeModal('processing-modal');
         openReceiptModal(txId);
-      }, 5000);
+      }, 4000);
     }
 
+    // ============================================================
+    // RECEIPT GENERATOR (Bybit-style)
+    // ============================================================
     function generateReceiptHTML(tx) {
       const isDeposit = tx.type === 'deposit';
       const isWithdrawal = tx.type === 'withdraw';
       const isInvestment = tx.type === 'investment';
       
-      let statusColor = '#f59e0b';
+      let statusColor = '#fcd535';
       let statusLabel = 'PENDING';
-      let amountColor = '#111';
+      let statusIcon = 'clock';
       let amountPrefix = '+';
       
-      if (isWithdrawal) { amountPrefix = '-'; }
-      else if (isInvestment) { amountPrefix = '-'; }
+      if (isWithdrawal) amountPrefix = '-';
+      else if (isInvestment) amountPrefix = '-';
       
-      if (tx.status === 'Completed') { statusLabel = 'COMPLETED'; statusColor = '#10b981'; }
-      else if (tx.status === 'Rejected') { statusLabel = 'REJECTED'; statusColor = '#ef4444'; }
-      else if (tx.status === 'Active') { statusLabel = 'ACTIVE'; statusColor = '#06b6d4'; }
-      
-      let networkEmoji = isDeposit || isWithdrawal ? '💳' : '📈';
-      if (tx.network && tx.network.includes('USDT')) networkEmoji = '₮';
-      if (tx.network && tx.network.includes('TON')) networkEmoji = '💎';
+      if (tx.status === 'Completed') { statusLabel = 'COMPLETED'; statusColor = '#0ecb81'; statusIcon = 'check-circle-2'; }
+      else if (tx.status === 'Rejected') { statusLabel = 'REJECTED'; statusColor = '#f6465d'; statusIcon = 'x-circle'; }
+      else if (tx.status === 'Active') { statusLabel = 'ACTIVE'; statusColor = '#06b6d4'; statusIcon = 'activity'; }
       
       let rawAmount = tx.rawAmount || parseFloat((tx.amount || '0').replace(/[^0-9.]/g, '')) || 0;
       const receiptDate = tx.fullDate || new Date().toLocaleString('en-US', { 
@@ -1404,50 +1605,48 @@
         hour: '2-digit', minute: '2-digit' 
       });
       const fullAddress = tx.fullAddress || tx.ref || 'N/A';
+      const txType = isDeposit ? 'Deposit' : isWithdrawal ? 'Withdrawal' : 'Investment';
 
       return `
-        <div class="receipt-header-dark">
-          <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center mx-auto mb-3">
-            <i data-lucide="receipt" class="w-6 h-6 text-white"></i>
+        <div class="receipt-top">
+          <div class="receipt-icon-wrap" style="background: ${statusColor}15; color: ${statusColor};">
+            <i data-lucide="${statusIcon}" class="w-7 h-7"></i>
           </div>
-          <h4 class="text-white font-bold text-lg">${statusLabel}</h4>
-          <p class="text-[10px] text-gray-400">${receiptDate}</p>
+          <h4 class="text-white font-bold text-base">${statusLabel}</h4>
+          <p class="text-[10px] text-brand-muted mt-1">${receiptDate}</p>
         </div>
         
-        <div class="receipt-body-light">
-          <div class="text-center mb-6">
-            <h2 class="text-4xl font-black" style="color: ${statusColor}">${amountPrefix}$${rawAmount.toFixed(2)}</h2>
-            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1">${tx.title || 'Transaction'}</p>
+        <div class="receipt-body">
+          <div class="text-center py-6">
+            <h2 class="text-3xl font-black numeric-mono" style="color: ${statusColor};">${amountPrefix}$${rawAmount.toFixed(2)}</h2>
+            <p class="text-[10px] text-brand-muted font-bold uppercase tracking-wider mt-1.5">${tx.title || txType}</p>
           </div>
           
-          <div class="receipt-dashed-line my-4"></div>
+          <div class="h-px bg-brand-border"></div>
           
-          <div class="space-y-3 text-sm mt-6">
-            <div class="flex justify-between">
-              <span class="text-gray-500">Network</span>
-              <span class="font-bold text-gray-800">${tx.network || 'Internal'}</span>
-            </div>
-            <div class="flex justify-between">
-              <span class="text-gray-500">Status</span>
-              <span class="font-bold" style="color: ${statusColor}">${tx.status}</span>
-            </div>
+          <div class="receipt-row">
+            <span class="label">Type</span>
+            <span class="value">${txType}</span>
+          </div>
+          <div class="receipt-row">
+            <span class="label">Network</span>
+            <span class="value">${tx.network || 'Internal'}</span>
+          </div>
+          <div class="receipt-row">
+            <span class="label">Status</span>
+            <span class="value" style="color: ${statusColor};">${tx.status}</span>
           </div>
           
-          ${isWithdrawal ? `
-            <div class="mt-4 p-3 bg-gray-50 rounded-xl border border-gray-100">
-              <p class="text-[9px] text-gray-400 uppercase font-bold mb-1">Destination</p>
-              <p class="text-xs text-gray-800 font-mono break-all">${fullAddress}</p>
-            </div>
-          ` : isDeposit ? `
-            <div class="mt-4 p-3 bg-gray-50 rounded-xl border border-gray-100">
-              <p class="text-[9px] text-gray-400 uppercase font-bold mb-1">TxID</p>
-              <p class="text-xs text-gray-800 font-mono break-all">${fullAddress}</p>
-            </div>
+          ${(isWithdrawal || isDeposit) ? `
+          <div class="receipt-addr-block">
+            <p class="text-[9px] text-brand-muted uppercase font-bold mb-1.5">${isDeposit ? 'Transaction ID' : 'Destination Address'}</p>
+            <p class="text-[11px] text-white font-mono break-all leading-relaxed">${fullAddress}</p>
+          </div>
           ` : ''}
         </div>
         
-        <div class="p-4 text-center bg-gray-50 border-t border-gray-100">
-          <p class="text-[9px] text-gray-400 font-mono">REF: ${tx.id.toUpperCase()}</p>
+        <div class="receipt-footer">
+          <p class="text-[9px] text-brand-muted font-mono tracking-wider">REF: ${tx.id.toUpperCase()}</p>
         </div>
       `;
     }
@@ -1455,14 +1654,15 @@
     function openReceiptModal(txId) {
       const tx = transactionsHistory.find(t => t.id === txId);
       if (!tx) return;
-      
       const receiptContent = document.getElementById('receipt-content');
       receiptContent.innerHTML = generateReceiptHTML(tx);
-      
       document.getElementById('receipt-modal').classList.remove('hidden');
       lucide.createIcons();
     }
 
+    // ============================================================
+    // HISTORY RENDERING
+    // ============================================================
     function renderHistory() {
       const container = document.getElementById('history-container');
       const countBadge = document.getElementById('history-count-badge');
@@ -1471,32 +1671,37 @@
       if (countBadge) countBadge.innerText = `${transactionsHistory.length} ${transactionsHistory.length === 1 ? 'record' : 'records'}`;
 
       if (transactionsHistory.length === 0) {
-        container.innerHTML = `<div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">No transactions yet.</div>`;
+        container.innerHTML = `<div class="bybit-card p-5 text-center text-xs text-brand-muted">No transactions yet.</div>`;
         return;
       }
 
       transactionsHistory.forEach(tx => {
         const isPositive = tx.amount.startsWith('+');
         const amountColor = isPositive ? 'text-emerald-400' : 'text-white';
-        let directionLabel = 'IN'; let directionColor = '#10b981';
-        if (tx.type === 'withdraw') { directionLabel = 'OUT'; directionColor = '#06b6d4'; }
-        if (tx.type === 'investment') { directionLabel = 'INV'; directionColor = '#a855f7'; }
+        let directionColor = '#0ecb81';
+        if (tx.type === 'withdraw') directionColor = '#f6465d';
+        if (tx.type === 'investment') directionColor = '#a855f7';
+        
+        let statusColor = '#fcd535';
+        if (tx.status === 'Completed') statusColor = '#0ecb81';
+        else if (tx.status === 'Rejected') statusColor = '#f6465d';
+        else if (tx.status === 'Active') statusColor = '#06b6d4';
 
         container.innerHTML += `
-          <div class="history-tx-card" onclick="openReceiptModal('${tx.id}')">
+          <div class="tx-card" onclick="openReceiptModal('${tx.id}')">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
-                  <i data-lucide="${tx.type === 'deposit' ? 'arrow-down-left' : tx.type === 'withdraw' ? 'arrow-up-right' : 'activity'}" class="w-5 h-5" style="color: ${directionColor}"></i>
+                <div class="w-9 h-9 rounded-full flex items-center justify-center" style="background: ${directionColor}15; color: ${directionColor};">
+                  <i data-lucide="${tx.type === 'deposit' ? 'arrow-down-to-line' : tx.type === 'withdraw' ? 'arrow-up-from-line' : 'activity'}" class="w-4 h-4"></i>
                 </div>
                 <div>
                   <h4 class="text-xs font-bold text-white">${tx.title}</h4>
-                  <p class="text-[9px] text-gray-500 font-mono mt-0.5">${tx.time}</p>
+                  <p class="text-[9px] text-brand-muted font-mono mt-0.5">${tx.time}</p>
                 </div>
               </div>
               <div class="text-right">
-                <p class="text-sm font-black font-mono ${amountColor}">${tx.amount}</p>
-                <p class="text-[8px] font-bold mt-1" style="color: ${tx.status === 'Completed' ? '#10b981' : tx.status === 'Rejected' ? '#ef4444' : '#f59e0b'}">${tx.status}</p>
+                <p class="text-sm font-bold numeric-mono ${amountColor}">${tx.amount}</p>
+                <p class="text-[9px] font-bold mt-0.5" style="color: ${statusColor};">${tx.status}</p>
               </div>
             </div>
           </div>
@@ -1505,12 +1710,15 @@
       lucide.createIcons();
     }
 
+    // ============================================================
+    // ACTIVE INVESTMENTS RENDERING
+    // ============================================================
     function renderActiveInvestments() {
       const container = document.getElementById('active-investments-container');
       if (!container) return;
 
       if (activeInvestments.length === 0) {
-        container.innerHTML = `<div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-white/5">No active investments.</div>`;
+        container.innerHTML = `<div class="bybit-card p-5 text-center text-xs text-brand-muted">No active investments.</div>`;
         return;
       }
 
@@ -1519,31 +1727,28 @@
         const elapsed = Date.now() - inv.startTime;
         const totalDuration = inv.endTime - inv.startTime;
         const progress = Math.min((elapsed / totalDuration) * 100, 100);
-        const daysRemaining = Math.max(0, Math.ceil((inv.endTime - Date.now()) / (1000 * 60 * 60 * 24)));
         const currentProfit = inv.currentProfit || 0;
         
         container.innerHTML += `
-          <div class="glass-card rounded-xl p-4 space-y-3 border border-white/5">
+          <div class="bybit-card p-4 space-y-3">
             <div class="flex justify-between items-start">
               <div>
                 <h4 class="font-bold text-white text-sm">${inv.title}</h4>
-                <p class="text-xs text-gray-400 mt-0.5">Invested: <span class="text-white font-semibold">$${inv.rawAmount.toFixed(2)}</span></p>
+                <p class="text-xs text-brand-muted mt-0.5">Invested: <span class="text-white font-semibold numeric-mono">$${inv.rawAmount.toFixed(2)}</span></p>
               </div>
-              <div class="text-right">
-                <span class="text-xs bg-emerald-500/10 text-emerald-400 font-bold px-2.5 py-1 rounded-full">Active</span>
-              </div>
+              <span class="text-[10px] bg-emerald-400/10 text-emerald-400 font-bold px-2 py-1 rounded font-mono">ACTIVE</span>
             </div>
-            <div class="bg-black/20 rounded-lg p-2.5 flex justify-between items-center">
-              <span class="text-[11px] text-gray-400">Live Profit:</span>
-              <span class="text-emerald-400 font-black font-mono">+$${currentProfit.toFixed(4)}</span>
+            <div class="bybit-panel p-2.5 flex justify-between items-center">
+              <span class="text-[11px] text-brand-muted">Live Profit</span>
+              <span class="text-emerald-400 font-bold numeric-mono text-sm">+$${currentProfit.toFixed(4)}</span>
             </div>
-            <div class="space-y-1">
-              <div class="flex justify-between text-xs text-gray-400">
+            <div>
+              <div class="flex justify-between text-[10px] text-brand-muted mb-1.5 font-mono">
                 <span>Progress</span>
-                <span class="font-mono">${progress.toFixed(1)}%</span>
+                <span>${progress.toFixed(1)}%</span>
               </div>
-              <div class="w-full bg-gray-800 rounded-full h-1.5 overflow-hidden">
-                <div class="bg-gradient-to-r from-emerald-500 to-cyan-500 h-1.5 rounded-full" style="width: ${progress}%"></div>
+              <div class="w-full bg-brand-panel rounded-full h-1 overflow-hidden">
+                <div class="gradient-bg h-1 rounded-full" style="width: ${progress}%"></div>
               </div>
             </div>
           </div>`;
@@ -1551,6 +1756,9 @@
       lucide.createIcons();
     }
 
+    // ============================================================
+    // INVEST MODAL
+    // ============================================================
     let currentPlan = {};
     function openInvestModal(title, rate, days, min, max) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
@@ -1579,11 +1787,11 @@
       const amt = parseFloat(document.getElementById('modal-amount-input').value);
       
       if (isNaN(amt) || amt < currentPlan.min || amt > currentPlan.max) {
-        showModernAlert({ title: 'Invalid Amount', message: `Range: $${currentPlan.min} - $${currentPlan.max}`, type: 'warning', icon: 'alert-circle' });
+        showAlert({ title: 'Invalid Amount', message: `Range: $${currentPlan.min} - $${currentPlan.max}`, type: 'warning' });
         return;
       }
       if (amt > userPortfolio.balance) {
-        showModernAlert({ title: 'Insufficient Balance', message: `You have $${userPortfolio.balance.toFixed(2)}`, type: 'error', icon: 'wallet' });
+        showAlert({ title: 'Insufficient Balance', message: `You have $${userPortfolio.balance.toFixed(2)}`, type: 'error' });
         return;
       }
 
@@ -1594,67 +1802,64 @@
           rate: currentPlan.rate,
           days: currentPlan.days
         });
-
         userPortfolio.balance = result.balance; 
         userPortfolio.lockedBalance += amt;
         updateWalletUI();
-
         const now = Date.now();
         activeInvestments.unshift({
           title: currentPlan.title, rawAmount: amt, rate: currentPlan.rate, days: currentPlan.days,
           startTime: now, endTime: result.investment.endTime, currentProfit: 0, progress: 0
         });
         renderActiveInvestments();
-
         const newTx = {
           id: result.investment._id, type: 'investment', title: currentPlan.title,
           network: `${currentPlan.days}-Day Lock`, ref: 'Plan Allocation', rawAmount: amt,
           amount: `-$${amt.toFixed(2)}`, status: 'Active',
           time: new Date().toLocaleString(),
           fullDate: new Date().toLocaleString(),
-          fullId: result.investment._id
+          fullAddress: result.investment._id
         };
         transactionsHistory.unshift(newTx);
         renderHistory();
         saveAppData();
         closeModal('invest-modal');
-
-        showModernAlert({ title: 'Investment Started! 🚀', message: `$${amt} deployed into ${currentPlan.title}`, type: 'success', icon: 'check-circle' });
+        showAlert({ title: 'Investment Started', message: `$${amt.toFixed(2)} deployed into ${currentPlan.title}`, type: 'success' });
       } catch (err) {
-        showModernAlert({ title: 'Investment Failed', message: err.message, type: 'error', icon: 'x-circle' });
+        showAlert({ title: 'Investment Failed', message: err.message, type: 'error' });
       }
     }
 
+    // ============================================================
+    // DEPOSIT & WITHDRAW FLOW
+    // ============================================================
     async function initiateDepositProcess() {
       const depAmt = parseFloat(document.getElementById('deposit-amount-input').value);
       const hash = document.getElementById('tx-hash-input').value.trim();
 
-      if (isNaN(depAmt) || depAmt < 5) return showModernAlert({ title: 'Min $5', message: 'Minimum is $5', type: 'warning', icon: 'alert-circle' });
-      if (!hash || hash.length < 5) return showModernAlert({ title: 'TxID Required', message: 'Please provide a valid TxID', type: 'warning', icon: 'alert-circle' });
+      if (isNaN(depAmt) || depAmt < 5) return showAlert({ title: 'Minimum $5', message: 'Deposit must be at least $5', type: 'warning' });
+      if (!hash || hash.length < 5) return showAlert({ title: 'TxID Required', message: 'Please provide a valid transaction ID', type: 'warning' });
 
       try {
-        const result = await apiCall('/api/deposit/request', 'POST', {
+        await apiCall('/api/deposit/request', 'POST', {
           txid: hash, amount: depAmt, network: selectedDepositNetworkKey
         });
-
         const txObj = {
           id: 'tx_' + Date.now(), type: 'deposit', title: 'Crypto Deposit',
           network: cryptoWallets[selectedDepositNetworkKey].name,
           ref: 'TxID: ' + hash.substring(0, 8) + '...',
           rawAmount: depAmt, amount: `+$${depAmt.toFixed(2)}`,
-          status: 'Pending Review', time: new Date().toLocaleString(),
+          status: 'Pending', time: new Date().toLocaleString(),
           fullDate: new Date().toLocaleString(), fullAddress: hash
         };
         transactionsHistory.unshift(txObj);
         renderHistory();
-        
+        saveAppData();
         document.getElementById('deposit-amount-input').value = '';
         document.getElementById('tx-hash-input').value = '';
         backToWalletOverview();
-        
         startProcessingAnimation(`+$${depAmt.toFixed(2)}`, txObj.id);
       } catch (err) {
-        showModernAlert({ title: 'Error', message: err.message, type: 'error', icon: 'x-circle' });
+        showAlert({ title: 'Error', message: err.message, type: 'error' });
       }
     }
 
@@ -1662,35 +1867,32 @@
       const amt = parseFloat(document.getElementById('withdraw-amount').value);
       const addr = document.getElementById('withdraw-address').value.trim();
 
-      if (!amt || amt < 5) return showModernAlert({ title: 'Min $5', message: 'Minimum is $5', type: 'warning', icon: 'alert-circle' });
-      if (!addr) return showModernAlert({ title: 'Address Required', message: 'Provide address', type: 'warning', icon: 'wallet' });
+      if (!amt || amt < 5) return showAlert({ title: 'Minimum $5', message: 'Withdrawal must be at least $5', type: 'warning' });
+      if (!addr) return showAlert({ title: 'Address Required', message: 'Please enter destination address', type: 'warning' });
 
       try {
         const result = await apiCall('/api/withdraw/request', 'POST', {
           amount: amt, network: selectedWithdrawNetworkKey, address: addr
         });
-
         userPortfolio.balance = result.new_balance; 
         updateWalletUI();
-
         const txObj = {
           id: 'tx_' + Date.now(), type: 'withdraw', title: 'Crypto Withdrawal',
           network: selectedWithdrawNetworkKey,
           ref: 'To: ' + addr.substring(0, 6) + '...' + addr.slice(-4),
           rawAmount: amt, amount: `-$${amt.toFixed(2)}`,
-          status: 'Pending Review', time: new Date().toLocaleString(),
+          status: 'Pending', time: new Date().toLocaleString(),
           fullDate: new Date().toLocaleString(), fullAddress: addr
         };
         transactionsHistory.unshift(txObj);
         renderHistory();
-
+        saveAppData();
         document.getElementById('withdraw-amount').value = '';
         document.getElementById('withdraw-address').value = '';
         backToWalletOverview();
-        
         startProcessingAnimation(`-$${amt.toFixed(2)}`, txObj.id);
       } catch (err) {
-        showModernAlert({ title: 'Failed', message: err.message, type: 'error', icon: 'x-circle' });
+        showAlert({ title: 'Failed', message: err.message, type: 'error' });
       }
     }
 
@@ -1708,8 +1910,8 @@
       const text = document.getElementById(elementId).value;
       navigator.clipboard.writeText(text);
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      showModernAlert({ title: 'Copied', message: 'Copied to clipboard', type: 'success', icon: 'copy' });
+      showAlert({ title: 'Copied', message: 'Copied to clipboard', type: 'success' });
     }
   </script>
 </body>
-          </html>
+  </html>
