@@ -88,282 +88,591 @@
       50% { opacity: 0.5; }
     }
 
-    .modal-animate-in { animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-
-    @keyframes ringPulse {
-      0% { transform: scale(0.5); opacity: 0.9; }
-      80% { transform: scale(2.2); opacity: 0; }
-      100% { transform: scale(2.2); opacity: 0; }
-    }
-
-    @keyframes iconEnter {
-      0% { transform: scale(0.3) rotate(-30deg); opacity: 0; }
-      60% { transform: scale(1.08) rotate(4deg); }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
-    }
-
-    @keyframes iconCheckBounce {
-      0% { transform: scale(0) rotate(-180deg); opacity: 0; }
-      60% { transform: scale(1.15) rotate(10deg); }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
-    }
-
-    @keyframes iconGlow {
-      0%, 100% { filter: drop-shadow(0 0 12px currentColor); }
-      50% { filter: drop-shadow(0 0 24px currentColor); }
-    }
-
-    @keyframes dotFill {
-      0% { transform: scale(0); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-
-    @keyframes floatUp {
-      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(-80px) rotate(180deg); opacity: 0; }
-    }
-
-    @keyframes ambientRotate {
+    @keyframes spinSlow {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
 
-    .processing-premium {
-      background: 
-        radial-gradient(ellipse at top, rgba(16, 185, 129, 0.15), transparent 60%),
-        linear-gradient(165deg, #0f1826 0%, #080d16 100%);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      box-shadow: 
-        0 40px 100px -25px rgba(0, 0, 0, 0.95), 
-        0 0 100px -20px rgba(16, 185, 129, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      border-radius: 28px;
-      position: relative;
-      overflow: hidden;
-      padding: 32px 24px 24px;
+    @keyframes checkmark {
+      0% { stroke-dashoffset: 100; }
+      100% { stroke-dashoffset: 0; }
     }
 
-    .processing-premium::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, transparent, #10b981, #06b6d4, transparent);
-      animation: shimmer 2.5s infinite;
-      background-size: 200% 100%;
+    @keyframes scaleIn {
+      0% { transform: scale(0); opacity: 0; }
+      60% { transform: scale(1.1); }
+      100% { transform: scale(1); opacity: 1; }
     }
 
-    .processing-ambient {
-      position: absolute;
-      top: -100px; left: 50%;
-      transform: translateX(-50%);
-      width: 300px; height: 300px;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, transparent, rgba(16, 185, 129, 0.12), transparent, rgba(6, 182, 212, 0.12), transparent);
-      animation: ambientRotate 8s linear infinite;
-      pointer-events: none;
-      filter: blur(30px);
-    }
+    .modal-animate-in { animation: modalFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
-    .processing-icon-wrapper {
-      width: 130px;
-      height: 130px;
-      position: relative;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .processing-ring {
-      position: absolute;
+    /* ===== SIMPLE BYBIT-STYLE PROCESSING ===== */
+    .simple-processing-overlay {
+      position: fixed;
       inset: 0;
-      border-radius: 50%;
-      border: 1.5px solid;
-      animation: ringPulse 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-    }
-
-    .processing-ring:nth-child(1) { border-color: rgba(59, 130, 246, 0.5); animation-delay: 0s; }
-    .processing-ring:nth-child(2) { border-color: rgba(59, 130, 246, 0.35); animation-delay: 0.9s; }
-    .processing-ring:nth-child(3) { border-color: rgba(59, 130, 246, 0.2); animation-delay: 1.8s; }
-
-    .processing-premium[data-step="2"] .processing-ring:nth-child(1) { border-color: rgba(245, 158, 11, 0.5); }
-    .processing-premium[data-step="2"] .processing-ring:nth-child(2) { border-color: rgba(245, 158, 11, 0.35); }
-    .processing-premium[data-step="2"] .processing-ring:nth-child(3) { border-color: rgba(245, 158, 11, 0.2); }
-
-    .processing-premium[data-step="3"] .processing-ring:nth-child(1) { border-color: rgba(16, 185, 129, 0.6); }
-    .processing-premium[data-step="3"] .processing-ring:nth-child(2) { border-color: rgba(16, 185, 129, 0.4); }
-    .processing-premium[data-step="3"] .processing-ring:nth-child(3) { border-color: rgba(16, 185, 129, 0.25); }
-
-    .processing-icon {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(145deg, #3b82f6, #06b6d4);
-      color: #ffffff;
-      box-shadow: 
-        0 20px 50px -15px rgba(59, 130, 246, 0.7),
-        0 0 40px -10px rgba(59, 130, 246, 0.5),
-        inset 0 2px 0 rgba(255, 255, 255, 0.2);
-      animation: iconEnter 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      z-index: 10001;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .simple-processing-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .simple-processing-card {
+      width: 100%;
+      max-width: 280px;
+      background: linear-gradient(165deg, #131a28 0%, #0c1220 100%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 32px 24px 24px;
+      text-align: center;
+      transform: scale(0.9) translateY(10px);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.9);
+    }
+
+    .simple-processing-overlay.show .simple-processing-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .simple-spinner {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      border: 3px solid rgba(16, 185, 129, 0.15);
+      border-top-color: #10b981;
+      animation: spinSlow 0.8s linear infinite;
       position: relative;
-      z-index: 2;
-      transition: background 0.4s, box-shadow 0.4s;
     }
 
-    .processing-icon svg { width: 44px; height: 44px; stroke-width: 2.5; }
-
-    .processing-icon.step-2 {
-      background: linear-gradient(145deg, #f59e0b, #f97316);
-      box-shadow: 0 20px 50px -15px rgba(245, 158, 11, 0.8), 0 0 50px -10px rgba(245, 158, 11, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.2);
-      animation: iconEnter 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, iconGlow 1.8s infinite;
-    }
-
-    .processing-icon.step-3 {
-      background: linear-gradient(145deg, #10b981, #06b6d4);
-      box-shadow: 0 20px 50px -15px rgba(16, 185, 129, 0.9), 0 0 60px -10px rgba(16, 185, 129, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.2);
-      animation: iconCheckBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-    }
-
-    .processing-steps {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 18px;
-    }
-
-    .processing-step-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: rgba(255, 255, 255, 0.15);
-      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .processing-step-dot.active {
-      width: 28px; border-radius: 4px;
-      background: linear-gradient(90deg, #3b82f6, #06b6d4);
-      box-shadow: 0 0 12px rgba(59, 130, 246, 0.6);
-      animation: dotFill 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .processing-step-dot.completed { background: #10b981; box-shadow: 0 0 8px rgba(16, 185, 129, 0.5); }
-
-    .processing-premium[data-step="2"] .processing-step-dot.active {
-      background: linear-gradient(90deg, #f59e0b, #f97316);
-      box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
-    }
-
-    .processing-premium[data-step="3"] .processing-step-dot.active {
-      background: linear-gradient(90deg, #10b981, #06b6d4);
-      box-shadow: 0 0 12px rgba(16, 185, 129, 0.7);
-    }
-
-    .processing-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 6px 14px; border-radius: 999px;
-      font-size: 10px; font-weight: 900; letter-spacing: 0.12em;
-      text-transform: uppercase; margin-bottom: 12px;
-      border: 1px solid; transition: all 0.4s;
-      position: relative; z-index: 1;
-    }
-
-    .processing-badge[data-state="1"] { background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.35); color: #3b82f6; }
-    .processing-badge[data-state="2"] { background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); color: #f59e0b; }
-    .processing-badge[data-state="3"] { background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.35); color: #10b981; }
-
-    .processing-badge-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: currentColor; animation: pulse 1.5s infinite;
-    }
-
-    .processing-title {
-      font-size: 22px; font-weight: 900; letter-spacing: -0.02em;
-      color: #ffffff; line-height: 1.2; text-align: center;
-      margin-bottom: 6px; position: relative; z-index: 1;
-    }
-
-    .processing-subtitle {
-      font-size: 11px; color: #9ca3af; text-align: center;
-      line-height: 1.5; padding: 0 8px; position: relative; z-index: 1;
-    }
-
-    .processing-progress-track {
-      width: 100%; height: 6px;
-      background: rgba(255, 255, 255, 0.06);
-      border-radius: 999px; overflow: hidden;
-      margin: 20px 0 16px; position: relative;
-    }
-
-    .processing-progress-bar {
-      height: 100%; border-radius: 999px;
-      background: linear-gradient(90deg, #3b82f6, #06b6d4);
-      box-shadow: 0 0 14px rgba(59, 130, 246, 0.7);
-      transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.4s, box-shadow 0.4s;
-      position: relative; overflow: hidden;
-    }
-
-    .processing-progress-bar::after {
+    .simple-spinner::after {
       content: '';
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      animation: shimmer 1.5s infinite;
-      background-size: 200% 100%;
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 2px solid rgba(6, 182, 212, 0.1);
+      border-top-color: #06b6d4;
+      animation: spinSlow 1.2s linear infinite reverse;
     }
 
-    .processing-premium[data-step="2"] .processing-progress-bar {
-      background: linear-gradient(90deg, #f59e0b, #f97316);
-      box-shadow: 0 0 14px rgba(245, 158, 11, 0.7);
+    .simple-checkmark {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 10px 30px -8px rgba(16, 185, 129, 0.6);
     }
 
-    .processing-premium[data-step="3"] .processing-progress-bar {
-      background: linear-gradient(90deg, #10b981, #06b6d4);
-      box-shadow: 0 0 14px rgba(16, 185, 129, 0.8);
+    .simple-checkmark svg {
+      width: 28px;
+      height: 28px;
+      stroke: #000;
+      stroke-width: 3;
+      fill: none;
     }
 
-    .processing-amount-card {
-      background: rgba(16, 185, 129, 0.06);
+    .simple-checkmark svg path {
+      stroke-dasharray: 100;
+      stroke-dashoffset: 100;
+      animation: checkmark 0.4s ease forwards;
+      animation-delay: 0.1s;
+    }
+
+    .simple-processing-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .simple-processing-subtitle {
+      font-size: 11px;
+      color: #9ca3af;
+      line-height: 1.5;
+    }
+
+    .simple-processing-amount {
+      margin-top: 18px;
+      padding: 12px 16px;
+      background: rgba(16, 185, 129, 0.08);
       border: 1px solid rgba(16, 185, 129, 0.2);
-      border-radius: 14px; padding: 14px 16px;
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 14px; position: relative; z-index: 1;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
-    .processing-amount-label {
-      font-size: 9px; color: #6b7280;
-      text-transform: uppercase; letter-spacing: 0.12em; font-weight: 900;
+    .simple-processing-amount-label {
+      font-size: 9px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
     }
 
-    .processing-amount-value {
-      font-size: 18px; font-weight: 900;
+    .simple-processing-amount-value {
+      font-size: 15px;
+      font-weight: 800;
       font-family: 'JetBrains Mono', monospace;
       background: linear-gradient(135deg, #10b981, #06b6d4);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .processing-security {
-      display: flex; align-items: center; justify-content: center;
-      gap: 6px; font-size: 9px; color: #4b5563;
+    /* ===== PROFESSIONAL RECEIPT (BYBIT STYLE) ===== */
+    .pro-receipt {
+      width: 100%;
+      max-width: 340px;
+      max-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      background: #0c1220;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.95);
+      position: relative;
+    }
+
+    .pro-receipt-header {
+      padding: 20px 20px 16px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+    }
+
+    .pro-receipt-status-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pro-receipt-status-icon.success {
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      box-shadow: 0 8px 24px -6px rgba(16, 185, 129, 0.5);
+    }
+
+    .pro-receipt-status-icon.pending {
+      background: linear-gradient(135deg, #f59e0b, #f97316);
+      box-shadow: 0 8px 24px -6px rgba(245, 158, 11, 0.5);
+    }
+
+    .pro-receipt-status-icon.failed {
+      background: linear-gradient(135deg, #ef4444, #f97316);
+      box-shadow: 0 8px 24px -6px rgba(239, 68, 68, 0.5);
+    }
+
+    .pro-receipt-status-icon svg {
+      width: 24px;
+      height: 24px;
+      color: #000;
+      stroke-width: 3;
+    }
+
+    .pro-receipt-amount {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .pro-receipt-amount.positive { color: #10b981; }
+    .pro-receipt-amount.negative { color: #06b6d4; }
+    .pro-receipt-amount.neutral { color: #a855f7; }
+
+    .pro-receipt-type-label {
+      font-size: 10px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 700;
+    }
+
+    .pro-receipt-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 10px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .pro-receipt-status-badge.completed {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .pro-receipt-status-badge.pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .pro-receipt-status-badge.failed {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .pro-receipt-status-badge.active {
+      background: rgba(6, 182, 212, 0.15);
+      color: #06b6d4;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+    }
+
+    .pro-receipt-body {
+      padding: 16px 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .pro-receipt-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      gap: 12px;
+    }
+
+    .pro-receipt-row:last-child { border-bottom: none; }
+
+    .pro-receipt-row-label {
+      font-size: 10px;
+      color: #6b7280;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .pro-receipt-row-value {
+      font-size: 11px;
+      font-weight: 700;
+      color: #ffffff;
       font-family: 'JetBrains Mono', monospace;
-      position: relative; z-index: 1;
+      text-align: right;
+      word-break: break-all;
+      line-height: 1.4;
     }
 
-    .processing-security svg { width: 11px; height: 11px; }
-
-    .processing-particles {
-      position: absolute; inset: 0;
-      pointer-events: none; overflow: hidden;
+    .pro-receipt-address-box {
+      background: rgba(6, 182, 212, 0.06);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin: 8px 0;
     }
 
-    .processing-particle {
-      position: absolute; width: 3px; height: 3px;
-      border-radius: 50%; background: #10b981;
-      box-shadow: 0 0 8px #10b981;
-      animation: floatUp 2.5s infinite;
+    .pro-receipt-address-label {
+      font-size: 8px;
+      color: #06b6d4;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 800;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
+    .pro-receipt-address-label svg {
+      width: 10px;
+      height: 10px;
+    }
+
+    .pro-receipt-address-value {
+      font-size: 10px;
+      color: #e5e7eb;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      word-break: break-all;
+      line-height: 1.4;
+    }
+
+    .pro-receipt-txid-box {
+      background: rgba(16, 185, 129, 0.06);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin: 8px 0;
+    }
+
+    .pro-receipt-txid-label {
+      font-size: 8px;
+      color: #10b981;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 800;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .pro-receipt-txid-label svg {
+      width: 10px;
+      height: 10px;
+    }
+
+    .pro-receipt-txid-value {
+      font-size: 9px;
+      color: #e5e7eb;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      word-break: break-all;
+      line-height: 1.5;
+    }
+
+    .pro-receipt-footer {
+      padding: 12px 20px 16px;
+      background: rgba(8, 11, 17, 0.6);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+    }
+
+    .pro-receipt-footer-text {
+      font-size: 8px;
+      color: #4b5563;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+
+    .pro-receipt-footer-brand {
+      font-size: 7px;
+      color: #374151;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .pro-receipt-close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      cursor: pointer;
+      transition: all 0.2s;
+      z-index: 10;
+    }
+
+    .pro-receipt-close:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .pro-receipt-close svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .pro-receipt-actions {
+      display: flex;
+      gap: 8px;
+      padding: 0 20px 16px;
+    }
+
+    .pro-receipt-action-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .pro-receipt-action-btn.primary {
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      color: #000;
+    }
+
+    .pro-receipt-action-btn.secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: #9ca3af;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .pro-receipt-action-btn:active {
+      transform: scale(0.97);
+    }
+
+    /* ===== PROFESSIONAL HISTORY CARDS ===== */
+    .pro-history-card {
+      position: relative;
+      border-radius: 14px;
+      padding: 14px;
+      background: #111622;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .pro-history-card:hover {
+      border-color: rgba(16, 185, 129, 0.3);
+      background: #141b2a;
+    }
+
+    .pro-history-card:active {
+      transform: scale(0.995);
+    }
+
+    .pro-history-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .pro-history-icon.deposit {
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .pro-history-icon.withdraw {
+      background: rgba(6, 182, 212, 0.12);
+      color: #06b6d4;
+      border: 1px solid rgba(6, 182, 212, 0.2);
+    }
+
+    .pro-history-icon.investment {
+      background: rgba(168, 85, 247, 0.12);
+      color: #a855f7;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+    }
+
+    .pro-history-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+
+    .pro-history-subtitle {
+      font-size: 10px;
+      color: #6b7280;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 2px;
+    }
+
+    .pro-history-amount {
+      font-size: 14px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.2;
+    }
+
+    .pro-history-amount.positive { color: #10b981; }
+    .pro-history-amount.negative { color: #06b6d4; }
+    .pro-history-amount.neutral { color: #a855f7; }
+
+    .pro-history-status {
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .pro-history-status.completed {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+
+    .pro-history-status.pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+    }
+
+    .pro-history-status.failed {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+    }
+
+    .pro-history-status.active {
+      background: rgba(6, 182, 212, 0.15);
+      color: #06b6d4;
+    }
+
+    .pro-history-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .pro-history-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 9px;
+      color: #6b7280;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .pro-history-meta-item svg {
+      width: 11px;
+      height: 11px;
+    }
+
+    .pro-history-view-btn {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 9px;
+      color: #10b981;
+      font-weight: 700;
+    }
+
+    /* ===== REST OF EXISTING STYLES ===== */
     #admin-notify-popup {
       position: fixed; top: 16px; left: 50%;
       transform: translateX(-50%) translateY(-150px) scale(0.9);
@@ -489,14 +798,6 @@
 
     input, textarea, select { -webkit-user-select: text !important; user-select: text !important; }
 
-    .progress-bar { position: relative; overflow: hidden; }
-    .progress-bar::after {
-      content: '';
-      position: absolute; top: 0; left: 0; bottom: 0; right: 0;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-      animation: shimmer 2s infinite;
-    }
-
     .network-card {
       position: relative; border-radius: 16px; padding: 12px;
       cursor: pointer;
@@ -550,25 +851,6 @@
       box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
     }
     .qr-frame > div { background: #ffffff; border-radius: 13px; padding: 8px; }
-
-    .step-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 22px; height: 22px; border-radius: 50%;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      color: #000; font-weight: 900; font-size: 11px;
-      margin-right: 8px;
-      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-    }
-
-    .verified-chip {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 9px; font-weight: 700; padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(16, 185, 129, 0.12);
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      letter-spacing: 0.03em; text-transform: uppercase;
-    }
 
     .plan-card {
       position: relative; border-radius: 20px; padding: 18px;
@@ -677,9 +959,6 @@
       .modal-overlay { align-items: flex-start; padding-top: 40px; }
     }
 
-    #section-deposit, #section-withdraw { position: relative; z-index: 10; }
-    .input-safe { scroll-margin-top: 100px; scroll-margin-bottom: 300px; }
-
     .info-row {
       display: flex; justify-content: space-between; align-items: center;
       padding: 10px 0;
@@ -699,253 +978,9 @@
     .metric-label { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; display: block; margin-bottom: 4px; }
     .metric-value { font-size: 15px; font-weight: 900; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
 
-    .receipt-modal-container {
-      width: 100%; max-width: 340px; max-height: 95vh;
-      display: flex; flex-direction: column;
-    }
+    .input-safe { scroll-margin-top: 100px; scroll-margin-bottom: 300px; }
 
-    .receipt-container {
-      background: linear-gradient(165deg, #0f1826 0%, #0a121c 50%, #080d16 100%);
-      border-radius: 22px; position: relative; overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 40px 100px -25px rgba(0, 0, 0, 0.95), 0 0 70px -25px rgba(16, 185, 129, 0.35);
-    }
-
-    .receipt-container::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: var(--receipt-accent, linear-gradient(90deg, #10b981, #06b6d4));
-    }
-
-    .receipt-header {
-      padding: 24px 20px 18px; text-align: center;
-      position: relative; overflow: hidden;
-    }
-
-    .receipt-header::before {
-      content: '';
-      position: absolute; top: -100%; left: -50%;
-      width: 200%; height: 300%;
-      background: radial-gradient(circle, var(--receipt-glow, rgba(16, 185, 129, 0.18)) 0%, transparent 55%);
-      pointer-events: none;
-    }
-
-    @keyframes receiptShine {
-      0% { transform: translateX(-100%) skewX(-15deg); }
-      100% { transform: translateX(200%) skewX(-15deg); }
-    }
-
-    .receipt-shine {
-      position: absolute; top: 0; left: 0;
-      width: 40%; height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
-      animation: receiptShine 3.5s infinite;
-      pointer-events: none;
-    }
-
-    .receipt-brand-row {
-      display: flex; align-items: center; justify-content: center;
-      gap: 6px; margin-bottom: 16px;
-      position: relative; z-index: 1;
-    }
-
-    .receipt-brand-icon {
-      width: 22px; height: 22px; border-radius: 7px;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      display: flex; align-items: center; justify-content: center;
-      color: #000;
-      box-shadow: 0 3px 10px rgba(16, 185, 129, 0.4);
-    }
-
-    .receipt-brand-icon svg { width: 12px; height: 12px; }
-
-    .receipt-brand-text {
-      font-size: 11px; font-weight: 900;
-      letter-spacing: 0.18em; color: #ffffff;
-    }
-
-    .receipt-brand-text span {
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
-
-    .receipt-logo {
-      width: 64px; height: 64px; border-radius: 18px;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 14px;
-      background: #0d1220;
-      border: 2px solid rgba(255,255,255,0.1);
-      padding: 10px;
-      box-shadow: 0 12px 35px -10px rgba(0, 0, 0, 0.7), 0 0 35px -10px var(--receipt-glow, rgba(16, 185, 129, 0.5));
-      position: relative; z-index: 1;
-    }
-
-    .receipt-logo img { width: 100%; height: 100%; object-fit: contain; }
-
-    .receipt-amount {
-      font-size: 40px; font-weight: 900;
-      letter-spacing: -0.04em; line-height: 1;
-      margin-bottom: 6px; position: relative; z-index: 1;
-      text-shadow: 0 2px 20px currentColor;
-    }
-
-    .receipt-amount-label {
-      font-size: 9px; color: #6b7280;
-      font-family: 'JetBrains Mono', monospace;
-      text-transform: uppercase; letter-spacing: 0.15em;
-      margin-bottom: 12px; position: relative; z-index: 1;
-    }
-
-    .receipt-status {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 6px 14px; border-radius: 999px;
-      font-size: 9px; font-weight: 900;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      position: relative; z-index: 1;
-    }
-
-    .receipt-status svg { width: 11px; height: 11px; }
-
-    .receipt-status.pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
-    .receipt-status.completed { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.4); }
-    .receipt-status.rejected { background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .receipt-status.active { background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.4); }
-
-    .receipt-divider { position: relative; height: 16px; margin: 0 16px; }
-
-    .receipt-divider::before, .receipt-divider::after {
-      content: '';
-      position: absolute; top: 50%; width: 14px; height: 14px;
-      background: #080b11; border-radius: 50%;
-      transform: translateY(-50%);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .receipt-divider::before { left: -24px; }
-    .receipt-divider::after { right: -24px; }
-
-    .receipt-divider-line {
-      position: absolute; top: 50%; left: 0; right: 0; height: 1px;
-      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 5px, transparent 5px, transparent 10px);
-      transform: translateY(-50%);
-    }
-
-    .receipt-body { padding: 14px 18px; background: rgba(8, 11, 17, 0.5); }
-
-    .receipt-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 9px 0;
-      border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
-      gap: 10px;
-    }
-
-    .receipt-row:last-child { border-bottom: none; }
-
-    .receipt-row-label {
-      font-size: 9px; color: #6b7280;
-      text-transform: uppercase; letter-spacing: 0.08em;
-      font-weight: 800; flex-shrink: 0;
-    }
-
-    .receipt-row-value {
-      font-size: 11px; font-weight: 800; color: #ffffff;
-      font-family: 'JetBrains Mono', monospace;
-      text-align: right; word-break: break-all; line-height: 1.3;
-    }
-
-    .receipt-address-block {
-      background: rgba(6, 182, 212, 0.06);
-      border: 1px solid rgba(6, 182, 212, 0.25);
-      border-radius: 10px; padding: 10px; margin: 8px 0;
-    }
-
-    .receipt-address-label {
-      font-size: 8px; color: #06b6d4;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      font-weight: 900; margin-bottom: 5px;
-      display: flex; align-items: center; gap: 4px;
-    }
-
-    .receipt-address-label svg { width: 10px; height: 10px; }
-
-    .receipt-address-value {
-      font-size: 10px; color: #ffffff;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600; word-break: break-all; line-height: 1.4;
-    }
-
-    .receipt-txid-block {
-      background: rgba(16, 185, 129, 0.06);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: 10px; padding: 10px; margin: 8px 0;
-    }
-
-    .receipt-txid-label {
-      font-size: 8px; color: #10b981;
-      text-transform: uppercase; letter-spacing: 0.12em;
-      font-weight: 900; margin-bottom: 5px;
-      display: flex; align-items: center; gap: 4px;
-    }
-
-    .receipt-txid-label svg { width: 10px; height: 10px; }
-
-    .receipt-txid-value {
-      font-size: 9px; color: #ffffff;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 600; word-break: break-all; line-height: 1.5;
-    }
-
-    .receipt-footer {
-      padding: 14px 18px;
-      background: rgba(8, 11, 17, 0.75);
-      text-align: center;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      position: relative;
-    }
-
-    .receipt-footer::before {
-      content: '';
-      position: absolute; top: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 70%; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.5), transparent);
-    }
-
-    .receipt-id {
-      font-size: 8px; color: #4b5563;
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 0.05em; margin-bottom: 3px;
-    }
-
-    .receipt-watermark {
-      font-size: 7px; color: #374151;
-      text-transform: uppercase; letter-spacing: 0.28em;
-      font-weight: 800;
-    }
-
-    .history-tx-card {
-      position: relative; border-radius: 16px; padding: 14px;
-      background: linear-gradient(145deg, rgba(22, 28, 44, 0.9) 0%, rgba(15, 20, 32, 0.9) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      transition: all 0.25s; cursor: pointer;
-    }
-
-    .history-tx-card:hover {
-      border-color: rgba(16, 185, 129, 0.3);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.2);
-    }
-
-    .history-tx-logo {
-      width: 44px; height: 44px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; background: #0d1220; padding: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .history-tx-logo img { width: 100%; height: 100%; object-fit: contain; }
-
-    /* ===== BYBIT-STYLE DEPOSIT/WITHDRAW ===== */
+    /* Bybit tabs and amount box */
     .bybit-tabs {
       display: flex;
       background: rgba(0,0,0,0.4);
@@ -1027,6 +1062,22 @@
       border: 1px solid rgba(16, 185, 129, 0.25);
       border-radius: 14px;
       padding: 14px;
+    }
+
+    .verified-chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 9px; font-weight: 700; padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      letter-spacing: 0.03em; text-transform: uppercase;
+    }
+
+    @keyframes iconEnter {
+      0% { transform: scale(0.3) rotate(-30deg); opacity: 0; }
+      60% { transform: scale(1.08) rotate(4deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
     }
   </style>
 </head>
@@ -1764,8 +1815,12 @@
     </div>
 
     <div id="history-container" class="space-y-3">
-      <div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">
-        No transactions yet.
+      <div class="glass-card rounded-2xl p-6 text-center border border-brand-border">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
+          <i data-lucide="receipt" class="w-7 h-7 text-emerald-400"></i>
+        </div>
+        <p class="text-sm font-bold text-white mb-1">No Transactions Yet</p>
+        <p class="text-[11px] text-gray-400 leading-relaxed">Your transaction history will appear here.</p>
       </div>
     </div>
   </main>
@@ -2032,59 +2087,28 @@
     </div>
   </div>
 
-  <!-- PREMIUM PROCESSING MODAL -->
-  <div id="processing-modal" class="modal-overlay hidden">
-    <div id="processing-card" class="processing-premium w-full max-w-xs modal-animate-in" data-step="1">
-      
-      <div class="processing-particles" id="particle-container"></div>
-      
-      <div class="processing-ambient"></div>
-
-      <div class="processing-icon-wrapper">
-        <div class="processing-ring"></div>
-        <div class="processing-ring"></div>
-        <div class="processing-ring"></div>
-        <div id="step-icon" class="processing-icon">
-          <i id="step-icon-content" data-lucide="send"></i>
-        </div>
+  <!-- SIMPLE PROCESSING MODAL (Bybit-style) -->
+  <div id="simple-processing-overlay" class="simple-processing-overlay">
+    <div class="simple-processing-card">
+      <div id="processing-spinner" class="simple-spinner"></div>
+      <div id="processing-checkmark" class="simple-checkmark" style="display:none;">
+        <svg viewBox="0 0 24 24">
+          <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
-
-      <div class="processing-steps">
-        <div id="dot-1" class="processing-step-dot active"></div>
-        <div id="dot-2" class="processing-step-dot"></div>
-        <div id="dot-3" class="processing-step-dot"></div>
-      </div>
-
-      <div class="processing-badge" id="step-badge" data-state="1">
-        <span class="processing-badge-dot"></span>
-        <span id="step-label">PAYMENT SENT</span>
-      </div>
-
-      <h3 id="processing-title" class="processing-title">Broadcasting Payment</h3>
-      <p id="processing-subtitle" class="processing-subtitle">Sending transaction to blockchain network...</p>
-
-      <div class="processing-progress-track">
-        <div id="step-progress-bar" class="processing-progress-bar" style="width: 15%;"></div>
-      </div>
-
-      <div class="processing-amount-card">
-        <span class="processing-amount-label">AMOUNT</span>
-        <span id="processing-amount" class="processing-amount-value">$0.00</span>
-      </div>
-
-      <div class="processing-security">
-        <i data-lucide="lock"></i>
-        <span>256-bit encrypted · institutional-grade</span>
+      <h3 id="processing-title-text" class="simple-processing-title">Processing...</h3>
+      <p id="processing-subtitle-text" class="simple-processing-subtitle">Please wait while we process your transaction.</p>
+      <div class="simple-processing-amount">
+        <span class="simple-processing-amount-label">AMOUNT</span>
+        <span id="processing-amount-text" class="simple-processing-amount-value">$0.00</span>
       </div>
     </div>
   </div>
 
-  <!-- RECEIPT MODAL -->
+  <!-- PROFESSIONAL RECEIPT MODAL -->
   <div id="receipt-modal" class="modal-overlay hidden">
-    <div class="receipt-modal-container modal-animate-in">
-      <div id="receipt-content" class="receipt-container">
-        <!-- Dynamic -->
-      </div>
+    <div id="receipt-content-container" class="w-full max-w-[340px] max-h-[95vh] flex flex-col">
+      <!-- Dynamic -->
     </div>
   </div>
 
@@ -2462,267 +2486,187 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function createParticles() {
-      const container = document.getElementById('particle-container');
-      container.innerHTML = '';
-      
-      for (let i = 0; i < 10; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'processing-particle';
-        particle.style.left = `${15 + Math.random() * 70}%`;
-        particle.style.top = `${30 + Math.random() * 50}%`;
-        particle.style.animationDelay = `${Math.random() * 2.5}s`;
-        particle.style.animationDuration = `${2 + Math.random() * 1.5}s`;
-        container.appendChild(particle);
-      }
-    }
+    /* ===== SIMPLE BYBIT-STYLE PROCESSING ANIMATION ===== */
+    function startSimpleProcessing(amount, txId, isWithdrawal) {
+      const overlay = document.getElementById('simple-processing-overlay');
+      const spinner = document.getElementById('processing-spinner');
+      const checkmark = document.getElementById('processing-checkmark');
+      const titleText = document.getElementById('processing-title-text');
+      const subtitleText = document.getElementById('processing-subtitle-text');
+      const amountText = document.getElementById('processing-amount-text');
 
-    function setStep(stepNumber) {
-      const card = document.getElementById('processing-card');
-      const stepIcon = document.getElementById('step-icon');
-      const stepIconContent = document.getElementById('step-icon-content');
-      const stepLabel = document.getElementById('step-label');
-      const stepBadge = document.getElementById('step-badge');
-      const processingTitle = document.getElementById('processing-title');
-      const processingSubtitle = document.getElementById('processing-subtitle');
-      const progressBar = document.getElementById('step-progress-bar');
-      const dot1 = document.getElementById('dot-1');
-      const dot2 = document.getElementById('dot-2');
-      const dot3 = document.getElementById('dot-3');
-
-      card.setAttribute('data-step', stepNumber);
-      stepBadge.setAttribute('data-state', stepNumber);
+      amountText.innerText = amount;
+      titleText.innerText = isWithdrawal ? 'Processing Withdrawal...' : 'Processing Deposit...';
+      subtitleText.innerText = isWithdrawal ? 'Please wait while we process your withdrawal.' : 'Please wait while we process your deposit.';
       
-      if (stepNumber === 1) {
-        stepIcon.className = 'processing-icon';
-        stepIconContent.setAttribute('data-lucide', 'send');
-        stepLabel.textContent = 'PAYMENT SENT';
-        processingTitle.textContent = 'Broadcasting Payment';
-        processingSubtitle.textContent = 'Sending transaction to blockchain network...';
-        progressBar.style.width = '15%';
-        dot1.className = 'processing-step-dot active';
-        dot2.className = 'processing-step-dot';
-        dot3.className = 'processing-step-dot';
-      } else if (stepNumber === 2) {
-        stepIcon.className = 'processing-icon step-2';
-        stepIconContent.setAttribute('data-lucide', 'shield-check');
-        stepLabel.textContent = 'VERIFYING';
-        processingTitle.textContent = 'Verifying Transaction';
-        processingSubtitle.textContent = 'Confirming on-chain security protocols...';
-        progressBar.style.width = '60%';
-        dot1.className = 'processing-step-dot completed';
-        dot2.className = 'processing-step-dot active';
-        dot3.className = 'processing-step-dot';
-      } else if (stepNumber === 3) {
-        stepIcon.className = 'processing-icon step-3';
-        stepIconContent.setAttribute('data-lucide', 'check');
-        stepLabel.textContent = 'CONFIRMATION';
-        processingTitle.textContent = 'Confirmed!';
-        processingSubtitle.textContent = 'Transaction successfully verified!';
-        progressBar.style.width = '100%';
-        dot1.className = 'processing-step-dot completed';
-        dot2.className = 'processing-step-dot completed';
-        dot3.className = 'processing-step-dot active';
+      spinner.style.display = 'block';
+      checkmark.style.display = 'none';
+      
+      overlay.classList.add('show');
+
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+
+      setTimeout(() => {
+        spinner.style.display = 'none';
+        checkmark.style.display = 'flex';
+        titleText.innerText = 'Transaction Submitted';
+        subtitleText.innerText = 'Your transaction has been submitted successfully.';
         
         if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      }
-      
-      lucide.createIcons();
-    }
+      }, 1500);
 
-    function startProcessingAnimation(amount, txId) {
-      document.getElementById('processing-amount').innerText = amount;
-      document.getElementById('processing-modal').classList.remove('hidden');
-      
-      createParticles();
-      
-      setStep(1);
-      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-      
       setTimeout(() => {
-        setStep(2);
-        if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-      }, 1800);
-      
-      setTimeout(() => {
-        setStep(3);
-      }, 3800);
-      
-      setTimeout(() => {
-        closeModal('processing-modal');
+        overlay.classList.remove('show');
         pendingReceiptTx = txId;
         setTimeout(() => {
           openReceiptModal(txId);
-        }, 200);
-      }, 5500);
+        }, 250);
+      }, 2500);
     }
 
-    function generateReceiptHTML(tx) {
+    /* ===== PROFESSIONAL RECEIPT HTML ===== */
+    function generateProReceiptHTML(tx) {
       const isDeposit = tx.type === 'deposit';
       const isWithdrawal = tx.type === 'withdraw';
       const isInvestment = tx.type === 'investment';
-      
-      let accentGradient = 'linear-gradient(90deg, #10b981, #06b6d4)';
-      let glowColor = 'rgba(16, 185, 129, 0.15)';
-      let statusColor = '#f59e0b';
+
+      let statusIconSvg = '';
       let statusClass = 'pending';
-      let statusLabel = 'PENDING';
-      let amountColor = '#10b981';
+      let statusBadgeClass = 'pending';
+      let amountClass = 'positive';
       let amountPrefix = '+';
-      
-      if (isWithdrawal) {
-        accentGradient = 'linear-gradient(90deg, #06b6d4, #3b82f6)';
-        glowColor = 'rgba(6, 182, 212, 0.15)';
-        amountColor = '#06b6d4';
-        amountPrefix = '-';
-      } else if (isInvestment) {
-        accentGradient = 'linear-gradient(90deg, #a855f7, #6366f1)';
-        glowColor = 'rgba(168, 85, 247, 0.15)';
-        amountColor = '#a855f7';
-        amountPrefix = '-';
-      }
-      
+
       if (tx.status === 'Completed') {
-        statusClass = 'completed';
-        statusLabel = 'COMPLETED';
-        statusColor = '#10b981';
+        statusClass = 'success';
+        statusBadgeClass = 'completed';
+        statusIconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      } else if (tx.status === 'Pending Review') {
+        statusClass = 'pending';
+        statusBadgeClass = 'pending';
+        statusIconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>`;
       } else if (tx.status === 'Rejected') {
-        statusClass = 'rejected';
-        statusLabel = 'REJECTED';
-        statusColor = '#ef4444';
+        statusClass = 'failed';
+        statusBadgeClass = 'failed';
+        statusIconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>`;
       } else if (tx.status === 'Active') {
-        statusClass = 'active';
-        statusLabel = 'ACTIVE';
-        statusColor = '#06b6d4';
+        statusClass = 'pending';
+        statusBadgeClass = 'active';
+        statusIconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>`;
+      } else {
+        statusIconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+        statusClass = 'success';
+        statusBadgeClass = 'completed';
       }
-      
-      let networkLogo = 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040';
-      let networkEmoji = '₮';
-      let networkName = tx.network || 'USDT';
-      
-      if (tx.network && tx.network.includes('BEP20')) {
-        networkLogo = 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040';
-        networkEmoji = '⚡';
-      } else if (tx.network && tx.network.includes('ERC20')) {
-        networkLogo = 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040';
-        networkEmoji = 'Ξ';
-      } else if (tx.network && tx.network.includes('TON')) {
-        networkLogo = 'https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040';
-        networkEmoji = '💎';
+
+      if (isWithdrawal) {
+        amountClass = 'negative';
+        amountPrefix = '-';
       } else if (isInvestment) {
-        networkLogo = '';
-        networkEmoji = '📈';
+        amountClass = 'neutral';
+        amountPrefix = '-';
       }
+
+      if (tx.status === 'Rejected' && isDeposit) {
+        amountClass = 'negative';
+        amountPrefix = '';
+      }
+
+      let networkName = tx.network || 'USDT (TRC20)';
       
       let rawAmount = tx.rawAmount || parseFloat((tx.amount || '0').replace(/[^0-9.]/g, '')) || 0;
+
       const receiptDate = tx.fullDate || new Date().toLocaleString('en-US', { 
         month: 'short', day: 'numeric', year: 'numeric', 
         hour: '2-digit', minute: '2-digit' 
       });
+
       const fullAddress = tx.fullAddress || tx.ref || 'N/A';
+      const txIdDisplay = tx.fullId || tx.id.toUpperCase();
 
       let adminActionsHTML = '';
       if (isAdmin && tx.status === 'Pending Review') {
         adminActionsHTML = `
-          <div style="padding: 0 18px 14px; display: flex; gap: 6px;">
-            <button onclick="simulateSystemResponse('${tx.id}', 'approve')" style="flex: 1; background: rgba(16, 185, 129, 0.2); color: #10b981; font-size: 10px; font-weight: 700; padding: 9px; border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.4);">
-              ✓ Approve
-            </button>
-            <button onclick="simulateSystemResponse('${tx.id}', 'reject')" style="flex: 1; background: rgba(239, 68, 68, 0.2); color: #ef4444; font-size: 10px; font-weight: 700; padding: 9px; border-radius: 10px; border: 1px solid rgba(239, 68, 68, 0.4);">
-              ✕ Reject
-            </button>
+          <div class="pro-receipt-actions">
+            <button class="pro-receipt-action-btn primary" onclick="simulateSystemResponse('${tx.id}', 'approve')">Approve</button>
+            <button class="pro-receipt-action-btn secondary" onclick="simulateSystemResponse('${tx.id}', 'reject')">Reject</button>
           </div>
         `;
       }
 
       return `
-        <div style="--receipt-accent: ${accentGradient}; --receipt-glow: ${glowColor};">
-          <button onclick="closeModal('receipt-modal')" style="position: absolute; top: 10px; right: 10px; z-index: 20; width: 28px; height: 28px; border-radius: 50%; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: #d1d5db;">
-            <i data-lucide="x" style="width: 12px; height: 12px;"></i>
+        <div class="pro-receipt">
+          <button class="pro-receipt-close" onclick="closeModal('receipt-modal')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg>
           </button>
           
-          <div class="receipt-header">
-            <div class="receipt-shine"></div>
-            
-            <div class="receipt-brand-row">
-              <div class="receipt-brand-icon">
-                <i data-lucide="gem"></i>
-              </div>
-              <div class="receipt-brand-text">APEX<span>INVEST</span></div>
+          <div class="pro-receipt-header">
+            <div class="pro-receipt-status-icon ${statusClass}">
+              ${statusIconSvg}
             </div>
-            
-            <div class="receipt-logo" style="border-color: ${statusColor}50;">
-              ${networkLogo 
-                ? `<img src="${networkLogo}" alt="${networkName}" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'color:${statusColor};font-weight:900;font-size:26px\\'>${networkEmoji}</span>'">`
-                : `<span style="color:${statusColor};font-weight:900;font-size:26px;">${networkEmoji}</span>`
-              }
-            </div>
-            
-            <div class="receipt-amount" style="color: ${amountColor}">
+            <div class="pro-receipt-amount ${amountClass}">
               ${amountPrefix}$${rawAmount.toFixed(2)}
             </div>
-            
-            <div class="receipt-amount-label">
-              ${isDeposit ? 'DEPOSIT AMOUNT' : isWithdrawal ? 'WITHDRAWAL AMOUNT' : 'INVESTMENT AMOUNT'}
+            <div class="pro-receipt-type-label">
+              ${isDeposit ? 'Deposit Amount' : isWithdrawal ? 'Withdrawal Amount' : 'Investment Amount'}
             </div>
-            
-            <div class="receipt-status ${statusClass}">
-              <i data-lucide="${tx.status === 'Completed' ? 'check-circle-2' : tx.status === 'Rejected' ? 'x-circle' : 'clock'}"></i>
-              ${statusLabel}
+            <div class="pro-receipt-status-badge ${statusBadgeClass}">
+              ${tx.status === 'Pending Review' ? 'Pending Review' : tx.status}
             </div>
           </div>
           
-          <div class="receipt-divider">
-            <div class="receipt-divider-line"></div>
-          </div>
-          
-          <div class="receipt-body">
-            
-            <div class="receipt-row">
-              <span class="receipt-row-label">Network</span>
-              <span class="receipt-row-value" style="color:${statusColor}">${tx.network || 'Plan Allocation'}</span>
+          <div class="pro-receipt-body">
+            <div class="pro-receipt-row">
+              <span class="pro-receipt-row-label">Network</span>
+              <span class="pro-receipt-row-value" style="font-size:10px;">${networkName}</span>
             </div>
             
-            <div class="receipt-row">
-              <span class="receipt-row-label">Date</span>
-              <span class="receipt-row-value" style="font-size: 10px;">${receiptDate}</span>
+            <div class="pro-receipt-row">
+              <span class="pro-receipt-row-label">Date</span>
+              <span class="pro-receipt-row-value" style="font-size:10px;">${receiptDate}</span>
             </div>
             
             ${isWithdrawal ? `
-              <div class="receipt-address-block">
-                <div class="receipt-address-label">
-                  <i data-lucide="wallet"></i>
+              <div class="pro-receipt-address-box">
+                <div class="pro-receipt-address-label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M12 12h.01M8 12h.01M16 12h.01" stroke-linecap="round"/></svg>
                   DESTINATION WALLET
                 </div>
-                <div class="receipt-address-value">${fullAddress}</div>
+                <div class="pro-receipt-address-value">${fullAddress}</div>
               </div>
             ` : isDeposit ? `
-              <div class="receipt-txid-block">
-                <div class="receipt-txid-label">
-                  <i data-lucide="fingerprint"></i>
+              <div class="pro-receipt-txid-box">
+                <div class="pro-receipt-txid-label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-linecap="round"/></svg>
                   TRANSACTION ID
                 </div>
-                <div class="receipt-txid-value">${fullAddress}</div>
+                <div class="pro-receipt-txid-value">${fullAddress}</div>
               </div>
             ` : `
-              <div class="receipt-txid-block">
-                <div class="receipt-txid-label">
-                  <i data-lucide="fingerprint"></i>
+              <div class="pro-receipt-txid-box">
+                <div class="pro-receipt-txid-label">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-linecap="round"/></svg>
                   REFERENCE ID
                 </div>
-                <div class="receipt-txid-value">${tx.fullId || tx.id}</div>
+                <div class="pro-receipt-txid-value">${txIdDisplay}</div>
               </div>
             `}
             
-            <div class="receipt-row">
-              <span class="receipt-row-label">Status</span>
-              <span class="receipt-row-value" style="color:${statusColor}; text-transform: uppercase; letter-spacing: 0.08em;">${tx.status}</span>
+            <div class="pro-receipt-row">
+              <span class="pro-receipt-row-label">Status</span>
+              <span class="pro-receipt-row-value" style="color:${statusBadgeClass === 'completed' ? '#10b981' : statusBadgeClass === 'failed' ? '#ef4444' : statusBadgeClass === 'active' ? '#06b6d4' : '#f59e0b'}; text-transform:uppercase; font-size:10px;">
+                ${tx.status}
+              </span>
+            </div>
+
+            <div class="pro-receipt-row">
+              <span class="pro-receipt-row-label">Reference</span>
+              <span class="pro-receipt-row-value" style="font-size:9px;">APX-${Date.now().toString().slice(-8)}</span>
             </div>
           </div>
           
-          <div class="receipt-footer">
-            <div class="receipt-id">REF: APX-${Date.now().toString().slice(-8)}</div>
-            <div class="receipt-watermark">APEXINVEST · SECURE RECEIPT</div>
+          <div class="pro-receipt-footer">
+            <div class="pro-receipt-footer-text">APEXINVEST · SECURE RECEIPT</div>
+            <div class="pro-receipt-footer-brand">Institutional Crypto Yield</div>
           </div>
           
           ${adminActionsHTML}
@@ -2737,8 +2681,8 @@
         return;
       }
       
-      const receiptContent = document.getElementById('receipt-content');
-      receiptContent.innerHTML = generateReceiptHTML(tx);
+      const receiptContainer = document.getElementById('receipt-content-container');
+      receiptContainer.innerHTML = generateProReceiptHTML(tx);
       
       document.getElementById('receipt-modal').classList.remove('hidden');
       lucide.createIcons();
@@ -2746,6 +2690,7 @@
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
     }
 
+    /* ===== PROFESSIONAL HISTORY ===== */
     function renderHistory() {
       const container = document.getElementById('history-container');
       const countBadge = document.getElementById('history-count-badge');
@@ -2768,75 +2713,69 @@
       }
 
       transactionsHistory.forEach(tx => {
-        let logoImg = 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040';
-        let logoEmoji = '₮';
-        let logoColor = '#26A17B';
-        let logoClass = 'network-logo-usdt';
-        
-        if (tx.network && tx.network.includes('BEP20')) {
-          logoImg = 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040';
-          logoEmoji = '⚡';
-          logoColor = '#F3BA2F';
-          logoClass = 'network-logo-bnb';
-        } else if (tx.network && tx.network.includes('ERC20')) {
-          logoImg = 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040';
-          logoEmoji = 'Ξ';
-          logoColor = '#627EEA';
-          logoClass = 'network-logo-eth';
-        } else if (tx.network && tx.network.includes('TON')) {
-          logoImg = 'https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040';
-          logoEmoji = '💎';
-          logoColor = '#0098EA';
-          logoClass = 'network-logo-ton';
+        let iconEmoji = '₮';
+        let iconClass = 'deposit';
+        let amountClass = 'positive';
+        let amountPrefix = '+';
+        let directionLabel = 'DEPOSIT';
+        let directionColor = '#10b981';
+
+        if (tx.type === 'withdraw') {
+          iconEmoji = '↑';
+          iconClass = 'withdraw';
+          amountClass = 'negative';
+          amountPrefix = '-';
+          directionLabel = 'WITHDRAW';
+          directionColor = '#06b6d4';
         } else if (tx.type === 'investment') {
-          logoImg = '';
-          logoEmoji = '📈';
-          logoColor = '#a855f7';
-          logoClass = '';
+          iconEmoji = '📈';
+          iconClass = 'investment';
+          amountClass = 'neutral';
+          amountPrefix = '-';
+          directionLabel = 'INVEST';
+          directionColor = '#a855f7';
         }
 
-        const isPositive = tx.amount.startsWith('+');
-        const amountColor = isPositive ? 'text-emerald-400' : (tx.type === 'withdraw' ? 'text-cyan-400' : 'text-purple-400');
+        let statusClass = 'pending';
+        let statusText = 'Pending';
+        if (tx.status === 'Completed') { statusClass = 'completed'; statusText = 'Completed'; }
+        else if (tx.status === 'Rejected') { statusClass = 'failed'; statusText = 'Rejected'; }
+        else if (tx.status === 'Active') { statusClass = 'active'; statusText = 'Active'; }
+        else { statusClass = 'pending'; statusText = 'Pending Review'; }
 
-        let directionLabel = 'IN';
-        let directionColor = '#10b981';
-        if (tx.type === 'withdraw') { directionLabel = 'OUT'; directionColor = '#06b6d4'; }
-        if (tx.type === 'investment') { directionLabel = 'INV'; directionColor = '#a855f7'; }
+        let rawAmount = tx.rawAmount || parseFloat((tx.amount || '0').replace(/[^0-9.]/g, '')) || 0;
+        let networkDisplay = tx.network || 'USDT (TRC20)';
 
         container.innerHTML += `
-          <div class="history-tx-card" onclick="openReceiptModal('${tx.id}')">
+          <div class="pro-history-card" onclick="openReceiptModal('${tx.id}')">
             <div class="flex items-start gap-3">
-              <div class="history-tx-logo ${logoClass}" style="width: 44px; height: 44px;">
-                ${logoImg 
-                  ? `<img src="${logoImg}" alt="${tx.network}" onerror="this.style.display='none';this.parentElement.innerHTML='<span style=\\'color:${logoColor};font-weight:900;font-size:20px\\'>${logoEmoji}</span>'">`
-                  : `<span style="color:${logoColor};font-weight:900;font-size:20px;">${logoEmoji}</span>`
-                }
+              <div class="pro-history-icon ${iconClass}">
+                ${iconEmoji}
               </div>
-              
               <div class="flex-1 min-w-0">
-                <div class="flex items-center justify-between mb-1">
-                  <div class="flex items-center gap-1.5">
-                    <h4 class="text-xs font-black text-white truncate">${tx.title}</h4>
-                    <span class="text-[8px] font-black px-1.5 py-0.5 rounded" style="background: ${directionColor}20; color: ${directionColor};">${directionLabel}</span>
+                <div class="flex items-start justify-between gap-2">
+                  <div class="min-w-0">
+                    <h4 class="pro-history-title">${tx.title}</h4>
+                    <p class="pro-history-subtitle">${networkDisplay}</p>
                   </div>
-                  <span class="text-sm font-black font-mono ${amountColor}">${tx.amount}</span>
-                </div>
-                
-                <div class="flex items-center justify-between mb-2">
-                  <p class="text-[10px] text-gray-500 font-mono">${tx.time}</p>
-                  <span class="text-[9px] font-bold px-2 py-0.5 rounded" style="background: rgba(245, 158, 11, 0.15); color: ${tx.status === 'Completed' ? '#10b981' : tx.status === 'Rejected' ? '#ef4444' : tx.status === 'Active' ? '#06b6d4' : '#f59e0b'};">
-                    ${tx.status}
-                  </span>
-                </div>
-                
-                <div class="flex items-center justify-between pt-2 border-t border-white/5">
-                  <div class="flex items-center gap-1.5 text-[9px] text-gray-400">
-                    <span class="opacity-60">ID:</span>
-                    <span class="font-mono text-cyan-400 truncate max-w-[100px]">${tx.id.slice(0, 12)}...</span>
+                  <div class="text-right shrink-0">
+                    <div class="pro-history-amount ${amountClass}">${amountPrefix}$${rawAmount.toFixed(2)}</div>
+                    <span class="pro-history-status ${statusClass}">${statusText}</span>
                   </div>
-                  <div class="flex items-center gap-1 text-[9px] text-emerald-400 font-bold">
-                    <i data-lucide="eye" class="w-3 h-3"></i>
-                    Receipt
+                </div>
+                <div class="pro-history-meta">
+                  <div class="pro-history-meta-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2" stroke-linecap="round"/></svg>
+                    ${tx.time || 'Just now'}
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="pro-history-meta-item" style="color:#06b6d4;">
+                      ${tx.id.slice(0, 8)}...
+                    </span>
+                    <span class="pro-history-view-btn">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      View
+                    </span>
                   </div>
                 </div>
               </div>
@@ -2849,6 +2788,7 @@
       updateAdminStats();
     }
 
+    // Rest of the existing functions remain the same
     function renderActiveInvestments() {
       const container = document.getElementById('active-investments-container');
       if (!container) return;
@@ -2895,7 +2835,7 @@
                 <span class="font-mono">${progress.toFixed(1)}%</span>
               </div>
               <div class="w-full bg-gray-800 rounded-full h-2 overflow-hidden">
-                <div class="progress-bar bg-gradient-to-r from-emerald-500 to-cyan-500 h-2 rounded-full" style="width: ${progress}%"></div>
+                <div class="bg-gradient-to-r from-emerald-500 to-cyan-500 h-2 rounded-full" style="width: ${progress}%"></div>
               </div>
             </div>
           </div>`;
@@ -3103,7 +3043,7 @@
 
       triggerAdminBotNotificationWithKeyboard(`🚨 *DEPOSIT REQUEST*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *+$${depAmt.toFixed(2)}*\n🌐 Network: \`${networkName}\`\n🔗 Ref: \`${proofRef}\``, txId);
       
-      startProcessingAnimation(`+$${depAmt.toFixed(2)}`, txId);
+      startSimpleProcessing(`+$${depAmt.toFixed(2)}`, txId, false);
     }
 
     function initiateWithdrawalProcess() {
@@ -3173,7 +3113,7 @@
 
       triggerAdminBotNotificationWithKeyboard(`🚨 *WITHDRAWAL REQUEST*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n🌐 Network: \`${netName}\`\n🔗 Address: \`${shortAddr}\``, txId);
       
-      startProcessingAnimation(`-$${amt.toFixed(2)}`, txId);
+      startSimpleProcessing(`-$${amt.toFixed(2)}`, txId, true);
     }
 
     function triggerAdminBotNotification(textMessage) {
@@ -3420,8 +3360,6 @@
     function calculateWithdrawFee() {
       const amt = parseFloat(document.getElementById('withdraw-amount').value) || 0;
       document.getElementById('net-receive-text').innerText = `$${amt.toFixed(2)}`;
-      const summaryAmt = document.getElementById('summary-amount');
-      if (summaryAmt) summaryAmt.innerText = `$${amt.toFixed(2)}`;
     }
 
     function setMaxWithdraw() {
