@@ -235,7 +235,7 @@
       -webkit-text-fill-color: transparent;
     }
 
-    /* ===== PROFESSIONAL RECEIPT (BYBIT STYLE) ===== */
+    /* ===== PROFESSIONAL RECEIPT ===== */
     .pro-receipt {
       width: 100%;
       max-width: 340px;
@@ -500,7 +500,7 @@
       height: 14px;
     }
 
-    /* ===== PROFESSIONAL HISTORY CARDS ===== */
+    /* ===== HISTORY CARDS ===== */
     .pro-history-card {
       position: relative;
       border-radius: 14px;
@@ -516,10 +516,6 @@
       background: #141b2a;
     }
 
-    .pro-history-card:active {
-      transform: scale(0.995);
-    }
-
     .pro-history-icon {
       width: 40px;
       height: 40px;
@@ -532,77 +528,22 @@
       font-weight: 800;
     }
 
-    .pro-history-icon.deposit {
-      background: rgba(16, 185, 129, 0.12);
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.2);
-    }
+    .pro-history-icon.deposit { background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
+    .pro-history-icon.withdraw { background: rgba(6, 182, 212, 0.12); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.2); }
+    .pro-history-icon.investment { background: rgba(168, 85, 247, 0.12); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.2); }
 
-    .pro-history-icon.withdraw {
-      background: rgba(6, 182, 212, 0.12);
-      color: #06b6d4;
-      border: 1px solid rgba(6, 182, 212, 0.2);
-    }
-
-    .pro-history-icon.investment {
-      background: rgba(168, 85, 247, 0.12);
-      color: #a855f7;
-      border: 1px solid rgba(168, 85, 247, 0.2);
-    }
-
-    .pro-history-title {
-      font-size: 12px;
-      font-weight: 700;
-      color: #ffffff;
-      line-height: 1.3;
-    }
-
-    .pro-history-subtitle {
-      font-size: 10px;
-      color: #6b7280;
-      font-family: 'JetBrains Mono', monospace;
-      margin-top: 2px;
-    }
-
-    .pro-history-amount {
-      font-size: 14px;
-      font-weight: 800;
-      font-family: 'JetBrains Mono', monospace;
-      line-height: 1.2;
-    }
-
+    .pro-history-title { font-size: 12px; font-weight: 700; color: #ffffff; line-height: 1.3; }
+    .pro-history-subtitle { font-size: 10px; color: #6b7280; font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+    .pro-history-amount { font-size: 14px; font-weight: 800; font-family: 'JetBrains Mono', monospace; line-height: 1.2; }
     .pro-history-amount.positive { color: #10b981; }
     .pro-history-amount.negative { color: #06b6d4; }
     .pro-history-amount.neutral { color: #a855f7; }
 
-    .pro-history-status {
-      font-size: 9px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 999px;
-      text-transform: uppercase;
-      letter-spacing: 0.03em;
-    }
-
-    .pro-history-status.completed {
-      background: rgba(16, 185, 129, 0.15);
-      color: #10b981;
-    }
-
-    .pro-history-status.pending {
-      background: rgba(245, 158, 11, 0.15);
-      color: #f59e0b;
-    }
-
-    .pro-history-status.failed {
-      background: rgba(239, 68, 68, 0.15);
-      color: #ef4444;
-    }
-
-    .pro-history-status.active {
-      background: rgba(6, 182, 212, 0.15);
-      color: #06b6d4;
-    }
+    .pro-history-status { font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.03em; }
+    .pro-history-status.completed { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+    .pro-history-status.pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+    .pro-history-status.failed { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+    .pro-history-status.active { background: rgba(6, 182, 212, 0.15); color: #06b6d4; }
 
     .pro-history-meta {
       display: flex;
@@ -622,21 +563,10 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    .pro-history-meta-item svg {
-      width: 11px;
-      height: 11px;
-    }
+    .pro-history-meta-item svg { width: 11px; height: 11px; }
+    .pro-history-view-btn { display: flex; align-items: center; gap: 3px; font-size: 9px; color: #10b981; font-weight: 700; }
 
-    .pro-history-view-btn {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      font-size: 9px;
-      color: #10b981;
-      font-weight: 700;
-    }
-
-    /* ===== PROFESSIONAL INVEST PLANS ===== */
+    /* ===== INVEST PLANS ===== */
     .invest-plan-pro {
       position: relative;
       border-radius: 18px;
@@ -674,26 +604,10 @@
       box-shadow: 0 15px 50px -15px var(--plan-color);
     }
 
-    .invest-plan-starter { 
-      --plan-color: #10b981; 
-      --plan-gradient: linear-gradient(90deg, #10b981, #06b6d4); 
-      --plan-glow: rgba(16, 185, 129, 0.3);
-    }
-    .invest-plan-silver { 
-      --plan-color: #06b6d4; 
-      --plan-gradient: linear-gradient(90deg, #06b6d4, #3b82f6); 
-      --plan-glow: rgba(6, 182, 212, 0.3);
-    }
-    .invest-plan-gold { 
-      --plan-color: #f59e0b; 
-      --plan-gradient: linear-gradient(90deg, #f59e0b, #f97316); 
-      --plan-glow: rgba(245, 158, 11, 0.3);
-    }
-    .invest-plan-vip { 
-      --plan-color: #a855f7; 
-      --plan-gradient: linear-gradient(90deg, #a855f7, #6366f1); 
-      --plan-glow: rgba(168, 85, 247, 0.3);
-    }
+    .invest-plan-starter { --plan-color: #10b981; --plan-gradient: linear-gradient(90deg, #10b981, #06b6d4); --plan-glow: rgba(16, 185, 129, 0.3); }
+    .invest-plan-silver { --plan-color: #06b6d4; --plan-gradient: linear-gradient(90deg, #06b6d4, #3b82f6); --plan-glow: rgba(6, 182, 212, 0.3); }
+    .invest-plan-gold { --plan-color: #f59e0b; --plan-gradient: linear-gradient(90deg, #f59e0b, #f97316); --plan-glow: rgba(245, 158, 11, 0.3); }
+    .invest-plan-vip { --plan-color: #a855f7; --plan-gradient: linear-gradient(90deg, #a855f7, #6366f1); --plan-glow: rgba(168, 85, 247, 0.3); }
 
     .invest-plan-badge {
       display: inline-flex;
@@ -733,73 +647,16 @@
       letter-spacing: -0.03em;
     }
 
-    .invest-plan-roi-label {
-      font-size: 8px;
-      color: #6b7280;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-weight: 800;
-      margin-top: 4px;
-    }
+    .invest-plan-roi-label { font-size: 8px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800; margin-top: 4px; }
+    .invest-plan-title { font-size: 15px; font-weight: 800; color: #ffffff; letter-spacing: -0.01em; line-height: 1.2; }
 
-    .invest-plan-title {
-      font-size: 15px;
-      font-weight: 800;
-      color: #ffffff;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-    }
+    .invest-plan-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 16px 0 14px; }
+    .invest-plan-meta-cell { background: rgba(8, 11, 17, 0.8); border: 1px solid rgba(255, 255, 255, 0.05); border-radius: 10px; padding: 9px 11px; }
+    .invest-plan-meta-label { font-size: 8px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 800; display: block; margin-bottom: 3px; }
+    .invest-plan-meta-value { font-size: 12px; font-weight: 800; color: #ffffff; font-family: 'JetBrains Mono', monospace; letter-spacing: -0.01em; }
 
-    .invest-plan-meta {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-      margin: 16px 0 14px;
-    }
-
-    .invest-plan-meta-cell {
-      background: rgba(8, 11, 17, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 10px;
-      padding: 9px 11px;
-    }
-
-    .invest-plan-meta-label {
-      font-size: 8px;
-      color: #6b7280;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 800;
-      display: block;
-      margin-bottom: 3px;
-    }
-
-    .invest-plan-meta-value {
-      font-size: 12px;
-      font-weight: 800;
-      color: #ffffff;
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: -0.01em;
-    }
-
-    .invest-plan-features {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-bottom: 14px;
-    }
-
-    .invest-plan-feature-tag {
-      font-size: 8px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.04);
-      color: #9ca3af;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      letter-spacing: 0.03em;
-      text-transform: uppercase;
-    }
+    .invest-plan-features { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 14px; }
+    .invest-plan-feature-tag { font-size: 8px; font-weight: 700; padding: 3px 8px; border-radius: 6px; background: rgba(255, 255, 255, 0.04); color: #9ca3af; border: 1px solid rgba(255, 255, 255, 0.06); letter-spacing: 0.03em; text-transform: uppercase; }
 
     .invest-plan-cta {
       width: 100%;
@@ -839,7 +696,7 @@
       z-index: 2;
     }
 
-    /* ===== COMMUNITY / SOCIAL SECTION ===== */
+    /* ===== COMMUNITY ===== */
     .community-hero {
       background: linear-gradient(165deg, #0f1826 0%, #0a121c 50%, #080d16 100%);
       border: 1px solid rgba(16, 185, 129, 0.25);
@@ -859,132 +716,21 @@
       animation: shimmer 3s infinite;
     }
 
-    .community-stat-card {
-      background: rgba(8, 11, 17, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
-      padding: 14px 12px;
-      text-align: center;
-      transition: all 0.2s;
-    }
+    .community-stat-card { background: rgba(8, 11, 17, 0.7); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 14px 12px; text-align: center; transition: all 0.2s; }
+    .community-stat-card:hover { border-color: rgba(16, 185, 129, 0.3); transform: translateY(-2px); }
+    .community-stat-icon { width: 36px; height: 36px; border-radius: 11px; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; }
+    .community-stat-value { font-size: 18px; font-weight: 900; font-family: 'JetBrains Mono', monospace; color: #ffffff; line-height: 1.2; }
+    .community-stat-label { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 800; margin-top: 3px; }
 
-    .community-stat-card:hover {
-      border-color: rgba(16, 185, 129, 0.3);
-      transform: translateY(-2px);
-    }
-
-    .community-stat-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 11px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 8px;
-    }
-
-    .community-stat-value {
-      font-size: 18px;
-      font-weight: 900;
-      font-family: 'JetBrains Mono', monospace;
-      color: #ffffff;
-      line-height: 1.2;
-    }
-
-    .community-stat-label {
-      font-size: 9px;
-      color: #6b7280;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      font-weight: 800;
-      margin-top: 3px;
-    }
-
-    .user-card {
-      background: linear-gradient(160deg, #0f1826 0%, #0a121c 100%);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px;
-      padding: 12px;
-      transition: all 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .user-card:hover {
-      border-color: rgba(16, 185, 129, 0.25);
-      transform: translateY(-1px);
-    }
-
-    .user-avatar-rank {
-      width: 42px;
-      height: 42px;
-      border-radius: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      font-size: 15px;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    .user-rank-badge {
-      position: absolute;
-      bottom: -4px;
-      right: -4px;
-      font-size: 12px;
-      line-height: 1;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
-    }
-
-    .user-name-display {
-      font-size: 12px;
-      font-weight: 800;
-      color: #ffffff;
-      line-height: 1.2;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .user-id-display {
-      font-size: 9px;
-      color: #06b6d4;
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      margin-top: 1px;
-    }
-
-    .user-balance-display {
-      font-size: 13px;
-      font-weight: 900;
-      font-family: 'JetBrains Mono', monospace;
-      color: #10b981;
-      text-align: right;
-      line-height: 1.2;
-    }
-
-    .user-balance-label {
-      font-size: 8px;
-      color: #6b7280;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      font-weight: 800;
-      text-align: right;
-    }
-
-    .user-tier-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 3px;
-      font-size: 8px;
-      font-weight: 800;
-      padding: 2px 7px;
-      border-radius: 999px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
+    .user-card { background: linear-gradient(160deg, #0f1826 0%, #0a121c 100%); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 12px; transition: all 0.2s; position: relative; overflow: hidden; }
+    .user-card:hover { border-color: rgba(16, 185, 129, 0.25); transform: translateY(-1px); }
+    .user-avatar-rank { width: 42px; height: 42px; border-radius: 13px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 15px; flex-shrink: 0; position: relative; }
+    .user-rank-badge { position: absolute; bottom: -4px; right: -4px; font-size: 12px; line-height: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6)); }
+    .user-name-display { font-size: 12px; font-weight: 800; color: #ffffff; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .user-id-display { font-size: 9px; color: #06b6d4; font-family: 'JetBrains Mono', monospace; font-weight: 700; margin-top: 1px; }
+    .user-balance-display { font-size: 13px; font-weight: 900; font-family: 'JetBrains Mono', monospace; color: #10b981; text-align: right; line-height: 1.2; }
+    .user-balance-label { font-size: 8px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 800; text-align: right; }
+    .user-tier-chip { display: inline-flex; align-items: center; gap: 3px; font-size: 8px; font-weight: 800; padding: 2px 7px; border-radius: 999px; letter-spacing: 0.05em; text-transform: uppercase; }
     .user-tier-starter { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
     .user-tier-silver { background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.3); }
     .user-tier-gold { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
@@ -1016,11 +762,9 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    .community-search-input::placeholder {
-      color: #4b5563;
-    }
+    .community-search-input::placeholder { color: #4b5563; }
 
-    /* ===== PRIVACY POLICY STYLES ===== */
+    /* ===== PRIVACY ===== */
     .privacy-card {
       background: linear-gradient(160deg, #0f1826 0%, #0a121c 100%);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1039,60 +783,14 @@
       opacity: 0.8;
     }
 
-    .privacy-heading {
-      font-size: 13px;
-      font-weight: 800;
-      color: #ffffff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 10px;
-    }
+    .privacy-heading { font-size: 13px; font-weight: 800; color: #ffffff; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .privacy-heading-icon { width: 28px; height: 28px; border-radius: 8px; background: rgba(16, 185, 129, 0.12); color: #10b981; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .privacy-text { font-size: 11px; color: #9ca3af; line-height: 1.7; }
+    .privacy-text strong { color: #e5e7eb; font-weight: 700; }
+    .privacy-bullet { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; font-size: 11px; color: #9ca3af; line-height: 1.6; }
+    .privacy-bullet-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; flex-shrink: 0; margin-top: 6px; box-shadow: 0 0 6px rgba(16, 185, 129, 0.6); }
 
-    .privacy-heading-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 8px;
-      background: rgba(16, 185, 129, 0.12);
-      color: #10b981;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .privacy-text {
-      font-size: 11px;
-      color: #9ca3af;
-      line-height: 1.7;
-    }
-
-    .privacy-text strong {
-      color: #e5e7eb;
-      font-weight: 700;
-    }
-
-    .privacy-bullet {
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      padding: 6px 0;
-      font-size: 11px;
-      color: #9ca3af;
-      line-height: 1.6;
-    }
-
-    .privacy-bullet-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #10b981;
-      flex-shrink: 0;
-      margin-top: 6px;
-      box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
-    }
-
-    /* ===== REST OF EXISTING STYLES ===== */
+    /* ===== REST ===== */
     #admin-notify-popup {
       position: fixed; top: 16px; left: 50%;
       transform: translateX(-50%) translateY(-150px) scale(0.9);
@@ -1107,25 +805,9 @@
       opacity: 1; pointer-events: auto;
     }
 
-    .toast-container {
-      background: linear-gradient(135deg, #0f1826 0%, #0a121c 100%);
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(16, 185, 129, 0.3);
-      border-radius: 18px; position: relative; overflow: hidden;
-    }
-
-    .toast-progress {
-      position: absolute; bottom: 0; left: 0; height: 3px;
-      background: linear-gradient(90deg, #10b981, #06b6d4);
-      animation: progressBar 5.5s linear forwards;
-    }
-
-    .live-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-      animation: pulse 2s infinite;
-    }
+    .toast-container { background: linear-gradient(135deg, #0f1826 0%, #0a121c 100%); border: 1px solid rgba(16, 185, 129, 0.35); box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(16, 185, 129, 0.3); border-radius: 18px; position: relative; overflow: hidden; }
+    .toast-progress { position: absolute; bottom: 0; left: 0; height: 3px; background: linear-gradient(90deg, #10b981, #06b6d4); animation: progressBar 5.5s linear forwards; }
+    .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #10b981; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); animation: pulse 2s infinite; }
 
     .modern-alert-overlay {
       position: fixed; inset: 0;
@@ -1147,282 +829,88 @@
       transform: scale(0.85) translateY(20px); opacity: 0;
       transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
-    .modern-alert-overlay.show .modern-alert-card {
-      transform: scale(1) translateY(0); opacity: 1;
-    }
-    .modern-alert-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: var(--alert-accent, linear-gradient(90deg, #10b981, #06b6d4));
-    }
-    .modern-alert-glow {
-      position: absolute; top: -80px; left: 50%;
-      transform: translateX(-50%);
-      width: 220px; height: 220px; border-radius: 50%;
-      background: var(--alert-glow, radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 65%));
-      filter: blur(20px); pointer-events: none;
-    }
-    .modern-alert-icon-wrap {
-      width: 68px; height: 68px; border-radius: 20px;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 16px;
-      background: var(--alert-icon-bg, linear-gradient(145deg, #10b981, #06b6d4));
-      box-shadow: 0 15px 35px -10px var(--alert-shadow, rgba(16, 185, 129, 0.6)), inset 0 2px 0 rgba(255,255,255,0.2);
-      color: #000; position: relative; z-index: 1;
-      animation: iconEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
+    .modern-alert-overlay.show .modern-alert-card { transform: scale(1) translateY(0); opacity: 1; }
+    .modern-alert-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--alert-accent, linear-gradient(90deg, #10b981, #06b6d4)); }
+    .modern-alert-glow { position: absolute; top: -80px; left: 50%; transform: translateX(-50%); width: 220px; height: 220px; border-radius: 50%; background: var(--alert-glow, radial-gradient(circle, rgba(16, 185, 129, 0.25) 0%, transparent 65%)); filter: blur(20px); pointer-events: none; }
+    .modern-alert-icon-wrap { width: 68px; height: 68px; border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; background: var(--alert-icon-bg, linear-gradient(145deg, #10b981, #06b6d4)); box-shadow: 0 15px 35px -10px var(--alert-shadow, rgba(16, 185, 129, 0.6)), inset 0 2px 0 rgba(255,255,255,0.2); color: #000; position: relative; z-index: 1; animation: iconEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
     .modern-alert-icon-wrap svg { width: 34px; height: 34px; stroke-width: 2.5; }
-    .modern-alert-title {
-      font-size: 17px; font-weight: 900; color: #fff;
-      text-align: center; letter-spacing: -0.02em;
-      margin-bottom: 6px; position: relative; z-index: 1;
-    }
-    .modern-alert-message {
-      font-size: 12px; color: #9ca3af;
-      text-align: center; line-height: 1.55;
-      margin-bottom: 20px; padding: 0 4px;
-      position: relative; z-index: 1;
-    }
-    .modern-alert-btn {
-      width: 100%; padding: 12px; border-radius: 14px;
-      background: var(--alert-accent, linear-gradient(90deg, #10b981, #06b6d4));
-      color: #000; font-size: 13px; font-weight: 900;
-      letter-spacing: 0.03em; border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      gap: 6px;
-      box-shadow: 0 8px 24px -8px var(--alert-shadow, rgba(16, 185, 129, 0.6));
-      transition: all 0.2s; position: relative; z-index: 1;
-    }
+    .modern-alert-title { font-size: 17px; font-weight: 900; color: #fff; text-align: center; letter-spacing: -0.02em; margin-bottom: 6px; position: relative; z-index: 1; }
+    .modern-alert-message { font-size: 12px; color: #9ca3af; text-align: center; line-height: 1.55; margin-bottom: 20px; padding: 0 4px; position: relative; z-index: 1; }
+    .modern-alert-btn { width: 100%; padding: 12px; border-radius: 14px; background: var(--alert-accent, linear-gradient(90deg, #10b981, #06b6d4)); color: #000; font-size: 13px; font-weight: 900; letter-spacing: 0.03em; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 8px 24px -8px var(--alert-shadow, rgba(16, 185, 129, 0.6)); transition: all 0.2s; position: relative; z-index: 1; }
     .modern-alert-btn:active { transform: scale(0.97); }
     .modern-alert-btn svg { width: 15px; height: 15px; }
-    .modern-alert-id {
-      font-size: 8px; color: #374151;
-      text-align: center;
-      font-family: 'JetBrains Mono', monospace;
-      margin-top: 12px; letter-spacing: 0.1em;
-      text-transform: uppercase; position: relative; z-index: 1;
-    }
+    .modern-alert-id { font-size: 8px; color: #374151; text-align: center; font-family: 'JetBrains Mono', monospace; margin-top: 12px; letter-spacing: 0.1em; text-transform: uppercase; position: relative; z-index: 1; }
 
     button:active { transform: scale(0.97); }
     button { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-    
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(16, 185, 129, 0.3); border-radius: 2px; }
 
-    input:focus, textarea:focus, select:focus {
-      outline: none;
-      border-color: rgba(16, 185, 129, 0.5) !important;
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
-    }
-
+    input:focus, textarea:focus, select:focus { outline: none; border-color: rgba(16, 185, 129, 0.5) !important; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
     input, textarea, select { -webkit-user-select: text !important; user-select: text !important; }
 
-    .network-card {
-      position: relative; border-radius: 16px; padding: 12px;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      background: linear-gradient(145deg, rgba(22, 28, 44, 0.9) 0%, rgba(15, 20, 32, 0.9) 100%);
-      border: 1.5px solid rgba(255, 255, 255, 0.06);
-      overflow: hidden;
-    }
-
+    .network-card { position: relative; border-radius: 16px; padding: 12px; cursor: pointer; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); background: linear-gradient(145deg, rgba(22, 28, 44, 0.9) 0%, rgba(15, 20, 32, 0.9) 100%); border: 1.5px solid rgba(255, 255, 255, 0.06); overflow: hidden; }
     .network-card:hover { border-color: rgba(255, 255, 255, 0.15); transform: translateY(-1px); }
-    .network-card.active {
-      border-color: #10b981 !important;
-      background: linear-gradient(145deg, rgba(16, 185, 129, 0.15) 0%, rgba(6, 182, 212, 0.08) 100%) !important;
-      box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.4), 0 8px 24px rgba(16, 185, 129, 0.2);
-    }
+    .network-card.active { border-color: #10b981 !important; background: linear-gradient(145deg, rgba(16, 185, 129, 0.15) 0%, rgba(6, 182, 212, 0.08) 100%) !important; box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.4), 0 8px 24px rgba(16, 185, 129, 0.2); }
     .network-card.active .network-check { opacity: 1; transform: scale(1); }
-
-    .network-check {
-      position: absolute; top: 8px; right: 8px;
-      width: 18px; height: 18px; border-radius: 50%;
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      display: flex; align-items: center; justify-content: center;
-      color: #000; opacity: 0; transform: scale(0.5);
-      transition: all 0.25s;
-      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
-      z-index: 5;
-    }
-
-    .network-logo-wrap {
-      width: 38px; height: 38px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; background: #0d1220; padding: 4px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
+    .network-check { position: absolute; top: 8px; right: 8px; width: 18px; height: 18px; border-radius: 50%; background: linear-gradient(135deg, #10b981, #06b6d4); display: flex; align-items: center; justify-content: center; color: #000; opacity: 0; transform: scale(0.5); transition: all 0.25s; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4); z-index: 5; }
+    .network-logo-wrap { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; background: #0d1220; padding: 4px; border: 1px solid rgba(255,255,255,0.06); }
     .network-logo-wrap img { width: 100%; height: 100%; object-fit: contain; }
-
     .network-logo-usdt { background: #26A17B15; border-color: #26A17B33; }
     .network-logo-eth  { background: #627EEA15; border-color: #627EEA33; }
     .network-logo-bnb  { background: #F3BA2F15; border-color: #F3BA2F33; }
     .network-logo-ton  { background: #0098EA15; border-color: #0098EA33; }
 
-    .address-display {
-      background: linear-gradient(135deg, #0a0f1a 0%, #0d1420 100%);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: 14px;
-    }
-
-    .qr-frame {
-      background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-      padding: 3px; border-radius: 16px;
-      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25);
-    }
+    .address-display { background: linear-gradient(135deg, #0a0f1a 0%, #0d1420 100%); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 14px; }
+    .qr-frame { background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%); padding: 3px; border-radius: 16px; box-shadow: 0 8px 24px rgba(16, 185, 129, 0.25); }
     .qr-frame > div { background: #ffffff; border-radius: 13px; padding: 8px; }
-
     .wallet-action-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
-    .wallet-action-btn {
-      position: relative; padding: 13px 14px; border-radius: 12px;
-      display: flex; align-items: center; justify-content: center; gap: 7px;
-      font-size: 11px; font-weight: 900; letter-spacing: 0.03em;
-      cursor: pointer; overflow: hidden; border: none;
-    }
+    .wallet-action-btn { position: relative; padding: 13px 14px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 7px; font-size: 11px; font-weight: 900; letter-spacing: 0.03em; cursor: pointer; overflow: hidden; border: none; }
     .wallet-action-btn:hover { transform: translateY(-2px); }
+    .wallet-action-btn.deposit { background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%); border: 1px solid rgba(16, 185, 129, 0.4); color: #10b981; box-shadow: 0 4px 16px -4px rgba(16, 185, 129, 0.4); }
+    .wallet-action-btn.withdraw { background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%); border: 1px solid rgba(6, 182, 212, 0.4); color: #06b6d4; box-shadow: 0 4px 16px -4px rgba(6, 182, 212, 0.4); }
+    .wallet-action-btn-icon { width: 26px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); }
 
-    .wallet-action-btn.deposit {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%);
-      border: 1px solid rgba(16, 185, 129, 0.4); color: #10b981;
-      box-shadow: 0 4px 16px -4px rgba(16, 185, 129, 0.4);
-    }
-    .wallet-action-btn.withdraw {
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
-      border: 1px solid rgba(6, 182, 212, 0.4); color: #06b6d4;
-      box-shadow: 0 4px 16px -4px rgba(6, 182, 212, 0.4);
-    }
-    .wallet-action-btn-icon {
-      width: 26px; height: 26px; border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.3);
-    }
-
-    .modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.88);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      display: flex; align-items: center; justify-content: center;
-      padding: 16px; z-index: 9998;
-    }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 9998; }
     .modal-overlay.hidden { display: none; }
+    @media (max-width: 640px) { .modal-overlay { align-items: flex-start; padding-top: 40px; } }
 
-    @media (max-width: 640px) {
-      .modal-overlay { align-items: flex-start; padding-top: 40px; }
-    }
-
-    .info-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-    }
+    .info-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
     .info-row:last-child { border-bottom: none; }
     .info-label { font-size: 11px; color: #9ca3af; display: flex; align-items: center; gap: 8px; }
     .info-value { font-size: 11px; font-weight: 800; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
 
-    .metric-card {
-      background: linear-gradient(145deg, rgba(17, 22, 34, 0.9) 0%, rgba(11, 16, 27, 0.9) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 14px; padding: 12px;
-      transition: all 0.2s;
-    }
+    .metric-card { background: linear-gradient(145deg, rgba(17, 22, 34, 0.9) 0%, rgba(11, 16, 27, 0.9) 100%); border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 14px; padding: 12px; transition: all 0.2s; }
     .metric-card:hover { border-color: rgba(16, 185, 129, 0.3); transform: translateY(-2px); }
     .metric-label { font-size: 9px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; display: block; margin-bottom: 4px; }
     .metric-value { font-size: 15px; font-weight: 900; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
 
     .input-safe { scroll-margin-top: 100px; scroll-margin-bottom: 300px; }
 
-    .bybit-tabs {
-      display: flex;
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 14px;
-      padding: 4px;
-      gap: 4px;
-    }
-    .bybit-tab {
-      flex: 1;
-      padding: 10px 12px;
-      border-radius: 10px;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      color: #9ca3af;
-      text-align: center;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-    }
-    .bybit-tab.active {
-      background: #1a2030;
-      color: #fff;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
-    }
+    .bybit-tabs { display: flex; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; padding: 4px; gap: 4px; }
+    .bybit-tab { flex: 1; padding: 10px 12px; border-radius: 10px; font-size: 12px; font-weight: 800; letter-spacing: 0.02em; color: #9ca3af; text-align: center; cursor: pointer; transition: background 0.2s, color 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }
+    .bybit-tab.active { background: #1a2030; color: #fff; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08); }
     .bybit-tab.active i { color: #10b981; }
     .bybit-tab.active.deposit-tab i { color: #10b981; }
     .bybit-tab.active.withdraw-tab i { color: #06b6d4; }
 
-    .bybit-amount-box {
-      background: rgba(0,0,0,0.35);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      padding: 18px 16px;
-      transition: border-color 0.2s;
-    }
-    .bybit-amount-box:focus-within {
-      border-color: rgba(16,185,129,0.5);
-      box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
-    }
-    .bybit-amount-input {
-      background: transparent;
-      border: none;
-      font-size: 28px;
-      font-weight: 900;
-      font-family: 'JetBrains Mono', monospace;
-      color: #fff;
-      width: 100%;
-      letter-spacing: -0.02em;
-    }
+    .bybit-amount-box { background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 18px 16px; transition: border-color 0.2s; }
+    .bybit-amount-box:focus-within { border-color: rgba(16,185,129,0.5); box-shadow: 0 0 0 3px rgba(16,185,129,0.1); }
+    .bybit-amount-input { background: transparent; border: none; font-size: 28px; font-weight: 900; font-family: 'JetBrains Mono', monospace; color: #fff; width: 100%; letter-spacing: -0.02em; }
     .bybit-amount-input::placeholder { color: #374151; }
 
-    .quick-chip {
-      flex: 1;
-      padding: 8px 4px;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      font-size: 11px;
-      font-weight: 800;
-      color: #9ca3af;
-      transition: background 0.15s, color 0.15s, border-color 0.15s;
-    }
+    .quick-chip { flex: 1; padding: 8px 4px; border-radius: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); font-size: 11px; font-weight: 800; color: #9ca3af; transition: background 0.15s, color 0.15s, border-color 0.15s; }
     .quick-chip:hover { background: rgba(16,185,129,0.1); color: #10b981; border-color: rgba(16,185,129,0.3); }
 
-    .bybit-info-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 12px 0;
-      font-size: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
+    .bybit-info-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; font-size: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
     .bybit-info-row:last-child { border-bottom: none; }
     .bybit-info-label { color: #6b7280; font-weight: 600; }
     .bybit-info-value { color: #fff; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
 
-    .verified-chip {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 9px; font-weight: 700; padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(16, 185, 129, 0.12);
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      letter-spacing: 0.03em; text-transform: uppercase;
-    }
+    .verified-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 999px; background: rgba(16, 185, 129, 0.12); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); letter-spacing: 0.03em; text-transform: uppercase; }
 
-    @keyframes iconEnter {
-      0% { transform: scale(0.3) rotate(-30deg); opacity: 0; }
-      60% { transform: scale(1.08) rotate(4deg); }
-      100% { transform: scale(1) rotate(0deg); opacity: 1; }
-    }
+    @keyframes iconEnter { 0% { transform: scale(0.3) rotate(-30deg); opacity: 0; } 60% { transform: scale(1.08) rotate(4deg); } 100% { transform: scale(1) rotate(0deg); opacity: 1; } }
   </style>
 </head>
 <body class="font-sans antialiased pb-32">
@@ -1440,9 +928,7 @@
       </div>
 
       <div class="flex items-center gap-2 cursor-pointer" onclick="switchTab('profile')">
-        <div id="user-avatar" class="w-8 h-8 rounded-full bg-brand-card border border-emerald-500/30 flex items-center justify-center font-bold text-xs text-emerald-400">
-          U
-        </div>
+        <div id="user-avatar" class="w-8 h-8 rounded-full bg-brand-card border border-emerald-500/30 flex items-center justify-center font-bold text-xs text-emerald-400">U</div>
         <span id="user-name" class="text-xs font-semibold text-gray-300 hidden sm:inline">Investor</span>
       </div>
     </div>
@@ -1485,16 +971,11 @@
 
         <div class="wallet-action-bar pt-2">
           <button onclick="openWalletAction('deposit')" class="wallet-action-btn deposit">
-            <div class="wallet-action-btn-icon">
-              <i data-lucide="arrow-down-left" class="w-3.5 h-3.5"></i>
-            </div>
+            <div class="wallet-action-btn-icon"><i data-lucide="arrow-down-left" class="w-3.5 h-3.5"></i></div>
             <span>Deposit</span>
           </button>
-
           <button onclick="openWalletAction('withdraw')" class="wallet-action-btn withdraw">
-            <div class="wallet-action-btn-icon">
-              <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
-            </div>
+            <div class="wallet-action-btn-icon"><i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i></div>
             <span>Withdraw</span>
           </button>
         </div>
@@ -1524,20 +1005,14 @@
       </div>
 
       <div class="space-y-3">
-        
         <!-- STARTER -->
         <div class="invest-plan-pro invest-plan-starter">
           <div class="flex items-start justify-between gap-3 mb-2 relative z-10">
             <div class="flex items-center gap-3 min-w-0">
-              <div class="invest-plan-icon">
-                <i data-lucide="rocket" class="w-6 h-6"></i>
-              </div>
+              <div class="invest-plan-icon"><i data-lucide="rocket" class="w-6 h-6"></i></div>
               <div class="min-w-0">
                 <div class="flex items-center gap-2 mb-1.5 flex-wrap">
-                  <span class="invest-plan-badge">
-                    <i data-lucide="sparkles" class="w-2.5 h-2.5"></i>
-                    Starter
-                  </span>
+                  <span class="invest-plan-badge"><i data-lucide="sparkles" class="w-2.5 h-2.5"></i> Starter</span>
                 </div>
                 <h4 class="invest-plan-title">Starter Sprint</h4>
                 <p class="text-[10px] text-gray-500 font-mono mt-0.5">5-Day Fixed Staking</p>
@@ -1550,22 +1025,10 @@
           </div>
 
           <div class="invest-plan-meta">
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Duration</span>
-              <span class="invest-plan-meta-value">5 Days</span>
-            </div>
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Total Return</span>
-              <span class="invest-plan-meta-value" style="color:#10b981">+250%</span>
-            </div>
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Min Deposit</span>
-              <span class="invest-plan-meta-value">$5.00</span>
-            </div>
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Max Deposit</span>
-              <span class="invest-plan-meta-value">$99.00</span>
-            </div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Duration</span><span class="invest-plan-meta-value">5 Days</span></div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Total Return</span><span class="invest-plan-meta-value" style="color:#10b981">+250%</span></div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Min Deposit</span><span class="invest-plan-meta-value">$5.00</span></div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Max Deposit</span><span class="invest-plan-meta-value">$99.00</span></div>
           </div>
 
           <div class="invest-plan-features">
@@ -1575,8 +1038,7 @@
           </div>
 
           <button onclick="openInvestModal('Starter Sprint', 30.0, 5, 5, 99)" class="invest-plan-cta">
-            <i data-lucide="zap" class="w-4 h-4"></i>
-            Stake Now
+            <i data-lucide="zap" class="w-4 h-4"></i> Stake Now
           </button>
         </div>
 
@@ -1584,15 +1046,10 @@
         <div class="invest-plan-pro invest-plan-silver">
           <div class="flex items-start justify-between gap-3 mb-2 relative z-10">
             <div class="flex items-center gap-3 min-w-0">
-              <div class="invest-plan-icon">
-                <i data-lucide="medal" class="w-6 h-6"></i>
-              </div>
+              <div class="invest-plan-icon"><i data-lucide="medal" class="w-6 h-6"></i></div>
               <div class="min-w-0">
                 <div class="flex items-center gap-2 mb-1.5 flex-wrap">
-                  <span class="invest-plan-badge">
-                    <i data-lucide="shield" class="w-2.5 h-2.5"></i>
-                    Silver
-                  </span>
+                  <span class="invest-plan-badge"><i data-lucide="shield" class="w-2.5 h-2.5"></i> Silver</span>
                 </div>
                 <h4 class="invest-plan-title">Silver Boost</h4>
                 <p class="text-[10px] text-gray-500 font-mono mt-0.5">7-Day Fixed Staking</p>
@@ -1605,22 +1062,10 @@
           </div>
 
           <div class="invest-plan-meta">
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Duration</span>
-              <span class="invest-plan-meta-value">7 Days</span>
-            </div>
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Total Return</span>
-              <span class="invest-plan-meta-value" style="color:#06b6d4">+345%</span>
-            </div>
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Min Deposit</span>
-              <span class="invest-plan-meta-value">$100.00</span>
-            </div>
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Max Deposit</span>
-              <span class="invest-plan-meta-value">$499.00</span>
-            </div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Duration</span><span class="invest-plan-meta-value">7 Days</span></div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Total Return</span><span class="invest-plan-meta-value" style="color:#06b6d4">+345%</span></div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Min Deposit</span><span class="invest-plan-meta-value">$100.00</span></div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Max Deposit</span><span class="invest-plan-meta-value">$499.00</span></div>
           </div>
 
           <div class="invest-plan-features">
@@ -1630,8 +1075,7 @@
           </div>
 
           <button onclick="openInvestModal('Silver Boost', 35.0, 7, 100, 499)" class="invest-plan-cta">
-            <i data-lucide="zap" class="w-4 h-4"></i>
-            Stake Now
+            <i data-lucide="zap" class="w-4 h-4"></i> Stake Now
           </button>
         </div>
 
@@ -1640,15 +1084,10 @@
           <div class="invest-plan-popular">POPULAR</div>
           <div class="flex items-start justify-between gap-3 mb-2 relative z-10">
             <div class="flex items-center gap-3 min-w-0">
-              <div class="invest-plan-icon">
-                <i data-lucide="crown" class="w-6 h-6"></i>
-              </div>
+              <div class="invest-plan-icon"><i data-lucide="crown" class="w-6 h-6"></i></div>
               <div class="min-w-0">
                 <div class="flex items-center gap-2 mb-1.5 flex-wrap">
-                  <span class="invest-plan-badge">
-                    <i data-lucide="flame" class="w-2.5 h-2.5"></i>
-                    Gold
-                  </span>
+                  <span class="invest-plan-badge"><i data-lucide="flame" class="w-2.5 h-2.5"></i> Gold</span>
                 </div>
                 <h4 class="invest-plan-title">Gold Growth</h4>
                 <p class="text-[10px] text-gray-500 font-mono mt-0.5">10-Day Fixed Staking</p>
@@ -1661,22 +1100,10 @@
           </div>
 
           <div class="invest-plan-meta">
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Duration</span>
-              <span class="invest-plan-meta-value">10 Days</span>
-            </div>
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Total Return</span>
-              <span class="invest-plan-meta-value" style="color:#f59e0b">+500%</span>
-            </div>
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Min Deposit</span>
-              <span class="invest-plan-meta-value">$500.00</span>
-            </div>
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Max Deposit</span>
-              <span class="invest-plan-meta-value">$1,999.00</span>
-            </div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Duration</span><span class="invest-plan-meta-value">10 Days</span></div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Total Return</span><span class="invest-plan-meta-value" style="color:#f59e0b">+500%</span></div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Min Deposit</span><span class="invest-plan-meta-value">$500.00</span></div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Max Deposit</span><span class="invest-plan-meta-value">$1,999.00</span></div>
           </div>
 
           <div class="invest-plan-features">
@@ -1686,8 +1113,7 @@
           </div>
 
           <button onclick="openInvestModal('Gold Growth', 40.0, 10, 500, 1999)" class="invest-plan-cta">
-            <i data-lucide="zap" class="w-4 h-4"></i>
-            Stake Now
+            <i data-lucide="zap" class="w-4 h-4"></i> Stake Now
           </button>
         </div>
 
@@ -1695,15 +1121,10 @@
         <div class="invest-plan-pro invest-plan-vip">
           <div class="flex items-start justify-between gap-3 mb-2 relative z-10">
             <div class="flex items-center gap-3 min-w-0">
-              <div class="invest-plan-icon">
-                <i data-lucide="gem" class="w-6 h-6"></i>
-              </div>
+              <div class="invest-plan-icon"><i data-lucide="gem" class="w-6 h-6"></i></div>
               <div class="min-w-0">
                 <div class="flex items-center gap-2 mb-1.5 flex-wrap">
-                  <span class="invest-plan-badge">
-                    <i data-lucide="diamond" class="w-2.5 h-2.5"></i>
-                    VIP Elite
-                  </span>
+                  <span class="invest-plan-badge"><i data-lucide="diamond" class="w-2.5 h-2.5"></i> VIP Elite</span>
                 </div>
                 <h4 class="invest-plan-title">VIP Max</h4>
                 <p class="text-[10px] text-gray-500 font-mono mt-0.5">15-Day Fixed Staking</p>
@@ -1716,22 +1137,10 @@
           </div>
 
           <div class="invest-plan-meta">
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Duration</span>
-              <span class="invest-plan-meta-value">15 Days</span>
-            </div>
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Total Return</span>
-              <span class="invest-plan-meta-value" style="color:#a855f7">+850%</span>
-            </div>
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Min Deposit</span>
-              <span class="invest-plan-meta-value">$2,000.00</span>
-            </div>
-            <div class="invest-plan-meta-cell">
-              <span class="invest-plan-meta-label">Max Deposit</span>
-              <span class="invest-plan-meta-value">$10,000.00</span>
-            </div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Duration</span><span class="invest-plan-meta-value">15 Days</span></div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Total Return</span><span class="invest-plan-meta-value" style="color:#a855f7">+850%</span></div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Min Deposit</span><span class="invest-plan-meta-value">$2,000.00</span></div>
+            <div class="invest-plan-meta-cell"><span class="invest-plan-meta-label">Max Deposit</span><span class="invest-plan-meta-value">$10,000.00</span></div>
           </div>
 
           <div class="invest-plan-features">
@@ -1742,11 +1151,9 @@
           </div>
 
           <button onclick="openInvestModal('VIP Max', 50.0, 15, 2000, 10000)" class="invest-plan-cta">
-            <i data-lucide="zap" class="w-4 h-4"></i>
-            Stake Now
+            <i data-lucide="zap" class="w-4 h-4"></i> Stake Now
           </button>
         </div>
-
       </div>
     </div>
   </main>
@@ -1909,12 +1316,10 @@
         </div>
         <span class="text-[9px] text-gray-400 font-mono">v3.0.0</span>
       </div>
-
     </div>
 
-    <!-- ===== DEPOSIT ===== -->
+    <!-- DEPOSIT -->
     <div id="section-deposit" class="space-y-4 hidden">
-      
       <div class="flex items-center justify-between">
         <button onclick="backToWalletOverview()" class="text-xs text-emerald-400 flex items-center gap-1.5 font-bold bg-emerald-500/10 hover:bg-emerald-500/20 px-3 py-2 rounded-lg border border-emerald-500/20 transition-all">
           <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back
@@ -2077,9 +1482,8 @@
       </button>
     </div>
 
-    <!-- ===== WITHDRAW ===== -->
+    <!-- WITHDRAW -->
     <div id="section-withdraw" class="space-y-4 hidden">
-      
       <div class="flex items-center justify-between">
         <button onclick="backToWalletOverview()" class="text-xs text-cyan-400 flex items-center gap-1.5 font-bold bg-cyan-500/10 hover:bg-cyan-500/20 px-3 py-2 rounded-lg border border-cyan-500/20 transition-all">
           <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back
@@ -2222,7 +1626,6 @@
 
   <!-- HISTORY -->
   <main id="tab-history" class="tab-content p-4 space-y-4">
-    
     <div class="flex items-center justify-between pt-2">
       <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
         <i data-lucide="history" class="w-4 h-4 text-emerald-400"></i> Transaction History
@@ -2241,10 +1644,9 @@
     </div>
   </main>
 
-  <!-- COMMUNITY (NEW) -->
+  <!-- COMMUNITY (ADMIN-ONLY LEADERBOARD) -->
   <main id="tab-community" class="tab-content p-4 space-y-4">
     
-    <!-- HERO -->
     <div class="community-hero p-5">
       <div class="relative z-10">
         <div class="flex items-center justify-between mb-4">
@@ -2289,30 +1691,46 @@
       </div>
     </div>
 
-    <!-- SEARCH -->
-    <div class="community-search-box">
-      <i data-lucide="search" class="w-4 h-4 text-emerald-400"></i>
-      <input 
-        type="text" 
-        id="community-search-input" 
-        class="community-search-input" 
-        placeholder="Search by ID, username or name..."
-        oninput="filterCommunityUsers()"
-      >
-      <button onclick="clearCommunitySearch()" class="text-gray-500 hover:text-white transition-colors" id="community-search-clear" style="display:none;">
-        <i data-lucide="x" class="w-4 h-4"></i>
-      </button>
+    <!-- ADMIN-ONLY LEADERBOARD SECTION -->
+    <div id="admin-leaderboard-section" style="display:none;">
+      <div class="glass-card rounded-xl p-2.5 mb-3 border border-amber-500/30 bg-amber-500/5 flex items-center gap-2">
+        <i data-lucide="shield-alert" class="w-3.5 h-3.5 text-amber-400"></i>
+        <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Admin Access Only</span>
+      </div>
+
+      <!-- SEARCH -->
+      <div class="community-search-box mb-3">
+        <i data-lucide="search" class="w-4 h-4 text-emerald-400"></i>
+        <input 
+          type="text" 
+          id="community-search-input" 
+          class="community-search-input" 
+          placeholder="Search by ID, username or name..."
+          oninput="filterCommunityUsers()"
+        >
+        <button onclick="clearCommunitySearch()" class="text-gray-500 hover:text-white transition-colors" id="community-search-clear" style="display:none;">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-3">
+          <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+            <i data-lucide="trophy" class="w-4 h-4 text-amber-400"></i> Top Investors
+          </h4>
+          <span class="text-[9px] text-gray-500 font-mono" id="community-user-count-badge">0 users</span>
+        </div>
+        <div id="community-users-list" class="space-y-2.5"></div>
+      </div>
     </div>
 
-    <!-- LEADERBOARD -->
-    <div>
-      <div class="flex items-center justify-between mb-3">
-        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-          <i data-lucide="trophy" class="w-4 h-4 text-amber-400"></i> Top Investors
-        </h4>
-        <span class="text-[9px] text-gray-500 font-mono" id="community-user-count-badge">0 users</span>
+    <!-- NON-ADMIN MESSAGE -->
+    <div id="non-admin-message" class="glass-card rounded-2xl p-6 text-center border border-brand-border">
+      <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
+        <i data-lucide="trophy" class="w-7 h-7 text-emerald-400"></i>
       </div>
-      <div id="community-users-list" class="space-y-2.5"></div>
+      <p class="text-sm font-bold text-white mb-1">Leaderboard Available</p>
+      <p class="text-[11px] text-gray-400 leading-relaxed">Top investor rankings are visible to administrators only.</p>
     </div>
 
     <!-- PRIVACY POLICY -->
@@ -2330,9 +1748,7 @@
       <div class="space-y-3">
         <div class="privacy-card">
           <div class="privacy-heading">
-            <div class="privacy-heading-icon">
-              <i data-lucide="lock" class="w-3.5 h-3.5"></i>
-            </div>
+            <div class="privacy-heading-icon"><i data-lucide="lock" class="w-3.5 h-3.5"></i></div>
             <span>Data Protection</span>
           </div>
           <p class="privacy-text">
@@ -2342,9 +1758,7 @@
 
         <div class="privacy-card">
           <div class="privacy-heading">
-            <div class="privacy-heading-icon">
-              <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
-            </div>
+            <div class="privacy-heading-icon"><i data-lucide="user-check" class="w-3.5 h-3.5"></i></div>
             <span>Information We Collect</span>
           </div>
           <div class="space-y-1">
@@ -2356,9 +1770,7 @@
 
         <div class="privacy-card">
           <div class="privacy-heading">
-            <div class="privacy-heading-icon">
-              <i data-lucide="fingerprint" class="w-3.5 h-3.5"></i>
-            </div>
+            <div class="privacy-heading-icon"><i data-lucide="fingerprint" class="w-3.5 h-3.5"></i></div>
             <span>Your Rights</span>
           </div>
           <div class="space-y-1">
@@ -2370,9 +1782,7 @@
 
         <div class="privacy-card">
           <div class="privacy-heading">
-            <div class="privacy-heading-icon">
-              <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
-            </div>
+            <div class="privacy-heading-icon"><i data-lucide="shield-alert" class="w-3.5 h-3.5"></i></div>
             <span>Security Measures</span>
           </div>
           <p class="privacy-text">
@@ -2382,9 +1792,7 @@
 
         <div class="privacy-card">
           <div class="privacy-heading">
-            <div class="privacy-heading-icon">
-              <i data-lucide="mail" class="w-3.5 h-3.5"></i>
-            </div>
+            <div class="privacy-heading-icon"><i data-lucide="mail" class="w-3.5 h-3.5"></i></div>
             <span>Contact</span>
           </div>
           <p class="privacy-text">
@@ -2397,7 +1805,6 @@
 
   <!-- SUPPORT -->
   <main id="tab-support" class="tab-content p-4 space-y-4">
-    
     <div class="glass-card rounded-2xl p-5 border border-emerald-500/30 relative overflow-hidden space-y-3">
       <div class="absolute -right-10 -top-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl"></div>
       
@@ -2417,9 +1824,7 @@
         <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-mono font-bold">24/7</span>
       </div>
 
-      <p class="text-xs text-gray-300 leading-relaxed">
-        Our institutional desk provides instant support for all blockchain transactions.
-      </p>
+      <p class="text-xs text-gray-300 leading-relaxed">Our institutional desk provides instant support for all blockchain transactions.</p>
 
       <div class="grid grid-cols-2 gap-2.5 pt-1">
         <a href="https://t.me/ApexInvestSupport" target="_blank" class="gradient-bg text-black font-extrabold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 shadow-md active:scale-95 transition-all text-center">
@@ -2478,9 +1883,7 @@
         <i data-lucide="history" class="w-4 h-4 text-cyan-400"></i> My Tickets
       </h4>
       <div id="support-tickets-history" class="space-y-2.5">
-        <div class="glass-card rounded-xl p-3 text-center text-xs text-gray-400 border border-brand-border">
-          No tickets yet.
-        </div>
+        <div class="glass-card rounded-xl p-3 text-center text-xs text-gray-400 border border-brand-border">No tickets yet.</div>
       </div>
     </div>
   </main>
@@ -2679,14 +2082,12 @@
     </div>
   </div>
 
-  <!-- PROFESSIONAL RECEIPT MODAL -->
+  <!-- RECEIPT MODAL -->
   <div id="receipt-modal" class="modal-overlay hidden">
-    <div id="receipt-content-container" class="w-full max-w-[340px] max-h-[95vh] flex flex-col">
-      <!-- Dynamic -->
-    </div>
+    <div id="receipt-content-container" class="w-full max-w-[340px] max-h-[95vh] flex flex-col"></div>
   </div>
 
-  <!-- PROFESSIONAL TOAST -->
+  <!-- TOAST -->
   <div id="admin-notify-popup">
     <div class="toast-container">
       <div class="p-4 flex items-start gap-3.5">
@@ -2709,13 +2110,11 @@
     </div>
   </div>
 
-  <!-- MODERN ALERT MODAL -->
+  <!-- MODERN ALERT -->
   <div id="modern-alert-overlay" class="modern-alert-overlay" onclick="closeModernAlert(event)">
     <div class="modern-alert-card" id="modern-alert-card" onclick="event.stopPropagation()">
       <div class="modern-alert-glow" id="modern-alert-glow"></div>
-      <div class="modern-alert-icon-wrap" id="modern-alert-icon">
-        <i data-lucide="alert-circle"></i>
-      </div>
+      <div class="modern-alert-icon-wrap" id="modern-alert-icon"><i data-lucide="alert-circle"></i></div>
       <h3 class="modern-alert-title" id="modern-alert-title">Notice</h3>
       <p class="modern-alert-message" id="modern-alert-message">Something needs your attention.</p>
       <button class="modern-alert-btn" id="modern-alert-btn" onclick="closeModernAlert()">
@@ -2744,7 +2143,6 @@
       }
     }
 
-    // No admin panel in webapp - admin manages everything from bot
     const ADMIN_TELEGRAM_ID = '5738022147';
     const isAdmin = currentUserProfile.id === ADMIN_TELEGRAM_ID;
 
@@ -2765,7 +2163,7 @@
     let uploadedScreenshotBase64 = null;
     let pendingReceiptTx = null;
 
-    // Simulated community users (demo data)
+    // Community users - only visible to admin
     let communityUsers = JSON.parse(localStorage.getItem('apex_community_users') || 'null');
     if (!communityUsers) {
       communityUsers = [
@@ -2783,8 +2181,7 @@
         { id: '9182736450', name: 'Maria Silva', username: '@maria_s', balance: 3180.50, tier: 'starter', avatar: 'MS', color: '#10b981' }
       ];
       
-      // Add current user if not admin
-      if (!communityUsers.find(u => u.id === currentUserProfile.id) && currentUserProfile.id !== '0') {
+      if (!communityUsers.find(u => u.id === currentUserProfile.id) && currentUserProfile.id !== '0' && !isAdmin) {
         const tier = userPortfolio.balance >= 2000 ? 'vip' : userPortfolio.balance >= 500 ? 'gold' : userPortfolio.balance >= 100 ? 'silver' : 'starter';
         const tierColors = { vip: '#a855f7', gold: '#f59e0b', silver: '#06b6d4', starter: '#10b981' };
         communityUsers.push({
@@ -2806,7 +2203,7 @@
       renderHistory();
       renderSupportTickets();
       renderActiveInvestments();
-      renderCommunityUsers();
+      setupCommunityVisibility();
       updateCommunityStats();
       
       setInterval(pollServerForSupportReplies, 2500);
@@ -2823,15 +2220,30 @@
     }
 
     /* ===== COMMUNITY FUNCTIONS ===== */
+    function setupCommunityVisibility() {
+      const adminSection = document.getElementById('admin-leaderboard-section');
+      const nonAdminMsg = document.getElementById('non-admin-message');
+      
+      if (isAdmin) {
+        adminSection.style.display = 'block';
+        nonAdminMsg.style.display = 'none';
+        renderCommunityUsers();
+      } else {
+        adminSection.style.display = 'none';
+        nonAdminMsg.style.display = 'block';
+      }
+    }
+
     function updateCommunityStats() {
       const totalUsers = communityUsers.length;
-      const activeStakes = communityUsers.reduce((sum, u) => sum + (u.id === currentUserProfile.id ? activeInvestments.length : Math.floor(Math.random() * 3)), 0);
+      const activeStakes = communityUsers.reduce((sum, u) => sum + (u.id === currentUserProfile.id ? activeInvestments.length : 0), 0);
       const totalTVL = communityUsers.reduce((sum, u) => sum + (u.balance || 0), 0);
       
       document.getElementById('community-total-users').innerText = totalUsers;
       document.getElementById('community-active-investments').innerText = activeStakes;
       document.getElementById('community-total-tvl').innerText = '$' + formatCompactNumber(totalTVL);
-      document.getElementById('community-user-count-badge').innerText = `${totalUsers} users`;
+      const badge = document.getElementById('community-user-count-badge');
+      if (badge) badge.innerText = `${totalUsers} users`;
     }
 
     function formatCompactNumber(num) {
@@ -2841,13 +2253,13 @@
     }
 
     function renderCommunityUsers(filterText = '') {
+      if (!isAdmin) return;
+      
       const container = document.getElementById('community-users-list');
       if (!container) return;
       
-      // Sort by balance descending
       const sorted = [...communityUsers].sort((a, b) => b.balance - a.balance);
       
-      // Filter
       const filtered = filterText.trim() === '' 
         ? sorted 
         : sorted.filter(u => 
@@ -2872,11 +2284,10 @@
         return;
       }
       
-      filtered.forEach((user, index) => {
+      filtered.forEach((user) => {
         const rank = sorted.findIndex(u => u.id === user.id) + 1;
         const rankEmoji = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '';
         const isCurrentUser = user.id === currentUserProfile.id;
-        
         const tierLabels = { vip: 'VIP', gold: 'GOLD', silver: 'SILVER', starter: 'STARTER' };
         
         container.innerHTML += `
@@ -2895,7 +2306,7 @@
                       <h5 class="user-name-display">${user.name}</h5>
                       ${isCurrentUser ? '<span class="text-[7px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-bold">YOU</span>' : ''}
                     </div>
-                    <p class="user-id-display">${user.username} · ID: ${user.id.slice(0, 8)}...</p>
+                    <p class="user-id-display">${user.username} · ID: ${user.id}</p>
                   </div>
                   <div class="text-right shrink-0">
                     <div class="user-balance-display">$${formatCompactNumber(user.balance)}</div>
@@ -2939,7 +2350,7 @@
       renderCommunityUsers();
     }
 
-    /* ===== END COMMUNITY FUNCTIONS ===== */
+    /* ===== END COMMUNITY ===== */
 
     function showModernAlert({ title, message, type = 'info', icon = 'alert-circle', btnText = 'Got it' }) {
       const overlay = document.getElementById('modern-alert-overlay');
@@ -2948,50 +2359,26 @@
       const glow = document.getElementById('modern-alert-glow');
 
       const presets = {
-        success: {
-          accent: 'linear-gradient(90deg, #10b981, #06b6d4)',
-          iconBg: 'linear-gradient(145deg, #10b981, #06b6d4)',
-          shadow: 'rgba(16, 185, 129, 0.6)',
-          glow: 'radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 65%)'
-        },
-        error: {
-          accent: 'linear-gradient(90deg, #ef4444, #f97316)',
-          iconBg: 'linear-gradient(145deg, #ef4444, #f97316)',
-          shadow: 'rgba(239, 68, 68, 0.6)',
-          glow: 'radial-gradient(circle, rgba(239, 68, 68, 0.3) 0%, transparent 65%)'
-        },
-        warning: {
-          accent: 'linear-gradient(90deg, #f59e0b, #f97316)',
-          iconBg: 'linear-gradient(145deg, #f59e0b, #f97316)',
-          shadow: 'rgba(245, 158, 11, 0.6)',
-          glow: 'radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, transparent 65%)'
-        },
-        info: {
-          accent: 'linear-gradient(90deg, #3b82f6, #06b6d4)',
-          iconBg: 'linear-gradient(145deg, #3b82f6, #06b6d4)',
-          shadow: 'rgba(59, 130, 246, 0.6)',
-          glow: 'radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 65%)'
-        }
+        success: { accent: 'linear-gradient(90deg, #10b981, #06b6d4)', iconBg: 'linear-gradient(145deg, #10b981, #06b6d4)', shadow: 'rgba(16, 185, 129, 0.6)', glow: 'radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, transparent 65%)' },
+        error: { accent: 'linear-gradient(90deg, #ef4444, #f97316)', iconBg: 'linear-gradient(145deg, #ef4444, #f97316)', shadow: 'rgba(239, 68, 68, 0.6)', glow: 'radial-gradient(circle, rgba(239, 68, 68, 0.3) 0%, transparent 65%)' },
+        warning: { accent: 'linear-gradient(90deg, #f59e0b, #f97316)', iconBg: 'linear-gradient(145deg, #f59e0b, #f97316)', shadow: 'rgba(245, 158, 11, 0.6)', glow: 'radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, transparent 65%)' },
+        info: { accent: 'linear-gradient(90deg, #3b82f6, #06b6d4)', iconBg: 'linear-gradient(145deg, #3b82f6, #06b6d4)', shadow: 'rgba(59, 130, 246, 0.6)', glow: 'radial-gradient(circle, rgba(59, 130, 246, 0.3) 0%, transparent 65%)' }
       };
 
       const p = presets[type] || presets.info;
-
       card.style.setProperty('--alert-accent', p.accent);
       card.style.setProperty('--alert-icon-bg', p.iconBg);
       card.style.setProperty('--alert-shadow', p.shadow);
       glow.style.background = p.glow;
       iconWrap.style.background = p.iconBg;
       iconWrap.style.boxShadow = `0 15px 35px -10px ${p.shadow}, inset 0 2px 0 rgba(255,255,255,0.2)`;
-
       iconWrap.innerHTML = `<i data-lucide="${icon}"></i>`;
       document.getElementById('modern-alert-title').innerText = title;
       document.getElementById('modern-alert-message').innerText = message;
       document.getElementById('modern-alert-btn').innerHTML = `<i data-lucide="check"></i> <span>${btnText}</span>`;
       document.getElementById('modern-alert-id').innerText = 'APEX · ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
-
       lucide.createIcons();
       overlay.classList.add('show');
-
       if (tg?.HapticFeedback) {
         if (type === 'success') tg.HapticFeedback.notificationOccurred('success');
         else if (type === 'error') tg.HapticFeedback.notificationOccurred('error');
@@ -3000,8 +2387,7 @@
     }
 
     function closeModernAlert(e) {
-      const overlay = document.getElementById('modern-alert-overlay');
-      overlay.classList.remove('show');
+      document.getElementById('modern-alert-overlay').classList.remove('show');
     }
 
     function updateWalletUI() {
@@ -3055,7 +2441,6 @@
       if (activeInvestments.length === 0) return;
       const now = Date.now();
       let hasUpdates = false;
-
       activeInvestments.forEach(inv => {
         if (inv.startTime && inv.endTime) {
           const elapsed = now - inv.startTime;
@@ -3068,56 +2453,22 @@
           hasUpdates = true;
         }
       });
-
-      if (hasUpdates) {
-        renderActiveInvestments();
-        saveAppData();
-      }
+      if (hasUpdates) { renderActiveInvestments(); saveAppData(); }
     }
 
     const cryptoWallets = {
-      usdt_trc20: { 
-        name: 'USDT (TRC20 - Tron)', 
-        address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', 
-        logo: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040', 
-        emoji: '₮', 
-        logoClass: 'network-logo-usdt', 
-        color: '#26A17B' 
-      },
-      usdt_bep20: { 
-        name: 'USDT (BEP20 - BNB Chain)', 
-        address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', 
-        logo: 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040', 
-        emoji: '⚡', 
-        logoClass: 'network-logo-bnb', 
-        color: '#F3BA2F' 
-      },
-      usdt_erc20: { 
-        name: 'USDT (ERC20 - Ethereum)', 
-        address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', 
-        logo: 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040', 
-        emoji: 'Ξ', 
-        logoClass: 'network-logo-eth', 
-        color: '#627EEA' 
-      },
-      ton: { 
-        name: 'TON (Toncoin)', 
-        address: 'UQBGo3k-EhMubMv4h3RqHszdcJdqoxttvZnuwDvPHbk8jl6P', 
-        logo: 'https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040', 
-        emoji: '💎', 
-        logoClass: 'network-logo-ton', 
-        color: '#0098EA' 
-      }
+      usdt_trc20: { name: 'USDT (TRC20 - Tron)', address: 'TLPVBmQnS6VTV7MwzLzYy7EjUKqsKob7hs', logo: 'https://cryptologos.cc/logos/tether-usdt-logo.png?v=040', emoji: '₮', logoClass: 'network-logo-usdt', color: '#26A17B' },
+      usdt_bep20: { name: 'USDT (BEP20 - BNB Chain)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', logo: 'https://cryptologos.cc/logos/bnb-bnb-logo.png?v=040', emoji: '⚡', logoClass: 'network-logo-bnb', color: '#F3BA2F' },
+      usdt_erc20: { name: 'USDT (ERC20 - Ethereum)', address: '0xe4484af8794b0fe2eccf433f7da7ac81935fc4a0', logo: 'https://cryptologos.cc/logos/ethereum-eth-logo.png?v=040', emoji: 'Ξ', logoClass: 'network-logo-eth', color: '#627EEA' },
+      ton: { name: 'TON (Toncoin)', address: 'UQBGo3k-EhMubMv4h3RqHszdcJdqoxttvZnuwDvPHbk8jl6P', logo: 'https://cryptologos.cc/logos/toncoin-ton-logo.png?v=040', emoji: '💎', logoClass: 'network-logo-ton', color: '#0098EA' }
     };
 
     let selectedDepositNetworkKey = 'usdt_trc20';
     function selectCryptoMethod(methodKey) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
       selectedDepositNetworkKey = methodKey;
-
       document.querySelectorAll('[id^="card-"]').forEach(card => card.classList.remove('active'));
       document.getElementById(`card-${methodKey}`).classList.add('active');
-
       const data = cryptoWallets[methodKey];
       document.getElementById('selected-network-badge').innerText = data.name;
       document.getElementById('warning-net-name').innerText = data.name;
@@ -3141,9 +2492,7 @@
       const toggleBtn = document.getElementById('qr-toggle-btn');
       qrContainer.classList.toggle('hidden');
       const isHidden = qrContainer.classList.contains('hidden');
-      toggleBtn.innerHTML = isHidden 
-        ? '<i data-lucide="qr-code" class="w-4 h-4"></i> Show QR Code' 
-        : '<i data-lucide="eye-off" class="w-4 h-4"></i> Hide QR Code';
+      toggleBtn.innerHTML = isHidden ? '<i data-lucide="qr-code" class="w-4 h-4"></i> Show QR Code' : '<i data-lucide="eye-off" class="w-4 h-4"></i> Hide QR Code';
       lucide.createIcons();
     }
 
@@ -3151,13 +2500,9 @@
       const file = event.target.files[0];
       if (file) {
         uploadedScreenshotData = file.name;
-        
         const reader = new FileReader();
-        reader.onload = function(e) {
-          uploadedScreenshotBase64 = e.target.result;
-        };
+        reader.onload = function(e) { uploadedScreenshotBase64 = e.target.result; };
         reader.readAsDataURL(file);
-        
         document.getElementById('upload-placeholder-content').classList.add('hidden');
         document.getElementById('upload-preview-container').classList.remove('hidden');
         document.getElementById('uploaded-file-name').innerText = file.name;
@@ -3169,10 +2514,8 @@
     function selectWithdrawNetwork(networkKey) {
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
       selectedWithdrawNetworkKey = networkKey;
-
       document.querySelectorAll('[id^="w-card-"]').forEach(card => card.classList.remove('active'));
       document.getElementById(`w-card-${networkKey}`).classList.add('active');
-
       const netNames = { usdt_trc20: 'TRC20', usdt_bep20: 'BEP20', usdt_erc20: 'ERC20', ton: 'TON' };
       document.getElementById('withdraw-network-label').innerText = netNames[networkKey];
       document.getElementById('warning-withdraw-net').innerText = netNames[networkKey];
@@ -3182,7 +2525,6 @@
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById(`tab-${tabId}`).classList.add('active');
-
       const navIds = ['dashboard', 'wallet', 'history', 'community', 'support', 'referral', 'profile'];
       navIds.forEach(id => {
         const btn = document.getElementById(`nav-${id}`);
@@ -3190,7 +2532,6 @@
       });
       const activeBtn = document.getElementById(`nav-${tabId}`);
       if (activeBtn) activeBtn.classList.replace('text-gray-400', 'text-emerald-400');
-      
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -3221,12 +2562,9 @@
       amountText.innerText = amount;
       titleText.innerText = isWithdrawal ? 'Processing Withdrawal...' : 'Processing Deposit...';
       subtitleText.innerText = isWithdrawal ? 'Please wait while we process your withdrawal.' : 'Please wait while we process your deposit.';
-      
       spinner.style.display = 'block';
       checkmark.style.display = 'none';
-      
       overlay.classList.add('show');
-
       if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
 
       setTimeout(() => {
@@ -3234,16 +2572,13 @@
         checkmark.style.display = 'flex';
         titleText.innerText = 'Transaction Submitted';
         subtitleText.innerText = 'Your transaction has been submitted successfully.';
-        
         if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
       }, 1500);
 
       setTimeout(() => {
         overlay.classList.remove('show');
         pendingReceiptTx = txId;
-        setTimeout(() => {
-          openReceiptModal(txId);
-        }, 250);
+        setTimeout(() => { openReceiptModal(txId); }, 250);
       }, 2500);
     }
 
@@ -3280,28 +2615,13 @@
         statusBadgeClass = 'completed';
       }
 
-      if (isWithdrawal) {
-        amountClass = 'negative';
-        amountPrefix = '-';
-      } else if (isInvestment) {
-        amountClass = 'neutral';
-        amountPrefix = '-';
-      }
-
-      if (tx.status === 'Rejected' && isDeposit) {
-        amountClass = 'negative';
-        amountPrefix = '';
-      }
+      if (isWithdrawal) { amountClass = 'negative'; amountPrefix = '-'; }
+      else if (isInvestment) { amountClass = 'neutral'; amountPrefix = '-'; }
+      if (tx.status === 'Rejected' && isDeposit) { amountClass = 'negative'; amountPrefix = ''; }
 
       let networkName = tx.network || 'USDT (TRC20)';
-      
       let rawAmount = tx.rawAmount || parseFloat((tx.amount || '0').replace(/[^0-9.]/g, '')) || 0;
-
-      const receiptDate = tx.fullDate || new Date().toLocaleString('en-US', { 
-        month: 'short', day: 'numeric', year: 'numeric', 
-        hour: '2-digit', minute: '2-digit' 
-      });
-
+      const receiptDate = tx.fullDate || new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
       const fullAddress = tx.fullAddress || tx.ref || 'N/A';
       const txIdDisplay = tx.fullId || tx.id.toUpperCase();
 
@@ -3310,72 +2630,46 @@
           <button class="pro-receipt-close" onclick="closeModal('receipt-modal')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg>
           </button>
-          
           <div class="pro-receipt-header">
-            <div class="pro-receipt-status-icon ${statusClass}">
-              ${statusIconSvg}
-            </div>
-            <div class="pro-receipt-amount ${amountClass}">
-              ${amountPrefix}$${rawAmount.toFixed(2)}
-            </div>
-            <div class="pro-receipt-type-label">
-              ${isDeposit ? 'Deposit Amount' : isWithdrawal ? 'Withdrawal Amount' : 'Investment Amount'}
-            </div>
-            <div class="pro-receipt-status-badge ${statusBadgeClass}">
-              ${tx.status === 'Pending Review' ? 'Pending Review' : tx.status}
-            </div>
+            <div class="pro-receipt-status-icon ${statusClass}">${statusIconSvg}</div>
+            <div class="pro-receipt-amount ${amountClass}">${amountPrefix}$${rawAmount.toFixed(2)}</div>
+            <div class="pro-receipt-type-label">${isDeposit ? 'Deposit Amount' : isWithdrawal ? 'Withdrawal Amount' : 'Investment Amount'}</div>
+            <div class="pro-receipt-status-badge ${statusBadgeClass}">${tx.status === 'Pending Review' ? 'Pending Review' : tx.status}</div>
           </div>
-          
           <div class="pro-receipt-body">
             <div class="pro-receipt-row">
               <span class="pro-receipt-row-label">Network</span>
               <span class="pro-receipt-row-value" style="font-size:10px;">${networkName}</span>
             </div>
-            
             <div class="pro-receipt-row">
               <span class="pro-receipt-row-label">Date</span>
               <span class="pro-receipt-row-value" style="font-size:10px;">${receiptDate}</span>
             </div>
-            
             ${isWithdrawal ? `
               <div class="pro-receipt-address-box">
-                <div class="pro-receipt-address-label">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M12 12h.01M8 12h.01M16 12h.01" stroke-linecap="round"/></svg>
-                  DESTINATION WALLET
-                </div>
+                <div class="pro-receipt-address-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M12 12h.01M8 12h.01M16 12h.01" stroke-linecap="round"/></svg>DESTINATION WALLET</div>
                 <div class="pro-receipt-address-value">${fullAddress}</div>
               </div>
             ` : isDeposit ? `
               <div class="pro-receipt-txid-box">
-                <div class="pro-receipt-txid-label">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-linecap="round"/></svg>
-                  TRANSACTION ID
-                </div>
+                <div class="pro-receipt-txid-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-linecap="round"/></svg>TRANSACTION ID</div>
                 <div class="pro-receipt-txid-value">${fullAddress}</div>
               </div>
             ` : `
               <div class="pro-receipt-txid-box">
-                <div class="pro-receipt-txid-label">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-linecap="round"/></svg>
-                  REFERENCE ID
-                </div>
+                <div class="pro-receipt-txid-label"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" stroke-linecap="round"/></svg>REFERENCE ID</div>
                 <div class="pro-receipt-txid-value">${txIdDisplay}</div>
               </div>
             `}
-            
             <div class="pro-receipt-row">
               <span class="pro-receipt-row-label">Status</span>
-              <span class="pro-receipt-row-value" style="color:${statusBadgeClass === 'completed' ? '#10b981' : statusBadgeClass === 'failed' ? '#ef4444' : statusBadgeClass === 'active' ? '#06b6d4' : '#f59e0b'}; text-transform:uppercase; font-size:10px;">
-                ${tx.status}
-              </span>
+              <span class="pro-receipt-row-value" style="color:${statusBadgeClass === 'completed' ? '#10b981' : statusBadgeClass === 'failed' ? '#ef4444' : statusBadgeClass === 'active' ? '#06b6d4' : '#f59e0b'}; text-transform:uppercase; font-size:10px;">${tx.status}</span>
             </div>
-
             <div class="pro-receipt-row">
               <span class="pro-receipt-row-label">Reference</span>
               <span class="pro-receipt-row-value" style="font-size:9px;">APX-${Date.now().toString().slice(-8)}</span>
             </div>
           </div>
-          
           <div class="pro-receipt-footer">
             <div class="pro-receipt-footer-text">APEXINVEST · SECURE RECEIPT</div>
             <div class="pro-receipt-footer-brand">Institutional Crypto Yield</div>
@@ -3390,13 +2684,9 @@
         showModernAlert({ title: 'Not Found', message: 'Receipt not available', type: 'warning', icon: 'alert-circle' });
         return;
       }
-      
-      const receiptContainer = document.getElementById('receipt-content-container');
-      receiptContainer.innerHTML = generateProReceiptHTML(tx);
-      
+      document.getElementById('receipt-content-container').innerHTML = generateProReceiptHTML(tx);
       document.getElementById('receipt-modal').classList.remove('hidden');
       lucide.createIcons();
-      
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
     }
 
@@ -3426,24 +2716,9 @@
         let iconClass = 'deposit';
         let amountClass = 'positive';
         let amountPrefix = '+';
-        let directionLabel = 'DEPOSIT';
-        let directionColor = '#10b981';
 
-        if (tx.type === 'withdraw') {
-          iconEmoji = '↑';
-          iconClass = 'withdraw';
-          amountClass = 'negative';
-          amountPrefix = '-';
-          directionLabel = 'WITHDRAW';
-          directionColor = '#06b6d4';
-        } else if (tx.type === 'investment') {
-          iconEmoji = '📈';
-          iconClass = 'investment';
-          amountClass = 'neutral';
-          amountPrefix = '-';
-          directionLabel = 'INVEST';
-          directionColor = '#a855f7';
-        }
+        if (tx.type === 'withdraw') { iconEmoji = '↑'; iconClass = 'withdraw'; amountClass = 'negative'; amountPrefix = '-'; }
+        else if (tx.type === 'investment') { iconEmoji = '📈'; iconClass = 'investment'; amountClass = 'neutral'; amountPrefix = '-'; }
 
         let statusClass = 'pending';
         let statusText = 'Pending';
@@ -3458,9 +2733,7 @@
         container.innerHTML += `
           <div class="pro-history-card" onclick="openReceiptModal('${tx.id}')">
             <div class="flex items-start gap-3">
-              <div class="pro-history-icon ${iconClass}">
-                ${iconEmoji}
-              </div>
+              <div class="pro-history-icon ${iconClass}">${iconEmoji}</div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-start justify-between gap-2">
                   <div class="min-w-0">
@@ -3478,9 +2751,7 @@
                     ${tx.time || 'Just now'}
                   </div>
                   <div class="flex items-center gap-2">
-                    <span class="pro-history-meta-item" style="color:#06b6d4;">
-                      ${tx.id.slice(0, 8)}...
-                    </span>
+                    <span class="pro-history-meta-item" style="color:#06b6d4;">${tx.id.slice(0, 8)}...</span>
                     <span class="pro-history-view-btn">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                       View
@@ -3492,19 +2763,16 @@
           </div>
         `;
       });
-      
       lucide.createIcons();
     }
 
     function renderActiveInvestments() {
       const container = document.getElementById('active-investments-container');
       if (!container) return;
-
       if (activeInvestments.length === 0) {
         container.innerHTML = `<div class="glass-card rounded-xl p-4 text-center text-xs text-gray-400 border border-brand-border">No active investments.</div>`;
         return;
       }
-
       container.innerHTML = '';
       activeInvestments.forEach(inv => {
         const elapsed = Date.now() - inv.startTime;
@@ -3553,12 +2821,10 @@
     function renderSupportTickets() {
       const container = document.getElementById('support-tickets-history');
       container.innerHTML = '';
-
       if (supportTickets.length === 0) {
         container.innerHTML = `<div class="glass-card rounded-xl p-3 text-center text-xs text-gray-400 border border-brand-border">No tickets yet.</div>`;
         return;
       }
-
       supportTickets.forEach(ticket => {
         container.innerHTML += `
           <div class="glass-card rounded-xl p-4 border border-brand-border space-y-2.5" id="ticket-card-${ticket.id}">
@@ -3606,64 +2872,37 @@
 
     function confirmInvestment() {
       const amt = parseFloat(document.getElementById('modal-amount-input').value);
-      
       if (isNaN(amt) || amt < currentPlan.min || amt > currentPlan.max) {
         if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Invalid Amount', 
-          message: `Please enter an amount between $${currentPlan.min} and $${currentPlan.max.toLocaleString()}.`, 
-          type: 'warning', 
-          icon: 'alert-circle' 
-        });
+        showModernAlert({ title: 'Invalid Amount', message: `Please enter an amount between $${currentPlan.min} and $${currentPlan.max.toLocaleString()}.`, type: 'warning', icon: 'alert-circle' });
         return;
       }
       if (amt > userPortfolio.balance) {
         if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Insufficient Balance', 
-          message: `Your available balance is $${userPortfolio.balance.toFixed(2)}. Please deposit more funds to invest $${amt.toFixed(2)}.`, 
-          type: 'error', 
-          icon: 'wallet' 
-        });
+        showModernAlert({ title: 'Insufficient Balance', message: `Your available balance is $${userPortfolio.balance.toFixed(2)}.`, type: 'error', icon: 'wallet' });
         return;
       }
 
       const now = Date.now();
       const endTime = now + (currentPlan.days * 24 * 60 * 60 * 1000);
-
       userPortfolio.balance -= amt;
       userPortfolio.lockedBalance += amt;
       updateWalletUI();
 
-      activeInvestments.unshift({
-        title: currentPlan.title, rawAmount: amt, rate: currentPlan.rate, days: currentPlan.days,
-        startTime: now, endTime: endTime, currentProfit: 0, progress: 0
-      });
+      activeInvestments.unshift({ title: currentPlan.title, rawAmount: amt, rate: currentPlan.rate, days: currentPlan.days, startTime: now, endTime: endTime, currentProfit: 0, progress: 0 });
       saveAppData();
       renderActiveInvestments();
 
       const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
       const invId = 'inv_' + Date.now();
-      const newTx = {
-        id: invId, type: 'investment', title: currentPlan.title,
-        network: `${currentPlan.days}-Day Lock`, ref: 'Plan Allocation', rawAmount: amt,
-        amount: `-$${amt.toFixed(2)}`, status: 'Active', color: 'cyan', icon: 'zap', 
-        time: nowStr, fullDate: nowStr, fullId: invId.toUpperCase()
-      };
+      const newTx = { id: invId, type: 'investment', title: currentPlan.title, network: `${currentPlan.days}-Day Lock`, ref: 'Plan Allocation', rawAmount: amt, amount: `-$${amt.toFixed(2)}`, status: 'Active', color: 'cyan', icon: 'zap', time: nowStr, fullDate: nowStr, fullId: invId.toUpperCase() };
       transactionsHistory.unshift(newTx);
       saveAppData();
       renderHistory();
       closeModal('invest-modal');
 
       triggerAdminBotNotification(`🚀 *NEW INVESTMENT*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n📦 Plan: *${currentPlan.title}*`);
-      
-      showModernAlert({ 
-        title: 'Investment Started!', 
-        message: `$${amt.toFixed(2)} has been deployed into ${currentPlan.title}. Your main card balance has been updated automatically.`, 
-        type: 'success', 
-        icon: 'check-circle',
-        btnText: 'View Dashboard'
-      });
+      showModernAlert({ title: 'Investment Started!', message: `$${amt.toFixed(2)} has been deployed into ${currentPlan.title}.`, type: 'success', icon: 'check-circle', btnText: 'View Dashboard' });
     }
 
     async function initiateDepositProcess() {
@@ -3674,34 +2913,19 @@
 
       if (isNaN(depAmt) || depAmt < 5) {
         if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Invalid Amount', 
-          message: 'The minimum deposit amount is $5.00. Please enter a valid amount.', 
-          type: 'warning', 
-          icon: 'alert-circle' 
-        });
+        showModernAlert({ title: 'Invalid Amount', message: 'The minimum deposit amount is $5.00.', type: 'warning', icon: 'alert-circle' });
         return;
       }
       if ((!hash || hash.length < 5) && !uploadedScreenshotData) {
         if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Proof Required', 
-          message: 'Please provide either a Transaction ID (TxID) or upload a screenshot of your transfer to proceed.', 
-          type: 'warning', 
-          icon: 'image' 
-        });
+        showModernAlert({ title: 'Proof Required', message: 'Please provide either a Transaction ID (TxID) or upload a screenshot.', type: 'warning', icon: 'image' });
         return;
       }
 
       const networkName = cryptoWallets[selectedDepositNetworkKey].name;
       const networkAddress = cryptoWallets[selectedDepositNetworkKey].address;
       
-      let actualProof = '';
-      if (hash && hash.length >= 5) {
-        actualProof = hash;
-      } else {
-        actualProof = uploadedScreenshotData;
-      }
+      let actualProof = hash && hash.length >= 5 ? hash : uploadedScreenshotData;
 
       depAmtInput.value = '';
       hashInput.value = '';
@@ -3714,10 +2938,7 @@
       backToWalletOverview();
 
       const txId = 'tx_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
-      const nowStr = new Date().toLocaleString('en-US', { 
-        month: 'short', day: 'numeric', year: 'numeric', 
-        hour: '2-digit', minute: '2-digit' 
-      });
+      const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
       
       const txObj = {
         id: txId, type: 'deposit', title: 'Crypto Deposit', network: networkName,
@@ -3740,7 +2961,6 @@
       renderHistory();
 
       await sendDepositToAdminBot(txObj);
-      
       startSimpleProcessing(`+$${depAmt.toFixed(2)}`, txId, false);
     }
 
@@ -3773,8 +2993,8 @@
 
       const keyboard = {
         inline_keyboard: [[
-          { text: `✅ APPROVE ${uniqueTag}`, callback_data: `approve_${tx.id}` },
-          { text: `❌ REJECT ${uniqueTag}`, callback_data: `reject_${tx.id}` }
+          { text: `✅ VERIFY ${uniqueTag}`, callback_data: `approve_${tx.id}` },
+          { text: `❌ DECLINE ${uniqueTag}`, callback_data: `reject_${tx.id}` }
         ]]
       };
 
@@ -3796,12 +3016,9 @@
           formData.append('parse_mode', 'Markdown');
           formData.append('reply_markup', JSON.stringify(keyboard));
           
-          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
-            method: 'POST',
-            body: formData
-          });
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, { method: 'POST', body: formData });
         } catch (err) {
-          console.log('Photo send error, falling back to text:', err);
+          console.log('Photo send error:', err);
           await sendTextToAdmin(BOT_TOKEN, ADMIN_CHAT_ID, caption, keyboard);
         }
       } else {
@@ -3812,18 +3029,10 @@
     async function sendTextToAdmin(BOT_TOKEN, ADMIN_CHAT_ID, caption, keyboard) {
       try {
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST', 
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: ADMIN_CHAT_ID, 
-            text: caption, 
-            parse_mode: "Markdown",
-            reply_markup: keyboard
-          })
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: caption, parse_mode: "Markdown", reply_markup: keyboard })
         });
-      } catch (err) {
-        console.log('Send error:', err);
-      }
+      } catch (err) { console.log('Send error:', err); }
     }
 
     async function initiateWithdrawalProcess() {
@@ -3832,32 +3041,17 @@
 
       if (!amt || amt < 5) {
         if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Minimum Withdrawal', 
-          message: 'The minimum withdrawal amount is $5.00. Please enter a valid amount.', 
-          type: 'warning', 
-          icon: 'alert-circle' 
-        });
+        showModernAlert({ title: 'Minimum Withdrawal', message: 'The minimum withdrawal amount is $5.00.', type: 'warning', icon: 'alert-circle' });
         return;
       }
       if (amt > userPortfolio.balance) {
         if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Insufficient Balance', 
-          message: `You are trying to withdraw $${amt.toFixed(2)} but your available balance is only $${userPortfolio.balance.toFixed(2)}.`, 
-          type: 'error', 
-          icon: 'wallet' 
-        });
+        showModernAlert({ title: 'Insufficient Balance', message: `Your available balance is $${userPortfolio.balance.toFixed(2)}.`, type: 'error', icon: 'wallet' });
         return;
       }
       if (!addr || addr.length < 10) {
         if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
-        showModernAlert({ 
-          title: 'Invalid Address', 
-          message: 'Please provide a valid wallet address to receive your funds. Double-check the address before proceeding.', 
-          type: 'warning', 
-          icon: 'wallet' 
-        });
+        showModernAlert({ title: 'Invalid Address', message: 'Please provide a valid wallet address.', type: 'warning', icon: 'wallet' });
         return;
       }
 
@@ -3874,10 +3068,7 @@
       backToWalletOverview();
 
       const txId = 'tx_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
-      const nowStr = new Date().toLocaleString('en-US', { 
-        month: 'short', day: 'numeric', year: 'numeric', 
-        hour: '2-digit', minute: '2-digit' 
-      });
+      const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
       
       const txObj = {
         id: txId, type: 'withdraw', title: 'Crypto Withdrawal', network: netName,
@@ -3895,7 +3086,6 @@
       renderHistory();
 
       await sendWithdrawalToAdminBot(txObj);
-      
       startSimpleProcessing(`-$${amt.toFixed(2)}`, txId, true);
     }
 
@@ -3923,25 +3113,17 @@
 
       const keyboard = {
         inline_keyboard: [[
-          { text: `✅ APPROVE ${uniqueTag}`, callback_data: `approve_${tx.id}` },
-          { text: `❌ REJECT ${uniqueTag}`, callback_data: `reject_${tx.id}` }
+          { text: `✅ VERIFY ${uniqueTag}`, callback_data: `approve_${tx.id}` },
+          { text: `❌ DECLINE ${uniqueTag}`, callback_data: `reject_${tx.id}` }
         ]]
       };
 
       try {
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST', 
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: ADMIN_CHAT_ID, 
-            text: caption, 
-            parse_mode: "Markdown",
-            reply_markup: keyboard
-          })
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: caption, parse_mode: "Markdown", reply_markup: keyboard })
         });
-      } catch (err) {
-        console.log('Send error:', err);
-      }
+      } catch (err) { console.log('Send error:', err); }
     }
 
     function triggerAdminBotNotification(textMessage) {
@@ -3957,39 +3139,20 @@
       const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
       try {
         await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST', 
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            chat_id: userTgId, 
-            text: textMessage, 
-            parse_mode: "Markdown" 
-          })
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: userTgId, text: textMessage, parse_mode: "Markdown" })
         });
-      } catch (err) {
-        console.log('User notification error:', err);
-      }
+      } catch (err) { console.log('User notification error:', err); }
     }
 
     function simulateSystemResponse(txId, action) {
       const targetTx = transactionsHistory.find(t => t.id === txId);
-      
       if (!targetTx) {
-        showModernAlert({ 
-          title: 'Not Found', 
-          message: 'Transaction not found.', 
-          type: 'error', 
-          icon: 'alert-circle' 
-        });
+        showModernAlert({ title: 'Not Found', message: 'Transaction not found.', type: 'error', icon: 'alert-circle' });
         return;
       }
-
       if (targetTx.processed || targetTx.status !== 'Pending Review') {
-        showModernAlert({ 
-          title: 'Already Processed', 
-          message: 'This transaction has already been reviewed and processed. No further action is possible.', 
-          type: 'info', 
-          icon: 'shield-check' 
-        });
+        showModernAlert({ title: 'Already Processed', message: 'This transaction has already been reviewed.', type: 'info', icon: 'shield-check' });
         return;
       }
 
@@ -4009,30 +3172,18 @@
           userPortfolio.totalWithdrawn += txAmount;
         }
         updateWalletUI();
-        triggerAdminBotNotification(`✅ *APPROVED*\n\nUser: \`${userTgId}\`\nAmount: *${targetTx.amount}*`);
+        triggerAdminBotNotification(`✅ *VERIFIED*\n\nUser: \`${userTgId}\`\nAmount: *${targetTx.amount}*`);
 
         if (userTgId) {
           const shortMsg = 
-`✅ *${txTypeLabel.toUpperCase()} APPROVED*
-
-━━━━━━━━━━━━━━━━━━━━
-💰 Amount: *$${txAmount.toFixed(2)} USDT*
-🌐 Network: ${targetTx.network}
-🔖 Ref: \`${targetTx.fullId}\`
-━━━━━━━━━━━━━━━━━━━━
-
-${targetTx.type === 'deposit' 
-  ? '💚 Your funds have been credited to your wallet. Ready to invest or withdraw.'
-  : '💸 Your funds are being sent to your destination wallet.'}
-
-Thank you for choosing *ApexInvest* 🚀`;
-
+`✅ *Your ${txTypeLabel.toLowerCase()} has been completed successfully.*
+💰 $${txAmount.toFixed(2)} USDT · ${targetTx.network}`;
           sendUserBotNotification(userTgId, shortMsg);
         }
 
         showModernAlert({ 
-          title: 'Approved Successfully', 
-          message: `Your ${txTypeLabel.toLowerCase()} of $${txAmount.toFixed(2)} has been verified and approved. The user has been notified via bot chat.`, 
+          title: 'Transaction Completed', 
+          message: `${txTypeLabel} of $${txAmount.toFixed(2)} has been successfully completed. User has been notified.`, 
           type: 'success', 
           icon: 'check-circle' 
         });
@@ -4042,30 +3193,18 @@ Thank you for choosing *ApexInvest* 🚀`;
           userPortfolio.balance += txAmount;
           updateWalletUI();
         }
-        triggerAdminBotNotification(`❌ *REJECTED*\n\nUser: \`${userTgId}\`\nAmount: *${targetTx.amount}*`);
+        triggerAdminBotNotification(`❌ *DECLINED*\n\nUser: \`${userTgId}\`\nAmount: *${targetTx.amount}*`);
 
         if (userTgId) {
           const shortMsg = 
-`❌ *${txTypeLabel.toUpperCase()} DECLINED*
-
-━━━━━━━━━━━━━━━━━━━━
-💰 Amount: *$${txAmount.toFixed(2)} USDT*
-🌐 Network: ${targetTx.network}
-🔖 Ref: \`${targetTx.fullId}\`
-━━━━━━━━━━━━━━━━━━━━
-
-${targetTx.type === 'withdraw'
-  ? '💚 Your funds have been safely returned to your wallet balance.'
-  : '⚠️ Please verify your transaction details and try again.'}
-
-Need help? Contact our support team 💬`;
-
+`❌ *Your ${txTypeLabel.toLowerCase()} request has been declined.*
+💰 $${txAmount.toFixed(2)} USDT · Contact support for details`;
           sendUserBotNotification(userTgId, shortMsg);
         }
 
         showModernAlert({ 
           title: 'Transaction Declined', 
-          message: `The ${txTypeLabel.toLowerCase()} of $${txAmount.toFixed(2)} was declined. The user has been notified via bot chat.`, 
+          message: `${txTypeLabel} of $${txAmount.toFixed(2)} has been declined. User has been notified.`, 
           type: 'error', 
           icon: 'x-circle' 
         });
@@ -4073,22 +3212,9 @@ Need help? Contact our support team 💬`;
 
       saveAppData();
       renderHistory();
-      
       if (!document.getElementById('receipt-modal').classList.contains('hidden')) {
         openReceiptModal(txId);
       }
-    }
-
-    function showNotificationPopup(title, desc, color, icon) {
-      const popup = document.getElementById('admin-notify-popup');
-      document.getElementById('notify-title').innerText = title;
-      document.getElementById('notify-desc').innerText = desc;
-      document.getElementById('notify-icon-box').className = `w-11 h-11 rounded-2xl bg-${color}-500/15 text-${color}-400 border border-${color}-500/30 flex items-center justify-center shrink-0 shadow-lg`;
-      document.getElementById('notify-icon-box').innerHTML = `<i data-lucide="${icon}" class="w-6 h-6"></i>`;
-      document.getElementById('notify-time').innerText = `Secure Node • ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-      lucide.createIcons();
-      popup.classList.add('show-popup');
-      setTimeout(() => hideAdminNotify(), 5500);
     }
 
     function hideAdminNotify() { document.getElementById('admin-notify-popup').classList.remove('show-popup'); }
@@ -4099,12 +3225,7 @@ Need help? Contact our support team 💬`;
       const message = document.getElementById('support-message').value.trim();
 
       if (!message || message.length < 5) {
-        showModernAlert({ 
-          title: 'Message Too Short', 
-          message: 'Please provide a detailed description of your issue (at least 5 characters) so our support team can assist you effectively.', 
-          type: 'warning', 
-          icon: 'alert-circle' 
-        });
+        showModernAlert({ title: 'Message Too Short', message: 'Please provide a detailed description (at least 5 characters).', type: 'warning', icon: 'alert-circle' });
         return;
       }
 
@@ -4121,12 +3242,7 @@ Need help? Contact our support team 💬`;
         `🎫 *SUPPORT TICKET ${ticketBadge}*\n\n👤 ${currentUserProfile.name} (\`${currentUserProfile.username}\`)\n🆔 \`${currentUserProfile.id}\`\n📂 *${category}*\n💬 _${message}_`, 
         ticketId
       );
-      showModernAlert({ 
-        title: 'Ticket Submitted', 
-        message: `Your support ticket ${ticketBadge} has been received. Our team will respond shortly.`, 
-        type: 'success', 
-        icon: 'headphones' 
-      });
+      showModernAlert({ title: 'Ticket Submitted', message: `Your support ticket ${ticketBadge} has been received.`, type: 'success', icon: 'headphones' });
     }
 
     function triggerAdminBotNotificationWithSupportKeyboard(textMessage, ticketId) {
@@ -4206,12 +3322,7 @@ Need help? Contact our support team 💬`;
       const text = document.getElementById(elementId).value;
       navigator.clipboard.writeText(text);
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      showModernAlert({ 
-        title: 'Copied to Clipboard', 
-        message: 'The information has been successfully copied to your clipboard.', 
-        type: 'success', 
-        icon: 'copy' 
-      });
+      showModernAlert({ title: 'Copied to Clipboard', message: 'The information has been successfully copied.', type: 'success', icon: 'copy' });
     }
   </script>
 </body>
