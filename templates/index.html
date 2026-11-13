@@ -500,42 +500,6 @@
       height: 14px;
     }
 
-    .pro-receipt-actions {
-      display: flex;
-      gap: 8px;
-      padding: 0 20px 16px;
-    }
-
-    .pro-receipt-action-btn {
-      flex: 1;
-      padding: 10px;
-      border-radius: 10px;
-      font-size: 11px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      cursor: pointer;
-      transition: all 0.2s;
-      border: none;
-    }
-
-    .pro-receipt-action-btn.primary {
-      background: linear-gradient(135deg, #10b981, #06b6d4);
-      color: #000;
-    }
-
-    .pro-receipt-action-btn.secondary {
-      background: rgba(255, 255, 255, 0.05);
-      color: #9ca3af;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .pro-receipt-action-btn:active {
-      transform: scale(0.97);
-    }
-
     /* ===== PROFESSIONAL HISTORY CARDS ===== */
     .pro-history-card {
       position: relative;
@@ -672,7 +636,7 @@
       font-weight: 700;
     }
 
-    /* ===== PROFESSIONAL INVEST PLANS (USDT APPS STYLE) ===== */
+    /* ===== PROFESSIONAL INVEST PLANS ===== */
     .invest-plan-pro {
       position: relative;
       border-radius: 18px;
@@ -873,6 +837,259 @@
       text-transform: uppercase;
       box-shadow: 0 3px 12px rgba(245, 158, 11, 0.5);
       z-index: 2;
+    }
+
+    /* ===== COMMUNITY / SOCIAL SECTION ===== */
+    .community-hero {
+      background: linear-gradient(165deg, #0f1826 0%, #0a121c 50%, #080d16 100%);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 22px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.8), 0 0 60px -20px rgba(16, 185, 129, 0.2);
+    }
+
+    .community-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #10b981, #06b6d4, transparent);
+      background-size: 200% 100%;
+      animation: shimmer 3s infinite;
+    }
+
+    .community-stat-card {
+      background: rgba(8, 11, 17, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 14px 12px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .community-stat-card:hover {
+      border-color: rgba(16, 185, 129, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .community-stat-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+    }
+
+    .community-stat-value {
+      font-size: 18px;
+      font-weight: 900;
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .community-stat-label {
+      font-size: 9px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 800;
+      margin-top: 3px;
+    }
+
+    .user-card {
+      background: linear-gradient(160deg, #0f1826 0%, #0a121c 100%);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 12px;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .user-card:hover {
+      border-color: rgba(16, 185, 129, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .user-avatar-rank {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 15px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .user-rank-badge {
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      font-size: 12px;
+      line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
+    }
+
+    .user-name-display {
+      font-size: 12px;
+      font-weight: 800;
+      color: #ffffff;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-id-display {
+      font-size: 9px;
+      color: #06b6d4;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    .user-balance-display {
+      font-size: 13px;
+      font-weight: 900;
+      font-family: 'JetBrains Mono', monospace;
+      color: #10b981;
+      text-align: right;
+      line-height: 1.2;
+    }
+
+    .user-balance-label {
+      font-size: 8px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .user-tier-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 8px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .user-tier-starter { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .user-tier-silver { background: rgba(6, 182, 212, 0.15); color: #06b6d4; border: 1px solid rgba(6, 182, 212, 0.3); }
+    .user-tier-gold { background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .user-tier-vip { background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+    .community-search-box {
+      background: rgba(8, 11, 17, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+
+    .community-search-box:focus-within {
+      border-color: rgba(16, 185, 129, 0.5);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    .community-search-input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #ffffff;
+      font-size: 12px;
+      width: 100%;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .community-search-input::placeholder {
+      color: #4b5563;
+    }
+
+    /* ===== PRIVACY POLICY STYLES ===== */
+    .privacy-card {
+      background: linear-gradient(160deg, #0f1826 0%, #0a121c 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .privacy-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+      opacity: 0.8;
+    }
+
+    .privacy-heading {
+      font-size: 13px;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .privacy-heading-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .privacy-text {
+      font-size: 11px;
+      color: #9ca3af;
+      line-height: 1.7;
+    }
+
+    .privacy-text strong {
+      color: #e5e7eb;
+      font-weight: 700;
+    }
+
+    .privacy-bullet {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 0;
+      font-size: 11px;
+      color: #9ca3af;
+      line-height: 1.6;
+    }
+
+    .privacy-bullet-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      flex-shrink: 0;
+      margin-top: 6px;
+      box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
     }
 
     /* ===== REST OF EXISTING STYLES ===== */
@@ -2024,6 +2241,160 @@
     </div>
   </main>
 
+  <!-- COMMUNITY (NEW) -->
+  <main id="tab-community" class="tab-content p-4 space-y-4">
+    
+    <!-- HERO -->
+    <div class="community-hero p-5">
+      <div class="relative z-10">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 gradient-bg rounded-2xl flex items-center justify-center text-black shadow-lg shadow-emerald-500/25 shrink-0">
+              <i data-lucide="users" class="w-6 h-6"></i>
+            </div>
+            <div>
+              <h3 class="font-black text-white text-base">Community Hub</h3>
+              <span class="text-[10px] text-emerald-400 font-mono font-bold uppercase tracking-wider">Global Investors Network</span>
+            </div>
+          </div>
+          <span class="text-[9px] bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-full font-mono font-bold flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            LIVE
+          </span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div class="community-stat-card">
+            <div class="community-stat-icon bg-emerald-500/10 text-emerald-400">
+              <i data-lucide="users-2" class="w-4 h-4"></i>
+            </div>
+            <div class="community-stat-value text-emerald-400" id="community-total-users">0</div>
+            <div class="community-stat-label">Total Users</div>
+          </div>
+          <div class="community-stat-card">
+            <div class="community-stat-icon bg-cyan-500/10 text-cyan-400">
+              <i data-lucide="activity" class="w-4 h-4"></i>
+            </div>
+            <div class="community-stat-value text-cyan-400" id="community-active-investments">0</div>
+            <div class="community-stat-label">Active Stakes</div>
+          </div>
+          <div class="community-stat-card">
+            <div class="community-stat-icon bg-purple-500/10 text-purple-400">
+              <i data-lucide="trending-up" class="w-4 h-4"></i>
+            </div>
+            <div class="community-stat-value text-purple-400" id="community-total-tvl">$0</div>
+            <div class="community-stat-label">Total TVL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="community-search-box">
+      <i data-lucide="search" class="w-4 h-4 text-emerald-400"></i>
+      <input 
+        type="text" 
+        id="community-search-input" 
+        class="community-search-input" 
+        placeholder="Search by ID, username or name..."
+        oninput="filterCommunityUsers()"
+      >
+      <button onclick="clearCommunitySearch()" class="text-gray-500 hover:text-white transition-colors" id="community-search-clear" style="display:none;">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+    <!-- LEADERBOARD -->
+    <div>
+      <div class="flex items-center justify-between mb-3">
+        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+          <i data-lucide="trophy" class="w-4 h-4 text-amber-400"></i> Top Investors
+        </h4>
+        <span class="text-[9px] text-gray-500 font-mono" id="community-user-count-badge">0 users</span>
+      </div>
+      <div id="community-users-list" class="space-y-2.5"></div>
+    </div>
+
+    <!-- PRIVACY POLICY -->
+    <div class="pt-4">
+      <div class="flex items-center gap-2 mb-3">
+        <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <h4 class="text-xs font-bold text-white uppercase tracking-wider">Privacy Policy</h4>
+          <p class="text-[9px] text-gray-500 font-mono">Last updated: Jan 2025</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div class="privacy-card">
+          <div class="privacy-heading">
+            <div class="privacy-heading-icon">
+              <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+            </div>
+            <span>Data Protection</span>
+          </div>
+          <p class="privacy-text">
+            ApexInvest uses <strong>AES-256 encryption</strong> for all sensitive data. Your personal information, transaction details, and wallet addresses are never sold, rented, or shared with third parties without explicit consent.
+          </p>
+        </div>
+
+        <div class="privacy-card">
+          <div class="privacy-heading">
+            <div class="privacy-heading-icon">
+              <i data-lucide="user-check" class="w-3.5 h-3.5"></i>
+            </div>
+            <span>Information We Collect</span>
+          </div>
+          <div class="space-y-1">
+            <div class="privacy-bullet"><div class="privacy-bullet-dot"></div><span><strong>Identity:</strong> Telegram ID, username, and display name for account management.</span></div>
+            <div class="privacy-bullet"><div class="privacy-bullet-dot"></div><span><strong>Transactions:</strong> Deposit, withdrawal, and investment records for regulatory compliance.</span></div>
+            <div class="privacy-bullet"><div class="privacy-bullet-dot"></div><span><strong>Blockchain Data:</strong> Public wallet addresses and transaction hashes for verification.</span></div>
+          </div>
+        </div>
+
+        <div class="privacy-card">
+          <div class="privacy-heading">
+            <div class="privacy-heading-icon">
+              <i data-lucide="fingerprint" class="w-3.5 h-3.5"></i>
+            </div>
+            <span>Your Rights</span>
+          </div>
+          <div class="space-y-1">
+            <div class="privacy-bullet"><div class="privacy-bullet-dot"></div><span><strong>Access:</strong> Request a copy of all data we hold about you at any time.</span></div>
+            <div class="privacy-bullet"><div class="privacy-bullet-dot"></div><span><strong>Deletion:</strong> Request permanent deletion of your account and all associated data.</span></div>
+            <div class="privacy-bullet"><div class="privacy-bullet-dot"></div><span><strong>Portability:</strong> Export your transaction history in a standard format.</span></div>
+          </div>
+        </div>
+
+        <div class="privacy-card">
+          <div class="privacy-heading">
+            <div class="privacy-heading-icon">
+              <i data-lucide="shield-alert" class="w-3.5 h-3.5"></i>
+            </div>
+            <span>Security Measures</span>
+          </div>
+          <p class="privacy-text">
+            All data is stored on <strong>institutional-grade cold storage</strong> with multi-signature protection. Two-factor authentication is required for all withdrawals. We conduct regular security audits and penetration tests.
+          </p>
+        </div>
+
+        <div class="privacy-card">
+          <div class="privacy-heading">
+            <div class="privacy-heading-icon">
+              <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+            </div>
+            <span>Contact</span>
+          </div>
+          <p class="privacy-text">
+            For any privacy-related inquiries, please contact our Data Protection Officer at <strong>privacy@apexinvest.io</strong> or reach out via our Telegram support channel.
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
   <!-- SUPPORT -->
   <main id="tab-support" class="tab-content p-4 space-y-4">
     
@@ -2229,30 +2600,34 @@
   </main>
 
   <!-- NAV -->
-  <nav class="fixed bottom-0 left-0 right-0 bg-[#0b101b]/95 border-t border-emerald-500/20 backdrop-blur-xl z-40 px-3 py-3 flex justify-between items-center shadow-2xl">
+  <nav class="fixed bottom-0 left-0 right-0 bg-[#0b101b]/95 border-t border-emerald-500/20 backdrop-blur-xl z-40 px-2 py-3 flex justify-between items-center shadow-2xl">
     <button onclick="switchTab('dashboard')" id="nav-dashboard" class="flex flex-col items-center gap-1 text-emerald-400 flex-1 transition-all active:scale-95">
-      <i data-lucide="layout-dashboard" class="w-6 h-6"></i>
-      <span class="text-[10px] font-extrabold tracking-wide">Home</span>
+      <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+      <span class="text-[9px] font-extrabold tracking-wide">Home</span>
     </button>
     <button onclick="switchTab('wallet'); backToWalletOverview()" id="nav-wallet" class="flex flex-col items-center gap-1 text-gray-400 flex-1 transition-all active:scale-95">
-      <i data-lucide="wallet" class="w-6 h-6"></i>
-      <span class="text-[10px] font-extrabold tracking-wide">Wallet</span>
+      <i data-lucide="wallet" class="w-5 h-5"></i>
+      <span class="text-[9px] font-extrabold tracking-wide">Wallet</span>
     </button>
     <button onclick="switchTab('history')" id="nav-history" class="flex flex-col items-center gap-1 text-gray-400 flex-1 transition-all active:scale-95">
-      <i data-lucide="history" class="w-6 h-6"></i>
-      <span class="text-[10px] font-extrabold tracking-wide">History</span>
+      <i data-lucide="history" class="w-5 h-5"></i>
+      <span class="text-[9px] font-extrabold tracking-wide">History</span>
+    </button>
+    <button onclick="switchTab('community')" id="nav-community" class="flex flex-col items-center gap-1 text-gray-400 flex-1 transition-all active:scale-95">
+      <i data-lucide="users" class="w-5 h-5"></i>
+      <span class="text-[9px] font-extrabold tracking-wide">Community</span>
     </button>
     <button onclick="switchTab('support')" id="nav-support" class="flex flex-col items-center gap-1 text-gray-400 flex-1 transition-all active:scale-95">
-      <i data-lucide="headphones" class="w-6 h-6"></i>
-      <span class="text-[10px] font-extrabold tracking-wide">Support</span>
+      <i data-lucide="headphones" class="w-5 h-5"></i>
+      <span class="text-[9px] font-extrabold tracking-wide">Support</span>
     </button>
     <button onclick="switchTab('referral')" id="nav-referral" class="flex flex-col items-center gap-1 text-gray-400 flex-1 transition-all active:scale-95">
-      <i data-lucide="share-2" class="w-6 h-6"></i>
-      <span class="text-[10px] font-extrabold tracking-wide">Referral</span>
+      <i data-lucide="share-2" class="w-5 h-5"></i>
+      <span class="text-[9px] font-extrabold tracking-wide">Referral</span>
     </button>
     <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center gap-1 text-gray-400 flex-1 transition-all active:scale-95">
-      <i data-lucide="user" class="w-6 h-6"></i>
-      <span class="text-[10px] font-extrabold tracking-wide">Profile</span>
+      <i data-lucide="user" class="w-5 h-5"></i>
+      <span class="text-[9px] font-extrabold tracking-wide">Profile</span>
     </button>
   </nav>
 
@@ -2372,8 +2747,6 @@
     // No admin panel in webapp - admin manages everything from bot
     const ADMIN_TELEGRAM_ID = '5738022147';
     const isAdmin = currentUserProfile.id === ADMIN_TELEGRAM_ID;
-    
-    // Admin ID removed from webapp - no visible admin panel
 
     document.getElementById('profile-fullname').innerText = currentUserProfile.name;
     document.getElementById('profile-username').innerText = currentUserProfile.username;
@@ -2392,11 +2765,49 @@
     let uploadedScreenshotBase64 = null;
     let pendingReceiptTx = null;
 
+    // Simulated community users (demo data)
+    let communityUsers = JSON.parse(localStorage.getItem('apex_community_users') || 'null');
+    if (!communityUsers) {
+      communityUsers = [
+        { id: '5738022147', name: 'Alexander Cross', username: '@alex_whale', balance: 245680.50, tier: 'vip', avatar: 'AC', color: '#a855f7' },
+        { id: '7284910382', name: 'Sarah Chen', username: '@sarah_c', balance: 128450.00, tier: 'vip', avatar: 'SC', color: '#a855f7' },
+        { id: '8392017465', name: 'Mohammed Ali', username: '@m_ali_apex', balance: 89230.75, tier: 'gold', avatar: 'MA', color: '#f59e0b' },
+        { id: '9102837465', name: 'Elena Petrova', username: '@elena_p', balance: 67890.20, tier: 'gold', avatar: 'EP', color: '#f59e0b' },
+        { id: '6283749182', name: 'David Kim', username: '@david_kk', balance: 45210.00, tier: 'gold', avatar: 'DK', color: '#f59e0b' },
+        { id: '7483920183', name: 'Fatima Hassan', username: '@fatima_h', balance: 34500.50, tier: 'silver', avatar: 'FH', color: '#06b6d4' },
+        { id: '8192736450', name: 'James Wilson', username: '@jwilson', balance: 23480.00, tier: 'silver', avatar: 'JW', color: '#06b6d4' },
+        { id: '9283746501', name: 'Anna Schmidt', username: '@anna_s', balance: 18240.75, tier: 'silver', avatar: 'AS', color: '#06b6d4' },
+        { id: '8192736540', name: 'Omar Abdullah', username: '@omar_a', balance: 12450.00, tier: 'silver', avatar: 'OA', color: '#06b6d4' },
+        { id: '7382910482', name: 'Lisa Martinez', username: '@lisa_m', balance: 8920.25, tier: 'starter', avatar: 'LM', color: '#10b981' },
+        { id: '6473829104', name: 'Ahmed Yusuf', username: '@ahmed_y', balance: 5420.00, tier: 'starter', avatar: 'AY', color: '#10b981' },
+        { id: '9182736450', name: 'Maria Silva', username: '@maria_s', balance: 3180.50, tier: 'starter', avatar: 'MS', color: '#10b981' }
+      ];
+      
+      // Add current user if not admin
+      if (!communityUsers.find(u => u.id === currentUserProfile.id) && currentUserProfile.id !== '0') {
+        const tier = userPortfolio.balance >= 2000 ? 'vip' : userPortfolio.balance >= 500 ? 'gold' : userPortfolio.balance >= 100 ? 'silver' : 'starter';
+        const tierColors = { vip: '#a855f7', gold: '#f59e0b', silver: '#06b6d4', starter: '#10b981' };
+        communityUsers.push({
+          id: currentUserProfile.id,
+          name: currentUserProfile.name,
+          username: currentUserProfile.username,
+          balance: userPortfolio.balance + userPortfolio.lockedBalance,
+          tier: tier,
+          avatar: currentUserProfile.name.substring(0, 2).toUpperCase(),
+          color: tierColors[tier]
+        });
+      }
+      
+      localStorage.setItem('apex_community_users', JSON.stringify(communityUsers));
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       updateWalletUI();
       renderHistory();
       renderSupportTickets();
       renderActiveInvestments();
+      renderCommunityUsers();
+      updateCommunityStats();
       
       setInterval(pollServerForSupportReplies, 2500);
       setInterval(pollTelegramCallbackQueries, 2500);
@@ -2410,6 +2821,125 @@
       localStorage.setItem('apex_support_' + currentUserProfile.id, JSON.stringify(supportTickets));
       localStorage.setItem('apex_inv_' + currentUserProfile.id, JSON.stringify(activeInvestments));
     }
+
+    /* ===== COMMUNITY FUNCTIONS ===== */
+    function updateCommunityStats() {
+      const totalUsers = communityUsers.length;
+      const activeStakes = communityUsers.reduce((sum, u) => sum + (u.id === currentUserProfile.id ? activeInvestments.length : Math.floor(Math.random() * 3)), 0);
+      const totalTVL = communityUsers.reduce((sum, u) => sum + (u.balance || 0), 0);
+      
+      document.getElementById('community-total-users').innerText = totalUsers;
+      document.getElementById('community-active-investments').innerText = activeStakes;
+      document.getElementById('community-total-tvl').innerText = '$' + formatCompactNumber(totalTVL);
+      document.getElementById('community-user-count-badge').innerText = `${totalUsers} users`;
+    }
+
+    function formatCompactNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toFixed(0);
+    }
+
+    function renderCommunityUsers(filterText = '') {
+      const container = document.getElementById('community-users-list');
+      if (!container) return;
+      
+      // Sort by balance descending
+      const sorted = [...communityUsers].sort((a, b) => b.balance - a.balance);
+      
+      // Filter
+      const filtered = filterText.trim() === '' 
+        ? sorted 
+        : sorted.filter(u => 
+            u.id.toLowerCase().includes(filterText.toLowerCase()) ||
+            u.name.toLowerCase().includes(filterText.toLowerCase()) ||
+            u.username.toLowerCase().includes(filterText.toLowerCase())
+          );
+      
+      container.innerHTML = '';
+      
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="glass-card rounded-xl p-6 text-center border border-brand-border">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-3">
+              <i data-lucide="search-x" class="w-6 h-6 text-emerald-400"></i>
+            </div>
+            <p class="text-sm font-bold text-white mb-1">No Users Found</p>
+            <p class="text-[11px] text-gray-400">Try a different search term</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+      
+      filtered.forEach((user, index) => {
+        const rank = sorted.findIndex(u => u.id === user.id) + 1;
+        const rankEmoji = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '';
+        const isCurrentUser = user.id === currentUserProfile.id;
+        
+        const tierLabels = { vip: 'VIP', gold: 'GOLD', silver: 'SILVER', starter: 'STARTER' };
+        
+        container.innerHTML += `
+          <div class="user-card ${isCurrentUser ? 'border-emerald-500/50 bg-emerald-500/5' : ''}">
+            <div class="flex items-center gap-3">
+              <div class="relative">
+                <div class="user-avatar-rank" style="background: linear-gradient(135deg, ${user.color}, ${user.color}dd); color: #000;">
+                  ${user.avatar}
+                </div>
+                ${rankEmoji ? `<span class="user-rank-badge">${rankEmoji}</span>` : ''}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="min-w-0">
+                    <div class="flex items-center gap-1.5">
+                      <h5 class="user-name-display">${user.name}</h5>
+                      ${isCurrentUser ? '<span class="text-[7px] bg-emerald-500/20 text-emerald-400 px-1.5 py-0.5 rounded font-bold">YOU</span>' : ''}
+                    </div>
+                    <p class="user-id-display">${user.username} · ID: ${user.id.slice(0, 8)}...</p>
+                  </div>
+                  <div class="text-right shrink-0">
+                    <div class="user-balance-display">$${formatCompactNumber(user.balance)}</div>
+                    <div class="user-balance-label">BALANCE</div>
+                  </div>
+                </div>
+                <div class="flex items-center justify-between mt-1.5">
+                  <span class="user-tier-chip user-tier-${user.tier}">
+                    <i data-lucide="${user.tier === 'vip' ? 'crown' : user.tier === 'gold' ? 'flame' : user.tier === 'silver' ? 'shield' : 'sparkles'}" class="w-2.5 h-2.5"></i>
+                    ${tierLabels[user.tier]}
+                  </span>
+                  <span class="text-[9px] text-gray-500 font-mono">Rank #${rank}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      
+      lucide.createIcons();
+    }
+
+    function filterCommunityUsers() {
+      const input = document.getElementById('community-search-input');
+      const clearBtn = document.getElementById('community-search-clear');
+      const value = input.value;
+      
+      if (value.trim() !== '') {
+        clearBtn.style.display = 'block';
+      } else {
+        clearBtn.style.display = 'none';
+      }
+      
+      renderCommunityUsers(value);
+    }
+
+    function clearCommunitySearch() {
+      const input = document.getElementById('community-search-input');
+      input.value = '';
+      document.getElementById('community-search-clear').style.display = 'none';
+      renderCommunityUsers();
+    }
+
+    /* ===== END COMMUNITY FUNCTIONS ===== */
 
     function showModernAlert({ title, message, type = 'info', icon = 'alert-circle', btnText = 'Got it' }) {
       const overlay = document.getElementById('modern-alert-overlay');
@@ -2622,7 +3152,6 @@
       if (file) {
         uploadedScreenshotData = file.name;
         
-        // Convert to base64 for bot display
         const reader = new FileReader();
         reader.onload = function(e) {
           uploadedScreenshotBase64 = e.target.result;
@@ -2654,7 +3183,7 @@
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById(`tab-${tabId}`).classList.add('active');
 
-      const navIds = ['dashboard', 'wallet', 'history', 'support', 'referral', 'profile'];
+      const navIds = ['dashboard', 'wallet', 'history', 'community', 'support', 'referral', 'profile'];
       navIds.forEach(id => {
         const btn = document.getElementById(`nav-${id}`);
         if (btn) btn.classList.replace('text-emerald-400', 'text-gray-400');
@@ -3184,7 +3713,7 @@
       document.getElementById('upload-preview-container').classList.add('hidden');
       backToWalletOverview();
 
-      const txId = 'tx_' + Date.now();
+      const txId = 'tx_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
       const nowStr = new Date().toLocaleString('en-US', { 
         month: 'short', day: 'numeric', year: 'numeric', 
         hour: '2-digit', minute: '2-digit' 
@@ -3210,7 +3739,6 @@
       saveAppData();
       renderHistory();
 
-      // Send to admin bot with full details + screenshot
       await sendDepositToAdminBot(txObj);
       
       startSimpleProcessing(`+$${depAmt.toFixed(2)}`, txId, false);
@@ -3220,11 +3748,14 @@
       const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
       const ADMIN_CHAT_ID = "5738022147";
 
-      let caption = `🚨 *NEW DEPOSIT REQUEST*\n`;
+      const uniqueTag = `#DEP${Date.now().toString().slice(-6)}`;
+
+      let caption = `🚨 *NEW DEPOSIT REQUEST* ${uniqueTag}\n`;
       caption += `━━━━━━━━━━━━━━━━━━━━\n`;
       caption += `👤 *Name:* ${tx.userFullName}\n`;
       caption += `🔗 *Username:* ${tx.userUsername}\n`;
       caption += `🆔 *Telegram ID:* \`${tx.userTelegramId}\`\n`;
+      caption += `📌 *TX Reference:* \`${tx.id}\`\n`;
       caption += `━━━━━━━━━━━━━━━━━━━━\n`;
       caption += `💰 *Amount:* +$${tx.rawAmount.toFixed(2)} USDT\n`;
       caption += `🌐 *Network:* ${tx.network}\n`;
@@ -3237,18 +3768,16 @@
       }
 
       caption += `⏰ *Date:* ${tx.fullDate}\n`;
-      caption += `🔖 *Ref:* \`${tx.fullId}\`\n`;
       caption += `━━━━━━━━━━━━━━━━━━━━\n`;
-      caption += `✅ *Click below to process:*`;
+      caption += `✅ *Process this request:*`;
 
       const keyboard = {
         inline_keyboard: [[
-          { text: "✅ APPROVE DEPOSIT", callback_data: `approve_${tx.id}` },
-          { text: "❌ REJECT DEPOSIT", callback_data: `reject_${tx.id}` }
+          { text: `✅ APPROVE ${uniqueTag}`, callback_data: `approve_${tx.id}` },
+          { text: `❌ REJECT ${uniqueTag}`, callback_data: `reject_${tx.id}` }
         ]]
       };
 
-      // If screenshot uploaded, send as photo
       if (tx.screenshotBase64) {
         try {
           const base64Data = tx.screenshotBase64.split(',')[1];
@@ -3344,7 +3873,7 @@
       document.getElementById('withdraw-address').value = '';
       backToWalletOverview();
 
-      const txId = 'tx_' + Date.now();
+      const txId = 'tx_' + Date.now() + '_' + Math.random().toString(36).substring(2, 8);
       const nowStr = new Date().toLocaleString('en-US', { 
         month: 'short', day: 'numeric', year: 'numeric', 
         hour: '2-digit', minute: '2-digit' 
@@ -3374,11 +3903,14 @@
       const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
       const ADMIN_CHAT_ID = "5738022147";
 
-      let caption = `🚨 *NEW WITHDRAWAL REQUEST*\n`;
+      const uniqueTag = `#WDR${Date.now().toString().slice(-6)}`;
+
+      let caption = `🚨 *NEW WITHDRAWAL REQUEST* ${uniqueTag}\n`;
       caption += `━━━━━━━━━━━━━━━━━━━━\n`;
       caption += `👤 *Name:* ${tx.userFullName}\n`;
       caption += `🔗 *Username:* ${tx.userUsername}\n`;
       caption += `🆔 *Telegram ID:* \`${tx.userTelegramId}\`\n`;
+      caption += `📌 *TX Reference:* \`${tx.id}\`\n`;
       caption += `━━━━━━━━━━━━━━━━━━━━\n`;
       caption += `💰 *Amount:* -$${tx.rawAmount.toFixed(2)} USDT\n`;
       caption += `🌐 *Network:* ${tx.network}\n`;
@@ -3386,14 +3918,13 @@
       caption += `📤 *Destination Address:*\n\`${tx.fullAddress}\`\n`;
       caption += `━━━━━━━━━━━━━━━━━━━━\n`;
       caption += `⏰ *Date:* ${tx.fullDate}\n`;
-      caption += `🔖 *Ref:* \`${tx.fullId}\`\n`;
       caption += `━━━━━━━━━━━━━━━━━━━━\n`;
-      caption += `✅ *Click below to process:*`;
+      caption += `✅ *Process this request:*`;
 
       const keyboard = {
         inline_keyboard: [[
-          { text: "✅ APPROVE WITHDRAWAL", callback_data: `approve_${tx.id}` },
-          { text: "❌ REJECT WITHDRAWAL", callback_data: `reject_${tx.id}` }
+          { text: `✅ APPROVE ${uniqueTag}`, callback_data: `approve_${tx.id}` },
+          { text: `❌ REJECT ${uniqueTag}`, callback_data: `reject_${tx.id}` }
         ]]
       };
 
@@ -3452,7 +3983,6 @@
         return;
       }
 
-      // LOCK: Prevent double processing
       if (targetTx.processed || targetTx.status !== 'Pending Review') {
         showModernAlert({ 
           title: 'Already Processed', 
@@ -3463,7 +3993,6 @@
         return;
       }
 
-      // Lock the transaction
       targetTx.processed = true;
       targetTx.processedAt = new Date().toISOString();
 
@@ -3482,30 +4011,23 @@
         updateWalletUI();
         triggerAdminBotNotification(`✅ *APPROVED*\n\nUser: \`${userTgId}\`\nAmount: *${targetTx.amount}*`);
 
-        // Send professional message to user's bot chat
         if (userTgId) {
-          let userMsg = `✅ *${txTypeLabel.toUpperCase()} APPROVED*\n`;
-          userMsg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
-          userMsg += `Dear *${targetTx.userFullName || 'Investor'}*,\n\n`;
-          userMsg += `Great news! Your ${txTypeLabel.toLowerCase()} of *$${txAmount.toFixed(2)} USDT* has been successfully verified and approved by our institutional desk.\n\n`;
-          
-          if (targetTx.type === 'deposit') {
-            userMsg += `💰 The funds have been credited to your wallet balance and are now available for withdrawal or investment.\n\n`;
-          } else {
-            userMsg += `💸 Your funds are being processed and will be sent to your destination wallet shortly.\n\n`;
-          }
-          
-          userMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
-          userMsg += `📋 *Transaction Details:*\n`;
-          userMsg += `• Amount: $${txAmount.toFixed(2)} USDT\n`;
-          userMsg += `• Network: ${targetTx.network}\n`;
-          userMsg += `• Reference: \`${targetTx.fullId}\`\n`;
-          userMsg += `• Status: ✅ COMPLETED\n`;
-          userMsg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
-          userMsg += `Thank you for choosing *ApexInvest* — your trusted institutional crypto yield partner.\n\n`;
-          userMsg += `_Need help? Contact our VIP Concierge desk anytime._`;
+          const shortMsg = 
+`✅ *${txTypeLabel.toUpperCase()} APPROVED*
 
-          sendUserBotNotification(userTgId, userMsg);
+━━━━━━━━━━━━━━━━━━━━
+💰 Amount: *$${txAmount.toFixed(2)} USDT*
+🌐 Network: ${targetTx.network}
+🔖 Ref: \`${targetTx.fullId}\`
+━━━━━━━━━━━━━━━━━━━━
+
+${targetTx.type === 'deposit' 
+  ? '💚 Your funds have been credited to your wallet. Ready to invest or withdraw.'
+  : '💸 Your funds are being sent to your destination wallet.'}
+
+Thank you for choosing *ApexInvest* 🚀`;
+
+          sendUserBotNotification(userTgId, shortMsg);
         }
 
         showModernAlert({ 
@@ -3522,34 +4044,23 @@
         }
         triggerAdminBotNotification(`❌ *REJECTED*\n\nUser: \`${userTgId}\`\nAmount: *${targetTx.amount}*`);
 
-        // Send professional message to user's bot chat
         if (userTgId) {
-          let userMsg = `❌ *${txTypeLabel.toUpperCase()} DECLINED*\n`;
-          userMsg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
-          userMsg += `Dear *${targetTx.userFullName || 'Investor'}*,\n\n`;
-          userMsg += `We regret to inform you that your ${txTypeLabel.toLowerCase()} request of *$${txAmount.toFixed(2)} USDT* could not be approved at this time.\n\n`;
-          
-          if (targetTx.type === 'withdraw') {
-            userMsg += `💸 Your funds have been safely returned to your wallet balance.\n\n`;
-          } else {
-            userMsg += `💰 Please double-check your transaction details and try again, or contact our support team for assistance.\n\n`;
-          }
-          
-          userMsg += `Possible reasons:\n`;
-          userMsg += `• Verification issue with the transaction\n`;
-          userMsg += `• Incorrect network selection\n`;
-          userMsg += `• Insufficient proof of payment\n\n`;
-          userMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
-          userMsg += `📋 *Transaction Details:*\n`;
-          userMsg += `• Amount: $${txAmount.toFixed(2)} USDT\n`;
-          userMsg += `• Network: ${targetTx.network}\n`;
-          userMsg += `• Reference: \`${targetTx.fullId}\`\n`;
-          userMsg += `• Status: ❌ DECLINED\n`;
-          userMsg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
-          userMsg += `Our institutional desk is always here to help you. Please contact support if you believe this is an error.\n\n`;
-          userMsg += `_— ApexInvest Support Team_`;
+          const shortMsg = 
+`❌ *${txTypeLabel.toUpperCase()} DECLINED*
 
-          sendUserBotNotification(userTgId, userMsg);
+━━━━━━━━━━━━━━━━━━━━
+💰 Amount: *$${txAmount.toFixed(2)} USDT*
+🌐 Network: ${targetTx.network}
+🔖 Ref: \`${targetTx.fullId}\`
+━━━━━━━━━━━━━━━━━━━━
+
+${targetTx.type === 'withdraw'
+  ? '💚 Your funds have been safely returned to your wallet balance.'
+  : '⚠️ Please verify your transaction details and try again.'}
+
+Need help? Contact our support team 💬`;
+
+          sendUserBotNotification(userTgId, shortMsg);
         }
 
         showModernAlert({ 
