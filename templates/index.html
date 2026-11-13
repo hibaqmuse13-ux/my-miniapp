@@ -672,6 +672,209 @@
       font-weight: 700;
     }
 
+    /* ===== PROFESSIONAL INVEST PLANS (USDT APPS STYLE) ===== */
+    .invest-plan-pro {
+      position: relative;
+      border-radius: 18px;
+      padding: 20px 18px 18px;
+      overflow: hidden;
+      background: linear-gradient(160deg, #0f1826 0%, #0a121c 60%, #080d16 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .invest-plan-pro::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--plan-gradient);
+      opacity: 1;
+    }
+
+    .invest-plan-pro::after {
+      content: '';
+      position: absolute;
+      top: -50%; right: -30%;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--plan-glow) 0%, transparent 70%);
+      filter: blur(40px);
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .invest-plan-pro:hover {
+      transform: translateY(-3px);
+      border-color: var(--plan-color);
+      box-shadow: 0 15px 50px -15px var(--plan-color);
+    }
+
+    .invest-plan-starter { 
+      --plan-color: #10b981; 
+      --plan-gradient: linear-gradient(90deg, #10b981, #06b6d4); 
+      --plan-glow: rgba(16, 185, 129, 0.3);
+    }
+    .invest-plan-silver { 
+      --plan-color: #06b6d4; 
+      --plan-gradient: linear-gradient(90deg, #06b6d4, #3b82f6); 
+      --plan-glow: rgba(6, 182, 212, 0.3);
+    }
+    .invest-plan-gold { 
+      --plan-color: #f59e0b; 
+      --plan-gradient: linear-gradient(90deg, #f59e0b, #f97316); 
+      --plan-glow: rgba(245, 158, 11, 0.3);
+    }
+    .invest-plan-vip { 
+      --plan-color: #a855f7; 
+      --plan-gradient: linear-gradient(90deg, #a855f7, #6366f1); 
+      --plan-glow: rgba(168, 85, 247, 0.3);
+    }
+
+    .invest-plan-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--plan-color);
+      color: var(--plan-color);
+    }
+
+    .invest-plan-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--plan-gradient);
+      color: #000;
+      box-shadow: 0 6px 24px -6px var(--plan-color);
+      flex-shrink: 0;
+    }
+
+    .invest-plan-roi {
+      font-size: 32px;
+      font-weight: 900;
+      background: var(--plan-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .invest-plan-roi-label {
+      font-size: 8px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+
+    .invest-plan-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    .invest-plan-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin: 16px 0 14px;
+    }
+
+    .invest-plan-meta-cell {
+      background: rgba(8, 11, 17, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 9px 11px;
+    }
+
+    .invest-plan-meta-label {
+      font-size: 8px;
+      color: #6b7280;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .invest-plan-meta-value {
+      font-size: 12px;
+      font-weight: 800;
+      color: #ffffff;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: -0.01em;
+    }
+
+    .invest-plan-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 14px;
+    }
+
+    .invest-plan-feature-tag {
+      font-size: 8px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #9ca3af;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .invest-plan-cta {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      background: var(--plan-gradient);
+      color: #000;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      box-shadow: 0 8px 24px -8px var(--plan-color);
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .invest-plan-cta:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .invest-plan-cta:active { transform: scale(0.98); }
+
+    .invest-plan-popular {
+      position: absolute;
+      top: 14px;
+      right: -32px;
+      transform: rotate(45deg);
+      background: linear-gradient(90deg, #f59e0b, #f97316);
+      color: #000;
+      font-size: 8px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      padding: 4px 36px;
+      text-transform: uppercase;
+      box-shadow: 0 3px 12px rgba(245, 158, 11, 0.5);
+      z-index: 2;
+    }
+
     /* ===== REST OF EXISTING STYLES ===== */
     #admin-notify-popup {
       position: fixed; top: 16px; left: 50%;
@@ -852,74 +1055,6 @@
     }
     .qr-frame > div { background: #ffffff; border-radius: 13px; padding: 8px; }
 
-    .plan-card {
-      position: relative; border-radius: 20px; padding: 18px;
-      overflow: hidden;
-      background: linear-gradient(145deg, #121926 0%, #0b111d 100%);
-      border: 1px solid rgba(255,255,255,0.08);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .plan-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--accent-gradient); opacity: 0.9;
-    }
-
-    .plan-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 10px 40px -10px var(--accent); }
-
-    .plan-starter { --accent: #10b981; --accent-gradient: linear-gradient(90deg, #10b981, #06b6d4); }
-    .plan-silver  { --accent: #06b6d4; --accent-gradient: linear-gradient(90deg, #06b6d4, #3b82f6); }
-    .plan-gold    { --accent: #f59e0b; --accent-gradient: linear-gradient(90deg, #f59e0b, #f97316); }
-    .plan-vip     { --accent: #a855f7; --accent-gradient: linear-gradient(90deg, #a855f7, #6366f1); }
-
-    .plan-icon-badge {
-      width: 44px; height: 44px; border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      background: var(--accent-gradient); color: #000;
-      box-shadow: 0 4px 20px -4px var(--accent);
-    }
-
-    .plan-tier-badge {
-      font-size: 9px; font-weight: 900; letter-spacing: 0.12em;
-      text-transform: uppercase; padding: 3px 9px;
-      border-radius: 999px; background: rgba(255,255,255,0.05);
-      border: 1px solid var(--accent); color: var(--accent);
-    }
-
-    .plan-roi-value {
-      font-size: 24px; font-weight: 900;
-      background: var(--accent-gradient);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-      line-height: 1;
-    }
-
-    .plan-stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 14px 0; }
-    .plan-stat-cell { padding: 9px 10px; border-radius: 10px; background: rgba(8, 11, 17, 0.7); border: 1px solid rgba(255,255,255,0.05); }
-    .plan-stat-label { font-size: 8px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 800; display: block; margin-bottom: 2px; }
-    .plan-stat-value { font-size: 11px; font-weight: 800; color: #ffffff; font-family: 'JetBrains Mono', monospace; }
-
-    .plan-cta {
-      width: 100%; padding: 11px; border-radius: 12px;
-      background: var(--accent-gradient); color: #000;
-      font-size: 12px; font-weight: 900; letter-spacing: 0.04em;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-      box-shadow: 0 6px 20px -6px var(--accent);
-      cursor: pointer; border: none;
-    }
-    .plan-cta:hover { filter: brightness(1.15); }
-
-    .plan-popular {
-      position: absolute; top: 12px; right: -28px;
-      transform: rotate(45deg);
-      background: linear-gradient(90deg, #f59e0b, #f97316);
-      color: #000; font-size: 8px; font-weight: 900;
-      letter-spacing: 0.1em; padding: 4px 32px;
-      text-transform: uppercase;
-      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.5);
-    }
-
     .wallet-action-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
     .wallet-action-btn {
@@ -980,7 +1115,6 @@
 
     .input-safe { scroll-margin-top: 100px; scroll-margin-bottom: 300px; }
 
-    /* Bybit tabs and amount box */
     .bybit-tabs {
       display: flex;
       background: rgba(0,0,0,0.4);
@@ -1056,13 +1190,6 @@
     .bybit-info-row:last-child { border-bottom: none; }
     .bybit-info-label { color: #6b7280; font-weight: 600; }
     .bybit-info-value { color: #fff; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
-
-    .bybit-address-card {
-      background: linear-gradient(135deg, #0a0f1a 0%, #0d1420 100%);
-      border: 1px solid rgba(16, 185, 129, 0.25);
-      border-radius: 14px;
-      padding: 14px;
-    }
 
     .verified-chip {
       display: inline-flex; align-items: center; gap: 4px;
@@ -1172,122 +1299,234 @@
     </div>
 
     <div id="investment-plans-section">
-      <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-        <i data-lucide="zap" class="w-4 h-4 text-cyan-400"></i> Investment Plans
-      </h3>
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+          <i data-lucide="zap" class="w-4 h-4 text-cyan-400"></i> Investment Plans
+        </h3>
+        <span class="text-[9px] text-gray-500 font-mono">USDT STAKING</span>
+      </div>
 
-      <div class="space-y-4">
+      <div class="space-y-3">
         
-        <div class="plan-card plan-starter">
-          <div class="flex justify-between items-start mb-3 relative z-10">
-            <div class="flex items-center gap-3">
-              <div class="plan-icon-badge"><i data-lucide="rocket" class="w-5 h-5"></i></div>
-              <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="plan-tier-badge">Starter</span>
-                  <span class="text-[9px] text-gray-500 font-mono">MIN $5</span>
+        <!-- STARTER -->
+        <div class="invest-plan-pro invest-plan-starter">
+          <div class="flex items-start justify-between gap-3 mb-2 relative z-10">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="invest-plan-icon">
+                <i data-lucide="rocket" class="w-6 h-6"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="invest-plan-badge">
+                    <i data-lucide="sparkles" class="w-2.5 h-2.5"></i>
+                    Starter
+                  </span>
                 </div>
-                <h4 class="font-extrabold text-base text-white tracking-tight">5-Day Starter Sprint</h4>
+                <h4 class="invest-plan-title">Starter Sprint</h4>
+                <p class="text-[10px] text-gray-500 font-mono mt-0.5">5-Day Fixed Staking</p>
               </div>
             </div>
-            <div class="text-right">
-              <span class="plan-roi-value">30%</span>
-              <p class="text-[8px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
+            <div class="text-right shrink-0">
+              <div class="invest-plan-roi">30%</div>
+              <div class="invest-plan-roi-label">Daily ROI</div>
             </div>
           </div>
-          <div class="plan-stat-grid">
-            <div class="plan-stat-cell"><span class="plan-stat-label">Duration</span><span class="plan-stat-value">5 Days</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Total ROI</span><span class="plan-stat-value" style="color:#10b981">+250%</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Range</span><span class="plan-stat-value">$5 – $99</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Principal</span><span class="plan-stat-value" style="color:#06b6d4">Included</span></div>
+
+          <div class="invest-plan-meta">
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Duration</span>
+              <span class="invest-plan-meta-value">5 Days</span>
+            </div>
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Total Return</span>
+              <span class="invest-plan-meta-value" style="color:#10b981">+250%</span>
+            </div>
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Min Deposit</span>
+              <span class="invest-plan-meta-value">$5.00</span>
+            </div>
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Max Deposit</span>
+              <span class="invest-plan-meta-value">$99.00</span>
+            </div>
           </div>
-          <button onclick="openInvestModal('5-Day Starter Sprint', 30.0, 5, 5, 99)" class="plan-cta">
-            <i data-lucide="zap" class="w-3.5 h-3.5"></i> Invest Now
+
+          <div class="invest-plan-features">
+            <span class="invest-plan-feature-tag">Principal Included</span>
+            <span class="invest-plan-feature-tag">Daily Payout</span>
+            <span class="invest-plan-feature-tag">Instant Start</span>
+          </div>
+
+          <button onclick="openInvestModal('Starter Sprint', 30.0, 5, 5, 99)" class="invest-plan-cta">
+            <i data-lucide="zap" class="w-4 h-4"></i>
+            Stake Now
           </button>
         </div>
 
-        <div class="plan-card plan-silver">
-          <div class="flex justify-between items-start mb-3 relative z-10">
-            <div class="flex items-center gap-3">
-              <div class="plan-icon-badge"><i data-lucide="medal" class="w-5 h-5"></i></div>
-              <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="plan-tier-badge">Silver</span>
-                  <span class="text-[9px] text-gray-500 font-mono">MIN $100</span>
+        <!-- SILVER -->
+        <div class="invest-plan-pro invest-plan-silver">
+          <div class="flex items-start justify-between gap-3 mb-2 relative z-10">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="invest-plan-icon">
+                <i data-lucide="medal" class="w-6 h-6"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="invest-plan-badge">
+                    <i data-lucide="shield" class="w-2.5 h-2.5"></i>
+                    Silver
+                  </span>
                 </div>
-                <h4 class="font-extrabold text-base text-white tracking-tight">7-Day Silver Boost</h4>
+                <h4 class="invest-plan-title">Silver Boost</h4>
+                <p class="text-[10px] text-gray-500 font-mono mt-0.5">7-Day Fixed Staking</p>
               </div>
             </div>
-            <div class="text-right">
-              <span class="plan-roi-value">35%</span>
-              <p class="text-[8px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
+            <div class="text-right shrink-0">
+              <div class="invest-plan-roi">35%</div>
+              <div class="invest-plan-roi-label">Daily ROI</div>
             </div>
           </div>
-          <div class="plan-stat-grid">
-            <div class="plan-stat-cell"><span class="plan-stat-label">Duration</span><span class="plan-stat-value">7 Days</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Total ROI</span><span class="plan-stat-value" style="color:#06b6d4">+345%</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Range</span><span class="plan-stat-value">$100 – $499</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Principal</span><span class="plan-stat-value" style="color:#06b6d4">Included</span></div>
+
+          <div class="invest-plan-meta">
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Duration</span>
+              <span class="invest-plan-meta-value">7 Days</span>
+            </div>
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Total Return</span>
+              <span class="invest-plan-meta-value" style="color:#06b6d4">+345%</span>
+            </div>
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Min Deposit</span>
+              <span class="invest-plan-meta-value">$100.00</span>
+            </div>
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Max Deposit</span>
+              <span class="invest-plan-meta-value">$499.00</span>
+            </div>
           </div>
-          <button onclick="openInvestModal('7-Day Silver Boost', 35.0, 7, 100, 499)" class="plan-cta">
-            <i data-lucide="zap" class="w-3.5 h-3.5"></i> Invest Now
+
+          <div class="invest-plan-features">
+            <span class="invest-plan-feature-tag">Principal Included</span>
+            <span class="invest-plan-feature-tag">Daily Payout</span>
+            <span class="invest-plan-feature-tag">Priority Support</span>
+          </div>
+
+          <button onclick="openInvestModal('Silver Boost', 35.0, 7, 100, 499)" class="invest-plan-cta">
+            <i data-lucide="zap" class="w-4 h-4"></i>
+            Stake Now
           </button>
         </div>
 
-        <div class="plan-card plan-gold">
-          <div class="plan-popular">POPULAR</div>
-          <div class="flex justify-between items-start mb-3 relative z-10">
-            <div class="flex items-center gap-3">
-              <div class="plan-icon-badge"><i data-lucide="crown" class="w-5 h-5"></i></div>
-              <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="plan-tier-badge">Gold</span>
-                  <span class="text-[9px] text-gray-500 font-mono">MIN $500</span>
+        <!-- GOLD -->
+        <div class="invest-plan-pro invest-plan-gold">
+          <div class="invest-plan-popular">POPULAR</div>
+          <div class="flex items-start justify-between gap-3 mb-2 relative z-10">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="invest-plan-icon">
+                <i data-lucide="crown" class="w-6 h-6"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="invest-plan-badge">
+                    <i data-lucide="flame" class="w-2.5 h-2.5"></i>
+                    Gold
+                  </span>
                 </div>
-                <h4 class="font-extrabold text-base text-white tracking-tight">10-Day Gold Growth</h4>
+                <h4 class="invest-plan-title">Gold Growth</h4>
+                <p class="text-[10px] text-gray-500 font-mono mt-0.5">10-Day Fixed Staking</p>
               </div>
             </div>
-            <div class="text-right">
-              <span class="plan-roi-value">40%</span>
-              <p class="text-[8px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
+            <div class="text-right shrink-0">
+              <div class="invest-plan-roi">40%</div>
+              <div class="invest-plan-roi-label">Daily ROI</div>
             </div>
           </div>
-          <div class="plan-stat-grid">
-            <div class="plan-stat-cell"><span class="plan-stat-label">Duration</span><span class="plan-stat-value">10 Days</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Total ROI</span><span class="plan-stat-value" style="color:#f59e0b">+500%</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Range</span><span class="plan-stat-value">$500 – $1,999</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Principal</span><span class="plan-stat-value" style="color:#06b6d4">Included</span></div>
+
+          <div class="invest-plan-meta">
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Duration</span>
+              <span class="invest-plan-meta-value">10 Days</span>
+            </div>
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Total Return</span>
+              <span class="invest-plan-meta-value" style="color:#f59e0b">+500%</span>
+            </div>
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Min Deposit</span>
+              <span class="invest-plan-meta-value">$500.00</span>
+            </div>
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Max Deposit</span>
+              <span class="invest-plan-meta-value">$1,999.00</span>
+            </div>
           </div>
-          <button onclick="openInvestModal('10-Day Gold Growth', 40.0, 10, 500, 1999)" class="plan-cta">
-            <i data-lucide="zap" class="w-3.5 h-3.5"></i> Invest Now
+
+          <div class="invest-plan-features">
+            <span class="invest-plan-feature-tag">Principal Included</span>
+            <span class="invest-plan-feature-tag">Daily Payout</span>
+            <span class="invest-plan-feature-tag">VIP Manager</span>
+          </div>
+
+          <button onclick="openInvestModal('Gold Growth', 40.0, 10, 500, 1999)" class="invest-plan-cta">
+            <i data-lucide="zap" class="w-4 h-4"></i>
+            Stake Now
           </button>
         </div>
 
-        <div class="plan-card plan-vip">
-          <div class="flex justify-between items-start mb-3 relative z-10">
-            <div class="flex items-center gap-3">
-              <div class="plan-icon-badge"><i data-lucide="gem" class="w-5 h-5"></i></div>
-              <div>
-                <div class="flex items-center gap-2 mb-1">
-                  <span class="plan-tier-badge">VIP</span>
-                  <span class="text-[9px] text-gray-500 font-mono">MIN $2,000</span>
+        <!-- VIP -->
+        <div class="invest-plan-pro invest-plan-vip">
+          <div class="flex items-start justify-between gap-3 mb-2 relative z-10">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="invest-plan-icon">
+                <i data-lucide="gem" class="w-6 h-6"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 mb-1.5 flex-wrap">
+                  <span class="invest-plan-badge">
+                    <i data-lucide="diamond" class="w-2.5 h-2.5"></i>
+                    VIP Elite
+                  </span>
                 </div>
-                <h4 class="font-extrabold text-base text-white tracking-tight">15-Day VIP Max</h4>
+                <h4 class="invest-plan-title">VIP Max</h4>
+                <p class="text-[10px] text-gray-500 font-mono mt-0.5">15-Day Fixed Staking</p>
               </div>
             </div>
-            <div class="text-right">
-              <span class="plan-roi-value">50%</span>
-              <p class="text-[8px] text-gray-400 uppercase font-extrabold tracking-wider mt-1">Daily ROI</p>
+            <div class="text-right shrink-0">
+              <div class="invest-plan-roi">50%</div>
+              <div class="invest-plan-roi-label">Daily ROI</div>
             </div>
           </div>
-          <div class="plan-stat-grid">
-            <div class="plan-stat-cell"><span class="plan-stat-label">Duration</span><span class="plan-stat-value">15 Days</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Total ROI</span><span class="plan-stat-value" style="color:#a855f7">+850%</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Range</span><span class="plan-stat-value">$2,000 – $10k</span></div>
-            <div class="plan-stat-cell"><span class="plan-stat-label">Principal</span><span class="plan-stat-value" style="color:#06b6d4">Included</span></div>
+
+          <div class="invest-plan-meta">
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Duration</span>
+              <span class="invest-plan-meta-value">15 Days</span>
+            </div>
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Total Return</span>
+              <span class="invest-plan-meta-value" style="color:#a855f7">+850%</span>
+            </div>
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Min Deposit</span>
+              <span class="invest-plan-meta-value">$2,000.00</span>
+            </div>
+            <div class="invest-plan-meta-cell">
+              <span class="invest-plan-meta-label">Max Deposit</span>
+              <span class="invest-plan-meta-value">$10,000.00</span>
+            </div>
           </div>
-          <button onclick="openInvestModal('15-Day VIP Max', 50.0, 15, 2000, 10000)" class="plan-cta">
-            <i data-lucide="zap" class="w-3.5 h-3.5"></i> Invest Now
+
+          <div class="invest-plan-features">
+            <span class="invest-plan-feature-tag">Principal Included</span>
+            <span class="invest-plan-feature-tag">Daily Payout</span>
+            <span class="invest-plan-feature-tag">Dedicated Manager</span>
+            <span class="invest-plan-feature-tag">Whale Access</span>
+          </div>
+
+          <button onclick="openInvestModal('VIP Max', 50.0, 15, 2000, 10000)" class="invest-plan-cta">
+            <i data-lucide="zap" class="w-4 h-4"></i>
+            Stake Now
           </button>
         </div>
 
@@ -1456,7 +1695,7 @@
 
     </div>
 
-    <!-- ===== DEPOSIT (Bybit-style) ===== -->
+    <!-- ===== DEPOSIT ===== -->
     <div id="section-deposit" class="space-y-4 hidden">
       
       <div class="flex items-center justify-between">
@@ -1477,7 +1716,6 @@
         </div>
       </div>
 
-      <!-- Network selector -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-white/5">
         <div class="flex items-center justify-between">
           <span class="text-[10px] text-gray-400 uppercase font-bold">Select Network</span>
@@ -1539,7 +1777,6 @@
         </div>
       </div>
 
-      <!-- Amount -->
       <div class="bybit-amount-box">
         <div class="flex items-center justify-between mb-1">
           <span class="text-[10px] text-gray-400 uppercase font-bold">Amount</span>
@@ -1557,7 +1794,6 @@
         </div>
       </div>
 
-      <!-- Address card -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-white/5">
         <div class="bybit-info-row">
           <span class="bybit-info-label">Network</span>
@@ -1596,7 +1832,6 @@
         </div>
       </div>
 
-      <!-- Proof of payment -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-white/5">
         <div class="space-y-2">
           <label class="text-[10px] text-gray-400 uppercase font-bold flex items-center gap-1.5">
@@ -1625,7 +1860,7 @@
       </button>
     </div>
 
-    <!-- ===== WITHDRAW (Bybit-style) ===== -->
+    <!-- ===== WITHDRAW ===== -->
     <div id="section-withdraw" class="space-y-4 hidden">
       
       <div class="flex items-center justify-between">
@@ -1644,7 +1879,6 @@
         </div>
       </div>
 
-      <!-- Available balance -->
       <div class="glass-card rounded-2xl p-4 border border-cyan-500/20">
         <div class="flex items-center justify-between">
           <span class="text-[10px] text-gray-400 uppercase font-bold">Available</span>
@@ -1653,7 +1887,6 @@
         <h3 class="text-2xl font-black text-white font-mono mt-1" id="withdraw-max-label-2">$0.00</h3>
       </div>
 
-      <!-- Network selector -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-white/5">
         <div class="flex items-center justify-between">
           <span class="text-[10px] text-gray-400 uppercase font-bold">Select Network</span>
@@ -1712,7 +1945,6 @@
         </div>
       </div>
 
-      <!-- Amount -->
       <div class="bybit-amount-box">
         <div class="flex items-center justify-between mb-1">
           <span class="text-[10px] text-gray-400 uppercase font-bold">Withdrawal Amount</span>
@@ -1731,7 +1963,6 @@
         </div>
       </div>
 
-      <!-- Destination -->
       <div class="glass-card rounded-2xl p-4 space-y-3 border border-white/5">
         <div class="bybit-info-row">
           <span class="bybit-info-label">Network</span>
@@ -1753,7 +1984,6 @@
         </div>
       </div>
 
-      <!-- Summary -->
       <div class="glass-card rounded-2xl p-4 border border-cyan-500/20">
         <div class="bybit-info-row">
           <span class="bybit-info-label">Network Fee</span>
@@ -1776,37 +2006,6 @@
   <!-- HISTORY -->
   <main id="tab-history" class="tab-content p-4 space-y-4">
     
-    <div id="admin-panel-section" class="glass-card rounded-2xl p-4 border border-emerald-500/40 space-y-3 bg-gradient-to-b from-brand-card to-emerald-950/10 hidden">
-      <div class="flex items-center justify-between pb-2 border-b border-brand-border">
-        <h4 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
-          <i data-lucide="shield-alert" class="w-4 h-4"></i> Admin Desk
-        </h4>
-        <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded font-mono font-bold">Live</span>
-      </div>
-
-      <div class="grid grid-cols-3 gap-2">
-        <div class="bg-brand-bg p-2.5 rounded-xl border border-brand-border text-center">
-          <span class="text-[9px] text-gray-400 uppercase font-bold">Users</span>
-          <h4 id="admin-total-users" class="text-sm font-black text-white mt-0.5">1</h4>
-        </div>
-        <div class="bg-brand-bg p-2.5 rounded-xl border border-brand-border text-center">
-          <span class="text-[9px] text-gray-400 uppercase font-bold">Active</span>
-          <h4 id="admin-pending-count" class="text-sm font-black text-cyan-400 mt-0.5">0</h4>
-        </div>
-        <div class="bg-brand-bg p-2.5 rounded-xl border border-brand-border text-center">
-          <span class="text-[9px] text-gray-400 uppercase font-bold">Pending</span>
-          <h4 id="admin-real-pending-count" class="text-sm font-black text-amber-400 mt-0.5">0</h4>
-        </div>
-      </div>
-
-      <div class="bg-brand-bg p-3 rounded-xl border border-brand-border space-y-1.5 text-xs font-mono">
-        <div class="text-[10px] text-emerald-400 font-bold uppercase mb-1">Active User:</div>
-        <div class="flex justify-between text-gray-300"><span>Name:</span><strong id="admin-user-fullname" class="text-white">Investor</strong></div>
-        <div class="flex justify-between text-gray-300"><span>Username:</span><strong id="admin-user-handle" class="text-cyan-400">@Investor</strong></div>
-        <div class="flex justify-between text-gray-300"><span>Telegram ID:</span><strong id="admin-user-id" class="text-amber-400">-</strong></div>
-      </div>
-    </div>
-
     <div class="flex items-center justify-between pt-2">
       <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider flex items-center gap-2">
         <i data-lucide="history" class="w-4 h-4 text-emerald-400"></i> Transaction History
@@ -2087,7 +2286,7 @@
     </div>
   </div>
 
-  <!-- SIMPLE PROCESSING MODAL (Bybit-style) -->
+  <!-- SIMPLE PROCESSING MODAL -->
   <div id="simple-processing-overlay" class="simple-processing-overlay">
     <div class="simple-processing-card">
       <div id="processing-spinner" class="simple-spinner"></div>
@@ -2170,17 +2369,11 @@
       }
     }
 
+    // No admin panel in webapp - admin manages everything from bot
     const ADMIN_TELEGRAM_ID = '5738022147';
     const isAdmin = currentUserProfile.id === ADMIN_TELEGRAM_ID;
-
-    if (isAdmin) {
-      const adminPanel = document.getElementById('admin-panel-section');
-      if (adminPanel) adminPanel.classList.remove('hidden');
-    }
-
-    document.getElementById('admin-user-fullname').innerText = currentUserProfile.name;
-    document.getElementById('admin-user-handle').innerText = currentUserProfile.username;
-    document.getElementById('admin-user-id').innerText = currentUserProfile.id;
+    
+    // Admin ID removed from webapp - no visible admin panel
 
     document.getElementById('profile-fullname').innerText = currentUserProfile.name;
     document.getElementById('profile-username').innerText = currentUserProfile.username;
@@ -2196,6 +2389,7 @@
     let supportTickets = JSON.parse(localStorage.getItem('apex_support_' + currentUserProfile.id) || '[]');
     let activeInvestments = JSON.parse(localStorage.getItem('apex_inv_' + currentUserProfile.id) || '[]');
     let uploadedScreenshotData = null;
+    let uploadedScreenshotBase64 = null;
     let pendingReceiptTx = null;
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -2203,7 +2397,6 @@
       renderHistory();
       renderSupportTickets();
       renderActiveInvestments();
-      updateAdminStats();
       
       setInterval(pollServerForSupportReplies, 2500);
       setInterval(pollTelegramCallbackQueries, 2500);
@@ -2352,12 +2545,6 @@
       }
     }
 
-    function updateAdminStats() {
-      const pendingCount = transactionsHistory.filter(t => t.status === 'Pending Review').length;
-      document.getElementById('admin-pending-count').innerText = activeInvestments.length;
-      document.getElementById('admin-real-pending-count').innerText = pendingCount;
-    }
-
     const cryptoWallets = {
       usdt_trc20: { 
         name: 'USDT (TRC20 - Tron)', 
@@ -2434,6 +2621,14 @@
       const file = event.target.files[0];
       if (file) {
         uploadedScreenshotData = file.name;
+        
+        // Convert to base64 for bot display
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          uploadedScreenshotBase64 = e.target.result;
+        };
+        reader.readAsDataURL(file);
+        
         document.getElementById('upload-placeholder-content').classList.add('hidden');
         document.getElementById('upload-preview-container').classList.remove('hidden');
         document.getElementById('uploaded-file-name').innerText = file.name;
@@ -2486,7 +2681,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* ===== SIMPLE BYBIT-STYLE PROCESSING ANIMATION ===== */
     function startSimpleProcessing(amount, txId, isWithdrawal) {
       const overlay = document.getElementById('simple-processing-overlay');
       const spinner = document.getElementById('processing-spinner');
@@ -2524,7 +2718,6 @@
       }, 2500);
     }
 
-    /* ===== PROFESSIONAL RECEIPT HTML ===== */
     function generateProReceiptHTML(tx) {
       const isDeposit = tx.type === 'deposit';
       const isWithdrawal = tx.type === 'withdraw';
@@ -2582,16 +2775,6 @@
 
       const fullAddress = tx.fullAddress || tx.ref || 'N/A';
       const txIdDisplay = tx.fullId || tx.id.toUpperCase();
-
-      let adminActionsHTML = '';
-      if (isAdmin && tx.status === 'Pending Review' && !tx.processed) {
-        adminActionsHTML = `
-          <div class="pro-receipt-actions">
-            <button class="pro-receipt-action-btn primary" onclick="simulateSystemResponse('${tx.id}', 'approve')">Approve</button>
-            <button class="pro-receipt-action-btn secondary" onclick="simulateSystemResponse('${tx.id}', 'reject')">Reject</button>
-          </div>
-        `;
-      }
 
       return `
         <div class="pro-receipt">
@@ -2668,8 +2851,6 @@
             <div class="pro-receipt-footer-text">APEXINVEST · SECURE RECEIPT</div>
             <div class="pro-receipt-footer-brand">Institutional Crypto Yield</div>
           </div>
-          
-          ${adminActionsHTML}
         </div>
       `;
     }
@@ -2690,7 +2871,6 @@
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
     }
 
-    /* ===== PROFESSIONAL HISTORY ===== */
     function renderHistory() {
       const container = document.getElementById('history-container');
       const countBadge = document.getElementById('history-count-badge');
@@ -2785,10 +2965,8 @@
       });
       
       lucide.createIcons();
-      updateAdminStats();
     }
 
-    // Rest of the existing functions remain the same
     function renderActiveInvestments() {
       const container = document.getElementById('active-investments-container');
       if (!container) return;
@@ -2853,18 +3031,6 @@
       }
 
       supportTickets.forEach(ticket => {
-        let adminReplyBox = '';
-        if (isAdmin && ticket.status === 'Pending') {
-          adminReplyBox = `
-            <div class="mt-3 pt-3 border-t border-brand-border space-y-2">
-              <div class="text-[10px] text-emerald-400 font-bold uppercase">Admin Reply:</div>
-              <div class="flex gap-2">
-                <input type="text" id="admin-reply-input-${ticket.id}" placeholder="Type reply..." class="bg-brand-bg border border-brand-border rounded-xl px-3 py-2 text-xs text-white w-full font-mono">
-                <button onclick="sendAdminSupportReply('${ticket.id}')" class="gradient-bg text-black font-bold px-3 py-2 rounded-xl text-xs shrink-0">Send</button>
-              </div>
-            </div>`;
-        }
-
         container.innerHTML += `
           <div class="glass-card rounded-xl p-4 border border-brand-border space-y-2.5" id="ticket-card-${ticket.id}">
             <div class="flex items-center justify-between text-xs">
@@ -2880,11 +3046,9 @@
                 <p class="text-gray-200">${ticket.reply}</p>
               </div>
             ` : `<p class="text-[10px] text-cyan-400 italic">Awaiting reply...</p>`}
-            ${adminReplyBox}
           </div>`;
       });
       lucide.createIcons();
-      updateAdminStats();
     }
 
     let currentPlan = {};
@@ -2973,7 +3137,7 @@
       });
     }
 
-    function initiateDepositProcess() {
+    async function initiateDepositProcess() {
       const depAmtInput = document.getElementById('deposit-amount-input');
       const hashInput = document.getElementById('tx-hash-input');
       const depAmt = parseFloat(depAmtInput.value);
@@ -3001,6 +3165,7 @@
       }
 
       const networkName = cryptoWallets[selectedDepositNetworkKey].name;
+      const networkAddress = cryptoWallets[selectedDepositNetworkKey].address;
       
       let actualProof = '';
       if (hash && hash.length >= 5) {
@@ -3009,16 +3174,12 @@
         actualProof = uploadedScreenshotData;
       }
 
-      let proofRef = '';
-      if (hash && hash.length >= 5) {
-        proofRef = 'TxID: ' + hash.substring(0, 8) + '...';
-      } else {
-        proofRef = 'Screenshot: ' + uploadedScreenshotData;
-      }
-
       depAmtInput.value = '';
       hashInput.value = '';
+      const fileDisplayName = uploadedScreenshotData;
+      const fileBase64 = uploadedScreenshotBase64;
       uploadedScreenshotData = null;
+      uploadedScreenshotBase64 = null;
       document.getElementById('upload-placeholder-content').classList.remove('hidden');
       document.getElementById('upload-preview-container').classList.add('hidden');
       backToWalletOverview();
@@ -3031,22 +3192,112 @@
       
       const txObj = {
         id: txId, type: 'deposit', title: 'Crypto Deposit', network: networkName,
-        ref: proofRef, rawAmount: depAmt, amount: `+$${depAmt.toFixed(2)}`,
+        ref: hash ? 'TxID: ' + hash.substring(0, 8) + '...' : 'Screenshot: ' + fileDisplayName, 
+        rawAmount: depAmt, amount: `+$${depAmt.toFixed(2)}`,
         status: 'Pending Review', color: 'emerald', icon: 'arrow-down-left',
         time: nowStr, fullDate: nowStr, fullId: 'DEP-' + txId.toUpperCase().slice(-12),
-        fullAddress: actualProof, processed: false
+        fullAddress: actualProof, processed: false,
+        txHashFull: hash || null,
+        screenshotBase64: fileBase64 || null,
+        screenshotName: fileDisplayName || null,
+        userFullName: currentUserProfile.name,
+        userUsername: currentUserProfile.username,
+        userTelegramId: currentUserProfile.id,
+        depositAddress: networkAddress
       };
 
       transactionsHistory.unshift(txObj);
       saveAppData();
       renderHistory();
 
-      triggerAdminBotNotificationWithKeyboard(`🚨 *DEPOSIT REQUEST*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *+$${depAmt.toFixed(2)}*\n🌐 Network: \`${networkName}\`\n🔗 Ref: \`${proofRef}\``, txId);
+      // Send to admin bot with full details + screenshot
+      await sendDepositToAdminBot(txObj);
       
       startSimpleProcessing(`+$${depAmt.toFixed(2)}`, txId, false);
     }
 
-    function initiateWithdrawalProcess() {
+    async function sendDepositToAdminBot(tx) {
+      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
+      const ADMIN_CHAT_ID = "5738022147";
+
+      let caption = `🚨 *NEW DEPOSIT REQUEST*\n`;
+      caption += `━━━━━━━━━━━━━━━━━━━━\n`;
+      caption += `👤 *Name:* ${tx.userFullName}\n`;
+      caption += `🔗 *Username:* ${tx.userUsername}\n`;
+      caption += `🆔 *Telegram ID:* \`${tx.userTelegramId}\`\n`;
+      caption += `━━━━━━━━━━━━━━━━━━━━\n`;
+      caption += `💰 *Amount:* +$${tx.rawAmount.toFixed(2)} USDT\n`;
+      caption += `🌐 *Network:* ${tx.network}\n`;
+      caption += `📥 *Deposit Address:*\n\`${tx.depositAddress}\`\n`;
+      caption += `━━━━━━━━━━━━━━━━━━━━\n`;
+
+      if (tx.txHashFull) {
+        caption += `🔍 *Transaction ID (TxID):*\n\`${tx.txHashFull}\`\n`;
+        caption += `━━━━━━━━━━━━━━━━━━━━\n`;
+      }
+
+      caption += `⏰ *Date:* ${tx.fullDate}\n`;
+      caption += `🔖 *Ref:* \`${tx.fullId}\`\n`;
+      caption += `━━━━━━━━━━━━━━━━━━━━\n`;
+      caption += `✅ *Click below to process:*`;
+
+      const keyboard = {
+        inline_keyboard: [[
+          { text: "✅ APPROVE DEPOSIT", callback_data: `approve_${tx.id}` },
+          { text: "❌ REJECT DEPOSIT", callback_data: `reject_${tx.id}` }
+        ]]
+      };
+
+      // If screenshot uploaded, send as photo
+      if (tx.screenshotBase64) {
+        try {
+          const base64Data = tx.screenshotBase64.split(',')[1];
+          const byteCharacters = atob(base64Data);
+          const byteNumbers = new Array(byteCharacters.length);
+          for (let i = 0; i < byteCharacters.length; i++) {
+            byteNumbers[i] = byteCharacters.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          const blob = new Blob([byteArray], { type: 'image/jpeg' });
+          
+          const formData = new FormData();
+          formData.append('chat_id', ADMIN_CHAT_ID);
+          formData.append('photo', blob, tx.screenshotName || 'screenshot.jpg');
+          formData.append('caption', caption);
+          formData.append('parse_mode', 'Markdown');
+          formData.append('reply_markup', JSON.stringify(keyboard));
+          
+          await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`, {
+            method: 'POST',
+            body: formData
+          });
+        } catch (err) {
+          console.log('Photo send error, falling back to text:', err);
+          await sendTextToAdmin(BOT_TOKEN, ADMIN_CHAT_ID, caption, keyboard);
+        }
+      } else {
+        await sendTextToAdmin(BOT_TOKEN, ADMIN_CHAT_ID, caption, keyboard);
+      }
+    }
+
+    async function sendTextToAdmin(BOT_TOKEN, ADMIN_CHAT_ID, caption, keyboard) {
+      try {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: ADMIN_CHAT_ID, 
+            text: caption, 
+            parse_mode: "Markdown",
+            reply_markup: keyboard
+          })
+        });
+      } catch (err) {
+        console.log('Send error:', err);
+      }
+    }
+
+    async function initiateWithdrawalProcess() {
       const amt = parseFloat(document.getElementById('withdraw-amount').value);
       const addr = document.getElementById('withdraw-address').value.trim();
 
@@ -3104,16 +3355,62 @@
         ref: 'To: ' + shortAddr, rawAmount: amt, amount: `-$${amt.toFixed(2)}`,
         status: 'Pending Review', color: 'cyan', icon: 'arrow-up-right',
         time: nowStr, fullDate: nowStr, fullId: 'WDR-' + txId.toUpperCase().slice(-12),
-        fullAddress: addr, processed: false
+        fullAddress: addr, processed: false,
+        userFullName: currentUserProfile.name,
+        userUsername: currentUserProfile.username,
+        userTelegramId: currentUserProfile.id
       };
 
       transactionsHistory.unshift(txObj);
       saveAppData();
       renderHistory();
 
-      triggerAdminBotNotificationWithKeyboard(`🚨 *WITHDRAWAL REQUEST*\n\n👤 User: \`${currentUserProfile.id}\`\n💰 Amount: *-$${amt.toFixed(2)}*\n🌐 Network: \`${netName}\`\n🔗 Address: \`${shortAddr}\``, txId);
+      await sendWithdrawalToAdminBot(txObj);
       
       startSimpleProcessing(`-$${amt.toFixed(2)}`, txId, true);
+    }
+
+    async function sendWithdrawalToAdminBot(tx) {
+      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
+      const ADMIN_CHAT_ID = "5738022147";
+
+      let caption = `🚨 *NEW WITHDRAWAL REQUEST*\n`;
+      caption += `━━━━━━━━━━━━━━━━━━━━\n`;
+      caption += `👤 *Name:* ${tx.userFullName}\n`;
+      caption += `🔗 *Username:* ${tx.userUsername}\n`;
+      caption += `🆔 *Telegram ID:* \`${tx.userTelegramId}\`\n`;
+      caption += `━━━━━━━━━━━━━━━━━━━━\n`;
+      caption += `💰 *Amount:* -$${tx.rawAmount.toFixed(2)} USDT\n`;
+      caption += `🌐 *Network:* ${tx.network}\n`;
+      caption += `━━━━━━━━━━━━━━━━━━━━\n`;
+      caption += `📤 *Destination Address:*\n\`${tx.fullAddress}\`\n`;
+      caption += `━━━━━━━━━━━━━━━━━━━━\n`;
+      caption += `⏰ *Date:* ${tx.fullDate}\n`;
+      caption += `🔖 *Ref:* \`${tx.fullId}\`\n`;
+      caption += `━━━━━━━━━━━━━━━━━━━━\n`;
+      caption += `✅ *Click below to process:*`;
+
+      const keyboard = {
+        inline_keyboard: [[
+          { text: "✅ APPROVE WITHDRAWAL", callback_data: `approve_${tx.id}` },
+          { text: "❌ REJECT WITHDRAWAL", callback_data: `reject_${tx.id}` }
+        ]]
+      };
+
+      try {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: ADMIN_CHAT_ID, 
+            text: caption, 
+            parse_mode: "Markdown",
+            reply_markup: keyboard
+          })
+        });
+      } catch (err) {
+        console.log('Send error:', err);
+      }
     }
 
     function triggerAdminBotNotification(textMessage) {
@@ -3125,19 +3422,21 @@
       }).catch(err => console.log('Telegram dispatch:', err));
     }
 
-    function triggerAdminBotNotificationWithKeyboard(textMessage, txId) {
+    async function sendUserBotNotification(userTgId, textMessage) {
       const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
-      const ADMIN_CHAT_ID = "5738022147";
-      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: ADMIN_CHAT_ID, text: textMessage, parse_mode: "Markdown",
-          reply_markup: { inline_keyboard: [[
-            { text: "✅ Approve", callback_data: `approve_${txId}` },
-            { text: "❌ Reject", callback_data: `reject_${txId}` }
-          ]]}
-        })
-      }).catch(err => console.log('Telegram dispatch:', err));
+      try {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST', 
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            chat_id: userTgId, 
+            text: textMessage, 
+            parse_mode: "Markdown" 
+          })
+        });
+      } catch (err) {
+        console.log('User notification error:', err);
+      }
     }
 
     function simulateSystemResponse(txId, action) {
@@ -3170,6 +3469,7 @@
 
       const txAmount = targetTx.rawAmount || 0;
       const txTypeLabel = targetTx.type === 'deposit' ? 'Deposit' : 'Withdrawal';
+      const userTgId = targetTx.userTelegramId;
 
       if (action === 'approve') {
         targetTx.status = 'Completed';
@@ -3180,19 +3480,37 @@
           userPortfolio.totalWithdrawn += txAmount;
         }
         updateWalletUI();
-        triggerAdminBotNotification(`✅ *APPROVED*\n\nUser: \`${currentUserProfile.id}\`\nAmount: *${targetTx.amount}*`);
+        triggerAdminBotNotification(`✅ *APPROVED*\n\nUser: \`${userTgId}\`\nAmount: *${targetTx.amount}*`);
 
-        // Auto-inject beautiful English chat message
-        injectAutoChatMessage({
-          title: `✅ ${txTypeLabel} Approved Successfully`,
-          message: `Great news! Your ${txTypeLabel.toLowerCase()} of $${txAmount.toFixed(2)} has been verified and approved by our institutional desk. ${targetTx.type === 'deposit' ? 'The funds have been credited to your wallet and are now available for withdrawal or investment.' : 'Your funds are being processed and will be sent to your destination wallet shortly.'} Thank you for choosing ApexInvest — your trusted institutional crypto yield partner.`,
-          category: `${txTypeLabel} Approval Notice`,
-          status: 'Resolved'
-        });
+        // Send professional message to user's bot chat
+        if (userTgId) {
+          let userMsg = `✅ *${txTypeLabel.toUpperCase()} APPROVED*\n`;
+          userMsg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+          userMsg += `Dear *${targetTx.userFullName || 'Investor'}*,\n\n`;
+          userMsg += `Great news! Your ${txTypeLabel.toLowerCase()} of *$${txAmount.toFixed(2)} USDT* has been successfully verified and approved by our institutional desk.\n\n`;
+          
+          if (targetTx.type === 'deposit') {
+            userMsg += `💰 The funds have been credited to your wallet balance and are now available for withdrawal or investment.\n\n`;
+          } else {
+            userMsg += `💸 Your funds are being processed and will be sent to your destination wallet shortly.\n\n`;
+          }
+          
+          userMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
+          userMsg += `📋 *Transaction Details:*\n`;
+          userMsg += `• Amount: $${txAmount.toFixed(2)} USDT\n`;
+          userMsg += `• Network: ${targetTx.network}\n`;
+          userMsg += `• Reference: \`${targetTx.fullId}\`\n`;
+          userMsg += `• Status: ✅ COMPLETED\n`;
+          userMsg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+          userMsg += `Thank you for choosing *ApexInvest* — your trusted institutional crypto yield partner.\n\n`;
+          userMsg += `_Need help? Contact our VIP Concierge desk anytime._`;
+
+          sendUserBotNotification(userTgId, userMsg);
+        }
 
         showModernAlert({ 
           title: 'Approved Successfully', 
-          message: `Your ${txTypeLabel.toLowerCase()} of $${txAmount.toFixed(2)} has been verified and approved. Funds are now available.`, 
+          message: `Your ${txTypeLabel.toLowerCase()} of $${txAmount.toFixed(2)} has been verified and approved. The user has been notified via bot chat.`, 
           type: 'success', 
           icon: 'check-circle' 
         });
@@ -3202,19 +3520,41 @@
           userPortfolio.balance += txAmount;
           updateWalletUI();
         }
-        triggerAdminBotNotification(`❌ *REJECTED*\n\nUser: \`${currentUserProfile.id}\`\nAmount: *${targetTx.amount}*`);
+        triggerAdminBotNotification(`❌ *REJECTED*\n\nUser: \`${userTgId}\`\nAmount: *${targetTx.amount}*`);
 
-        // Auto-inject beautiful English chat message
-        injectAutoChatMessage({
-          title: `❌ ${txTypeLabel} Declined`,
-          message: `We regret to inform you that your ${txTypeLabel.toLowerCase()} request of $${txAmount.toFixed(2)} could not be approved at this time. This may be due to a verification issue, incorrect network selection, or insufficient proof of payment. ${targetTx.type === 'withdraw' ? 'Your funds have been safely returned to your wallet balance.' : 'Please double-check your transaction details and try again, or contact our support team for assistance.'} Our institutional desk is always here to help you.`,
-          category: `${txTypeLabel} Declined Notice`,
-          status: 'Resolved'
-        });
+        // Send professional message to user's bot chat
+        if (userTgId) {
+          let userMsg = `❌ *${txTypeLabel.toUpperCase()} DECLINED*\n`;
+          userMsg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+          userMsg += `Dear *${targetTx.userFullName || 'Investor'}*,\n\n`;
+          userMsg += `We regret to inform you that your ${txTypeLabel.toLowerCase()} request of *$${txAmount.toFixed(2)} USDT* could not be approved at this time.\n\n`;
+          
+          if (targetTx.type === 'withdraw') {
+            userMsg += `💸 Your funds have been safely returned to your wallet balance.\n\n`;
+          } else {
+            userMsg += `💰 Please double-check your transaction details and try again, or contact our support team for assistance.\n\n`;
+          }
+          
+          userMsg += `Possible reasons:\n`;
+          userMsg += `• Verification issue with the transaction\n`;
+          userMsg += `• Incorrect network selection\n`;
+          userMsg += `• Insufficient proof of payment\n\n`;
+          userMsg += `━━━━━━━━━━━━━━━━━━━━\n`;
+          userMsg += `📋 *Transaction Details:*\n`;
+          userMsg += `• Amount: $${txAmount.toFixed(2)} USDT\n`;
+          userMsg += `• Network: ${targetTx.network}\n`;
+          userMsg += `• Reference: \`${targetTx.fullId}\`\n`;
+          userMsg += `• Status: ❌ DECLINED\n`;
+          userMsg += `━━━━━━━━━━━━━━━━━━━━\n\n`;
+          userMsg += `Our institutional desk is always here to help you. Please contact support if you believe this is an error.\n\n`;
+          userMsg += `_— ApexInvest Support Team_`;
+
+          sendUserBotNotification(userTgId, userMsg);
+        }
 
         showModernAlert({ 
           title: 'Transaction Declined', 
-          message: `The ${txTypeLabel.toLowerCase()} of $${txAmount.toFixed(2)} was declined. ${targetTx.type === 'withdraw' ? 'Your funds have been returned to your balance. ' : ''}Please check your support chat for details.`, 
+          message: `The ${txTypeLabel.toLowerCase()} of $${txAmount.toFixed(2)} was declined. The user has been notified via bot chat.`, 
           type: 'error', 
           icon: 'x-circle' 
         });
@@ -3222,36 +3562,9 @@
 
       saveAppData();
       renderHistory();
-      renderSupportTickets();
       
       if (!document.getElementById('receipt-modal').classList.contains('hidden')) {
         openReceiptModal(txId);
-      }
-    }
-
-    /* ===== AUTO CHAT MESSAGE INJECTION ===== */
-    function injectAutoChatMessage({ title, message, category, status }) {
-      const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric' });
-      const ticketId = 'auto_' + Date.now();
-      const ticketBadge = '#APX' + Math.floor(100 + Math.random() * 900);
-
-      const autoTicket = {
-        id: ticketBadge,
-        rawId: ticketId,
-        category: category,
-        message: title,
-        reply: message,
-        date: nowStr,
-        status: status || 'Resolved',
-        isAuto: true
-      };
-
-      supportTickets.unshift(autoTicket);
-      saveAppData();
-      renderSupportTickets();
-
-      if (tg?.HapticFeedback) {
-        tg.HapticFeedback.notificationOccurred('success');
       }
     }
 
@@ -3317,45 +3630,36 @@
       }).catch(err => console.log('Telegram dispatch:', err));
     }
 
-    function sendAdminSupportReply(ticketBadge) {
-      const replyInput = document.getElementById(`admin-reply-input-${ticketBadge}`);
-      if (!replyInput) return;
-      const replyText = replyInput.value.trim();
-      if (!replyText) {
-        showModernAlert({ 
-          title: 'Reply Required', 
-          message: 'Please type a reply message before sending.', 
-          type: 'warning', 
-          icon: 'alert-circle' 
-        });
-        return;
-      }
+    let lastUpdateId = parseInt(localStorage.getItem('apex_last_update_id') || '0');
+    function pollTelegramCallbackQueries() {
+      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
 
-      const targetTicket = supportTickets.find(t => t.id === ticketBadge);
-      if (!targetTicket) return;
-      
-      if (targetTicket.status === 'Resolved') {
-        showModernAlert({ 
-          title: 'Already Resolved', 
-          message: 'This ticket has already been resolved. No further replies are needed.', 
-          type: 'info', 
-          icon: 'check-circle' 
-        });
-        return;
-      }
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=1`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.ok && data.result && data.result.length > 0) {
+            data.result.forEach(update => {
+              lastUpdateId = Math.max(lastUpdateId, update.update_id);
+              localStorage.setItem('apex_last_update_id', lastUpdateId.toString());
 
-      targetTicket.reply = replyText;
-      targetTicket.status = 'Resolved';
-      targetTicket.resolvedAt = new Date().toISOString();
-      saveAppData();
-      renderSupportTickets();
-      triggerAdminBotNotification(`💬 *REPLY SENT*\n\nUser: ${currentUserProfile.username}\nTicket: *${targetTicket.id}*\nReply: _${replyText}_`);
-      showModernAlert({ 
-        title: 'Reply Sent', 
-        message: `Your response has been delivered to the user for ticket ${targetTicket.id}. The ticket is now closed.`, 
-        type: 'success', 
-        icon: 'check-circle' 
-      });
+              if (update.callback_query) {
+                const query = update.callback_query;
+                const dataStr = query.data;
+                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`, {
+                  method: 'POST', headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ callback_query_id: query.id, text: "Processing..." })
+                }).catch(() => {});
+
+                if (dataStr.startsWith('approve_') || dataStr.startsWith('reject_')) {
+                  const action = dataStr.startsWith('approve_') ? 'approve' : 'reject';
+                  const txId = dataStr.replace('approve_', '').replace('reject_', '');
+                  simulateSystemResponse(txId, action);
+                }
+              }
+            });
+          }
+        })
+        .catch(err => console.log('Poll telegram:', err));
     }
 
     function pollServerForSupportReplies() {
@@ -3370,82 +3674,11 @@
               localMatch.reply = st.reply;
               localMatch.status = st.status;
               updated = true;
-              showModernAlert({ 
-                title: 'New Reply Received', 
-                message: `Support replied to ticket ${st.id}: "${st.reply}"`, 
-                type: 'info', 
-                icon: 'message-square' 
-              });
             }
           });
           if (updated) renderSupportTickets();
         } catch (e) {}
       }
-    }
-
-    let lastUpdateId = parseInt(localStorage.getItem('apex_last_update_id') || '0');
-    function pollTelegramCallbackQueries() {
-      if (!isAdmin) return;
-      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
-
-      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=1`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.ok && data.result && data.result.length > 0) {
-            data.result.forEach(update => {
-              lastUpdateId = Math.max(lastUpdateId, update.update_id);
-              localStorage.setItem('apex_last_update_id', lastUpdateId.toString());
-
-              if (update.callback_query) {
-                const query = update.callback_query;
-                const dataStr = query.data;
-                const messageId = query.message?.message_id;
-                const chatId = query.message?.chat?.id;
-
-                fetch(`https://api.telegram.org/bot${BOT_TOKEN}/answerCallbackQuery`, {
-                  method: 'POST', headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ callback_query_id: query.id, text: "Processing..." })
-                }).catch(() => {});
-
-                if (dataStr.startsWith('approve_') || dataStr.startsWith('reject_')) {
-                  const action = dataStr.startsWith('approve_') ? 'approve' : 'reject';
-                  const txId = dataStr.replace('approve_', '').replace('reject_', '');
-                  simulateSystemResponse(txId, action);
-                  
-                  // Auto-delete the admin bot message after processing
-                  if (messageId && chatId) {
-                    setTimeout(() => {
-                      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/deleteMessage`, {
-                        method: 'POST', headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ chat_id: chatId, message_id: messageId })
-                      }).catch(() => {});
-                    }, 1000);
-                  }
-                } else if (dataStr.startsWith('reply_tkt_')) {
-                  const rawId = dataStr.replace('reply_tkt_', '');
-                  const tkt = supportTickets.find(t => t.rawId === rawId);
-                  if (tkt) {
-                    switchTab('support');
-                    setTimeout(() => {
-                      const inputField = document.getElementById(`admin-reply-input-${tkt.id}`);
-                      if (inputField) {
-                        inputField.focus();
-                        inputField.style.borderColor = '#10b981';
-                        showModernAlert({ 
-                          title: 'Admin Reply Desk', 
-                          message: `Ticket ${tkt.id} selected. Type your reply below and press send.`, 
-                          type: 'info', 
-                          icon: 'message-square' 
-                        });
-                      }
-                    }, 300);
-                  }
-                }
-              }
-            });
-          }
-        })
-        .catch(err => console.log('Poll telegram:', err));
     }
 
     function calculateWithdrawFee() {
