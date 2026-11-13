@@ -235,6 +235,325 @@
       -webkit-text-fill-color: transparent;
     }
 
+    /* ===== KYC STYLES ===== */
+    .kyc-modal-card {
+      width: 100%;
+      max-width: 380px;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(165deg, #0f1826 0%, #0a121c 100%);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 40px 100px -25px rgba(0, 0, 0, 0.95), 0 0 60px -20px rgba(16, 185, 129, 0.2);
+      position: relative;
+    }
+
+    .kyc-modal-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #10b981, #06b6d4, transparent);
+      background-size: 200% 100%;
+      animation: shimmer 3s infinite;
+      z-index: 5;
+    }
+
+    .kyc-header {
+      padding: 22px 20px 16px;
+      text-align: center;
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.08) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+    }
+
+    .kyc-header-icon {
+      width: 56px;
+      height: 56px;
+      margin: 0 auto 12px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, #10b981, #06b6d4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      box-shadow: 0 12px 35px -10px rgba(16, 185, 129, 0.6), inset 0 2px 0 rgba(255,255,255,0.2);
+    }
+
+    .kyc-header-icon svg {
+      width: 26px;
+      height: 26px;
+      stroke-width: 2.5;
+    }
+
+    .kyc-title {
+      font-size: 17px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .kyc-subtitle {
+      font-size: 11px;
+      color: #9ca3af;
+      line-height: 1.5;
+    }
+
+    .kyc-body {
+      padding: 18px 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .kyc-step-indicator {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .kyc-step-dot {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 800;
+      background: rgba(255,255,255,0.05);
+      color: #6b7280;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: all 0.3s;
+    }
+
+    .kyc-step-dot.active {
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      color: #000;
+      border-color: transparent;
+      box-shadow: 0 4px 12px -2px rgba(16, 185, 129, 0.5);
+    }
+
+    .kyc-step-dot.completed {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .kyc-step-line {
+      width: 24px;
+      height: 2px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      transition: background 0.3s;
+    }
+
+    .kyc-step-line.completed {
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+    }
+
+    .kyc-input-label {
+      font-size: 10px;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 6px;
+    }
+
+    .kyc-input-label svg {
+      width: 12px;
+      height: 12px;
+      color: #10b981;
+    }
+
+    .kyc-input {
+      width: 100%;
+      background: rgba(8, 11, 17, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: #fff;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .kyc-input:focus {
+      outline: none;
+      border-color: rgba(16, 185, 129, 0.5);
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+    }
+
+    .kyc-input::placeholder { color: #4b5563; }
+
+    .kyc-upload-box {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 18px 12px;
+      border: 1.5px dashed rgba(255,255,255,0.15);
+      border-radius: 12px;
+      background: rgba(8, 11, 17, 0.6);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .kyc-upload-box:hover {
+      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.04);
+    }
+
+    .kyc-upload-box.uploaded {
+      border-color: rgba(16, 185, 129, 0.5);
+      background: rgba(16, 185, 129, 0.06);
+      border-style: solid;
+    }
+
+    .kyc-upload-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(16, 185, 129, 0.12);
+      color: #10b981;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+
+    .kyc-upload-icon svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .kyc-upload-text {
+      font-size: 11px;
+      font-weight: 700;
+      color: #e5e7eb;
+    }
+
+    .kyc-upload-hint {
+      font-size: 9px;
+      color: #6b7280;
+      margin-top: 2px;
+    }
+
+    .kyc-upload-filename {
+      font-size: 10px;
+      color: #10b981;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      margin-top: 4px;
+      word-break: break-all;
+      text-align: center;
+    }
+
+    .kyc-btn-primary {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #10b981, #06b6d4);
+      color: #000;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 8px 24px -8px rgba(16, 185, 129, 0.5);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .kyc-btn-primary:active { transform: scale(0.97); }
+
+    .kyc-btn-secondary {
+      width: 100%;
+      padding: 13px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.05);
+      color: #9ca3af;
+      font-size: 12px;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .kyc-btn-secondary:active { transform: scale(0.97); }
+
+    .kyc-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .kyc-status-badge.verified {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .kyc-status-badge.pending {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .kyc-status-badge.rejected {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+    }
+
+    .kyc-status-badge.unverified {
+      background: rgba(107, 114, 128, 0.15);
+      color: #9ca3af;
+      border: 1px solid rgba(107, 114, 128, 0.3);
+    }
+
+    .kyc-info-box {
+      background: rgba(6, 182, 212, 0.06);
+      border: 1px solid rgba(6, 182, 212, 0.2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .kyc-info-box svg {
+      width: 14px;
+      height: 14px;
+      color: #06b6d4;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .kyc-info-box p {
+      font-size: 10px;
+      color: #cbd5e1;
+      line-height: 1.5;
+    }
+
     /* ===== PROFESSIONAL RECEIPT (BYBIT STYLE) ===== */
     .pro-receipt {
       width: 100%;
@@ -1376,12 +1695,12 @@
           <h3 class="text-xs font-bold text-white flex items-center gap-1.5">
             <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i> Security & Compliance
           </h3>
-          <span class="text-[9px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded-full font-mono">VERIFIED</span>
+          <span id="wallet-kyc-badge" class="text-[9px] bg-gray-500/10 text-gray-400 font-bold px-2 py-0.5 rounded-full font-mono">UNVERIFIED</span>
         </div>
         
         <div class="info-row"><span class="info-label"><i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-400"></i> Encryption</span><span class="info-value text-cyan-400">AES-256 Bit</span></div>
         <div class="info-row"><span class="info-label"><i data-lucide="key" class="w-3.5 h-3.5 text-amber-400"></i> 2FA Authentication</span><span class="info-value text-emerald-400">Enabled</span></div>
-        <div class="info-row"><span class="info-label"><i data-lucide="user-check" class="w-3.5 h-3.5 text-purple-400"></i> KYC Status</span><span class="info-value text-emerald-400">Verified</span></div>
+        <div class="info-row"><span class="info-label"><i data-lucide="user-check" class="w-3.5 h-3.5 text-purple-400"></i> KYC Status</span><span class="info-value text-emerald-400" id="wallet-kyc-status-text">Verified</span></div>
         <div class="info-row"><span class="info-label"><i data-lucide="vault" class="w-3.5 h-3.5 text-cyan-400"></i> Vault Type</span><span class="info-value text-white">Institutional</span></div>
       </div>
 
@@ -2020,6 +2339,27 @@
         </div>
       </div>
 
+      <!-- KYC CARD -->
+      <div class="relative z-10 pt-1">
+        <div id="profile-kyc-card" class="bg-gradient-to-br from-[#0f1826] to-[#0a121c] p-4 rounded-2xl border border-gray-500/20 space-y-3">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div id="profile-kyc-icon" class="w-9 h-9 rounded-xl bg-gray-500/10 text-gray-400 flex items-center justify-center">
+                <i data-lucide="badge-check" class="w-4.5 h-4.5"></i>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-white text-xs">KYC Verification</h4>
+                <p id="profile-kyc-subtitle" class="text-[9px] text-gray-500 font-mono">Verify your identity</p>
+              </div>
+            </div>
+            <span id="profile-kyc-badge" class="kyc-status-badge unverified">Unverified</span>
+          </div>
+          <button id="profile-kyc-btn" onclick="openKycModal()" class="w-full gradient-bg text-black font-extrabold py-2.5 rounded-xl text-xs shadow-lg active:scale-95 transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Verify Now
+          </button>
+        </div>
+      </div>
+
       <button onclick="switchTab('dashboard')" class="w-full relative group overflow-hidden rounded-xl p-[1px] font-extrabold text-xs active:scale-95 transition-all shadow-lg">
         <span class="absolute inset-0 bg-gradient-to-r from-emerald-500 to-cyan-400 opacity-80 group-hover:opacity-100 transition-opacity"></span>
         <span class="relative flex items-center justify-center gap-2 rounded-xl bg-brand-bg px-4 py-3 text-emerald-400 group-hover:bg-transparent group-hover:text-black transition-all">
@@ -2084,6 +2424,141 @@
       <button onclick="confirmInvestment()" class="w-full gradient-bg text-black font-extrabold py-3 rounded-xl text-sm shadow-lg active:scale-95 transition-all">
         Confirm & Start
       </button>
+    </div>
+  </div>
+
+  <!-- KYC MODAL -->
+  <div id="kyc-modal" class="modal-overlay hidden">
+    <div class="kyc-modal-card modal-animate-in">
+      <button onclick="closeModal('kyc-modal')" class="pro-receipt-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12" stroke-linecap="round"/></svg>
+      </button>
+
+      <div class="kyc-header">
+        <div class="kyc-header-icon">
+          <i data-lucide="badge-check"></i>
+        </div>
+        <h3 class="kyc-title">KYC Verification</h3>
+        <p class="kyc-subtitle">Verify your identity to unlock full features</p>
+      </div>
+
+      <div class="kyc-body">
+        <div class="kyc-step-indicator">
+          <div id="kyc-step-1" class="kyc-step-dot active">1</div>
+          <div id="kyc-step-line-1" class="kyc-step-line"></div>
+          <div id="kyc-step-2" class="kyc-step-dot">2</div>
+          <div id="kyc-step-line-2" class="kyc-step-line"></div>
+          <div id="kyc-step-3" class="kyc-step-dot">3</div>
+        </div>
+
+        <!-- STEP 1: Personal Info -->
+        <div id="kyc-step-content-1" class="space-y-3">
+          <div>
+            <label class="kyc-input-label">
+              <i data-lucide="user"></i> Full Legal Name
+            </label>
+            <input type="text" id="kyc-fullname" placeholder="e.g. John Michael Doe" class="kyc-input">
+          </div>
+          <div>
+            <label class="kyc-input-label">
+              <i data-lucide="calendar"></i> Date of Birth
+            </label>
+            <input type="date" id="kyc-dob" class="kyc-input">
+          </div>
+          <div>
+            <label class="kyc-input-label">
+              <i data-lucide="globe"></i> Country
+            </label>
+            <select id="kyc-country" class="kyc-input">
+              <option value="">Select country...</option>
+              <option value="Somalia">Somalia</option>
+              <option value="Kenya">Kenya</option>
+              <option value="Ethiopia">Ethiopia</option>
+              <option value="Djibouti">Djibouti</option>
+              <option value="United States">United States</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="UAE">United Arab Emirates</option>
+              <option value="Turkey">Turkey</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label class="kyc-input-label">
+              <i data-lucide="map-pin"></i> Residential Address
+            </label>
+            <input type="text" id="kyc-address" placeholder="Street, City, Postal Code" class="kyc-input">
+          </div>
+          <button onclick="kycNextStep(2)" class="kyc-btn-primary mt-2">
+            Continue <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+        </div>
+
+        <!-- STEP 2: Document Upload -->
+        <div id="kyc-step-content-2" class="space-y-3 hidden">
+          <div class="kyc-info-box">
+            <i data-lucide="info"></i>
+            <p>Upload a clear photo of your government-issued ID (Passport, National ID, or Driver's License).</p>
+          </div>
+          <div>
+            <label class="kyc-input-label">
+              <i data-lucide="file-text"></i> Document Type
+            </label>
+            <select id="kyc-doc-type" class="kyc-input">
+              <option value="Passport">Passport</option>
+              <option value="National ID">National ID Card</option>
+              <option value="Driver's License">Driver's License</option>
+            </select>
+          </div>
+          <div>
+            <label class="kyc-input-label">
+              <i data-lucide="upload"></i> Upload Document (Front)
+            </label>
+            <div class="kyc-upload-box" id="kyc-doc-upload-box" onclick="document.getElementById('kyc-doc-file').click()">
+              <input type="file" id="kyc-doc-file" accept="image/*" class="hidden" onchange="handleKycDocUpload(event)">
+              <div class="kyc-upload-icon"><i data-lucide="image-plus"></i></div>
+              <div class="kyc-upload-text" id="kyc-doc-upload-text">Tap to upload</div>
+              <div class="kyc-upload-hint">JPG, PNG (Max 5MB)</div>
+              <div class="kyc-upload-filename" id="kyc-doc-filename"></div>
+            </div>
+          </div>
+          <button onclick="kycNextStep(3)" class="kyc-btn-primary mt-2">
+            Continue <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </button>
+          <button onclick="kycNextStep(1)" class="kyc-btn-secondary">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5 inline-block mr-1"></i> Back
+          </button>
+        </div>
+
+        <!-- STEP 3: Selfie -->
+        <div id="kyc-step-content-3" class="space-y-3 hidden">
+          <div class="kyc-info-box">
+            <i data-lucide="info"></i>
+            <p>Upload a selfie holding your ID document. Ensure your face and document are clearly visible.</p>
+          </div>
+          <div>
+            <label class="kyc-input-label">
+              <i data-lucide="camera"></i> Upload Selfie
+            </label>
+            <div class="kyc-upload-box" id="kyc-selfie-upload-box" onclick="document.getElementById('kyc-selfie-file').click()">
+              <input type="file" id="kyc-selfie-file" accept="image/*" class="hidden" onchange="handleKycSelfieUpload(event)">
+              <div class="kyc-upload-icon"><i data-lucide="camera"></i></div>
+              <div class="kyc-upload-text" id="kyc-selfie-upload-text">Tap to upload selfie</div>
+              <div class="kyc-upload-hint">Hold ID next to your face</div>
+              <div class="kyc-upload-filename" id="kyc-selfie-filename"></div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2 p-3 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
+            <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+            <p class="text-[10px] text-gray-300 leading-relaxed">Your data is encrypted and stored securely. Verification usually completes within 24 hours.</p>
+          </div>
+          <button onclick="submitKyc()" class="kyc-btn-primary mt-2">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Submit for Verification
+          </button>
+          <button onclick="kycNextStep(2)" class="kyc-btn-secondary">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5 inline-block mr-1"></i> Back
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -2198,12 +2673,24 @@
     let uploadedScreenshotData = null;
     let pendingReceiptTx = null;
 
+    // KYC State
+    let kycData = JSON.parse(localStorage.getItem('apex_kyc_' + currentUserProfile.id) || JSON.stringify({
+      status: 'Unverified', // Unverified, Pending, Verified, Rejected
+      fullname: '', dob: '', country: '', address: '',
+      docType: '', docFile: '', selfieFile: '',
+      submittedAt: null, rejectionReason: null
+    }));
+    let kycCurrentStep = 1;
+    let kycDocUploaded = false;
+    let kycSelfieUploaded = false;
+
     window.addEventListener('DOMContentLoaded', () => {
       updateWalletUI();
       renderHistory();
       renderSupportTickets();
       renderActiveInvestments();
       updateAdminStats();
+      updateKycUI();
       
       setInterval(pollServerForSupportReplies, 2500);
       setInterval(pollTelegramCallbackQueries, 2500);
@@ -2216,6 +2703,260 @@
       localStorage.setItem('apex_tx_' + currentUserProfile.id, JSON.stringify(transactionsHistory));
       localStorage.setItem('apex_support_' + currentUserProfile.id, JSON.stringify(supportTickets));
       localStorage.setItem('apex_inv_' + currentUserProfile.id, JSON.stringify(activeInvestments));
+    }
+
+    function saveKycData() {
+      localStorage.setItem('apex_kyc_' + currentUserProfile.id, JSON.stringify(kycData));
+    }
+
+    function updateKycUI() {
+      // Profile KYC Card
+      const badge = document.getElementById('profile-kyc-badge');
+      const iconBox = document.getElementById('profile-kyc-icon');
+      const subtitle = document.getElementById('profile-kyc-subtitle');
+      const btn = document.getElementById('profile-kyc-btn');
+
+      // Wallet KYC
+      const walletKycBadge = document.getElementById('wallet-kyc-badge');
+      const walletKycText = document.getElementById('wallet-kyc-status-text');
+
+      if (kycData.status === 'Verified') {
+        badge.className = 'kyc-status-badge verified';
+        badge.innerHTML = '✓ Verified';
+        iconBox.className = 'w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center';
+        subtitle.innerText = 'Identity confirmed';
+        btn.innerHTML = '<i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> Verified';
+        btn.className = 'w-full bg-emerald-500/10 text-emerald-400 font-extrabold py-2.5 rounded-xl text-xs border border-emerald-500/30 flex items-center justify-center gap-1.5';
+        btn.onclick = null;
+        btn.style.cursor = 'default';
+
+        if (walletKycBadge) { walletKycBadge.className = 'text-[9px] bg-emerald-500/10 text-emerald-400 font-bold px-2 py-0.5 rounded-full font-mono'; walletKycBadge.innerText = 'VERIFIED'; }
+        if (walletKycText) { walletKycText.innerText = 'Verified'; walletKycText.className = 'info-value text-emerald-400'; }
+      } else if (kycData.status === 'Pending') {
+        badge.className = 'kyc-status-badge pending';
+        badge.innerHTML = '● Pending';
+        iconBox.className = 'w-9 h-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center';
+        subtitle.innerText = 'Under review (24h)';
+        btn.innerHTML = '<i data-lucide="clock" class="w-3.5 h-3.5"></i> In Review';
+        btn.className = 'w-full bg-amber-500/10 text-amber-400 font-extrabold py-2.5 rounded-xl text-xs border border-amber-500/30 flex items-center justify-center gap-1.5';
+        btn.onclick = null;
+        btn.style.cursor = 'default';
+
+        if (walletKycBadge) { walletKycBadge.className = 'text-[9px] bg-amber-500/10 text-amber-400 font-bold px-2 py-0.5 rounded-full font-mono'; walletKycBadge.innerText = 'PENDING'; }
+        if (walletKycText) { walletKycText.innerText = 'Pending'; walletKycText.className = 'info-value text-amber-400'; }
+      } else if (kycData.status === 'Rejected') {
+        badge.className = 'kyc-status-badge rejected';
+        badge.innerHTML = '✕ Rejected';
+        iconBox.className = 'w-9 h-9 rounded-xl bg-red-500/10 text-red-400 flex items-center justify-center';
+        subtitle.innerText = 'Please resubmit';
+        btn.innerHTML = '<i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Resubmit KYC';
+        btn.className = 'w-full gradient-bg text-black font-extrabold py-2.5 rounded-xl text-xs shadow-lg active:scale-95 transition-all flex items-center justify-center gap-1.5';
+        btn.onclick = openKycModal;
+        btn.style.cursor = 'pointer';
+
+        if (walletKycBadge) { walletKycBadge.className = 'text-[9px] bg-red-500/10 text-red-400 font-bold px-2 py-0.5 rounded-full font-mono'; walletKycBadge.innerText = 'REJECTED'; }
+        if (walletKycText) { walletKycText.innerText = 'Rejected'; walletKycText.className = 'info-value text-red-400'; }
+      } else {
+        badge.className = 'kyc-status-badge unverified';
+        badge.innerHTML = 'Unverified';
+        iconBox.className = 'w-9 h-9 rounded-xl bg-gray-500/10 text-gray-400 flex items-center justify-center';
+        subtitle.innerText = 'Verify your identity';
+        btn.innerHTML = '<i data-lucide="badge-check" class="w-3.5 h-3.5"></i> Verify Now';
+        btn.className = 'w-full gradient-bg text-black font-extrabold py-2.5 rounded-xl text-xs shadow-lg active:scale-95 transition-all flex items-center justify-center gap-1.5';
+        btn.onclick = openKycModal;
+        btn.style.cursor = 'pointer';
+
+        if (walletKycBadge) { walletKycBadge.className = 'text-[9px] bg-gray-500/10 text-gray-400 font-bold px-2 py-0.5 rounded-full font-mono'; walletKycBadge.innerText = 'UNVERIFIED'; }
+        if (walletKycText) { walletKycText.innerText = 'Unverified'; walletKycText.className = 'info-value text-gray-400'; }
+      }
+      lucide.createIcons();
+    }
+
+    function openKycModal() {
+      if (kycData.status === 'Verified' || kycData.status === 'Pending') return;
+      
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+      
+      // Pre-fill if rejected resubmit
+      if (kycData.status === 'Rejected' || kycData.fullname) {
+        document.getElementById('kyc-fullname').value = kycData.fullname || '';
+        document.getElementById('kyc-dob').value = kycData.dob || '';
+        document.getElementById('kyc-country').value = kycData.country || '';
+        document.getElementById('kyc-address').value = kycData.address || '';
+      }
+      
+      kycCurrentStep = 1;
+      kycDocUploaded = false;
+      kycSelfieUploaded = false;
+      document.getElementById('kyc-doc-filename').innerText = '';
+      document.getElementById('kyc-selfie-filename').innerText = '';
+      document.getElementById('kyc-doc-upload-box').classList.remove('uploaded');
+      document.getElementById('kyc-selfie-upload-box').classList.remove('uploaded');
+      document.getElementById('kyc-doc-upload-text').innerText = 'Tap to upload';
+      document.getElementById('kyc-selfie-upload-text').innerText = 'Tap to upload selfie';
+      
+      showKycStep(1);
+      document.getElementById('kyc-modal').classList.remove('hidden');
+    }
+
+    function showKycStep(step) {
+      kycCurrentStep = step;
+      
+      document.getElementById('kyc-step-content-1').classList.add('hidden');
+      document.getElementById('kyc-step-content-2').classList.add('hidden');
+      document.getElementById('kyc-step-content-3').classList.add('hidden');
+      document.getElementById(`kyc-step-content-${step}`).classList.remove('hidden');
+      
+      const dots = [1,2,3];
+      dots.forEach(n => {
+        const dot = document.getElementById(`kyc-step-${n}`);
+        dot.className = 'kyc-step-dot';
+        if (n < step) dot.classList.add('completed');
+        if (n === step) dot.classList.add('active');
+      });
+      
+      document.getElementById('kyc-step-line-1').className = 'kyc-step-line' + (step > 1 ? ' completed' : '');
+      document.getElementById('kyc-step-line-2').className = 'kyc-step-line' + (step > 2 ? ' completed' : '');
+      
+      document.querySelector('.kyc-body').scrollTop = 0;
+    }
+
+    function kycNextStep(nextStep) {
+      if (kycCurrentStep === 1) {
+        const fullname = document.getElementById('kyc-fullname').value.trim();
+        const dob = document.getElementById('kyc-dob').value;
+        const country = document.getElementById('kyc-country').value;
+        const address = document.getElementById('kyc-address').value.trim();
+        
+        if (!fullname || fullname.length < 3) {
+          showModernAlert({ title: 'Invalid Name', message: 'Please enter your full legal name (at least 3 characters).', type: 'warning', icon: 'alert-circle' });
+          return;
+        }
+        if (!dob) {
+          showModernAlert({ title: 'Date Required', message: 'Please enter your date of birth.', type: 'warning', icon: 'calendar' });
+          return;
+        }
+        if (!country) {
+          showModernAlert({ title: 'Country Required', message: 'Please select your country of residence.', type: 'warning', icon: 'globe' });
+          return;
+        }
+        if (!address || address.length < 5) {
+          showModernAlert({ title: 'Address Required', message: 'Please enter your residential address (at least 5 characters).', type: 'warning', icon: 'map-pin' });
+          return;
+        }
+        
+        kycData.fullname = fullname;
+        kycData.dob = dob;
+        kycData.country = country;
+        kycData.address = address;
+      }
+      
+      if (kycCurrentStep === 2) {
+        if (!kycDocUploaded) {
+          showModernAlert({ title: 'Document Required', message: 'Please upload a photo of your ID document before continuing.', type: 'warning', icon: 'file-text' });
+          return;
+        }
+        kycData.docType = document.getElementById('kyc-doc-type').value;
+      }
+      
+      if (tg?.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+      showKycStep(nextStep);
+    }
+
+    function handleKycDocUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      if (file.size > 5 * 1024 * 1024) {
+        showModernAlert({ title: 'File Too Large', message: 'Please upload a file smaller than 5MB.', type: 'warning', icon: 'alert-triangle' });
+        return;
+      }
+      
+      kycDocUploaded = true;
+      kycData.docFile = file.name;
+      document.getElementById('kyc-doc-filename').innerText = '✓ ' + file.name;
+      document.getElementById('kyc-doc-upload-box').classList.add('uploaded');
+      document.getElementById('kyc-doc-upload-text').innerText = 'Document uploaded';
+      
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    function handleKycSelfieUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      if (file.size > 5 * 1024 * 1024) {
+        showModernAlert({ title: 'File Too Large', message: 'Please upload a file smaller than 5MB.', type: 'warning', icon: 'alert-triangle' });
+        return;
+      }
+      
+      kycSelfieUploaded = true;
+      kycData.selfieFile = file.name;
+      document.getElementById('kyc-selfie-filename').innerText = '✓ ' + file.name;
+      document.getElementById('kyc-selfie-upload-box').classList.add('uploaded');
+      document.getElementById('kyc-selfie-upload-text').innerText = 'Selfie uploaded';
+      
+      if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+    }
+
+    function submitKyc() {
+      if (!kycSelfieUploaded) {
+        showModernAlert({ title: 'Selfie Required', message: 'Please upload a selfie holding your ID document.', type: 'warning', icon: 'camera' });
+        return;
+      }
+      
+      const nowStr = new Date().toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      
+      kycData.status = 'Pending';
+      kycData.submittedAt = nowStr;
+      kycData.rejectionReason = null;
+      saveKycData();
+      
+      closeModal('kyc-modal');
+      updateKycUI();
+      
+      triggerAdminBotNotificationWithKycKeyboard(
+        `🪪 *NEW KYC SUBMISSION*\n\n👤 Name: *${kycData.fullname}*\n🆔 TG: \`${currentUserProfile.id}\`\n📅 DOB: ${kycData.dob}\n🌍 Country: ${kycData.country}\n📍 Address: ${kycData.address}\n📄 Doc: ${kycData.docType}\n📎 Files: Doc + Selfie`
+      );
+      
+      showModernAlert({
+        title: 'KYC Submitted!',
+        message: 'Your verification documents have been submitted. Our team will review them within 24 hours.',
+        type: 'success',
+        icon: 'shield-check',
+        btnText: 'Got it'
+      });
+    }
+
+    function simulateKycResponse(action) {
+      if (action === 'approve') {
+        kycData.status = 'Verified';
+        kycData.rejectionReason = null;
+        saveKycData();
+        updateKycUI();
+        showModernAlert({ title: 'KYC Approved ✓', message: 'Your identity has been verified successfully. Full features unlocked.', type: 'success', icon: 'check-circle' });
+      } else {
+        kycData.status = 'Rejected';
+        kycData.rejectionReason = 'Document unclear or does not match';
+        saveKycData();
+        updateKycUI();
+        showModernAlert({ title: 'KYC Rejected', message: 'Your documents could not be verified. Please resubmit with clear photos.', type: 'error', icon: 'x-circle' });
+      }
+    }
+
+    function triggerAdminBotNotificationWithKycKeyboard(textMessage) {
+      const BOT_TOKEN = "8917773815:AAHoyZ0_U6Q5YHy5M9t0wutYqi1JlQZoVgw";
+      const ADMIN_CHAT_ID = "5738022147";
+      fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          chat_id: ADMIN_CHAT_ID, text: textMessage, parse_mode: "Markdown",
+          reply_markup: { inline_keyboard: [[
+            { text: "✅ Approve KYC", callback_data: `approve_kyc` },
+            { text: "❌ Reject KYC", callback_data: `reject_kyc` }
+          ]]}
+        })
+      }).catch(err => console.log('Telegram dispatch:', err));
     }
 
     function showModernAlert({ title, message, type = 'info', icon = 'alert-circle', btnText = 'Got it' }) {
@@ -2486,7 +3227,6 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    /* ===== SIMPLE BYBIT-STYLE PROCESSING ANIMATION ===== */
     function startSimpleProcessing(amount, txId, isWithdrawal) {
       const overlay = document.getElementById('simple-processing-overlay');
       const spinner = document.getElementById('processing-spinner');
@@ -2524,7 +3264,6 @@
       }, 2500);
     }
 
-    /* ===== PROFESSIONAL RECEIPT HTML ===== */
     function generateProReceiptHTML(tx) {
       const isDeposit = tx.type === 'deposit';
       const isWithdrawal = tx.type === 'withdraw';
@@ -2690,7 +3429,6 @@
       if (tg?.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
     }
 
-    /* ===== PROFESSIONAL HISTORY ===== */
     function renderHistory() {
       const container = document.getElementById('history-container');
       const countBadge = document.getElementById('history-count-badge');
@@ -2717,23 +3455,17 @@
         let iconClass = 'deposit';
         let amountClass = 'positive';
         let amountPrefix = '+';
-        let directionLabel = 'DEPOSIT';
-        let directionColor = '#10b981';
 
         if (tx.type === 'withdraw') {
           iconEmoji = '↑';
           iconClass = 'withdraw';
           amountClass = 'negative';
           amountPrefix = '-';
-          directionLabel = 'WITHDRAW';
-          directionColor = '#06b6d4';
         } else if (tx.type === 'investment') {
           iconEmoji = '📈';
           iconClass = 'investment';
           amountClass = 'neutral';
           amountPrefix = '-';
-          directionLabel = 'INVEST';
-          directionColor = '#a855f7';
         }
 
         let statusClass = 'pending';
@@ -2788,7 +3520,6 @@
       updateAdminStats();
     }
 
-    // Rest of the existing functions remain the same
     function renderActiveInvestments() {
       const container = document.getElementById('active-investments-container');
       if (!container) return;
@@ -3330,6 +4061,8 @@
 
                 if (dataStr.startsWith('approve_')) simulateSystemResponse(dataStr.replace('approve_', ''), 'approve');
                 else if (dataStr.startsWith('reject_')) simulateSystemResponse(dataStr.replace('reject_', ''), 'reject');
+                else if (dataStr === 'approve_kyc') simulateKycResponse('approve');
+                else if (dataStr === 'reject_kyc') simulateKycResponse('reject');
                 else if (dataStr.startsWith('reply_tkt_')) {
                   const rawId = dataStr.replace('reply_tkt_', '');
                   const tkt = supportTickets.find(t => t.rawId === rawId);
@@ -3380,4 +4113,4 @@
     }
   </script>
 </body>
-  </html>
+        </html>
